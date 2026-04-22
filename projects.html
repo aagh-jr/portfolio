@@ -4,9 +4,132 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects — Abel Angel</title>
-  <!-- Projects page: gallery/listing of case studies and work -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #fcf9f3;
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV PILL ── */
+    .nav-pill {
+      position: fixed; top: 16px; right: 48px; z-index: 200;
+      display: flex; align-items: center; gap: 8px; padding: 7px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(0,0,0,0.05); border-radius: 9999px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .nav-btn {
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; cursor: pointer;
+    }
+    .nav-btn:hover { background: rgba(0,0,0,0.06); }
+    .nav-btn.active { background: rgba(0,0,0,0.08); }
+    .nav-btn svg { display: block; }
+    .nav-sep { width: 1px; height: 16px; background: rgba(0,0,0,0.1); margin: 0 4px; }
+
+    /* ── LAYOUT ── */
+    .page-wrap { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+    .main {
+      max-width: 1200px;
+      padding: 150px 48px 96px;
+      display: flex; flex-direction: column; gap: 40px;
+    }
+
+    /* ── HEADING ── */
+    .page-heading {
+      font-size: 40px; font-weight: 800; color: #141414;
+      letter-spacing: -0.016em; line-height: 1; opacity: 0.9;
+    }
+
+    /* ── PROJECT CARD ── */
+    .project-card {
+      background: #f6f3ed;
+      border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 25px;
+      padding: 33px;
+      display: flex; flex-direction: column; gap: 16px;
+      width: 729px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.08); }
+
+    .project-thumb {
+      width: 100%; height: 325px;
+      background: #846565;
+      border-radius: 25px;
+      flex-shrink: 0;
+    }
+
+    .project-label {
+      font-size: 40px; font-weight: 800; color: #141414;
+      letter-spacing: -0.016em; line-height: 1;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-pill { right: 20px; }
+      .main { padding: 120px 24px 64px; }
+      .project-card { width: 100%; }
+      .project-thumb { height: 200px; }
+      .page-heading, .project-label { font-size: 28px; }
+    }
+  </style>
 </head>
 <body>
-  <p>Projects page — coming soon.</p>
+
+  <!-- FLOATING NAV PILL -->
+  <nav class="nav-pill" aria-label="Site navigation">
+    <a href="index.html" class="nav-btn" title="Home">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#71717a" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <!-- Projects active -->
+    <a href="projects.html" class="nav-btn active" title="Projects">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="about.html" class="nav-btn" title="About">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="5.5" r="2.5" stroke="#71717a" stroke-width="1.5"/>
+        <path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <div class="nav-sep"></div>
+    <a href="contact.html" class="nav-btn" title="Contact">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/>
+        <path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-wrap">
+    <main class="main">
+
+      <h1 class="page-heading">Projects</h1>
+
+      <!-- Project 1 placeholder — replace with real case study card -->
+      <div class="project-card">
+        <div class="project-thumb"></div>
+        <span class="project-label">Project 1</span>
+      </div>
+
+    </main>
+  </div>
+
 </body>
 </html>

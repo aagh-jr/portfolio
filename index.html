@@ -113,13 +113,37 @@
       flex-direction: column;
       min-height: 335px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.25s, box-shadow 0.25s;
       text-decoration: none;
       color: inherit;
+      position: relative;
+      overflow: hidden;
     }
     .bento-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+    }
+
+    /* gradient overlay — hidden by default, fades in on hover */
+    .bento-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 32px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    .bento-card:hover::after { opacity: 1; }
+
+    .bento-card--projects::after {
+      background: radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%);
+    }
+    .bento-card--about::after {
+      background: linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(248,187,180,0.75) 80.2%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%);
+    }
+    .bento-card--contact::after {
+      background: radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%);
     }
 
     .bento-card-title {
@@ -128,6 +152,8 @@
       color: #1c1c18;
       letter-spacing: -0.02em;
       line-height: 1.2;
+      position: relative; /* keep above ::after */
+      z-index: 1;
     }
 
     /* ── RESPONSIVE ── */
@@ -192,15 +218,15 @@
       <!-- BENTO GRID -->
       <div class="bento">
 
-        <a href="projects.html" class="bento-card">
+        <a href="projects.html" class="bento-card bento-card--projects">
           <span class="bento-card-title">Projects</span>
         </a>
 
-        <a href="about.html" class="bento-card">
+        <a href="about.html" class="bento-card bento-card--about">
           <span class="bento-card-title">About Me</span>
         </a>
 
-        <a href="contact.html" class="bento-card">
+        <a href="contact.html" class="bento-card bento-card--contact">
           <span class="bento-card-title">Contact</span>
         </a>
 
