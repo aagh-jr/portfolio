@@ -4,560 +4,210 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abel Angel — Portfolio</title>
-  <link rel="stylesheet" href="portfolio-shared.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body { overflow-x: hidden; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── HERO ── */
-    .hero {
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #fcf9f3;
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      padding: 120px 0 80px;
-    }
-
-    /* abstract bg shapes */
-    .hero-bg {
-      position: absolute; inset: 0; pointer-events: none; z-index: 0;
-    }
-    .shape {
-      position: absolute; border-radius: 50%;
-      opacity: 0.13; filter: blur(1px);
-      animation: drift linear infinite;
-    }
-    .s1 { width: 620px; height: 620px; background: #3DAA74; top: -160px; right: -80px; animation-duration: 28s; }
-    .s2 { width: 340px; height: 340px; background: #141414; bottom: 60px; right: 200px; opacity: 0.07; animation-duration: 22s; animation-direction: reverse; }
-    .s3 { width: 180px; height: 180px; background: #3DAA74; bottom: -40px; left: 120px; opacity: 0.18; animation-duration: 18s; }
-    .s4 { width: 90px;  height: 90px;  background: #141414; top: 180px; left: 380px; opacity: 0.06; animation-duration: 14s; animation-direction: reverse; }
-
-    @keyframes drift {
-      0%   { transform: translate(0,0) rotate(0deg); }
-      33%  { transform: translate(14px,-20px) rotate(5deg); }
-      66%  { transform: translate(-10px,12px) rotate(-4deg); }
-      100% { transform: translate(0,0) rotate(0deg); }
-    }
-
-    /* grid lines */
-    .hero-grid {
-      position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      background-image:
-        linear-gradient(rgba(20,20,20,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(20,20,20,0.035) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: radial-gradient(ellipse 80% 70% at 60% 50%, black 30%, transparent 100%);
-    }
-
-    .hero-content {
-      position: relative; z-index: 1;
-      max-width: 1100px; margin: 0 auto; padding: 0 40px;
-    }
-
-    .hero-name {
-      font-size: clamp(56px, 8vw, 96px);
-      font-weight: 700; line-height: 1.0;
-      letter-spacing: -0.04em; color: var(--black);
-      margin-bottom: 12px;
-    }
-    .hero-name em {
-      font-style: normal; color: #3DAA74;
-      position: relative; display: inline-block;
-    }
-    .hero-name em::after {
-      content: '';
-      position: absolute; left: 0; bottom: 6px; right: 0;
-      height: 6px; background: #3DAA74; opacity: 0.18; border-radius: 2px;
-    }
-
-    .hero-role {
-      font-size: clamp(18px, 2.5vw, 26px);
-      font-weight: 300; color: #888; letter-spacing: -0.01em;
-      margin-bottom: 44px; margin-top: 20px; line-height: 1.4;
-    }
-    .hero-role strong { color: var(--black); font-weight: 600; }
-
-    .hero-intro {
-      font-size: 16px; line-height: 1.8; color: #777;
-      max-width: 520px; margin-bottom: 36px;
-    }
-    .hero-intro strong { color: var(--black); font-weight: 600; }
-
-    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 64px; }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--black); color: white;
-      padding: 14px 28px; border-radius: 100px;
-      font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
-      transition: transform 0.15s, box-shadow 0.15s;
-      font-family: var(--font);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: white; color: var(--black);
-      padding: 14px 28px; border-radius: 100px;
-      font-size: 15px; font-weight: 600;
-      border: 1.5px solid rgba(20,20,20,0.12);
-      transition: transform 0.15s, border-color 0.15s;
-      font-family: var(--font);
-    }
-    .btn-secondary:hover { transform: translateY(-2px); border-color: #3DAA74; color: #3DAA74; }
-
-    /* ── HERO BUBBLE CARDS ── */
-    .hero-cards {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px; max-width: 860px;
-    }
-
-    /* shared bubble card */
-    .bubble-card {
-      background: white;
-      border-radius: 28px;
-      padding: 24px 24px 28px;
-      box-shadow: 0 4px 28px rgba(0,0,0,0.08);
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-decoration: none; color: inherit;
-      display: flex; flex-direction: column; gap: 0;
-      cursor: pointer;
-      position: relative; overflow: hidden;
-    }
-    .bubble-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(0,0,0,0.12); }
-
-    .bubble-top {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .bubble-title { font-size: 17px; font-weight: 700; color: var(--black); line-height: 1.2; }
-    .bubble-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
-      text-transform: uppercase; color: #3DAA74; margin-bottom: 4px;
-    }
-
-    /* icon row */
-    .bubble-icons {
-      display: flex; flex-wrap: wrap; gap: 8px; flex: 1;
-    }
-    .bub-icon-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #F5F2EC; border-radius: 100px;
-      padding: 6px 12px; font-size: 12px; font-weight: 500; color: #555;
-    }
-    .bub-icon-pill span { font-size: 14px; }
-
-    .bubble-arrow {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 12px; font-weight: 700; color: #3DAA74;
-      margin-top: 18px;
-    }
-    .bubble-arrow svg { transition: transform 0.15s; }
-    .bubble-card:hover .bubble-arrow svg { transform: translateX(3px); }
-
-    /* ── 3D ID CARD ── */
-    .id-card-wrap {
-      perspective: 800px;
-      cursor: pointer;
-    }
-    .id-card {
-      background: #141414;
-      border-radius: 28px;
-      overflow: hidden;
       position: relative;
-      display: flex; flex-direction: column;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12);
-      transform-style: preserve-3d;
-      transition: box-shadow 0.2s;
-      will-change: transform;
-      user-select: none;
-    }
-    .id-card-wrap:hover .id-card {
-      box-shadow: 0 22px 56px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    /* green top stripe */
-    .id-stripe {
-      background: #3DAA74;
-      padding: 10px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .id-stripe-text {
-      font-size: 9px; font-weight: 800; letter-spacing: 0.18em;
-      text-transform: uppercase; color: rgba(255,255,255,0.85);
-    }
-    .id-badge-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: rgba(255,255,255,0.5);
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV PILL ── */
+    .nav-pill {
+      position: fixed;
+      top: 16px;
+      right: 48px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 9999px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
-    /* photo + info */
-    .id-body {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 18px 18px 12px;
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      cursor: pointer;
     }
-    .id-photo {
-      width: 64px; height: 80px; border-radius: 10px;
-      background: rgba(255,255,255,0.08);
-      border: 1.5px dashed rgba(255,255,255,0.2);
-      flex-shrink: 0;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 4px;
-    }
-    .id-photo-hint { font-size: 9px; color: rgba(255,255,255,0.3); font-weight: 600; letter-spacing: 0.08em; }
-    .id-info { flex: 1; }
-    .id-name {
-      font-size: 18px; font-weight: 800; color: white;
-      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 5px;
-    }
-    .id-title { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 8px; }
-    .id-org {
-      display: inline-block; background: rgba(61,170,116,0.2);
-      color: #3DAA74; border-radius: 6px; padding: 2px 8px;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+    .nav-btn:hover { background: rgba(0, 0, 0, 0.06); }
+    .nav-btn.active { background: rgba(0, 0, 0, 0.08); }
+    .nav-btn svg { display: block; }
+
+    .nav-sep {
+      width: 1px;
+      height: 16px;
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0 4px;
     }
 
-    /* contact rows */
-    .id-contacts {
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 10px 18px 18px;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-    .id-row {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 11px; color: rgba(255,255,255,0.45);
-      text-decoration: none; transition: color 0.15s;
-    }
-    .id-row:hover { color: #3DAA74; }
-    .id-row span {
-      width: 18px; height: 18px; border-radius: 5px;
-      background: rgba(255,255,255,0.08);
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.5);
-      flex-shrink: 0;
+    /* ── MAIN ── */
+    .page-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
     }
 
-    /* holographic sheen overlay */
-    .id-sheen {
-      position: absolute; inset: 0; border-radius: 28px;
-      pointer-events: none;
-      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.07) 0%, transparent 60%);
-      transition: background 0.05s;
-      mix-blend-mode: overlay;
+    .main {
+      max-width: 1200px;
+      padding: 150px 48px 96px;
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
     }
 
-    /* scroll hint */
-    .scroll-hint {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: #aaa; z-index: 1;
-      animation: bob 2.4s ease-in-out infinite;
-    }
-    .scroll-hint svg { opacity: 0.4; }
-    @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
-
-    /* ── MARQUEE STRIP ── */
-    .strip {
-      background: var(--black); overflow: hidden;
-      padding: 18px 0; user-select: none;
-    }
-    .marquee {
-      display: flex; gap: 0;
-      animation: marquee 22s linear infinite;
-      width: max-content;
-    }
-    .marquee-item {
-      font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: rgba(255,255,255,0.35);
-      padding: 0 32px; white-space: nowrap;
-    }
-    .marquee-item span { color: #3DAA74; margin-right: 32px; }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* ── FEATURED PROJECT ── */
-    .featured { padding: 100px 0; }
-    .featured-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
-      text-transform: uppercase; color: #3DAA74; margin-bottom: 32px;
-    }
-    .featured-card {
-      background: var(--black); border-radius: 28px;
-      overflow: hidden; cursor: pointer;
-      display: grid; grid-template-columns: 1fr 1fr;
-      min-height: 400px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-decoration: none; color: inherit;
-    }
-    .featured-card:hover { transform: translateY(-4px); box-shadow: 0 24px 64px rgba(0,0,0,0.18); }
-    .featured-card-content {
-      padding: 56px 52px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .featured-card-visual {
-      background: linear-gradient(135deg, #1E3A2E 0%, #2A6649 50%, #3DAA74 100%);
-      position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .card-deco {
-      position: absolute; inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 24px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 24px);
-    }
-    .card-deco-text {
-      font-size: 108px; font-weight: 700; letter-spacing: -0.05em;
-      color: rgba(255,255,255,0.08); z-index: 1; position: relative;
+    /* ── HEADING ── */
+    .hero-heading {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.016em;
       line-height: 1;
+      opacity: 0.9;
     }
-    .featured-tag {
-      background: rgba(61,170,116,0.2); color: #3DAA74;
-      border-radius: 100px; padding: 5px 14px;
-      font-size: 12px; font-weight: 700; display: inline-block;
-      margin-bottom: 20px;
-    }
-    .featured-title {
-      font-size: 38px; font-weight: 700; color: white;
-      letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px;
-    }
-    .featured-desc {
-      font-size: 15px; color: rgba(255,255,255,0.5);
-      line-height: 1.7; flex: 1; margin-bottom: 36px;
-    }
-    .featured-arrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: #3DAA74; font-size: 14px; font-weight: 700;
-    }
-    .featured-arrow svg { transition: transform 0.15s; }
-    .featured-card:hover .featured-arrow svg { transform: translateX(4px); }
+    .hero-heading .muted { color: #71717a; font-weight: 400; }
+    .hero-heading .name  { color: #141414; font-weight: 800; }
 
-    /* ── DISCIPLINES ── */
-    .disciplines { padding: 0 0 100px; }
-    .disciplines-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    /* ── BIO ── */
+    .hero-bio {
+      font-size: 25px;
+      font-weight: 700;
+      color: #71717a;
+      line-height: 1.2;
+      max-width: 1103px;
     }
-    .disc-card {
-      background: white; border-radius: 22px; padding: 32px 28px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+
+    /* ── BENTO GRID ── */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
-    .disc-num {
-      font-size: 11px; font-weight: 700; color: #3DAA74;
-      letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px;
+
+    .bento-card {
+      background: #f6f3ed;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 32px;
+      padding: 33px;
+      display: flex;
+      flex-direction: column;
+      min-height: 335px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
     }
-    .disc-title {
-      font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--black);
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
     }
-    .disc-desc { font-size: 14px; color: #777; line-height: 1.7; }
+
+    .bento-card-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1c1c18;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .hero-cards { grid-template-columns: 1fr; max-width: 100%; }
-      .featured-card { grid-template-columns: 1fr; }
-      .featured-card-visual { min-height: 200px; }
-      .disciplines-grid { grid-template-columns: 1fr; }
-      .hero-content { padding: 0 24px; }
+      .nav-pill { right: 20px; }
+      .main { padding: 120px 24px 64px; gap: 40px; }
+      .hero-heading { font-size: 28px; }
+      .hero-bio { font-size: 18px; }
+      .bento { grid-template-columns: 1fr; }
+      .bento-card { min-height: 160px; }
     }
   </style>
 </head>
 <body>
-  <!-- nav injected by portfolio-nav.js -->
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg">
-      <div class="shape s1"></div>
-      <div class="shape s2"></div>
-      <div class="shape s3"></div>
-      <div class="shape s4"></div>
-    </div>
-    <div class="hero-grid"></div>
-    <div class="hero-content">
-      <h1 class="hero-name">Abel <em>Angel</em></h1>
-      <p class="hero-role"><strong>Researcher.</strong> Designer. Builder.</p>
-      <p class="hero-intro">Interdisciplinary researcher and designer from <strong>San Jose, CA</strong>. I use my background in <strong>cognitive science</strong> to bridge human-centered design and technical expertise — building experiences grounded in how people actually think, feel, and behave.</p>
-      <div class="hero-ctas">
-        <a href="projects.html" class="btn-primary">
-          View Projects
-          <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="about.html" class="btn-secondary">About Me</a>
+  <!-- FLOATING NAV PILL -->
+  <nav class="nav-pill" aria-label="Site navigation">
+    <!-- Home (active) -->
+    <a href="index.html" class="nav-btn active" title="Home">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <!-- Projects / Work -->
+    <a href="projects.html" class="nav-btn" title="Projects">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="#71717a" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <!-- About -->
+    <a href="about.html" class="nav-btn" title="About">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="5.5" r="2.5" stroke="#71717a" stroke-width="1.5"/>
+        <path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <!-- Separator -->
+    <div class="nav-sep"></div>
+    <!-- Contact / Connect -->
+    <a href="contact.html" class="nav-btn" title="Contact">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/>
+        <path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-wrap">
+    <main class="main">
+
+      <!-- HEADING -->
+      <div class="hero-heading">
+        <span class="muted">Hey! I'm </span><span class="name">Abel Angel</span>
       </div>
 
-      <!-- 3 bubble cards -->
-      <div class="hero-cards">
+      <!-- BIO -->
+      <p class="hero-bio">
+        I'm a UC San Diego new grad exploring the intersection of cognitive science and digital experiences. I build tools that help people understand complex data and story lines through intuitive interactions.
+      </p>
 
-        <!-- Card 1: Projects -->
-        <a href="projects.html" class="bubble-card">
-          <div class="bubble-top">
-            <div>
-              <div class="bubble-label">Work</div>
-              <div class="bubble-title">Projects</div>
-            </div>
-            <span style="font-size:24px;">📁</span>
-          </div>
-          <div class="bubble-icons">
-            <span class="bub-icon-pill"><span>🔬</span> UX Research</span>
-            <span class="bub-icon-pill"><span>🎮</span> Game Design</span>
-            <span class="bub-icon-pill"><span>📊</span> Data</span>
-            <span class="bub-icon-pill"><span>✏️</span> Interaction</span>
-          </div>
-          <div class="bubble-arrow">
-            Browse
-            <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+      <!-- BENTO GRID -->
+      <div class="bento">
+
+        <a href="projects.html" class="bento-card">
+          <span class="bento-card-title">Projects</span>
         </a>
 
-        <!-- Card 2: About -->
-        <a href="about.html" class="bubble-card">
-          <div class="bubble-top">
-            <div>
-              <div class="bubble-label">Background</div>
-              <div class="bubble-title">About Me</div>
-            </div>
-            <span style="font-size:24px;">🧠</span>
-          </div>
-          <div class="bubble-icons">
-            <span class="bub-icon-pill"><span>🧬</span> Cog Sci</span>
-            <span class="bub-icon-pill"><span>🌱</span> Sustainability</span>
-            <span class="bub-icon-pill"><span>🎓</span> UCSD</span>
-            <span class="bub-icon-pill"><span>📍</span> San Jose</span>
-          </div>
-          <div class="bubble-arrow">
-            Learn more
-            <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+        <a href="about.html" class="bento-card">
+          <span class="bento-card-title">About Me</span>
         </a>
 
-        <!-- Card 3: 3D ID Business Card -->
-        <div class="id-card-wrap" id="idCard">
-          <div class="id-card">
-            <div class="id-stripe">
-              <span class="id-stripe-text">PORTFOLIO · 2025</span>
-              <span class="id-badge-dot"></span>
-            </div>
-            <div class="id-body">
-              <div class="id-photo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" opacity="0.4">
-                  <circle cx="16" cy="12" r="6" stroke="white" stroke-width="1.5"/>
-                  <path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                <span class="id-photo-hint">Photo</span>
-              </div>
-              <div class="id-info">
-                <div class="id-name">Abel Angel</div>
-                <div class="id-title">Researcher · Designer<br/>Builder</div>
-                <div class="id-org">UC San Diego</div>
-              </div>
-            </div>
-            <div class="id-contacts">
-              <a href="mailto:abelangel@ucsd.edu" class="id-row"><span>✉</span> abelangel@ucsd.edu</a>
-              <a href="https://github.com/aagh-jr" class="id-row"><span>⌥</span> github/aagh-jr</a>
-              <a href="https://linkedin.com/in/abelangel" class="id-row"><span>in</span> abelangel</a>
-            </div>
-            <div class="id-sheen" id="idSheen"></div>
-          </div>
-        </div>
+        <a href="contact.html" class="bento-card">
+          <span class="bento-card-title">Contact</span>
+        </a>
 
-      </div><!-- /.hero-cards -->
-    </div><!-- /.hero-content -->
+      </div>
 
-    <div class="scroll-hint">
-      <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 3v12M4 10l5 5 5-5" stroke="#999" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Scroll
-    </div>
-  </section>
-
-  <!-- MARQUEE STRIP -->
-  <div class="strip">
-    <div class="marquee">
-      <div class="marquee-item">UX Research <span>·</span></div>
-      <div class="marquee-item">Interaction Design <span>·</span></div>
-      <div class="marquee-item">Cognitive Science <span>·</span></div>
-      <div class="marquee-item">Prototyping <span>·</span></div>
-      <div class="marquee-item">Usability Testing <span>·</span></div>
-      <div class="marquee-item">Game Design <span>·</span></div>
-      <div class="marquee-item">Human-Centered Design <span>·</span></div>
-      <div class="marquee-item">Data Visualization <span>·</span></div>
-      <!-- duplicate for seamless loop -->
-      <div class="marquee-item">UX Research <span>·</span></div>
-      <div class="marquee-item">Interaction Design <span>·</span></div>
-      <div class="marquee-item">Cognitive Science <span>·</span></div>
-      <div class="marquee-item">Prototyping <span>·</span></div>
-      <div class="marquee-item">Usability Testing <span>·</span></div>
-      <div class="marquee-item">Game Design <span>·</span></div>
-      <div class="marquee-item">Human-Centered Design <span>·</span></div>
-      <div class="marquee-item">Data Visualization <span>·</span></div>
-    </div>
+    </main>
   </div>
 
-  <!-- FEATURED PROJECT -->
-  <section class="featured">
-    <div class="container">
-      <div class="featured-label">Featured Project</div>
-      <a href="Energy Ave.html" class="featured-card">
-        <div class="featured-card-content">
-          <div>
-            <div class="featured-tag">UX Research · Game Design</div>
-            <h2 class="featured-title">Energy Ave</h2>
-            <p class="featured-desc">A research-backed gamified energy conservation experience built for PlanetFlip. 10 weeks, 2 rounds of user testing, fully playable in-browser.</p>
-          </div>
-          <div class="featured-arrow">
-            Read Case Study
-            <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="featured-card-visual">
-          <div class="card-deco"></div>
-          <div class="card-deco-text">⚡</div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- DISCIPLINES -->
-  <section class="disciplines">
-    <div class="container">
-      <div class="disciplines-grid">
-        <div class="disc-card">
-          <div class="disc-num">01 — Research</div>
-          <div class="disc-title">Understanding People</div>
-          <p class="disc-desc">Mixed-methods research — usability testing, interviews, competitive analysis — grounded in cognitive science.</p>
-        </div>
-        <div class="disc-card">
-          <div class="disc-num">02 — Design</div>
-          <div class="disc-title">Making it Usable</div>
-          <p class="disc-desc">From wireframes to polished prototypes, translating research insights into clear, intuitive interfaces.</p>
-        </div>
-        <div class="disc-card" style="background:#141414;">
-          <div class="disc-num" style="color:#3DAA74;">03 — Build</div>
-          <div class="disc-title" style="color:white;">Bringing it to Life</div>
-          <p class="disc-desc" style="color:rgba(255,255,255,0.5);">Prototyping and building real, functional experiences — not just mockups.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script src="portfolio-nav.js"></script>
-  <script>
-    // 3D ID card tilt effect
-    const wrap = document.getElementById('idCard');
-    const card = wrap && wrap.querySelector('.id-card');
-    const sheen = document.getElementById('idSheen');
-    if (wrap && card) {
-      wrap.addEventListener('mousemove', (e) => {
-        const rect = wrap.getBoundingClientRect();
-        const dx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-        const dy = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-        card.style.transition = 'box-shadow 0.2s';
-        card.style.transform = `rotateX(${-dy * 14}deg) rotateY(${dx * 18}deg) scale(1.03)`;
-        if (sheen) {
-          const px = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-          const py = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-          sheen.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.13) 0%, transparent 55%)`;
-        }
-      });
-      wrap.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform 0.5s ease, box-shadow 0.2s';
-        card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-        if (sheen) sheen.style.background = 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.07) 0%, transparent 60%)';
-      });
-    }
-  </script>
 </body>
 </html>
