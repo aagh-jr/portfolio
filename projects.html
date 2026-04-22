@@ -51,38 +51,53 @@
       letter-spacing: -0.016em; line-height: 1; opacity: 0.9;
     }
 
-    /* ── PROJECT CARD ── */
-    .project-card {
-      background: #f6f3ed;
-      border: 1px solid rgba(0,0,0,0.05);
-      border-radius: 25px;
-      padding: 33px;
-      display: flex; flex-direction: column; gap: 16px;
-      width: 729px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+    /* ── PROJECTS GRID ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
     }
-    .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.08); }
 
+    .project-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* thumbnail card */
     .project-thumb {
-      width: 100%; height: 325px;
-      background: #846565;
-      border-radius: 25px;
-      flex-shrink: 0;
+      height: 335px;
+      border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 32px;
+      margin-bottom: 24px;
+    }
+    .project-thumb--blue {
+      background: radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%);
+    }
+    .project-thumb--red {
+      background: linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(248,187,180,0.75) 80.2%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%);
     }
 
-    .project-label {
-      font-size: 40px; font-weight: 800; color: #141414;
-      letter-spacing: -0.016em; line-height: 1;
+    /* title + description */
+    .project-title {
+      font-size: 32px; font-weight: 800; color: #1c1c18;
+      letter-spacing: -0.016em; line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .project-desc {
+      font-size: 25px; font-weight: 400; color: #1c1c18;
+      line-height: 1.2;
     }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .nav-pill { right: 20px; }
       .main { padding: 120px 24px 64px; }
-      .project-card { width: 100%; }
-      .project-thumb { height: 200px; }
-      .page-heading, .project-label { font-size: 28px; }
+      .page-heading { font-size: 28px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-thumb { height: 220px; }
+      .project-title { font-size: 24px; }
+      .project-desc { font-size: 18px; }
     }
   </style>
 </head>
@@ -122,10 +137,22 @@
 
       <h1 class="page-heading">Projects</h1>
 
-      <!-- Project 1 placeholder — replace with real case study card -->
-      <div class="project-card">
-        <div class="project-thumb"></div>
-        <span class="project-label">Project 1</span>
+      <div class="projects-grid">
+
+        <!-- Project 1 -->
+        <div class="project-item">
+          <div class="project-thumb project-thumb--blue"></div>
+          <p class="project-title">Project 1</p>
+          <p class="project-desc">Description of project, cnhfhvhf vhhfdhfhfd hfhfdhdhfdh hfhfdh hdfhh hfd hf hdf hfhf h h</p>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-item">
+          <div class="project-thumb project-thumb--red"></div>
+          <p class="project-title">Project 2</p>
+          <p class="project-desc">Description of project, cnhfhvhf vhhfdhfhfd hfhfdhdhfdh hfhfdh hdfhh hfd hf hdf hfhf h h</p>
+        </div>
+
       </div>
 
     </main>
