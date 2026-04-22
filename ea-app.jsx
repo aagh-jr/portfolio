@@ -22,21 +22,18 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const Nav = ({ accent }) => {
-  const [active, setActive] = React.useState('hero');
-  const [scrolled, setScrolled] = React.useState(false);
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [active, setActive] = React.useState('overview');
 
   React.useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 60);
       for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
         const el = document.getElementById(NAV_ITEMS[i].id);
-        if (el && el.getBoundingClientRect().top <= 100) {
+        if (el && el.getBoundingClientRect().top <= 120) {
           setActive(NAV_ITEMS[i].id);
           return;
         }
       }
-      setActive('hero');
+      setActive('overview');
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -45,57 +42,37 @@ const Nav = ({ accent }) => {
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 72;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-    setMenuOpen(false);
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
   };
 
   return (
     <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-      background: scrolled ? 'rgba(250,247,242,0.94)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(18px)' : 'none',
-      WebkitBackdropFilter: scrolled ? 'blur(18px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(20,20,20,0.07)' : 'none',
-      transition: 'all 0.25s ease',
+      position: 'fixed', left: 24, top: '50%', transform: 'translateY(-50%)',
+      zIndex: 150, display: 'flex', flexDirection: 'column', gap: 2,
     }}>
-      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 36px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          style={{ fontSize: 15, fontWeight: 700, color: '#141414', letterSpacing: '-0.02em', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'inherit' }}>
-          Energy Ave <span style={{ color: accent }}>·</span>
-        </button>
-        <div style={{ display: 'flex', gap: 2, flexWrap: 'nowrap', overflowX: 'auto' }}>
-          {NAV_ITEMS.map(({ id, label }) => (
-            <button key={id} onClick={() => scrollTo(id)} style={{
-              background: active === id ? accent : 'transparent',
-              color: active === id ? 'white' : '#666',
-              border: 'none', borderRadius: 100, padding: '6px 12px',
-              fontSize: 12, fontWeight: active === id ? 700 : 400,
-              cursor: 'pointer', transition: 'all 0.18s ease',
-              whiteSpace: 'nowrap', fontFamily: 'inherit',
-            }}>{label}</button>
-          ))}
-        </div>
-      </div>
+      {NAV_ITEMS.map(({ id, label }) => {
+        const isActive = active === id;
+        return (
+          <button key={id} onClick={() => scrollTo(id)} style={{
+            display: 'flex', alignItems: 'center', gap: 5,
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontFamily: 'inherit', padding: '3px 0',
+            fontSize: 12, fontWeight: isActive ? 600 : 400,
+            color: isActive ? '#141414' : '#aaa',
+            transition: 'color 0.15s',
+            textAlign: 'left', whiteSpace: 'nowrap',
+          }}>
+            <span style={{
+              fontSize: 10, lineHeight: 1,
+              color: accent,
+              opacity: isActive ? 1 : 0,
+              transition: 'opacity 0.15s',
+            }}>›</span>
+            {label}
+          </button>
+        );
+      })}
     </nav>
-  );
-};
-
-const ProgressBar = ({ accent }) => {
-  const [pct, setPct] = React.useState(0);
-  React.useEffect(() => {
-    const onScroll = () => {
-      const doc = document.documentElement;
-      const scrollable = doc.scrollHeight - doc.clientHeight;
-      setPct(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-  return (
-    <div style={{ position: 'fixed', top: 64, left: 0, right: 0, height: 3, zIndex: 199, background: 'rgba(0,0,0,0.06)' }}>
-      <div style={{ height: '100%', width: `${pct}%`, background: accent, transition: 'width 0.1s linear', borderRadius: '0 2px 2px 0' }} />
-    </div>
   );
 };
 
@@ -177,7 +154,6 @@ const App = () => {
   return (
     <div style={{ '--section-pad': sectionPadding }}>
       <Nav accent={accent} />
-      {tweaks.showProgress && <ProgressBar accent={accent} />}
       <HeroSection accent={accent} />
       <OverviewSection />
       <ResearchGoalsSection />

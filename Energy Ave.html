@@ -71,6 +71,44 @@
   </style>
 </head>
 <body>
+
+  <!-- SHARED PILL NAV (same as all other pages) -->
+  <style>
+    .site-nav-pill {
+      position: fixed; top: 16px; right: 48px; z-index: 500;
+      display: flex; align-items: center; gap: 8px; padding: 7px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(0,0,0,0.05); border-radius: 9999px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .site-nav-pill a {
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; text-decoration: none;
+    }
+    .site-nav-pill a:hover { background: rgba(0,0,0,0.06); }
+    .site-nav-pill a.active { background: rgba(0,0,0,0.08); }
+    .site-nav-pill svg { display: block; }
+    .site-nav-sep { width: 1px; height: 16px; background: rgba(0,0,0,0.1); margin: 0 4px; }
+  </style>
+  <nav class="site-nav-pill" aria-label="Site navigation">
+    <a href="index.html" title="Home">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#71717a" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </a>
+    <!-- Projects active — this is a case study -->
+    <a href="projects.html" class="active" title="Projects">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="about.html" title="About">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="#71717a" stroke-width="1.5"/><path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+    <div class="site-nav-sep"></div>
+    <a href="contact.html" title="Contact">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/><path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+  </nav>
+
   <div id="root"></div>
   <script type="text/babel" src="ea-shared.jsx"></script>
   <script type="text/babel" src="ea-sections-1.jsx"></script>
