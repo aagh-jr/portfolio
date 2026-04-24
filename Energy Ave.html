@@ -76,21 +76,16 @@
   <style>
     .site-nav-pill {
       position: fixed; top: 16px; right: 48px; z-index: 500;
-      display: flex; align-items: center; gap: 8px; padding: 7px;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(0,0,0,0.05); border-radius: 9999px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      display: flex; align-items: center; gap: 16px; padding: 8px;
     }
     .site-nav-pill a {
       width: 40px; height: 40px; border-radius: 9999px;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s; text-decoration: none;
+      transition: box-shadow 0.15s; text-decoration: none;
     }
-    .site-nav-pill a:hover { background: rgba(0,0,0,0.06); }
-    .site-nav-pill a.active { background: rgba(0,0,0,0.08); }
+    .site-nav-pill a.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
     .site-nav-pill svg { display: block; }
-    .site-nav-sep { width: 1px; height: 16px; background: rgba(0,0,0,0.1); margin: 0 4px; }
+    .site-nav-sep { display: none; }
   </style>
   <nav class="site-nav-pill" aria-label="Site navigation">
     <a href="index.html" title="Home">
