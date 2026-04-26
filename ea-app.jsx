@@ -55,7 +55,6 @@ const ProjectsCard = () => {
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '16px 18px 14px',
-        borderBottom: '1px solid rgba(0,0,0,0.07)',
       }}>
         <span style={{ fontSize: 13, fontWeight: 700, color: '#141414', letterSpacing: '-0.01em' }}>Projects</span>
         <a href="index.html" style={{
@@ -114,9 +113,6 @@ const ProjectsCard = () => {
                   </div>
                 )}
               </div>
-              {isActive && (
-                <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#141414', flexShrink: 0 }} />
-              )}
             </a>
           );
         })}
