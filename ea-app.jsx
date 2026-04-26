@@ -35,7 +35,7 @@ const ProjectsCard = () => {
   return (
     <div style={{
       position: 'fixed',
-      top: '44%',
+      top: '38%',
       left: '5vw',
       transform: 'translateY(-50%)',
       width: '15vw',

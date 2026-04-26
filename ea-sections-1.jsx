@@ -3,19 +3,19 @@
 const HeroSection = () =>
 <SectionWrap id="hero" style={{ padding: '120px 0 80px' }}>
     <Container noBorder>
-      {/* Tags — plain text, one line */}
-      <div style={{ fontSize: 13, color: '#aaa', fontWeight: 500, letterSpacing: '0.01em', marginBottom: 32, whiteSpace: 'nowrap' }}>
-        UX Research &nbsp;·&nbsp; Product Design &nbsp;·&nbsp; EdTech &nbsp;·&nbsp; Human Centered Design
-      </div>
-
       {/* Title */}
       <h1 style={{
         fontSize: 'clamp(52px, 8vw, 80px)', fontWeight: 500, lineHeight: 1.05,
-        letterSpacing: '-0.03em', color: '#111', marginBottom: 24,
+        letterSpacing: '-0.03em', color: '#111', marginBottom: 16,
         fontFamily: 'Lora, Georgia, serif', maxWidth: 740,
       }}>
         Energy Ave.
       </h1>
+
+      {/* Tags — plain text, one line */}
+      <div style={{ fontSize: 13, color: '#aaa', fontWeight: 500, letterSpacing: '0.01em', marginBottom: 32, whiteSpace: 'nowrap' }}>
+        UX Research &nbsp;·&nbsp; Product Design &nbsp;·&nbsp; EdTech &nbsp;·&nbsp; Human Centered Design
+      </div>
 
       {/* Subtitle */}
       <p style={{ fontSize: 18, lineHeight: 1.75, color: '#777', maxWidth: 560, marginBottom: 56, fontWeight: 400 }}>
