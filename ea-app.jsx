@@ -36,7 +36,7 @@ const ProjectsCard = () => {
     <div style={{
       position: 'fixed',
       top: '44%',
-      left: '7.5vw',
+      left: '5vw',
       transform: 'translateY(-50%)',
       width: '15vw',
       maxHeight: '88vh',
