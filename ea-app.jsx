@@ -39,7 +39,7 @@ const ProjectsCard = () => {
       top: '44%',
       left: 20,
       transform: 'translateY(-50%)',
-      width: 360,
+      width: '20vw',
       maxHeight: '88vh',
       background: cardBg,
       borderRadius: 20,
