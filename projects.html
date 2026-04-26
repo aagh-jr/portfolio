@@ -12,11 +12,16 @@
     html { scroll-behavior: smooth; }
     body {
       background: #fcf9f3;
+      background-image:
+        radial-gradient(at 20% 30%, rgba(171,195,233,0.35) 0px, transparent 55%),
+        radial-gradient(at 75% 70%, rgba(255,221,152,0.25) 0px, transparent 50%),
+        radial-gradient(at 55% 10%, rgba(200,240,210,0.2) 0px, transparent 45%);
       font-family: 'Manrope', sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
     a { color: inherit; text-decoration: none; }
+    a.project-item { color: inherit; }
 
     /* ── NAV ── */
     .nav-pill {
@@ -57,14 +62,24 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+      border-radius: 32px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.85);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .project-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 52px rgba(0,0,0,0.11), inset 0 1px 0 rgba(255,255,255,0.85);
     }
 
-    /* thumbnail card */
+    /* thumbnail */
     .project-thumb {
       height: 335px;
-      border: 1px solid rgba(0,0,0,0.05);
-      border-radius: 32px;
-      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
     }
     .project-thumb--blue {
       background: radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%);
@@ -77,11 +92,13 @@
     .project-title {
       font-size: 32px; font-weight: 800; color: #1c1c18;
       letter-spacing: -0.016em; line-height: 1.2;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      padding: 24px 28px 0;
     }
     .project-desc {
-      font-size: 25px; font-weight: 400; color: #1c1c18;
-      line-height: 1.2;
+      font-size: 15px; font-weight: 400; color: #555;
+      line-height: 1.55;
+      padding: 0 28px 28px;
     }
 
     /* ── RESPONSIVE ── */
@@ -135,7 +152,7 @@
       <div class="projects-grid">
 
         <!-- Project 1 — Energy Ave -->
-        <a href="Energy Ave.html" class="project-item" style="text-decoration:none;color:inherit;">
+        <a href="Energy Ave.html" class="project-item">
           <div class="project-thumb project-thumb--blue"></div>
           <p class="project-title">Energy Ave.</p>
           <p class="project-desc">A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.</p>
