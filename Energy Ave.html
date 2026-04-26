@@ -6,35 +6,49 @@
   <title>Energy Ave — UX Research Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --cream: #FAF7F2;
+      --cream: #FAFAF8;
       --white: #FFFFFF;
-      --black: #141414;
+      --black: #111111;
       --gray: #6B6B6B;
-      --border: rgba(20,20,20,0.07);
+      --border: rgba(0,0,0,0.08);
       --green: #3DAA74;
-      --green-light: #EBF7F2;
+      --green-light: #F0FAF5;
       --amber: #E07D2E;
       --accent: #3DAA74;
       --font: 'DM Sans', sans-serif;
+      --serif: 'Lora', Georgia, serif;
     }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--cream);
+      background: var(--white);
       color: var(--black);
       font-family: var(--font);
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
     ::selection { background: #EBF7F2; color: #2A8A5C; }
+
+    /* NAV */
+    .nav-pill {
+      position: fixed; top: 16px; right: 48px; z-index: 300;
+      display: flex; align-items: center; gap: 16px; padding: 8px;
+    }
+    .nav-btn {
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      transition: box-shadow 0.15s; text-decoration: none;
+    }
+    .nav-btn.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
+    @media (max-width: 768px) { .nav-pill { right: 20px; } }
 
     /* Tables */
     table { width: 100%; border-collapse: collapse; }
@@ -72,37 +86,29 @@
 </head>
 <body>
 
-  <!-- SHARED PILL NAV (same as all other pages) -->
-  <style>
-    .site-nav-pill {
-      position: fixed; top: 16px; right: 48px; z-index: 500;
-      display: flex; align-items: center; gap: 16px; padding: 8px;
-    }
-    .site-nav-pill a {
-      width: 40px; height: 40px; border-radius: 9999px;
-      display: flex; align-items: center; justify-content: center;
-      transition: box-shadow 0.15s; text-decoration: none;
-    }
-    .site-nav-pill a.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
-    .site-nav-pill svg { display: block; }
-    .site-nav-sep { display: none; }
-  </style>
-  <nav class="site-nav-pill" aria-label="Site navigation">
-    <a href="index.html" title="Home">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#71717a" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  <!-- NAV PILL -->
+  <nav class="nav-pill" aria-label="Site navigation">
+    <a href="index.html" class="nav-btn" title="Home" style="color:#71717a">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
     </a>
-    <!-- Projects active — this is a case study -->
-    <a href="projects.html" class="active" title="Projects">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    <a href="Energy Ave.html" class="nav-btn active" title="Projects" style="color:#141414">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
     </a>
-    <a href="about.html" title="About">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="#71717a" stroke-width="1.5"/><path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <a href="about.html" class="nav-btn" title="About" style="color:#71717a">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </a>
-    <div class="site-nav-sep"></div>
-    <a href="contact.html" title="Contact">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/><path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <a href="contact.html" class="nav-btn" title="Contact" style="color:#71717a">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 5.5L8 9.5L14 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </a>
   </nav>
+
+  <template id="__bundler_thumbnail" data-bg-color="#FAF7F2">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#FAF7F2"/>
+      <rect x="80" y="80" width="320" height="8" rx="4" fill="#3DAA74" opacity="0.4"/>
+      <rect x="80" y="110" width="600" height="48" rx="8" fill="#141414" opacity="0.85"/>
+    </svg>
+  </template>
 
   <div id="root"></div>
   <script type="text/babel" src="ea-shared.jsx"></script>
