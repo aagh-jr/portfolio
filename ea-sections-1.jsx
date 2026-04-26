@@ -1,13 +1,11 @@
 // ea-sections-1.jsx — Hero, Overview, Research Goals, Methodology
 
 const HeroSection = () =>
-<SectionWrap id="hero" style={{ padding: '120px 0 80px', borderTop: 'none' }}>
-    <Container>
-      {/* Tags */}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
-        <Tag color="green">UX Research</Tag>
-        <Tag color="gray">Game Design</Tag>
-        <Tag color="gray">UCSD ENG 100D · Winter 2025</Tag>
+<SectionWrap id="hero" style={{ padding: '120px 0 80px' }}>
+    <Container noBorder>
+      {/* Tags — plain text, one line */}
+      <div style={{ fontSize: 13, color: '#aaa', fontWeight: 500, letterSpacing: '0.01em', marginBottom: 32, whiteSpace: 'nowrap' }}>
+        UX Research &nbsp;·&nbsp; Game Design &nbsp;·&nbsp; UCSD ENG 100D · Winter 2025
       </div>
 
       {/* Title */}

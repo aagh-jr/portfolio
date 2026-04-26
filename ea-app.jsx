@@ -82,7 +82,7 @@ const ProjectsCard = () => {
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '14px 16px',
                 borderRadius: 14,
-                background: isActive ? 'rgba(0,0,0,0.06)' : 'transparent',
+                background: isActive ? 'rgba(0,0,0,0.09)' : 'transparent',
                 marginBottom: 2,
                 cursor: 'pointer',
                 textDecoration: 'none',

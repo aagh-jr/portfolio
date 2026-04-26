@@ -97,14 +97,14 @@ const SectionHeader = ({ num, title, subtitle }) => (
 );
 
 const SectionWrap = ({ id, children, style = {} }) => (
-  <section id={id} style={{ padding: '96px 0', borderTop: '1px solid rgba(0,0,0,0.07)', ...style }}>
+  <section id={id} style={{ padding: '96px 0', ...style }}>
     {children}
   </section>
 );
 
-const Container = ({ children }) => (
+const Container = ({ children, noBorder = false }) => (
   <div style={{ width: '100%' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 48px' }}>
+    <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 48px', borderTop: noBorder ? 'none' : '1px solid rgba(0,0,0,0.07)' }}>
       {children}
     </div>
   </div>
