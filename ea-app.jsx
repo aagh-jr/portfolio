@@ -35,11 +35,12 @@ const ProjectsCard = () => {
   return (
     <div style={{
       position: 'fixed',
-      top: '38%',
+      top: '50%',
       left: '5vw',
       transform: 'translateY(-50%)',
-      width: '15vw',
-      maxHeight: '88vh',
+      width: '18vw',
+      minHeight: '55vh',
+      maxHeight: '92vh',
       background: 'rgba(255, 255, 255, 0.35)',
       backdropFilter: 'blur(24px) saturate(180%)',
       WebkitBackdropFilter: 'blur(24px) saturate(180%)',

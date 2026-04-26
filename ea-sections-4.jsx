@@ -3,14 +3,7 @@
 const AffinitySection = () =>
 <SectionWrap id="affinity" style={{ background: '#fff' }}>
     <Container>
-      <SectionHeader num={9} title="Synthesis & Affinity Themes" subtitle="After both rounds, three patterns emerged across all data." />
-      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 40 }}>
-        <MethodIcon type="affinity" size={40} />
-        <p style={{ fontSize: 16, lineHeight: 1.75, color: '#555', maxWidth: 700, paddingTop: 6 }}>
-          Combining behavioral observation, attitudinal survey data, and stakeholder input, we mapped findings into three overarching themes that shaped all subsequent design decisions.
-        </p>
-      </div>
-      <Placeholder label="Affinity map — clustered research themes" height={280} note="Post-it clusters: Interaction Clarity / Reward Satisfaction / Aesthetic Response / Discoverability / Audience Fit" />
+      <SectionHeader num={9} title="Synthesis & Affinity Themes" subtitle="After Combining behavioral observation, attitudinal survey data, and stakeholder input, three patterns emerged across all data" />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 32 }}>
         {[
       { color: '#3DAA74', label: 'Interaction Clarity', items: ['All participants reconstructed game logic without instruction', 'Flow was self-evident across all experience levels', 'Internal game logic was intuitive (electric-only items)'] },
@@ -143,15 +136,6 @@ const ReflectionSection = () =>
             I'd also push for a longitudinal component — a follow-up survey 1–2 weeks after play to measure whether any energy-saving behaviors were actually adopted at home. Our testing measured knowledge improvement at the moment of play. Whether the game actually changed behavior is the more important, and currently unanswered, question.
           </p>
         </Card>
-      </div>
-      <div style={{ background: '#141414', borderRadius: 24, padding: '44px 52px' }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>
-</div>
-        <p style={{ fontSize: 24, lineHeight: 1.6, fontWeight: 300, color: 'white', maxWidth: 740, margin: '0 0 20px', letterSpacing: '-0.01em' }}>
-        </p>
-        <p style={{ fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.55)', maxWidth: 680, margin: 0 }}>
-
-      </p>
       </div>
     </Container>
   </SectionWrap>;

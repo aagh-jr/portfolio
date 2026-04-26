@@ -74,11 +74,11 @@ const StakeholderSection = () => (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 20, marginBottom: 48 }}>
         {[
           { name: 'Ron Kagan', org: 'PlanetFlip — Founder', method: 'Zoom interview',
-            insights: ['Past student teams designed concepts but never implemented them in Construct3', 'Community engagement and scalability were top priorities', 'Provided access to Construct3 premium features for development'] },
+            insights: ['Past student teams designed concepts but never implemented them in Construct3', 'Community engagement and scalability were top priorities'] },
           { name: 'A-Bel Gong', org: 'SD Climate Collaborative', method: 'In-person interview',
-            insights: ['More workplaces are creating sustainability manager roles with no training', 'Surfaced a workplace use case beyond our original K–12 focus', 'Validated game-based education as a community outreach strategy'] },
-          { name: 'NPS Staff', org: 'Cabrillo National Monument Foundation', method: 'In-person interview',
-            insights: ['Local orgs need accessible engagement tools for community outreach', 'Confirmed interest in game-based education as a strategy', 'Validated public institution use case for the platform'] },
+            insights: ['More workplaces are creating sustainability manager roles with no training', 'Surfaced a workplace use case beyond our original K–12 focus'] },
+          { name: 'NPS Staff', org: 'National Park Service', method: 'In-person interview',
+            insights: ['Local orgs need accessible engagement tools for community outreach', 'Validated public institution use case for the platform'] },
         ].map(({ name, org, method, insights }) => (
           <Card key={name}>
             <div style={{ width: 42, height: 42, background: '#EBF7F2', borderRadius: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>

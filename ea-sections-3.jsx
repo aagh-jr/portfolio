@@ -6,15 +6,10 @@ const Round1Section = () => (
       <SectionHeader num={7} title="Round 1 — Formative Testing" subtitle="Affordance test + cognitive walkthrough. Before a single line of code was written." />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
         <Card>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-            <MethodIcon type="usability" size={40} />
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Method</div>
-              <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-                A two-part protocol: a <strong>clickability/affordance test</strong> (what do users think is interactive?) and a <strong>cognitive walkthrough</strong> of static wireframe screens (can they reconstruct the game's logic without guidance?).
-              </p>
-            </div>
-          </div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Method</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            A two-part protocol: a <strong>clickability/affordance test</strong> (what do users think is interactive?) and a <strong>cognitive walkthrough</strong> of static wireframe screens (can they reconstruct the game's logic without guidance?).
+          </p>
         </Card>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Why At Wireframe Stage</div>
