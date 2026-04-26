@@ -103,8 +103,8 @@ const SectionWrap = ({ id, children, style = {} }) => (
 );
 
 const Container = ({ children, noBorder = false }) => (
-  <div style={{ marginLeft: '25vw', width: '75vw', boxSizing: 'border-box' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 48px', borderTop: noBorder ? 'none' : '1px solid rgba(0,0,0,0.07)' }}>
+  <div style={{ marginLeft: '20vw', width: '80vw', boxSizing: 'border-box' }}>
+    <div style={{ maxWidth: 765, margin: '0 auto', padding: '0 48px', borderTop: noBorder ? 'none' : '1px solid rgba(0,0,0,0.07)' }}>
       {children}
     </div>
   </div>
