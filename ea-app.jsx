@@ -1,7 +1,7 @@
 // ea-app.jsx — Nav + App + Tweaks
 
 const PROJECTS = [
-  { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UX Research', 'Product Design', 'Ed Tech'], href: 'Energy Ave.html', available: true },
+  { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UXR', 'Product Design', 'EdTech'], href: 'Energy Ave.html', available: true },
   { id: 2, title: 'Project 02', year: null, href: 'Project 02.html', available: false },
   { id: 3, title: 'Project 03', year: null, href: 'Project 03.html', available: false },
   { id: 4, title: 'Project 04', year: null, href: 'Project 04.html', available: false },
@@ -30,24 +30,25 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 /* ── LEFT: standalone Projects card ── */
 const ProjectsCard = () => {
-  const cardBg = '#f6f3ed';
   const currentFile = window.location.pathname.split('/').pop() || window.location.href.split('/').pop();
 
   return (
     <div style={{
       position: 'fixed',
       top: '44%',
-      left: 20,
+      left: '7.5vw',
       transform: 'translateY(-50%)',
       width: '15vw',
       maxHeight: '88vh',
-      background: cardBg,
+      background: 'rgba(255, 255, 255, 0.35)',
+      backdropFilter: 'blur(24px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(24px) saturate(180%)',
       borderRadius: 20,
-      border: '1px solid rgba(0,0,0,0.07)',
+      border: '1px solid rgba(255, 255, 255, 0.55)',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
       zIndex: 100,
     }}>
       {/* Header */}
@@ -82,7 +83,7 @@ const ProjectsCard = () => {
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '14px 16px',
                 borderRadius: 14,
-                background: isActive ? 'rgba(0,0,0,0.09)' : 'transparent',
+                background: isActive ? 'rgba(0,0,0,0.03)' : 'transparent',
                 marginBottom: 2,
                 cursor: 'pointer',
                 textDecoration: 'none',
@@ -279,7 +280,7 @@ const App = () => {
   return (
     <div style={{ '--section-pad': sectionPadding }}>
       <ProjectsCard />
-      <TOCSidebar accent={accent} />
+      {/* <TOCSidebar accent={accent} /> */}
       {tweaks.showProgress && <ProgressBar accent={accent} />}
       <HeroSection accent={accent} />
       <OverviewSection />

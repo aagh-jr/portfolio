@@ -5,7 +5,7 @@ const HeroSection = () =>
     <Container noBorder>
       {/* Tags — plain text, one line */}
       <div style={{ fontSize: 13, color: '#aaa', fontWeight: 500, letterSpacing: '0.01em', marginBottom: 32, whiteSpace: 'nowrap' }}>
-        UX Research &nbsp;·&nbsp; Game Design &nbsp;·&nbsp; UCSD ENG 100D · Winter 2025
+        UX Research &nbsp;·&nbsp; Product Design &nbsp;·&nbsp; EdTech &nbsp;·&nbsp; Human Centered Design
       </div>
 
       {/* Title */}
