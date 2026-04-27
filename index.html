@@ -22,18 +22,6 @@
     }
     a { color: inherit; text-decoration: none; }
 
-    /* NAV */
-    .nav-pill {
-      position: fixed; top: 16px; right: 48px; z-index: 300;
-      display: flex; align-items: center; gap: 16px; padding: 8px;
-    }
-    .nav-btn {
-      width: 40px; height: 40px; border-radius: 9999px;
-      display: flex; align-items: center; justify-content: center;
-      transition: box-shadow 0.15s; cursor: pointer;
-    }
-    .nav-btn.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
-
     @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(56px); }
@@ -46,20 +34,12 @@
     .anim-up-3    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.64s both; }
 
     @media (max-width: 768px) {
-      .nav-pill { right: 20px; }
+      .bento-outer { padding: 0 20px !important; }
+      .bento-grid  { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
 <body>
-
-  <nav class="nav-pill" aria-label="Site navigation">
-    <a href="contact.html" class="nav-btn" title="Contact">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/>
-        <path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </a>
-  </nav>
 
   <div id="root"></div>
 
@@ -119,79 +99,72 @@
     ];
 
     const App = () => {
-      const containerRef = React.useRef(null);
-
-      // ── Shared card bg
       const cardBg = '#f6f3ed';
       const cardBorder = '1px solid rgba(0,0,0,0.05)';
+      const cardBase = {
+        background: cardBg, border: cardBorder, borderRadius: 18,
+        padding: 33, cursor: 'pointer',
+        position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        transition: 'transform 0.25s, box-shadow 0.25s', textDecoration: 'none', color: 'inherit',
+      };
+      const labelStyle = {
+        fontSize: 32, fontWeight: 800, color: '#1c1c18',
+        letterSpacing: '-0.02em', lineHeight: 1.2,
+        position: 'relative', zIndex: 1,
+      };
 
       return (
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px', position: 'relative' }}>
-          <div ref={containerRef} style={{ padding: '150px 0 96px', position: 'relative', minHeight: '100vh' }}>
+        <div className="bento-outer" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px' }}>
+          <div style={{ padding: '48px 0 96px' }}>
 
-            {/* ── HEADING + BIO ── */}
-            <div style={{ marginBottom: 64 }}>
+            <div className="bento-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+
+              {/* ── TOP CARD: full width hero ── */}
               <div className="anim-fade" style={{
-                fontSize: 40, fontWeight: 800, letterSpacing: '-0.016em',
-                lineHeight: 1, marginBottom: 64,
+                ...cardBase, gridColumn: '1 / -1',
+                cursor: 'default', minHeight: 260,
+                justifyContent: 'center',
               }}>
-                <span style={{ color: '#71717a', fontWeight: 400 }}>Hey! I'm </span>
-                <span style={{ color: '#141414' }}>Abel Angel</span>
+                <div style={{
+                  fontSize: 40, fontWeight: 800, letterSpacing: '-0.016em',
+                  lineHeight: 1, marginBottom: 24,
+                }}>
+                  <span style={{ color: '#71717a', fontWeight: 400 }}>Hey! I'm </span>
+                  <span style={{ color: '#141414' }}>Abel Angel</span>
+                </div>
+                <p className="anim-fade-d1" style={{
+                  fontSize: 25, fontWeight: 700, color: '#71717a',
+                  lineHeight: 1.2, maxWidth: 520,
+                }}>
+                  I'm a UC San Diego new grad exploring the intersection of cognitive science and digital experiences. I build tools that help people understand complex data and story lines through intuitive interactions.
+                </p>
               </div>
-              <p className="anim-fade-d1" style={{
-                fontSize: 25, fontWeight: 700, color: '#71717a',
-                lineHeight: 1.2, maxWidth: 520,
-              }}>
-                I'm a UC San Diego new grad exploring the intersection of cognitive science and digital experiences. I build tools that help people understand complex data and story lines through intuitive interactions.
-              </p>
-            </div>
 
-            {/* ── BENTO 3-col ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
-
-              {/* Projects */}
-              <a href="Energy Ave.html" className="anim-up-1"
-                style={{
-                  background: cardBg, border: cardBorder, borderRadius: 32,
-                  padding: 33, minHeight: 335, cursor: 'pointer',
-                  position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-                  transition: 'transform 0.25s, box-shadow 0.25s', textDecoration: 'none', color: 'inherit',
-                }}
+              {/* ── Projects ── */}
+              <a href="Energy Ave.html" className="anim-up-1" style={{ ...cardBase, minHeight: 400 }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow').style.opacity = 1; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow').style.opacity = 0; }}
               >
-                <span style={{ fontSize: 32, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.2, position: 'relative', zIndex: 1 }}>Projects</span>
-                <div className="card-glow" style={{ position: 'absolute', inset: 0, borderRadius: 32, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                <span style={labelStyle}>Projects</span>
+                <div className="card-glow" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
               </a>
 
-              {/* About */}
-              <a href="about.html" className="anim-up-2"
-                style={{
-                  background: cardBg, border: cardBorder, borderRadius: 32,
-                  padding: 33, minHeight: 335, cursor: 'pointer',
-                  position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-                  transition: 'transform 0.25s, box-shadow 0.25s', textDecoration: 'none', color: 'inherit',
-                }}
+              {/* ── About Me ── */}
+              <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 400 }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow2').style.opacity = 1; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow2').style.opacity = 0; }}
               >
-                <span style={{ fontSize: 32, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.2, position: 'relative', zIndex: 1 }}>About Me</span>
-                <div className="card-glow2" style={{ position: 'absolute', inset: 0, borderRadius: 32, pointerEvents: 'none', background: 'linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                <span style={labelStyle}>About Me</span>
+                <div className="card-glow2" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%)', opacity: 0, transition: 'opacity 0.4s' }} />
               </a>
 
-              {/* Contact */}
-              <a href="contact.html" className="anim-up-3"
-                style={{
-                  background: cardBg, border: cardBorder, borderRadius: 32,
-                  padding: 33, minHeight: 335, cursor: 'pointer',
-                  position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-                  transition: 'transform 0.25s, box-shadow 0.25s', textDecoration: 'none', color: 'inherit',
-                }}
+              {/* ── Contact ── */}
+              <a href="contact.html" className="anim-up-3" style={{ ...cardBase, minHeight: 400 }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow3').style.opacity = 1; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow3').style.opacity = 0; }}
               >
-                <span style={{ fontSize: 32, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.2, position: 'relative', zIndex: 1 }}>Contact</span>
-                <div className="card-glow3" style={{ position: 'absolute', inset: 0, borderRadius: 32, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                <span style={labelStyle}>Contact</span>
+                <div className="card-glow3" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
               </a>
 
             </div>
