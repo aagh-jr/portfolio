@@ -73,6 +73,17 @@
       background: radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%);
     }
 
+    /* ── PAGE TRANSITIONS ── */
+    body { transition: opacity 0.3s ease-in-out; }
+    body.page-entering, body.page-leaving { opacity: 0; }
+
+    /* ── HEADING SLIDE-IN ── */
+    @keyframes slideInLeft {
+      from { transform: translateX(-28px); }
+      to   { transform: translateX(0); }
+    }
+    .page-heading { animation: slideInLeft 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .nav-pill { right: 20px; gap: 12px; }
@@ -116,5 +127,22 @@
     </main>
   </div>
 
+  <script>
+    (function() {
+      document.body.classList.add('page-entering');
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
+      });
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        e.preventDefault();
+        document.body.classList.add('page-leaving');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+    })();
+  </script>
 </body>
 </html>

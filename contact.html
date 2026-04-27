@@ -18,6 +18,8 @@
     }
     .nav-btn.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
     @media (max-width: 768px) { .nav-pill { right: 20px; } }
+    body { transition: opacity 0.3s ease-in-out; }
+    body.page-entering, body.page-leaving { opacity: 0; }
   </style>
 </head>
 <body>
@@ -27,5 +29,22 @@
     </a>
   </nav>
   <p>Contact page — coming soon.</p>
+  <script>
+    (function() {
+      document.body.classList.add('page-entering');
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
+      });
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        e.preventDefault();
+        document.body.classList.add('page-leaving');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+    })();
+  </script>
 </body>
 </html>
