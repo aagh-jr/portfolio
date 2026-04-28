@@ -33,7 +33,7 @@ const ProjectsCard = () => {
   const currentFile = window.location.pathname.split('/').pop() || window.location.href.split('/').pop();
 
   return (
-    <div style={{
+    <div id="projects-card" style={{
       position: 'fixed',
       top: '5vw',
       bottom: '5vw',

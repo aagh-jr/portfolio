@@ -83,6 +83,10 @@
 
     /* Link reset */
     button { font-family: var(--font); }
+
+    /* Page transitions */
+    body { transition: opacity 0.3s ease-in-out; }
+    body.page-entering, body.page-leaving { opacity: 0; }
   </style>
 </head>
 <body>
@@ -109,5 +113,74 @@
   <script type="text/babel" src="ea-sections-3.jsx"></script>
   <script type="text/babel" src="ea-sections-4.jsx"></script>
   <script type="text/babel" src="ea-app.jsx"></script>
+
+  <script>
+    (function() {
+      var morphData = sessionStorage.getItem('projects-morph');
+
+      if (morphData) {
+        // Hide the projects card before React renders it — prevents flash at natural position
+        var hideStyle = document.createElement('style');
+        hideStyle.textContent = '#projects-card { opacity: 0 !important; }';
+        document.head.appendChild(hideStyle);
+
+        sessionStorage.removeItem('projects-morph');
+        var origin = JSON.parse(morphData);
+
+        // Poll each frame until React has rendered #projects-card
+        var deadline = Date.now() + 3000;
+        (function poll() {
+          var card = document.getElementById('projects-card');
+          if (!card) { if (Date.now() < deadline) requestAnimationFrame(poll); return; }
+
+          requestAnimationFrame(function() {
+            var dest = card.getBoundingClientRect();
+            var dx = origin.left - dest.left;
+            var dy = origin.top - dest.top;
+            var sx = origin.width / dest.width;
+            var sy = origin.height / dest.height;
+
+            // Place card at home-card position instantly
+            card.style.transformOrigin = 'top left';
+            card.style.transition = 'none';
+            card.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scaleX(' + sx + ') scaleY(' + sy + ')';
+            card.style.opacity = '1';
+
+            requestAnimationFrame(function() {
+              // Animate to natural position
+              card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+              card.style.transform = 'translate(0,0) scaleX(1) scaleY(1)';
+
+              card.addEventListener('transitionend', function cleanup(e) {
+                if (e.propertyName !== 'transform') return;
+                hideStyle.remove();
+                card.style.transition = '';
+                card.style.transform = '';
+                card.style.transformOrigin = '';
+                card.style.opacity = '';
+                card.removeEventListener('transitionend', cleanup);
+              });
+            });
+          });
+        })();
+
+      } else {
+        document.body.classList.add('page-entering');
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
+        });
+      }
+
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        e.preventDefault();
+        document.body.classList.add('page-leaving');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+    })();
+  </script>
 </body>
 </html>
