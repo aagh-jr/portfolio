@@ -40,6 +40,101 @@
 
     body { transition: opacity 0.3s ease-in-out; }
     body.page-entering, body.page-leaving { opacity: 0; }
+
+    /* ── Projects card expand/collapse ───────────────────────
+       Collapsed content fades out immediately on click.
+       Expanded panel waits 0.38 s (just after the shape morph
+       finishes) before fading in.
+    ───────────────────────────────────────────────────────── */
+    #card-projects .card-collapsed {
+      opacity: 1;
+      transition: opacity 0.15s ease;
+      pointer-events: auto;
+    }
+    #card-projects.card-expanded .card-collapsed {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #card-projects .card-panel {
+      position: absolute;
+      inset: 0;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease 0.38s;
+    }
+    #card-projects.card-expanded .card-panel {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Expanded panel chrome ── */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+    .panel-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1c1c18;
+      letter-spacing: -0.02em;
+    }
+    .panel-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.04);
+      color: #71717a;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+      padding: 0;
+    }
+    .panel-close:hover { background: rgba(0,0,0,0.08); color: #1c1c18; }
+
+    /* ── Project list ── */
+    .proj-list { list-style: none; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+
+    .proj-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.03);
+      border: 1px solid rgba(0,0,0,0.05);
+      text-decoration: none; color: inherit; cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .proj-item:hover { background: rgba(0,0,0,0.06); transform: translateX(3px); }
+    .proj-item--soon { opacity: 0.4; cursor: default; pointer-events: none; }
+
+    .proj-swatch { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; }
+    .proj-info   { flex: 1; }
+    .proj-name   { font-size: 15px; font-weight: 700; color: #1c1c18; letter-spacing: -0.01em; }
+    .proj-tags   { font-size: 12px; color: #71717a; margin-top: 2px; }
+    .proj-year   { font-size: 12px; color: #a0a09a; flex-shrink: 0; }
+    .proj-arrow  { color: #a0a09a; font-size: 14px; flex-shrink: 0; }
+
+    .panel-footer {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      flex-shrink: 0;
+    }
+    .panel-footer a {
+      font-size: 13px; font-weight: 600; color: #71717a;
+      display: flex; align-items: center; gap: 6px;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .panel-footer a:hover { color: #1c1c18; }
   </style>
 </head>
 <body>
@@ -144,13 +239,61 @@
               </div>
 
               {/* ── Projects ── */}
-              <a href="Energy Ave.html" id="card-projects" className="anim-up-1" style={{ ...cardBase, minHeight: 400 }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow').style.opacity = 1; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow').style.opacity = 0; }}
+              <div id="card-projects" className="anim-up-1" style={{ ...cardBase, minHeight: 400 }}
+                onMouseEnter={e => {
+                  if (e.currentTarget.classList.contains('card-expanded')) return;
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)';
+                  e.currentTarget.querySelector('.card-glow').style.opacity = 1;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = '';
+                  e.currentTarget.style.boxShadow = '';
+                  e.currentTarget.querySelector('.card-glow').style.opacity = 0;
+                }}
               >
-                <span style={labelStyle}>Projects</span>
-                <div className="card-glow" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
-              </a>
+                {/* Collapsed pill — fades out as the card expands */}
+                <div className="card-collapsed" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <span style={labelStyle}>Projects</span>
+                  <div className="card-glow" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                </div>
+
+                {/* Expanded panel — fades in after the shape morph completes */}
+                <div className="card-panel">
+                  <div className="panel-header">
+                    <span className="panel-title">Projects</span>
+                    <button className="panel-close" id="projects-close" aria-label="Close">✕</button>
+                  </div>
+
+                  <ul className="proj-list">
+                    {PROJECTS.map(p => p.available ? (
+                      <li key={p.id}>
+                        <a href={p.href} className="proj-item">
+                          <div className="proj-swatch" style={{ background: 'radial-gradient(circle at 35% 35%, rgba(171,195,233,0.95), rgba(171,195,233,0.4))' }} />
+                          <div className="proj-info">
+                            <div className="proj-name">{p.title}</div>
+                            <div className="proj-tags">{p.tags.join(' · ')}</div>
+                          </div>
+                          <span className="proj-year">{p.year}</span>
+                          <span className="proj-arrow">→</span>
+                        </a>
+                      </li>
+                    ) : (
+                      <li key={p.id} className="proj-item proj-item--soon">
+                        <div className="proj-swatch" style={{ background: 'rgba(0,0,0,0.07)' }} />
+                        <div className="proj-info">
+                          <div className="proj-name">{p.title}</div>
+                          <div className="proj-tags">{p.tags.join(' · ')}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="panel-footer">
+                    <a href="projects.html">All projects <span style={{ fontSize: 13 }}>→</span></a>
+                  </div>
+                </div>
+              </div>
 
               {/* ── About Me ── */}
               <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 400 }}
@@ -181,35 +324,176 @@
 
   <script>
     (function() {
+
+      // ── Page enter fade ─────────────────────────────────────
       document.body.classList.add('page-entering');
       requestAnimationFrame(function() {
         requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
       });
 
+      // ── Projects card expand/collapse ───────────────────────
+      // React (Babel) renders asynchronously, so we poll until
+      // the card element exists before attaching listeners.
+      function setupExpand() {
+        var card     = document.getElementById('card-projects');
+        var closeBtn = document.getElementById('projects-close');
+        if (!card || !closeBtn) { requestAnimationFrame(setupExpand); return; }
+
+        var isExpanded = false;
+        var savedRect  = null;  // card's viewport rect before going fixed
+        var savedStyle = {};    // original inline styles to restore on collapse
+
+        var EXPANDED_W = 760;
+        var EXPANDED_H = 560;
+        var EASING     = 'cubic-bezier(0.4,0,0.2,1)';
+        var DUR        = '0.48s';
+        var SHAPE_T    = [
+          'width '        + DUR + ' ' + EASING,
+          'height '       + DUR + ' ' + EASING,
+          'top '          + DUR + ' ' + EASING,
+          'left '         + DUR + ' ' + EASING,
+          'border-radius '+ DUR + ' ' + EASING,
+          'box-shadow '   + DUR + ' ' + EASING,
+        ].join(', ');
+
+        // All elements that should fade out while the panel is open
+        function getSiblings() {
+          return document.querySelectorAll('.anim-fade, .anim-up-2, .anim-up-3');
+        }
+
+        function expand() {
+          if (isExpanded) return;
+          isExpanded = true;
+
+          // 1. Snapshot position before touching the DOM
+          savedRect             = card.getBoundingClientRect();
+          savedStyle.transition = card.style.transition;
+          savedStyle.borderRadius = card.style.borderRadius;
+          savedStyle.cursor     = card.style.cursor;
+
+          // 2. Fade siblings out (they remain in the DOM so the grid row
+          //    height doesn't collapse, keeping layout stable)
+          getSiblings().forEach(function(el) {
+            el.style.transition    = 'opacity 0.18s ease';
+            el.style.opacity       = '0';
+            el.style.pointerEvents = 'none';
+          });
+
+          // 3. Snap card to position:fixed at its current viewport coords —
+          //    visually identical to where it sits in the grid, no jump
+          card.style.transition = 'none';
+          card.style.position   = 'fixed';
+          card.style.top        = savedRect.top    + 'px';
+          card.style.left       = savedRect.left   + 'px';
+          card.style.width      = savedRect.width  + 'px';
+          card.style.height     = savedRect.height + 'px';
+          card.style.margin     = '0';
+          card.style.zIndex     = '200';
+          card.style.cursor     = 'default';
+
+          // 4. Force a reflow so the browser paints the snapped position
+          //    before we re-enable transitions
+          card.offsetWidth;
+
+          // 5. Re-enable transitions (shape properties only)
+          card.style.transition = SHAPE_T;
+
+          // 6. Animate to the centered expanded state
+          var cx = window.innerWidth  / 2;
+          var cy = window.innerHeight / 2;
+          card.style.width        = EXPANDED_W + 'px';
+          card.style.height       = EXPANDED_H + 'px';
+          card.style.left         = (cx - EXPANDED_W / 2) + 'px';
+          card.style.top          = (cy - EXPANDED_H / 2) + 'px';
+          card.style.borderRadius = '22px';
+          card.style.boxShadow    = '0 24px 80px rgba(0,0,0,0.12)';
+
+          // 7. Class toggle arms the CSS opacity transitions:
+          //    collapsed content fades out immediately,
+          //    expanded panel fades in after 0.38 s delay
+          card.classList.add('card-expanded');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function collapse() {
+          if (!isExpanded) return;
+          isExpanded = false;
+
+          // 1. Reverse the content cross-fade
+          card.classList.remove('card-expanded');
+
+          // 2. Animate shape back to the original size/position
+          card.style.width        = savedRect.width    + 'px';
+          card.style.height       = savedRect.height   + 'px';
+          card.style.left         = savedRect.left     + 'px';
+          card.style.top          = savedRect.top      + 'px';
+          card.style.borderRadius = savedStyle.borderRadius;
+          card.style.boxShadow    = '';
+
+          // 3. Once the shape animation settles, restore the card
+          //    back to relative flow positioning
+          card.addEventListener('transitionend', function onDone(e) {
+            if (e.propertyName !== 'width') return;
+            card.removeEventListener('transitionend', onDone);
+
+            // Disable transition so the position switch is instant
+            card.style.transition   = 'none';
+            card.style.position     = '';
+            card.style.top          = '';
+            card.style.left         = '';
+            card.style.width        = '';
+            card.style.height       = '';
+            card.style.margin       = '';
+            card.style.zIndex       = '';
+            card.style.borderRadius = savedStyle.borderRadius;
+            card.style.boxShadow    = '';
+
+            card.offsetWidth; // reflow before restoring hover transition
+            card.style.transition = savedStyle.transition;
+            card.style.cursor     = savedStyle.cursor || '';
+            document.body.style.overflow = '';
+
+            // 4. Fade siblings back in
+            getSiblings().forEach(function(el) {
+              el.style.transition    = 'opacity 0.3s ease';
+              el.style.opacity       = '1';
+              el.style.pointerEvents = '';
+            });
+          });
+        }
+
+        // Click card body (collapsed state) → expand
+        card.addEventListener('click', function() { if (!isExpanded) expand(); });
+
+        // Click ✕ → collapse
+        closeBtn.addEventListener('click', function(e) { e.stopPropagation(); collapse(); });
+
+        // Keep expanded card centered if the window is resized
+        window.addEventListener('resize', function() {
+          if (!isExpanded) return;
+          var cx = window.innerWidth  / 2;
+          var cy = window.innerHeight / 2;
+          card.style.transition = 'none';
+          card.style.left = (cx - EXPANDED_W / 2) + 'px';
+          card.style.top  = (cy - EXPANDED_H / 2) + 'px';
+          card.offsetWidth;
+          card.style.transition = SHAPE_T;
+        });
+      }
+
+      setupExpand();
+
+      // ── Page-leave fade for all anchor navigation ───────────
       document.addEventListener('click', function(e) {
         var link = e.target.closest('a[href]');
         if (!link) return;
         var href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
         e.preventDefault();
-
-        if (link.id === 'card-projects') {
-          var rect = link.getBoundingClientRect();
-          sessionStorage.setItem('projects-morph', JSON.stringify({
-            top: rect.top, left: rect.left, width: rect.width, height: rect.height
-          }));
-          // Fade out everything except the projects card
-          document.querySelectorAll('.anim-fade, .anim-up-2, .anim-up-3').forEach(function(el) {
-            el.style.transition = 'opacity 0.2s ease';
-            el.style.opacity = '0';
-          });
-          setTimeout(function() { window.location.href = href; }, 220);
-          return;
-        }
-
         document.body.classList.add('page-leaving');
         setTimeout(function() { window.location.href = href; }, 300);
       });
+
     })();
   </script>
 
