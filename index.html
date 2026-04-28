@@ -71,20 +71,7 @@
       pointer-events: auto;
     }
 
-    /* ── Expanded panel chrome ── */
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      flex-shrink: 0;
-    }
-    .panel-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: #1c1c18;
-      letter-spacing: -0.02em;
-    }
+    /* ── Close button (only new chrome needed — project cards reuse cardBase) ── */
     .panel-close {
       width: 32px; height: 32px;
       border-radius: 8px;
@@ -99,42 +86,6 @@
       padding: 0;
     }
     .panel-close:hover { background: rgba(0,0,0,0.08); color: #1c1c18; }
-
-    /* ── Project list ── */
-    .proj-list { list-style: none; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-
-    .proj-item {
-      display: flex; align-items: center; gap: 16px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.05);
-      text-decoration: none; color: inherit; cursor: pointer;
-      transition: background 0.15s, transform 0.15s;
-    }
-    .proj-item:hover { background: rgba(0,0,0,0.06); transform: translateX(3px); }
-    .proj-item--soon { opacity: 0.4; cursor: default; pointer-events: none; }
-
-    .proj-swatch { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; }
-    .proj-info   { flex: 1; }
-    .proj-name   { font-size: 15px; font-weight: 700; color: #1c1c18; letter-spacing: -0.01em; }
-    .proj-tags   { font-size: 12px; color: #71717a; margin-top: 2px; }
-    .proj-year   { font-size: 12px; color: #a0a09a; flex-shrink: 0; }
-    .proj-arrow  { color: #a0a09a; font-size: 14px; flex-shrink: 0; }
-
-    .panel-footer {
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      flex-shrink: 0;
-    }
-    .panel-footer a {
-      font-size: 13px; font-weight: 600; color: #71717a;
-      display: flex; align-items: center; gap: 6px;
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .panel-footer a:hover { color: #1c1c18; }
   </style>
 </head>
 <body>
@@ -260,38 +211,43 @@
 
                 {/* Expanded panel — fades in after the shape morph completes */}
                 <div className="card-panel">
-                  <div className="panel-header">
-                    <span className="panel-title">Projects</span>
+
+                  {/* Header: same labelStyle as the collapsed card label */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexShrink: 0 }}>
+                    <span style={labelStyle}>Projects</span>
                     <button className="panel-close" id="projects-close" aria-label="Close">✕</button>
                   </div>
 
-                  <ul className="proj-list">
-                    {PROJECTS.map(p => p.available ? (
-                      <li key={p.id}>
-                        <a href={p.href} className="proj-item">
-                          <div className="proj-swatch" style={{ background: 'radial-gradient(circle at 35% 35%, rgba(171,195,233,0.95), rgba(171,195,233,0.4))' }} />
-                          <div className="proj-info">
-                            <div className="proj-name">{p.title}</div>
-                            <div className="proj-tags">{p.tags.join(' · ')}</div>
+                  {/* Project cards — same cardBase style as every other bento card */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, flex: 1 }}>
+                    {PROJECTS.map((p, i) => {
+                      // Reuse the same glow gradients already used on the bento cards
+                      const glows = [
+                        'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)',
+                        'linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%)',
+                        'radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%)',
+                        'radial-gradient(circle at 30% 70%, rgba(180,235,200,0.7) 0%, rgba(200,240,215,0.5) 40%, #f6f3ed 100%)',
+                      ];
+                      const inner = (
+                        <>
+                          <div style={{ flex: 1, background: glows[i] }} />
+                          <div style={{ padding: '14px 18px 18px', flexShrink: 0 }}>
+                            <div style={{ fontSize: 22, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.2 }}>{p.title}</div>
+                            <div style={{ fontSize: 11, color: '#71717a', marginTop: 3 }}>{p.tags.join(' · ')}</div>
                           </div>
-                          <span className="proj-year">{p.year}</span>
-                          <span className="proj-arrow">→</span>
-                        </a>
-                      </li>
-                    ) : (
-                      <li key={p.id} className="proj-item proj-item--soon">
-                        <div className="proj-swatch" style={{ background: 'rgba(0,0,0,0.07)' }} />
-                        <div className="proj-info">
-                          <div className="proj-name">{p.title}</div>
-                          <div className="proj-tags">{p.tags.join(' · ')}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="panel-footer">
-                    <a href="projects.html">All projects <span style={{ fontSize: 13 }}>→</span></a>
+                        </>
+                      );
+                      return p.available ? (
+                        <a key={p.id} href={p.href} style={{ ...cardBase, padding: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}
+                          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+                        >{inner}</a>
+                      ) : (
+                        <div key={p.id} style={{ ...cardBase, padding: 0, minHeight: 0, display: 'flex', flexDirection: 'column', opacity: 0.45, cursor: 'default', pointerEvents: 'none' }}>{inner}</div>
+                      );
+                    })}
                   </div>
+
                 </div>
               </div>
 
@@ -343,8 +299,7 @@
         var savedRect  = null;  // card's viewport rect before going fixed
         var savedStyle = {};    // original inline styles to restore on collapse
 
-        var EXPANDED_W = 760;
-        var EXPANDED_H = 560;
+        var EXPANDED_H = 720;
         var EASING     = 'cubic-bezier(0.4,0,0.2,1)';
         var DUR        = '0.48s';
         var SHAPE_T    = [
@@ -398,15 +353,18 @@
           // 5. Re-enable transitions (shape properties only)
           card.style.transition = SHAPE_T;
 
-          // 6. Animate to the centered expanded state
-          var cx = window.innerWidth  / 2;
-          var cy = window.innerHeight / 2;
-          card.style.width        = EXPANDED_W + 'px';
+          // 6. Expand upward — card gets taller and slightly narrower (inset
+          //    equally on both sides so it stays centered in its column).
+          //    Bottom edge stays anchored; top moves up.
+          var leftShift  = 32;   // px left of the card's natural left edge
+          var widthInset = 28;   // px trimmed from each side (skinnier)
+          var downShift  = 22;   // px lower than hard-anchoring at bottom
+          card.style.width        = (savedRect.width - widthInset * 2) + 'px';
           card.style.height       = EXPANDED_H + 'px';
-          card.style.left         = (cx - EXPANDED_W / 2) + 'px';
-          card.style.top          = (cy - EXPANDED_H / 2) + 'px';
-          card.style.borderRadius = '22px';
-          card.style.boxShadow    = '0 24px 80px rgba(0,0,0,0.12)';
+          card.style.left         = (savedRect.left - leftShift) + 'px';
+          card.style.top          = (savedRect.bottom - EXPANDED_H + downShift) + 'px';
+          card.style.borderRadius = savedStyle.borderRadius;
+          card.style.boxShadow    = '0 -8px 48px rgba(0,0,0,0.1)';
 
           // 7. Class toggle arms the CSS opacity transitions:
           //    collapsed content fades out immediately,
@@ -468,17 +426,7 @@
         // Click ✕ → collapse
         closeBtn.addEventListener('click', function(e) { e.stopPropagation(); collapse(); });
 
-        // Keep expanded card centered if the window is resized
-        window.addEventListener('resize', function() {
-          if (!isExpanded) return;
-          var cx = window.innerWidth  / 2;
-          var cy = window.innerHeight / 2;
-          card.style.transition = 'none';
-          card.style.left = (cx - EXPANDED_W / 2) + 'px';
-          card.style.top  = (cy - EXPANDED_H / 2) + 'px';
-          card.offsetWidth;
-          card.style.transition = SHAPE_T;
-        });
+        // Width/left don't change on resize (card stays in its column)
       }
 
       setupExpand();
