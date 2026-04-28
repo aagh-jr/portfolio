@@ -42,30 +42,25 @@
     body.page-entering { opacity: 0; transform: translateY(8px); }
     body.page-leaving  { opacity: 0; transform: translateY(-8px); }
 
-    /* ── State-based layout ─────────────────────────────────────────
-       #home-view holds the bento grid. It fades out when we enter the
-       projects view. The sidebar and case study panel are always in the
-       DOM and become visible via class toggle — never display:none.
-    ─────────────────────────────────────────────────────────────── */
+    /* Home view fades when entering Projects.
+       Duration matches the morph so phases overlap cleanly. */
     #home-view {
-      transition: opacity 250ms ease;
+      transition: opacity 400ms ease;
     }
     .state-projects #home-view {
       opacity: 0;
       pointer-events: none;
     }
 
-    /* ── Projects sidebar ───────────────────────────────────────────
-       Starts hidden (opacity 0, slid left). .sidebar-ready triggers
-       the slide-in. transition is set before class is added so the
-       browser registers the start state first.
-    ─────────────────────────────────────────────────────────────── */
+    /* Sidebar — uses height (not bottom) so it can be morphed via inline
+       width/height/top/left transitions during enter/exit. Inner contents
+       fade out via .morphing class so they don't squish during the morph. */
     #projects-sidebar {
       position: fixed;
       top: 24px;
       left: 24px;
       width: 300px;
-      bottom: 24px;
+      height: calc(100vh - 48px);
       background: #f6f3ed;
       border-radius: 18px;
       border: 1px solid rgba(0,0,0,0.05);
@@ -75,20 +70,22 @@
       flex-direction: column;
       box-shadow: 0 8px 40px rgba(0,0,0,0.1);
       opacity: 0;
-      transform: translateX(-20px);
       pointer-events: none;
-      transition: opacity 250ms ease, transform 300ms ease;
+      overflow: hidden;
     }
-    #projects-sidebar.sidebar-ready {
+    #projects-sidebar.sidebar-active {
       opacity: 1;
-      transform: translateX(0);
       pointer-events: auto;
     }
+    #projects-sidebar > * {
+      transition: opacity 200ms ease;
+    }
+    #projects-sidebar.morphing > * {
+      opacity: 0;
+    }
 
-    /* ── Case study overlay ─────────────────────────────────────────
-       Full-screen overlay; iframe sits to the right of the sidebar.
-       JS delays adding .cs-visible until after the sidebar has settled.
-    ─────────────────────────────────────────────────────────────── */
+    /* Case study overlay — durations match (300ms) so opacity and transform
+       finish together. Iframe has its own fade for sidebar project switches. */
     #cs-panel {
       position: fixed;
       inset: 0;
@@ -97,17 +94,21 @@
       opacity: 0;
       transform: translateY(4px);
       pointer-events: none;
-      transition: opacity 250ms ease, transform 300ms ease;
+      transition: opacity 300ms ease, transform 300ms ease;
     }
     #cs-panel.cs-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
     #cs-iframe {
       position: absolute;
-      top: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 348px;
+      right: 0;
+      bottom: 0;
+      width: auto;
+      height: auto;
       border: none;
-      height: 100%;
+      transition: opacity 200ms ease;
     }
 
-    /* ── Close button ─────────────────────────────────────────────── */
     .panel-close {
       width: 32px; height: 32px;
       border-radius: 8px;
@@ -130,6 +131,124 @@
 
   <script type="text/babel">
 
+    /* ── Morph constants ── */
+    const MORPH_DUR = 400;
+    const MORPH_EASE = 'cubic-bezier(0.16,1,0.3,1)';
+
+    /* pendingTimers is shared across enter/exit so a rapid toggle can
+       cancel the other direction's queued work. Without this, a half-open
+       state can leak through (sidebar visible without iframe, etc.) */
+    const pendingTimers = [];
+    const clearPending = () => {
+      while (pendingTimers.length) clearTimeout(pendingTimers.pop());
+    };
+    let inProjectsView = false;
+
+    function clearCardHover(card) {
+      if (!card) return;
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      const glow = card.querySelector('.card-glow');
+      if (glow) glow.style.opacity = 0;
+    }
+
+    function enterProjects() {
+      if (inProjectsView) return;
+      clearPending();
+      inProjectsView = true;
+
+      const card    = document.getElementById('card-projects');
+      const sidebar = document.getElementById('projects-sidebar');
+      const csPanel = document.getElementById('cs-panel');
+      if (!card || !sidebar || !csPanel) return;
+
+      clearCardHover(card);
+
+      const cardRect = card.getBoundingClientRect();
+
+      /* Place sidebar at the card's exact rect (no transition).
+         Sidebar bg/border match the card, so visually it just replaces it. */
+      sidebar.style.transition = 'none';
+      sidebar.style.top    = cardRect.top + 'px';
+      sidebar.style.left   = cardRect.left + 'px';
+      sidebar.style.width  = cardRect.width + 'px';
+      sidebar.style.height = cardRect.height + 'px';
+      sidebar.classList.add('sidebar-active', 'morphing');
+
+      /* Hide the underlying card; sidebar is now standing in for it */
+      card.style.visibility = 'hidden';
+
+      /* Begin home fade-out at the same time as the morph (overlap) */
+      document.body.classList.add('state-projects');
+
+      /* Force reflow so the start rect is registered before transitioning */
+      void sidebar.offsetWidth;
+
+      const t = `${MORPH_DUR}ms ${MORPH_EASE}`;
+      sidebar.style.transition = `top ${t}, left ${t}, width ${t}, height ${t}`;
+      sidebar.style.top    = '24px';
+      sidebar.style.left   = '24px';
+      sidebar.style.width  = '300px';
+      sidebar.style.height = (window.innerHeight - 48) + 'px';
+
+      /* Reveal sidebar contents just before the morph completes */
+      pendingTimers.push(setTimeout(() => {
+        sidebar.classList.remove('morphing');
+      }, MORPH_DUR - 100));
+
+      /* After morph: reveal the case study panel */
+      pendingTimers.push(setTimeout(() => {
+        sidebar.style.transition = '';
+        sidebar.style.top = '';
+        sidebar.style.left = '';
+        sidebar.style.width = '';
+        sidebar.style.height = '';
+        csPanel.classList.add('cs-visible');
+        document.body.style.overflow = 'hidden';
+      }, MORPH_DUR));
+    }
+
+    function exitProjects() {
+      if (!inProjectsView) return;
+      clearPending();
+      inProjectsView = false;
+
+      const card    = document.getElementById('card-projects');
+      const sidebar = document.getElementById('projects-sidebar');
+      const csPanel = document.getElementById('cs-panel');
+      if (!card || !sidebar || !csPanel) return;
+
+      const cardRect = card.getBoundingClientRect();
+
+      csPanel.classList.remove('cs-visible');
+      document.body.style.overflow = '';
+
+      sidebar.classList.add('morphing');
+      const t = `${MORPH_DUR}ms ${MORPH_EASE}`;
+      sidebar.style.transition = `top ${t}, left ${t}, width ${t}, height ${t}`;
+      sidebar.style.top    = cardRect.top + 'px';
+      sidebar.style.left   = cardRect.left + 'px';
+      sidebar.style.width  = cardRect.width + 'px';
+      sidebar.style.height = cardRect.height + 'px';
+
+      /* Bring home cards back partway through the morph so they're already
+         visible when the sidebar finishes shrinking */
+      pendingTimers.push(setTimeout(() => {
+        document.body.classList.remove('state-projects');
+      }, MORPH_DUR / 2));
+
+      pendingTimers.push(setTimeout(() => {
+        sidebar.classList.remove('sidebar-active', 'morphing');
+        sidebar.style.transition = '';
+        sidebar.style.top = '';
+        sidebar.style.left = '';
+        sidebar.style.width = '';
+        sidebar.style.height = '';
+        card.style.visibility = '';
+        clearCardHover(card);
+      }, MORPH_DUR));
+    }
+
     const PROJECTS = [
       {
         id: 1,
@@ -140,13 +259,6 @@
         thumb: 'uploads/Energy_Ave.png',
         href: 'Energy Ave.html',
         available: true,
-        preview: [
-          { heading: 'Key Research Insights', bullets: [
-            'Users understood the flow quickly and used a mental model that triggered each screen transition naturally.',
-            'Paul took a moment to process, then had a self-described "aha moment" — he initially noted the bed as interactive, then corrected himself by reasoning that only electricity-conducting items should be interactable. This unprompted self-correction validated the game\'s internal logic.',
-            'Preesha perceived the game as a "storyline progressing through a household" — she correctly predicted that clicking items would trigger pop-ups and transitions.',
-          ]},
-        ],
       },
       {
         id: 2,
@@ -157,7 +269,6 @@
         thumb: null,
         href: 'placeholder.html?title=Project%2002',
         available: false,
-        preview: null,
       },
       {
         id: 3,
@@ -168,7 +279,6 @@
         thumb: null,
         href: 'placeholder.html?title=Project%2003',
         available: false,
-        preview: null,
       },
       {
         id: 4,
@@ -179,21 +289,42 @@
         thumb: null,
         href: 'placeholder.html?title=Project%2004',
         available: false,
-        preview: null,
       },
     ];
 
     const App = () => {
       const [activeId, setActiveId] = React.useState(1);
 
+      /* Preload the iframe right after mount so the case study panel
+         reveals already-painted content (no white flash on first open) */
+      React.useEffect(() => {
+        const iframe = document.getElementById('cs-iframe');
+        if (!iframe || iframe.src) return;
+        const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 200));
+        idle(() => {
+          if (!iframe.src) iframe.src = 'Energy Ave.html?embed';
+        });
+      }, []);
+
       const loadProject = (p) => {
         if (!p.href) return;
+        if (activeId === p.id) return;
+        const iframe = document.getElementById('cs-iframe');
+        if (!iframe) return;
+        const newSrc = p.available ? p.href + '?embed' : p.href;
         setActiveId(p.id);
-        var iframe = document.getElementById('cs-iframe');
-        if (iframe) {
-          iframe.src = p.available ? p.href + '?embed' : p.href;
-          iframe.setAttribute('data-loaded', '1');
-        }
+
+        /* Crossfade: fade out, swap src, fade back in once load fires */
+        iframe.style.opacity = '0';
+        const swap = () => {
+          iframe.src = newSrc;
+          const reveal = () => {
+            iframe.removeEventListener('load', reveal);
+            requestAnimationFrame(() => { iframe.style.opacity = '1'; });
+          };
+          iframe.addEventListener('load', reveal);
+        };
+        setTimeout(swap, 200);
       };
 
       const cardBg = '#f6f3ed';
@@ -239,8 +370,10 @@
                     </p>
                   </div>
 
-                  {/* ── Projects card — click triggers state-projects ── */}
-                  <div id="card-projects" className="anim-up-1" style={{ ...cardBase, minHeight: 400 }}
+                  {/* ── Projects card — click triggers morph ── */}
+                  <div id="card-projects" className="anim-up-1"
+                    onClick={enterProjects}
+                    style={{ ...cardBase, minHeight: 400 }}
                     onMouseEnter={e => {
                       e.currentTarget.style.transform = 'translateY(-4px)';
                       e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)';
@@ -283,7 +416,7 @@
           <div id="projects-sidebar">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexShrink: 0 }}>
               <span style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Projects</span>
-              <button className="panel-close" id="projects-close" aria-label="Close">✕</button>
+              <button className="panel-close" onClick={exitProjects} aria-label="Close">✕</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
               {PROJECTS.map(p => (
@@ -313,88 +446,21 @@
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 
-  <!-- Case study overlay — iframe loaded lazily on first enter -->
+  {/* Case study overlay — iframe loaded lazily on mount via useEffect */}
   <div id="cs-panel">
-    <iframe id="cs-iframe" src="" title="Energy Ave. case study" allowtransparency="true"></iframe>
+    <iframe id="cs-iframe" src="" title="Case study" allowtransparency="true"></iframe>
   </div>
 
   <script>
     (function() {
 
-      // ── Page enter fade ─────────────────────────────────────────
+      /* ── Page enter fade ── */
       document.body.classList.add('page-entering');
       requestAnimationFrame(function() {
         requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
       });
 
-      // ── Projects state toggle ────────────────────────────────────
-      // Two-phase: Phase 1 fades cards out, Phase 2 brings sidebar
-      // and case study in after cards are gone. All elements stay in
-      // the DOM — visibility is controlled via opacity + pointer-events.
-      var inProjectsView = false;
-
-      function enterProjects() {
-        if (inProjectsView) return;
-        inProjectsView = true;
-
-        // Phase 1 — home cards fade out (250ms, CSS transition on #home-view)
-        document.body.classList.add('state-projects');
-
-        // Phase 2 — sidebar slides in, case study fades in
-        setTimeout(function() {
-          var sidebar = document.getElementById('projects-sidebar');
-          var iframe  = document.getElementById('cs-iframe');
-
-          // sidebar left(24) + width(300) + gap(24) = 348px
-          var iframeLeft = 348;
-          iframe.style.left  = iframeLeft + 'px';
-          iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
-
-          if (!iframe.getAttribute('data-loaded')) {
-            iframe.src = 'Energy Ave.html?embed';
-            iframe.setAttribute('data-loaded', '1');
-          }
-
-          // rAF forces browser to register opacity:0 / translateX(-20px)
-          // as the start state before animating to the end state
-          requestAnimationFrame(function() {
-            sidebar.classList.add('sidebar-ready');
-            setTimeout(function() {
-              document.getElementById('cs-panel').classList.add('cs-visible');
-              document.body.style.overflow = 'hidden';
-            }, 16);
-          });
-        }, 266); // 250ms card fade + 16ms buffer
-      }
-
-      function exitProjects() {
-        if (!inProjectsView) return;
-        inProjectsView = false;
-
-        // Phase 1 — sidebar and case study fade out (250ms / 300ms)
-        document.getElementById('projects-sidebar').classList.remove('sidebar-ready');
-        document.getElementById('cs-panel').classList.remove('cs-visible');
-        document.body.style.overflow = '';
-
-        // Phase 2 — home cards fade back in after sidebar is gone
-        setTimeout(function() {
-          document.body.classList.remove('state-projects');
-        }, 316); // 300ms sidebar fade + 16ms buffer
-      }
-
-      // React (Babel) renders asynchronously — poll until elements exist
-      function setupToggle() {
-        var card     = document.getElementById('card-projects');
-        var closeBtn = document.getElementById('projects-close');
-        if (!card || !closeBtn) { requestAnimationFrame(setupToggle); return; }
-
-        card.addEventListener('click', function() { enterProjects(); });
-        closeBtn.addEventListener('click', function(e) { e.stopPropagation(); exitProjects(); });
-      }
-
-      setupToggle();
-
-      // ── Page-leave fade for all anchor navigation ────────────────
+      /* ── Page-leave fade for anchor navigation ── */
       document.addEventListener('click', function(e) {
         var link = e.target.closest('a[href]');
         if (!link) return;
