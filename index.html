@@ -252,34 +252,47 @@
                     <button className="panel-close" id="projects-close" aria-label="Close">✕</button>
                   </div>
 
-                  {/* Project list — clickable buttons for available projects */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
-                    {PROJECTS.map(p => p.available ? (
-                      <button key={p.id} onClick={() => loadProject(p)} style={{
-                        width: '100%', textAlign: 'left', fontFamily: 'inherit',
-                        padding: '14px 16px', borderRadius: 12,
-                        background: activeId === p.id ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.02)',
-                        border: activeId === p.id ? '1px solid rgba(0,0,0,0.12)' : '1px solid rgba(0,0,0,0.05)',
-                        cursor: 'pointer', transition: 'background 0.15s, border-color 0.15s',
-                      }}
-                        onMouseEnter={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; }}
-                        onMouseLeave={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.02)'; }}
-                      >
-                        <div style={{ fontSize: 15, fontWeight: 700, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 8 }}>{p.title}</div>
-                        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                          {p.tags.map(t => <span key={t} style={{ fontSize: 10, fontWeight: 600, color: '#71717a', background: 'rgba(0,0,0,0.05)', borderRadius: 100, padding: '2px 8px' }}>{t}</span>)}
+                  {/* Project list — clickable buttons for available, placeholders for coming soon */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1, overflowY: 'auto' }}>
+                    {(() => {
+                      const thumbs = [
+                        'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)',
+                        'linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%)',
+                        'radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%)',
+                        'radial-gradient(circle at 30% 70%, rgba(180,235,200,0.7) 0%, rgba(200,240,215,0.5) 40%, #f6f3ed 100%)',
+                      ];
+                      const thumb = (i) => (
+                        <div style={{ height: 80, borderRadius: 8, background: thumbs[i], marginBottom: 10, flexShrink: 0 }} />
+                      );
+                      return PROJECTS.map((p, i) => p.available ? (
+                        <button key={p.id} onClick={() => loadProject(p)} style={{
+                          width: '100%', textAlign: 'left', fontFamily: 'inherit',
+                          padding: '12px 12px 14px', borderRadius: 12,
+                          background: activeId === p.id ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.02)',
+                          border: activeId === p.id ? '1px solid rgba(0,0,0,0.12)' : '1px solid rgba(0,0,0,0.05)',
+                          cursor: 'pointer', transition: 'background 0.15s, border-color 0.15s',
+                        }}
+                          onMouseEnter={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; }}
+                          onMouseLeave={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.02)'; }}
+                        >
+                          {thumb(i)}
+                          <div style={{ fontSize: 14, fontWeight: 700, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6 }}>{p.title}</div>
+                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                            {p.tags.map(t => <span key={t} style={{ fontSize: 10, fontWeight: 600, color: '#71717a', background: 'rgba(0,0,0,0.05)', borderRadius: 100, padding: '2px 8px' }}>{t}</span>)}
+                          </div>
+                        </button>
+                      ) : (
+                        <div key={p.id} style={{
+                          padding: '12px 12px 14px', borderRadius: 12,
+                          background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)',
+                          opacity: 0.45,
+                        }}>
+                          {thumb(i)}
+                          <div style={{ fontSize: 14, fontWeight: 500, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 4 }}>{p.title}</div>
+                          <div style={{ fontSize: 11, color: '#71717a' }}>Coming soon</div>
                         </div>
-                      </button>
-                    ) : (
-                      <div key={p.id} style={{
-                        padding: '14px 16px', borderRadius: 12,
-                        background: 'transparent', border: '1px solid transparent',
-                        opacity: 0.4,
-                      }}>
-                        <div style={{ fontSize: 15, fontWeight: 400, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 4 }}>{p.title}</div>
-                        <div style={{ fontSize: 11, color: '#71717a' }}>Coming soon</div>
-                      </div>
-                    ))}
+                      ));
+                    })()}
                   </div>
 
                 </div>
