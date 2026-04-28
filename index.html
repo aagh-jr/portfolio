@@ -41,24 +41,6 @@
     body { transition: opacity 0.3s ease-in-out; }
     body.page-entering, body.page-leaving { opacity: 0; }
 
-    /* ── Case study panel (iframe, shown to the right of the card) ── */
-    #cs-panel {
-      position: fixed;
-      inset: 0;
-      z-index: 190;
-      background: #fff;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease 0.44s;
-    }
-    #cs-panel.cs-visible { opacity: 1; pointer-events: auto; }
-    #cs-iframe {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      border: none;
-      height: 100%;
-    }
-
     /* ── Projects card expand/collapse ───────────────────────
        Collapsed content fades out immediately on click.
        Expanded panel waits 0.38 s (just after the shape morph
@@ -89,7 +71,29 @@
       pointer-events: auto;
     }
 
-/* ── Close button (only new chrome needed — project cards reuse cardBase) ── */
+    /* ── Case study panel (iframe loaded on expand) ─────────
+       Sits below the card (z-index 190 vs card's 200) and covers
+       the full viewport. The iframe is positioned to the right
+       of the expanded card via inline style set in JS.
+    ───────────────────────────────────────────────────────── */
+    #cs-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 190;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease 0.44s;
+    }
+    #cs-panel.cs-visible { opacity: 1; pointer-events: auto; }
+    #cs-iframe {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      border: none;
+      height: 100%;
+    }
+
+    /* ── Close button (only new chrome needed — project cards reuse cardBase) ── */
     .panel-close {
       width: 32px; height: 32px;
       border-radius: 8px;
@@ -286,8 +290,9 @@
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 
-<div id="cs-panel">
-    <iframe id="cs-iframe" src="" title="Energy Ave. case study"></iframe>
+  <!-- Case study overlay — iframe loaded lazily on first expand -->
+  <div id="cs-panel">
+    <iframe id="cs-iframe" src="" title="Energy Ave. case study" allowtransparency="true"></iframe>
   </div>
 
   <script>
@@ -308,8 +313,8 @@
         if (!card || !closeBtn) { requestAnimationFrame(setupExpand); return; }
 
         var isExpanded = false;
-        var savedRect  = null;
-        var savedStyle = {};
+        var savedRect  = null;  // card's viewport rect before going fixed
+        var savedStyle = {};    // original inline styles to restore on collapse
 
         var EASING     = 'cubic-bezier(0.4,0,0.2,1)';
         var DUR        = '0.48s';
@@ -331,79 +336,77 @@
           if (isExpanded) return;
           isExpanded = true;
 
-          // 1. Kill any hover transform/shadow instantly so the rect we
-          //    capture reflects the card's true resting position, not a
-          //    lifted state. Without this the card "jumps" when mouseLeave
-          //    fires and clears the transform after we've already snapped.
-          savedStyle.transition   = card.style.transition;
+          // 1. Snapshot position before touching the DOM
+          savedRect             = card.getBoundingClientRect();
+          savedStyle.transition = card.style.transition;
           savedStyle.borderRadius = card.style.borderRadius;
-          savedStyle.cursor       = card.style.cursor;
-          card.style.transition   = 'none';
-          card.style.transform    = '';
-          card.style.boxShadow    = '';
-          card.offsetWidth; // flush so the reset is painted before we measure
+          savedStyle.cursor     = card.style.cursor;
 
-          // 2. Capture the true resting position
-          savedRect = card.getBoundingClientRect();
-
-          // 3. Fade siblings out
+          // 2. Fade siblings out (they remain in the DOM so the grid row
+          //    height doesn't collapse, keeping layout stable)
           getSiblings().forEach(function(el) {
             el.style.transition    = 'opacity 0.18s ease';
             el.style.opacity       = '0';
             el.style.pointerEvents = 'none';
           });
 
-          // 4. Snap card to position:fixed at its exact current location —
-          //    still transition:none so this is invisible
-          card.style.position = 'fixed';
-          card.style.top      = savedRect.top    + 'px';
-          card.style.left     = savedRect.left   + 'px';
-          card.style.width    = savedRect.width  + 'px';
-          card.style.height   = savedRect.height + 'px';
-          card.style.margin   = '0';
-          card.style.zIndex   = '200';
-          card.style.cursor   = 'default';
+          // 3. Snap card to position:fixed at its current viewport coords —
+          //    visually identical to where it sits in the grid, no jump
+          card.style.transition = 'none';
+          card.style.position   = 'fixed';
+          card.style.top        = savedRect.top    + 'px';
+          card.style.left       = savedRect.left   + 'px';
+          card.style.width      = savedRect.width  + 'px';
+          card.style.height     = savedRect.height + 'px';
+          card.style.margin     = '0';
+          card.style.zIndex     = '200';
+          card.style.cursor     = 'default';
 
-          // 5. rAF ensures the browser has *painted* the snapped frame
-          //    before we enable transitions — prevents the double-rect flash
-          requestAnimationFrame(function() {
-            card.style.transition = SHAPE_T;
+          // 4. Force a reflow so the browser paints the snapped position
+          //    before we re-enable transitions
+          card.offsetWidth;
 
-            // 6. Morph to a slim left-side navigator panel
-            var PAD    = 24;
-            var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
-            var panelH = window.innerHeight - PAD * 2;
-            card.style.width        = panelW + 'px';
-            card.style.height       = panelH + 'px';
-            card.style.left         = PAD + 'px';
-            card.style.top          = PAD + 'px';
-            card.style.borderRadius = savedStyle.borderRadius;
-            card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
+          // 5. Re-enable transitions (shape properties only)
+          card.style.transition = SHAPE_T;
 
-            // 7. Class toggle: collapsed content fades out, panel fades in
-            card.classList.add('card-expanded');
-            document.body.style.overflow = 'hidden';
+          // 6. Morph to a slim left-side navigator panel.
+          //    Width ≈ 25 % of the viewport; height fills the screen
+          //    with a little breathing room top and bottom.
+          var PAD    = 24;
+          var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
+          var panelH = window.innerHeight - PAD * 2;
+          card.style.width        = panelW + 'px';
+          card.style.height       = panelH + 'px';
+          card.style.left         = PAD + 'px';
+          card.style.top          = PAD + 'px';
+          card.style.borderRadius = savedStyle.borderRadius;
+          card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
 
-            // 8. Position and reveal the case study iframe to the right of the card
-            var iframe = document.getElementById('cs-iframe');
-            var iframeLeft = PAD + panelW + PAD;
-            iframe.style.left  = iframeLeft + 'px';
-            iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
-            if (!iframe.getAttribute('data-loaded')) {
-              iframe.src = 'Energy Ave.html?embed';
-              iframe.setAttribute('data-loaded', '1');
-            }
-            document.getElementById('cs-panel').classList.add('cs-visible');
-          }); // end requestAnimationFrame
+          // 7. Class toggle arms the CSS opacity transitions:
+          //    collapsed content fades out immediately,
+          //    expanded panel fades in after 0.38 s delay
+          card.classList.add('card-expanded');
+
+          // 8. Load and reveal the case study iframe to the right of the card
+          var iframe = document.getElementById('cs-iframe');
+          var iframeLeft = PAD + panelW + PAD;
+          iframe.style.left  = iframeLeft + 'px';
+          iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
+          if (!iframe.getAttribute('data-loaded')) {
+            iframe.src = 'Energy Ave.html?embed';
+            iframe.setAttribute('data-loaded', '1');
+          }
+          document.getElementById('cs-panel').classList.add('cs-visible');
+          document.body.style.overflow = 'hidden';
         }
 
         function collapse() {
           if (!isExpanded) return;
           isExpanded = false;
 
-          // 1. Hide the case study panel and reverse the content cross-fade
-          document.getElementById('cs-panel').classList.remove('cs-visible');
+          // 1. Reverse the content cross-fade and hide the case study panel
           card.classList.remove('card-expanded');
+          document.getElementById('cs-panel').classList.remove('cs-visible');
 
           // 2. Animate shape back to the original size/position
           card.style.width        = savedRect.width    + 'px';

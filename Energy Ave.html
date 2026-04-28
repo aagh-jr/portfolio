@@ -126,10 +126,7 @@
 
       var morphData = sessionStorage.getItem('projects-morph');
 
-      if (sessionStorage.getItem('skip-enter-fade')) {
-        // Coming from the Projects card expand — page appears instantly, no fade
-        sessionStorage.removeItem('skip-enter-fade');
-      } else if (morphData) {
+      if (morphData) {
         // Hide the projects card before React renders it — prevents flash at natural position
         var hideStyle = document.createElement('style');
         hideStyle.textContent = '#projects-card { opacity: 0 !important; }';
