@@ -71,29 +71,7 @@
       pointer-events: auto;
     }
 
-    /* ── Case study panel (iframe loaded on expand) ─────────
-       Sits below the card (z-index 190 vs card's 200) and covers
-       the full viewport. The iframe is positioned to the right
-       of the expanded card via inline style set in JS.
-    ───────────────────────────────────────────────────────── */
-    #cs-panel {
-      position: fixed;
-      inset: 0;
-      z-index: 190;
-      background: #fff;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease 0.44s;
-    }
-    #cs-panel.cs-visible { opacity: 1; pointer-events: auto; }
-    #cs-iframe {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      border: none;
-      height: 100%;
-    }
-
-    /* ── Close button (only new chrome needed — project cards reuse cardBase) ── */
+/* ── Close button (only new chrome needed — project cards reuse cardBase) ── */
     .panel-close {
       width: 32px; height: 32px;
       border-radius: 8px;
@@ -290,12 +268,7 @@
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 
-  <!-- Case study overlay — iframe loaded lazily on first expand -->
-  <div id="cs-panel">
-    <iframe id="cs-iframe" src="" title="Energy Ave. case study" allowtransparency="true"></iframe>
-  </div>
-
-  <script>
+<script>
     (function() {
 
       // ── Page enter fade ─────────────────────────────────────
@@ -315,6 +288,7 @@
         var isExpanded = false;
         var savedRect  = null;  // card's viewport rect before going fixed
         var savedStyle = {};    // original inline styles to restore on collapse
+        var navTimer   = null;  // handle so ✕ can cancel the navigation
 
         var EASING     = 'cubic-bezier(0.4,0,0.2,1)';
         var DUR        = '0.48s';
@@ -387,26 +361,22 @@
           //    expanded panel fades in after 0.38 s delay
           card.classList.add('card-expanded');
 
-          // 8. Load and reveal the case study iframe to the right of the card
-          var iframe = document.getElementById('cs-iframe');
-          var iframeLeft = PAD + panelW + PAD;
-          iframe.style.left  = iframeLeft + 'px';
-          iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
-          if (!iframe.getAttribute('data-loaded')) {
-            iframe.src = 'Energy Ave.html?embed';
-            iframe.setAttribute('data-loaded', '1');
-          }
-          document.getElementById('cs-panel').classList.add('cs-visible');
           document.body.style.overflow = 'hidden';
+
+          // 8. Let the morph + panel fade-in play out, then navigate to the
+          //    case study page so it gets its own shareable URL.
+          navTimer = setTimeout(function() {
+            window.location.href = 'Energy Ave.html';
+          }, 900);
         }
 
         function collapse() {
           if (!isExpanded) return;
           isExpanded = false;
 
-          // 1. Reverse the content cross-fade and hide the case study panel
+          // 1. Cancel any pending navigation, reverse the content cross-fade
+          if (navTimer) { clearTimeout(navTimer); navTimer = null; }
           card.classList.remove('card-expanded');
-          document.getElementById('cs-panel').classList.remove('cs-visible');
 
           // 2. Animate shape back to the original size/position
           card.style.width        = savedRect.width    + 'px';
