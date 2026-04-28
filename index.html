@@ -347,13 +347,14 @@
           gsap.set(card, { clearProps: 'transform,boxShadow' });
           savedRect = card.getBoundingClientRect();
 
-          // 2. Fade siblings (GSAP — no manual transition string needed)
-          gsap.to(Array.from(getSiblings()), {
-            opacity: 0, duration: 0.22, ease: 'power2.out',
-            onComplete: function() {
-              getSiblings().forEach(function(el) { el.style.pointerEvents = 'none'; });
-            }
+          // 2. Kill siblings instantly — clear any CSS animation first so
+          //    fill-mode:both cannot fight the opacity override, then set
+          //    opacity to 0 in the same frame as the snap.
+          getSiblings().forEach(function(el) {
+            el.style.animation    = 'none';
+            el.style.pointerEvents = 'none';
           });
+          gsap.set(Array.from(getSiblings()), { opacity: 0 });
 
           // 3. Snap to position:fixed at the card's exact current coords (invisible)
           card.style.transition = 'none';
@@ -467,7 +468,10 @@
                 card.style.cursor     = savedStyle.cursor || '';
                 document.body.style.overflow = '';
 
-                getSiblings().forEach(function(el) { el.style.pointerEvents = ''; });
+                getSiblings().forEach(function(el) {
+                  el.style.animation    = '';
+                  el.style.pointerEvents = '';
+                });
                 gsap.to(Array.from(getSiblings()), {
                   opacity: 1, duration: 0.35, ease: 'power2.out'
                 });
