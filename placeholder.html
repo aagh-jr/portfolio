@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Lora:ital,wght@1,400;1,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #fff;
+      font-family: 'DM Sans', sans-serif;
+      color: #111;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Shimmer skeleton animation */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .sk {
+      background: linear-gradient(90deg, #f2f2f0 25%, #e8e8e6 50%, #f2f2f0 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.6s infinite linear;
+      border-radius: 6px;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    section { padding: 72px 0; border-top: 1px solid rgba(0,0,0,0.07); }
+    section:first-of-type { border-top: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section style="padding: 100px 0 72px;">
+    <div class="wrap">
+
+      <!-- Badge -->
+      <div id="badge" style="
+        display: inline-flex; align-items: center; gap: 7px;
+        fontSize: 11px; font-size: 11px; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        color: #aaa; margin-bottom: 28px;
+      ">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #ccc; display: inline-block;"></span>
+        Case Study — In Progress
+      </div>
+
+      <!-- Title -->
+      <h1 id="page-title" style="
+        font-family: 'Lora', Georgia, serif;
+        font-size: clamp(44px, 7vw, 72px);
+        font-weight: 500; font-style: italic;
+        letter-spacing: -0.025em; line-height: 1.05;
+        color: #111; margin-bottom: 24px;
+      ">Project</h1>
+
+      <p style="font-size: 16px; color: #999; line-height: 1.75; max-width: 480px; margin-bottom: 56px;">
+        This case study is currently being written. Check back soon — full research process, insights, and outcomes on the way.
+      </p>
+
+      <!-- Placeholder hero image -->
+      <div class="sk" style="height: 420px; border-radius: 12px;"></div>
+    </div>
+  </section>
+
+  <!-- ── Stats row skeleton ────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 52px;">
+        <div class="sk" style="height: 90px; border-radius: 14px;"></div>
+        <div class="sk" style="height: 90px; border-radius: 14px;"></div>
+        <div class="sk" style="height: 90px; border-radius: 14px;"></div>
+        <div class="sk" style="height: 90px; border-radius: 14px;"></div>
+      </div>
+
+      <!-- Text skeleton -->
+      <div class="sk" style="height: 14px; width: 38%; margin-bottom: 20px;"></div>
+      <div class="sk" style="height: 14px; width: 72%; margin-bottom: 12px;"></div>
+      <div class="sk" style="height: 14px; width: 65%; margin-bottom: 12px;"></div>
+      <div class="sk" style="height: 14px; width: 58%; margin-bottom: 40px;"></div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="sk" style="height: 140px; border-radius: 14px;"></div>
+        <div class="sk" style="height: 140px; border-radius: 14px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Methods skeleton ──────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <div class="sk" style="height: 13px; width: 22%; margin-bottom: 28px;"></div>
+      <div class="sk" style="height: 32px; width: 55%; margin-bottom: 48px; border-radius: 8px;"></div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <div class="sk" style="width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;"></div>
+          <div style="flex: 1;">
+            <div class="sk" style="height: 13px; width: 40%; margin-bottom: 8px;"></div>
+            <div class="sk" style="height: 11px; width: 75%;"></div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <div class="sk" style="width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;"></div>
+          <div style="flex: 1;">
+            <div class="sk" style="height: 13px; width: 35%; margin-bottom: 8px;"></div>
+            <div class="sk" style="height: 11px; width: 68%;"></div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <div class="sk" style="width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;"></div>
+          <div style="flex: 1;">
+            <div class="sk" style="height: 13px; width: 45%; margin-bottom: 8px;"></div>
+            <div class="sk" style="height: 11px; width: 60%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Quote skeleton ───────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <div style="border-left: 2px solid #e8e8e6; padding: 24px 32px;">
+        <div class="sk" style="height: 16px; width: 90%; margin-bottom: 10px;"></div>
+        <div class="sk" style="height: 16px; width: 78%; margin-bottom: 10px;"></div>
+        <div class="sk" style="height: 16px; width: 55%; margin-bottom: 20px;"></div>
+        <div class="sk" style="height: 11px; width: 28%;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Insights skeleton ─────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <div class="sk" style="height: 13px; width: 20%; margin-bottom: 28px;"></div>
+      <div class="sk" style="height: 32px; width: 48%; margin-bottom: 48px; border-radius: 8px;"></div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div class="sk" style="height: 120px; border-radius: 14px;"></div>
+        <div class="sk" style="height: 120px; border-radius: 14px;"></div>
+        <div class="sk" style="height: 120px; border-radius: 14px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    var params = new URLSearchParams(location.search);
+    var title  = params.get('title');
+    if (title) document.getElementById('page-title').textContent = title;
+  </script>
+
+</body>
+</html>
