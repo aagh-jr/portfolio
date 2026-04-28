@@ -343,18 +343,20 @@
           // 5. Re-enable transitions (shape properties only)
           card.style.transition = SHAPE_T;
 
-          // 6. Morph to a slim left-side navigator panel.
-          //    Width ≈ 25 % of the viewport; height fills the screen
-          //    with a little breathing room top and bottom.
-          var PAD    = 24;
-          var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
-          var panelH = window.innerHeight - PAD * 2;
+          // 6. Morph to exactly where ProjectsCard sits in Energy Ave.html
+          //    (left:5vw, top:5vw, bottom:5vw, width:18vw, borderRadius:20)
+          //    so the card lands in the same spot before the page switches.
+          var vw     = window.innerWidth;
+          var vh     = window.innerHeight;
+          var PAD    = Math.round(vw * 0.05);   // 5vw — matches ProjectsCard left/top/bottom
+          var panelW = Math.round(vw * 0.18);   // 18vw — matches ProjectsCard width
+          var panelH = vh - PAD * 2;
           card.style.width        = panelW + 'px';
           card.style.height       = panelH + 'px';
           card.style.left         = PAD + 'px';
           card.style.top          = PAD + 'px';
-          card.style.borderRadius = savedStyle.borderRadius;
-          card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
+          card.style.borderRadius = '20px';     // matches ProjectsCard borderRadius
+          card.style.boxShadow    = '0 8px 32px rgba(0,0,0,0.08)';
 
           // 7. Class toggle arms the CSS opacity transitions:
           //    collapsed content fades out immediately,
