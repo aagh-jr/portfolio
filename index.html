@@ -366,6 +366,7 @@
           // 8. Let the morph + panel fade-in play out, then navigate to the
           //    case study page so it gets its own shareable URL.
           navTimer = setTimeout(function() {
+            sessionStorage.setItem('skip-enter-fade', '1');
             window.location.href = 'Energy Ave.html';
           }, 900);
         }
