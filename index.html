@@ -11,6 +11,7 @@
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -64,7 +65,7 @@
       flex-direction: column;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease 0.38s;
+      transition: opacity 0.28s ease 0.52s;
     }
     #card-projects.card-expanded .card-panel {
       opacity: 1;
@@ -326,22 +327,11 @@
         var closeBtn = document.getElementById('projects-close');
         if (!card || !closeBtn) { requestAnimationFrame(setupExpand); return; }
 
-        var isExpanded = false;
-        var savedRect  = null;  // card's viewport rect before going fixed
-        var savedStyle = {};    // original inline styles to restore on collapse
+        var isExpanded  = false;
+        var savedRect   = null;
+        var savedStyle  = {};
+        var expandedDims = null; // PAD / panelW / panelH stored for collapse
 
-        var EASING     = 'cubic-bezier(0.4,0,0.2,1)';
-        var DUR        = '0.48s';
-        var SHAPE_T    = [
-          'width '        + DUR + ' ' + EASING,
-          'height '       + DUR + ' ' + EASING,
-          'top '          + DUR + ' ' + EASING,
-          'left '         + DUR + ' ' + EASING,
-          'border-radius '+ DUR + ' ' + EASING,
-          'box-shadow '   + DUR + ' ' + EASING,
-        ].join(', ');
-
-        // All elements that should fade out while the panel is open
         function getSiblings() {
           return document.querySelectorAll('.anim-fade, .anim-up-2, .anim-up-3');
         }
@@ -349,23 +339,23 @@
         function expand() {
           if (isExpanded) return;
           isExpanded = true;
+          gsap.killTweensOf(card);
 
-          // 1. Snapshot position before touching the DOM
-          savedRect             = card.getBoundingClientRect();
+          // 1. Reset any hover lift so getBoundingClientRect is accurate
           savedStyle.transition = card.style.transition;
-          savedStyle.borderRadius = card.style.borderRadius;
           savedStyle.cursor     = card.style.cursor;
+          gsap.set(card, { clearProps: 'transform,boxShadow' });
+          savedRect = card.getBoundingClientRect();
 
-          // 2. Fade siblings out (they remain in the DOM so the grid row
-          //    height doesn't collapse, keeping layout stable)
-          getSiblings().forEach(function(el) {
-            el.style.transition    = 'opacity 0.18s ease';
-            el.style.opacity       = '0';
-            el.style.pointerEvents = 'none';
+          // 2. Fade siblings (GSAP — no manual transition string needed)
+          gsap.to(Array.from(getSiblings()), {
+            opacity: 0, duration: 0.22, ease: 'power2.out',
+            onComplete: function() {
+              getSiblings().forEach(function(el) { el.style.pointerEvents = 'none'; });
+            }
           });
 
-          // 3. Snap card to position:fixed at its current viewport coords —
-          //    visually identical to where it sits in the grid, no jump
+          // 3. Snap to position:fixed at the card's exact current coords (invisible)
           card.style.transition = 'none';
           card.style.position   = 'fixed';
           card.style.top        = savedRect.top    + 'px';
@@ -376,32 +366,26 @@
           card.style.zIndex     = '200';
           card.style.cursor     = 'default';
 
-          // 4. Force a reflow so the browser paints the snapped position
-          //    before we re-enable transitions
-          card.offsetWidth;
-
-          // 5. Re-enable transitions (shape properties only)
-          card.style.transition = SHAPE_T;
-
-          // 6. Morph to a slim left-side navigator panel.
-          //    Width ≈ 25 % of the viewport; height fills the screen
-          //    with a little breathing room top and bottom.
+          // 4. Target dimensions
           var PAD    = 24;
           var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
           var panelH = window.innerHeight - PAD * 2;
-          card.style.width        = panelW + 'px';
-          card.style.height       = panelH + 'px';
-          card.style.left         = PAD + 'px';
-          card.style.top          = PAD + 'px';
-          card.style.borderRadius = savedStyle.borderRadius;
-          card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
+          expandedDims = { PAD: PAD, panelW: panelW, panelH: panelH };
 
-          // 7. Class toggle arms the CSS opacity transitions:
-          //    collapsed content fades out immediately,
-          //    expanded panel fades in after 0.38 s delay
+          // 5. Compute the transform that moves the card from its current
+          //    snapped position to the target panel position.
+          //    Using transform (not top/left/width/height) keeps all work
+          //    on the compositor thread — no layout reflow per frame.
+          var dx = PAD - savedRect.left;
+          var dy = PAD - savedRect.top;
+          var sx = panelW / savedRect.width;
+          var sy = panelH / savedRect.height;
+
+          // 6. Add class now — collapsed label fades out immediately,
+          //    panel content fades in after a CSS delay (0.52 s)
           card.classList.add('card-expanded');
 
-          // 8. Load and reveal the case study iframe to the right of the card
+          // 7. Pre-load the iframe in parallel with the animation
           var iframe = document.getElementById('cs-iframe');
           var iframeLeft = PAD + panelW + PAD;
           iframe.style.left  = iframeLeft + 'px';
@@ -410,65 +394,90 @@
             iframe.src = 'Energy Ave.html?embed';
             iframe.setAttribute('data-loaded', '1');
           }
-          document.getElementById('cs-panel').classList.add('cs-visible');
-          document.body.style.overflow = 'hidden';
+
+          // 8. Animate with transform — smooth expo ease, compositor only
+          gsap.fromTo(card,
+            { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: '0px 0px' },
+            {
+              x: dx, y: dy, scaleX: sx, scaleY: sy,
+              duration: 0.6, ease: 'expo.inOut',
+              onComplete: function() {
+                // Swap the transform for real pixel dimensions in the same frame
+                card.style.left   = PAD    + 'px';
+                card.style.top    = PAD    + 'px';
+                card.style.width  = panelW + 'px';
+                card.style.height = panelH + 'px';
+                gsap.set(card, { clearProps: 'transform,x,y,scaleX,scaleY' });
+                card.style.boxShadow = '0 8px 40px rgba(0,0,0,0.1)';
+                document.body.style.overflow = 'hidden';
+                document.getElementById('cs-panel').classList.add('cs-visible');
+              }
+            }
+          );
         }
 
         function collapse() {
           if (!isExpanded) return;
           isExpanded = false;
+          if (!expandedDims) return;
+          gsap.killTweensOf(card);
 
-          // 1. Reverse the content cross-fade and hide the case study panel
-          card.classList.remove('card-expanded');
+          var PAD    = expandedDims.PAD;
+          var panelW = expandedDims.panelW;
+          var panelH = expandedDims.panelH;
+
+          // 1. Hide the iframe panel immediately
           document.getElementById('cs-panel').classList.remove('cs-visible');
+          card.style.boxShadow = '';
 
-          // 2. Animate shape back to the original size/position
-          card.style.width        = savedRect.width    + 'px';
-          card.style.height       = savedRect.height   + 'px';
-          card.style.left         = savedRect.left     + 'px';
-          card.style.top          = savedRect.top      + 'px';
-          card.style.borderRadius = savedStyle.borderRadius;
-          card.style.boxShadow    = '';
+          // 2. Ensure the card is sitting at its true expanded pixel dimensions
+          //    (clear any leftover transform from expand, apply real coords)
+          gsap.set(card, { clearProps: 'transform,x,y,scaleX,scaleY' });
+          card.style.left   = PAD    + 'px';
+          card.style.top    = PAD    + 'px';
+          card.style.width  = panelW + 'px';
+          card.style.height = panelH + 'px';
 
-          // 3. Once the shape animation settles, restore the card
-          //    back to relative flow positioning
-          card.addEventListener('transitionend', function onDone(e) {
-            if (e.propertyName !== 'width') return;
-            card.removeEventListener('transitionend', onDone);
+          // 3. Reverse transform — card animates back to its grid position.
+          //    We keep card-expanded active during the animation so the
+          //    navigator content stays visible while the shape shrinks,
+          //    and only swap back to the "Projects" label at the very end.
+          var dx = savedRect.left - PAD;
+          var dy = savedRect.top  - PAD;
+          var sx = savedRect.width  / panelW;
+          var sy = savedRect.height / panelH;
 
-            // Disable transition so the position switch is instant
-            card.style.transition   = 'none';
-            card.style.position     = '';
-            card.style.top          = '';
-            card.style.left         = '';
-            card.style.width        = '';
-            card.style.height       = '';
-            card.style.margin       = '';
-            card.style.zIndex       = '';
-            card.style.borderRadius = savedStyle.borderRadius;
-            card.style.boxShadow    = '';
+          gsap.fromTo(card,
+            { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: '0px 0px' },
+            {
+              x: dx, y: dy, scaleX: sx, scaleY: sy,
+              duration: 0.5, ease: 'expo.inOut',
+              onComplete: function() {
+                // Swap back to relative flow — card snaps to its natural grid slot
+                card.classList.remove('card-expanded');
+                gsap.set(card, { clearProps: 'transform,x,y,scaleX,scaleY' });
+                card.style.position   = '';
+                card.style.top        = '';
+                card.style.left       = '';
+                card.style.width      = '';
+                card.style.height     = '';
+                card.style.margin     = '';
+                card.style.zIndex     = '';
+                card.style.transition = savedStyle.transition;
+                card.style.cursor     = savedStyle.cursor || '';
+                document.body.style.overflow = '';
 
-            card.offsetWidth; // reflow before restoring hover transition
-            card.style.transition = savedStyle.transition;
-            card.style.cursor     = savedStyle.cursor || '';
-            document.body.style.overflow = '';
-
-            // 4. Fade siblings back in
-            getSiblings().forEach(function(el) {
-              el.style.transition    = 'opacity 0.3s ease';
-              el.style.opacity       = '1';
-              el.style.pointerEvents = '';
-            });
-          });
+                getSiblings().forEach(function(el) { el.style.pointerEvents = ''; });
+                gsap.to(Array.from(getSiblings()), {
+                  opacity: 1, duration: 0.35, ease: 'power2.out'
+                });
+              }
+            }
+          );
         }
 
-        // Click card body (collapsed state) → expand
         card.addEventListener('click', function() { if (!isExpanded) expand(); });
-
-        // Click ✕ → collapse
         closeBtn.addEventListener('click', function(e) { e.stopPropagation(); collapse(); });
-
-        // Width/left don't change on resize (card stays in its column)
       }
 
       setupExpand();
