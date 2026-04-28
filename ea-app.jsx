@@ -1,5 +1,7 @@
 // ea-app.jsx — Nav + App + Tweaks
 
+const IS_EMBED = new URLSearchParams(window.location.search).has('embed');
+
 const PROJECTS = [
   { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UXR', 'Product Design', 'EdTech'], href: 'Energy Ave.html', available: true },
   { id: 2, title: 'Project 02', year: null, href: 'Project 02.html', available: false },
@@ -274,9 +276,9 @@ const App = () => {
 
   return (
     <div style={{ '--section-pad': sectionPadding }}>
-      <ProjectsCard />
+      {!IS_EMBED && <ProjectsCard />}
       {/* <TOCSidebar accent={accent} /> */}
-      {tweaks.showProgress && <ProgressBar accent={accent} />}
+      {!IS_EMBED && tweaks.showProgress && <ProgressBar accent={accent} />}
       <HeroSection accent={accent} />
       <OverviewSection />
       <ResearchGoalsSection />

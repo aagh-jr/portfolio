@@ -102,13 +102,16 @@ const SectionWrap = ({ id, children, style = {} }) => (
   </section>
 );
 
-const Container = ({ children, noBorder = false }) => (
-  <div style={{ marginLeft: '20vw', width: '80vw', boxSizing: 'border-box' }}>
-    <div style={{ maxWidth: 765, margin: '0 auto', padding: '36px 48px 0', borderTop: noBorder ? 'none' : '1px solid rgba(0,0,0,0.07)' }}>
-      {children}
+const Container = ({ children, noBorder = false }) => {
+  const embed = new URLSearchParams(window.location.search).has('embed');
+  return (
+    <div style={{ marginLeft: embed ? 0 : '20vw', width: embed ? '100%' : '80vw', boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: embed ? 'none' : 765, margin: '0 auto', padding: '36px 48px 0', borderTop: noBorder ? 'none' : '1px solid rgba(0,0,0,0.07)' }}>
+        {children}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const MethodIcon = ({ type, size = 44 }) => {
   const s = size;

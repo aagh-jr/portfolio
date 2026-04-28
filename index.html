@@ -71,6 +71,28 @@
       pointer-events: auto;
     }
 
+    /* ── Case study panel (iframe loaded on expand) ─────────
+       Sits below the card (z-index 190 vs card's 200) and covers
+       the full viewport. The iframe is positioned to the right
+       of the expanded card via inline style set in JS.
+    ───────────────────────────────────────────────────────── */
+    #cs-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 190;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease 0.44s;
+    }
+    #cs-panel.cs-visible { opacity: 1; pointer-events: auto; }
+    #cs-iframe {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      border: none;
+      height: 100%;
+    }
+
     /* ── Close button (only new chrome needed — project cards reuse cardBase) ── */
     .panel-close {
       width: 32px; height: 32px;
@@ -209,43 +231,33 @@
                   <div className="card-glow" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
                 </div>
 
-                {/* Expanded panel — fades in after the shape morph completes */}
+                {/* Expanded panel — project navigator sidebar, case study loads in iframe to the right */}
                 <div className="card-panel">
 
-                  {/* Header: same labelStyle as the collapsed card label */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexShrink: 0 }}>
-                    <span style={labelStyle}>Projects</span>
+                  {/* Header */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexShrink: 0 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Projects</span>
                     <button className="panel-close" id="projects-close" aria-label="Close">✕</button>
                   </div>
 
-                  {/* Project cards — same cardBase style as every other bento card */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, flex: 1 }}>
-                    {PROJECTS.map((p, i) => {
-                      // Reuse the same glow gradients already used on the bento cards
-                      const glows = [
-                        'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)',
-                        'linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%)',
-                        'radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%)',
-                        'radial-gradient(circle at 30% 70%, rgba(180,235,200,0.7) 0%, rgba(200,240,215,0.5) 40%, #f6f3ed 100%)',
-                      ];
-                      const inner = (
-                        <>
-                          <div style={{ flex: 1, background: glows[i] }} />
-                          <div style={{ padding: '14px 18px 18px', flexShrink: 0 }}>
-                            <div style={{ fontSize: 22, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.2 }}>{p.title}</div>
-                            <div style={{ fontSize: 11, color: '#71717a', marginTop: 3 }}>{p.tags.join(' · ')}</div>
-                          </div>
-                        </>
-                      );
-                      return p.available ? (
-                        <a key={p.id} href={p.href} style={{ ...cardBase, padding: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}
-                          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; }}
-                          onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
-                        >{inner}</a>
-                      ) : (
-                        <div key={p.id} style={{ ...cardBase, padding: 0, minHeight: 0, display: 'flex', flexDirection: 'column', opacity: 0.45, cursor: 'default', pointerEvents: 'none' }}>{inner}</div>
-                      );
-                    })}
+                  {/* Project list — active project highlighted, others dimmed */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
+                    {PROJECTS.map(p => (
+                      <div key={p.id} style={{
+                        padding: '14px 16px', borderRadius: 12,
+                        background: p.available ? 'rgba(0,0,0,0.04)' : 'transparent',
+                        border: p.available ? '1px solid rgba(0,0,0,0.07)' : '1px solid transparent',
+                        opacity: p.available ? 1 : 0.4,
+                      }}>
+                        <div style={{ fontSize: 15, fontWeight: p.available ? 700 : 400, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: p.available ? 8 : 0 }}>{p.title}</div>
+                        {p.available
+                          ? <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                              {p.tags.map(t => <span key={t} style={{ fontSize: 10, fontWeight: 600, color: '#71717a', background: 'rgba(0,0,0,0.05)', borderRadius: 100, padding: '2px 8px' }}>{t}</span>)}
+                            </div>
+                          : <div style={{ fontSize: 11, color: '#71717a' }}>Coming soon</div>
+                        }
+                      </div>
+                    ))}
                   </div>
 
                 </div>
@@ -278,6 +290,11 @@
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 
+  <!-- Case study overlay — iframe loaded lazily on first expand -->
+  <div id="cs-panel">
+    <iframe id="cs-iframe" src="" title="Energy Ave. case study" allowtransparency="true"></iframe>
+  </div>
+
   <script>
     (function() {
 
@@ -299,7 +316,6 @@
         var savedRect  = null;  // card's viewport rect before going fixed
         var savedStyle = {};    // original inline styles to restore on collapse
 
-        var EXPANDED_H = 720;
         var EASING     = 'cubic-bezier(0.4,0,0.2,1)';
         var DUR        = '0.48s';
         var SHAPE_T    = [
@@ -353,23 +369,34 @@
           // 5. Re-enable transitions (shape properties only)
           card.style.transition = SHAPE_T;
 
-          // 6. Expand upward — card gets taller and slightly narrower (inset
-          //    equally on both sides so it stays centered in its column).
-          //    Bottom edge stays anchored; top moves up.
-          var leftShift  = 32;   // px left of the card's natural left edge
-          var widthInset = 28;   // px trimmed from each side (skinnier)
-          var downShift  = 22;   // px lower than hard-anchoring at bottom
-          card.style.width        = (savedRect.width - widthInset * 2) + 'px';
-          card.style.height       = EXPANDED_H + 'px';
-          card.style.left         = (savedRect.left - leftShift) + 'px';
-          card.style.top          = (savedRect.bottom - EXPANDED_H + downShift) + 'px';
+          // 6. Morph to a slim left-side navigator panel.
+          //    Width ≈ 25 % of the viewport; height fills the screen
+          //    with a little breathing room top and bottom.
+          var PAD    = 24;
+          var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
+          var panelH = window.innerHeight - PAD * 2;
+          card.style.width        = panelW + 'px';
+          card.style.height       = panelH + 'px';
+          card.style.left         = PAD + 'px';
+          card.style.top          = PAD + 'px';
           card.style.borderRadius = savedStyle.borderRadius;
-          card.style.boxShadow    = '0 -8px 48px rgba(0,0,0,0.1)';
+          card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
 
           // 7. Class toggle arms the CSS opacity transitions:
           //    collapsed content fades out immediately,
           //    expanded panel fades in after 0.38 s delay
           card.classList.add('card-expanded');
+
+          // 8. Load and reveal the case study iframe to the right of the card
+          var iframe = document.getElementById('cs-iframe');
+          var iframeLeft = PAD + panelW + PAD;
+          iframe.style.left  = iframeLeft + 'px';
+          iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
+          if (!iframe.getAttribute('data-loaded')) {
+            iframe.src = 'Energy Ave.html?embed';
+            iframe.setAttribute('data-loaded', '1');
+          }
+          document.getElementById('cs-panel').classList.add('cs-visible');
           document.body.style.overflow = 'hidden';
         }
 
@@ -377,8 +404,9 @@
           if (!isExpanded) return;
           isExpanded = false;
 
-          // 1. Reverse the content cross-fade
+          // 1. Reverse the content cross-fade and hide the case study panel
           card.classList.remove('card-expanded');
+          document.getElementById('cs-panel').classList.remove('cs-visible');
 
           // 2. Animate shape back to the original size/position
           card.style.width        = savedRect.width    + 'px';

@@ -87,6 +87,9 @@
     /* Page transitions */
     body { transition: opacity 0.3s ease-in-out; }
     body.page-entering, body.page-leaving { opacity: 0; }
+
+    /* When loaded as an embedded iframe — hide chrome that lives on the parent */
+    body.is-embed .nav-pill  { display: none !important; }
   </style>
 </head>
 <body>
@@ -116,6 +119,11 @@
 
   <script>
     (function() {
+      // Mark body when loaded as an embedded iframe so CSS can hide chrome
+      if (new URLSearchParams(location.search).has('embed')) {
+        document.body.classList.add('is-embed');
+      }
+
       var morphData = sessionStorage.getItem('projects-morph');
 
       if (morphData) {
