@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦭</text></svg>">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abel Angel — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #fcf9f3;
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(56px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-fade    { animation: fadeIn  0.6s ease-out both; }
+    .anim-fade-d1 { animation: fadeIn  0.6s ease-out 0.2s both; }
+    .anim-up-1    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
+    .anim-up-2    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.52s both; }
+    .anim-up-3    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.64s both; }
+
+    @media (max-width: 768px) {
+      .bento-outer { padding: 0 20px !important; }
+      .bento-grid  { grid-template-columns: 1fr !important; }
+    }
+
+    body { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+    body.page-entering { opacity: 0; transform: translateY(8px); }
+    body.page-leaving  { opacity: 0; transform: translateY(-8px); }
+
+    /* ── State-based layout ─────────────────────────────────────────
+       #home-view holds the bento grid. It fades out when we enter the
+       projects view. The sidebar and case study panel are always in the
+       DOM and become visible via class toggle — never display:none.
+    ─────────────────────────────────────────────────────────────── */
+    #home-view {
+      transition: opacity 250ms ease;
+    }
+    .state-projects #home-view {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── Projects sidebar ───────────────────────────────────────────
+       Starts hidden (opacity 0, slid left). .sidebar-ready triggers
+       the slide-in. transition is set before class is added so the
+       browser registers the start state first.
+    ─────────────────────────────────────────────────────────────── */
+    #projects-sidebar {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      width: 300px;
+      bottom: 24px;
+      background: #f6f3ed;
+      border-radius: 18px;
+      border: 1px solid rgba(0,0,0,0.05);
+      padding: 28px 32px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateX(-20px);
+      pointer-events: none;
+      transition: opacity 250ms ease, transform 300ms ease;
+    }
+    #projects-sidebar.sidebar-ready {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    /* ── Case study overlay ─────────────────────────────────────────
+       Full-screen overlay; iframe sits to the right of the sidebar.
+       JS delays adding .cs-visible until after the sidebar has settled.
+    ─────────────────────────────────────────────────────────────── */
+    #cs-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 190;
+      background: #fff;
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      transition: opacity 250ms ease, transform 300ms ease;
+    }
+    #cs-panel.cs-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #cs-iframe {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      border: none;
+      height: 100%;
+    }
+
+    /* ── Close button ─────────────────────────────────────────────── */
+    .panel-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.04);
+      color: #71717a;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+      padding: 0;
+    }
+    .panel-close:hover { background: rgba(0,0,0,0.08); color: #1c1c18; }
+  </style>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    const PROJECTS = [
+      {
+        id: 1,
+        title: 'Energy Ave.',
+        tags: ['UX Research', 'Game Design'],
+        year: '2024',
+        desc: 'A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.',
+        thumb: 'uploads/Energy_Ave.png',
+        href: 'Energy Ave.html',
+        available: true,
+        preview: [
+          { heading: 'Key Research Insights', bullets: [
+            'Users understood the flow quickly and used a mental model that triggered each screen transition naturally.',
+            'Paul took a moment to process, then had a self-described "aha moment" — he initially noted the bed as interactive, then corrected himself by reasoning that only electricity-conducting items should be interactable. This unprompted self-correction validated the game\'s internal logic.',
+            'Preesha perceived the game as a "storyline progressing through a household" — she correctly predicted that clicking items would trigger pop-ups and transitions.',
+          ]},
+        ],
+      },
+      {
+        id: 2,
+        title: 'Project 02',
+        tags: ['Coming Soon'],
+        year: '',
+        desc: 'More work on the way.',
+        thumb: null,
+        href: 'placeholder.html?title=Project%2002',
+        available: false,
+        preview: null,
+      },
+      {
+        id: 3,
+        title: 'Project 03',
+        tags: ['Coming Soon'],
+        year: '',
+        desc: 'More work on the way.',
+        thumb: null,
+        href: 'placeholder.html?title=Project%2003',
+        available: false,
+        preview: null,
+      },
+      {
+        id: 4,
+        title: 'Project 04',
+        tags: ['Coming Soon'],
+        year: '',
+        desc: 'More work on the way.',
+        thumb: null,
+        href: 'placeholder.html?title=Project%2004',
+        available: false,
+        preview: null,
+      },
+    ];
+
+    const App = () => {
+      const [activeId, setActiveId] = React.useState(1);
+
+      const loadProject = (p) => {
+        if (!p.href) return;
+        setActiveId(p.id);
+        var iframe = document.getElementById('cs-iframe');
+        if (iframe) {
+          iframe.src = p.available ? p.href + '?embed' : p.href;
+          iframe.setAttribute('data-loaded', '1');
+        }
+      };
+
+      const cardBg = '#f6f3ed';
+      const cardBorder = '1px solid rgba(0,0,0,0.05)';
+      const cardBase = {
+        background: cardBg, border: cardBorder, borderRadius: 18,
+        padding: 33, cursor: 'pointer',
+        position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        transition: 'transform 0.25s, box-shadow 0.25s', textDecoration: 'none', color: 'inherit',
+      };
+      const labelStyle = {
+        fontSize: 32, fontWeight: 800, color: '#1c1c18',
+        letterSpacing: '-0.02em', lineHeight: 1.2,
+        position: 'relative', zIndex: 1,
+      };
+
+      return (
+        <>
+          {/* ── Home view: bento grid ── */}
+          <div id="home-view">
+            <div className="bento-outer" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px' }}>
+              <div style={{ padding: '48px 0 96px' }}>
+                <div className="bento-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+
+                  {/* ── TOP CARD: full width hero ── */}
+                  <div className="anim-fade" style={{
+                    ...cardBase, gridColumn: '1 / -1',
+                    cursor: 'default', minHeight: 260,
+                    justifyContent: 'center',
+                  }}>
+                    <div style={{
+                      fontSize: 40, fontWeight: 800, letterSpacing: '-0.016em',
+                      lineHeight: 1, marginBottom: 24,
+                    }}>
+                      <span style={{ color: '#71717a', fontWeight: 400 }}>Hey! I'm </span>
+                      <span style={{ color: '#141414' }}>Abel Angel</span>
+                    </div>
+                    <p className="anim-fade-d1" style={{
+                      fontSize: 25, fontWeight: 700, color: '#71717a',
+                      lineHeight: 1.2, maxWidth: 520,
+                    }}>
+                      I'm a UC San Diego new grad exploring the intersection of cognitive science and digital experiences. I build tools that help people understand complex data and story lines through intuitive interactions.
+                    </p>
+                  </div>
+
+                  {/* ── Projects card — click triggers state-projects ── */}
+                  <div id="card-projects" className="anim-up-1" style={{ ...cardBase, minHeight: 400 }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)';
+                      e.currentTarget.querySelector('.card-glow').style.opacity = 1;
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.transform = '';
+                      e.currentTarget.style.boxShadow = '';
+                      e.currentTarget.querySelector('.card-glow').style.opacity = 0;
+                    }}
+                  >
+                    <span style={labelStyle}>Projects</span>
+                    <div className="card-glow" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                  </div>
+
+                  {/* ── About Me ── */}
+                  <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 400 }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow2').style.opacity = 1; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow2').style.opacity = 0; }}
+                  >
+                    <span style={labelStyle}>About Me</span>
+                    <div className="card-glow2" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'linear-gradient(180deg, #f6f3ed 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                  </a>
+
+                  {/* ── Contact ── */}
+                  <a href="contact.html" className="anim-up-3" style={{ ...cardBase, minHeight: 400 }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow3').style.opacity = 1; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow3').style.opacity = 0; }}
+                  >
+                    <span style={labelStyle}>Contact</span>
+                    <div className="card-glow3" style={{ position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none', background: 'radial-gradient(circle at 50% 50%, rgba(255,221,152,1) 0%, rgba(251,232,194,1) 50%, #f6f3ed 100%)', opacity: 0, transition: 'opacity 0.4s' }} />
+                  </a>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Projects sidebar — always in DOM, never display:none ── */}
+          <div id="projects-sidebar">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexShrink: 0 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Projects</span>
+              <button className="panel-close" id="projects-close" aria-label="Close">✕</button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
+              {PROJECTS.map(p => (
+                <button key={p.id} onClick={() => loadProject(p)} style={{
+                  width: '100%', textAlign: 'left', fontFamily: 'inherit',
+                  padding: '14px 16px', borderRadius: 12,
+                  background: activeId === p.id ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.02)',
+                  border: activeId === p.id ? '1px solid rgba(0,0,0,0.12)' : '1px solid rgba(0,0,0,0.05)',
+                  cursor: 'pointer', transition: 'background 0.15s, border-color 0.15s',
+                  opacity: p.available ? 1 : 0.5,
+                }}
+                  onMouseEnter={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; }}
+                  onMouseLeave={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.02)'; }}
+                >
+                  <div style={{ fontSize: 15, fontWeight: p.available ? 700 : 400, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6 }}>{p.title}</div>
+                  <div style={{ fontSize: 11, color: '#71717a' }}>
+                    {p.available ? p.tags.join(' · ') : 'Coming soon'}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+
+  <!-- Case study overlay — iframe loaded lazily on first enter -->
+  <div id="cs-panel">
+    <iframe id="cs-iframe" src="" title="Energy Ave. case study" allowtransparency="true"></iframe>
+  </div>
+
+  <script>
+    (function() {
+
+      // ── Page enter fade ─────────────────────────────────────────
+      document.body.classList.add('page-entering');
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
+      });
+
+      // ── Projects state toggle ────────────────────────────────────
+      // Two-phase: Phase 1 fades cards out, Phase 2 brings sidebar
+      // and case study in after cards are gone. All elements stay in
+      // the DOM — visibility is controlled via opacity + pointer-events.
+      var inProjectsView = false;
+
+      function enterProjects() {
+        if (inProjectsView) return;
+        inProjectsView = true;
+
+        // Phase 1 — home cards fade out (250ms, CSS transition on #home-view)
+        document.body.classList.add('state-projects');
+
+        // Phase 2 — sidebar slides in, case study fades in
+        setTimeout(function() {
+          var sidebar = document.getElementById('projects-sidebar');
+          var iframe  = document.getElementById('cs-iframe');
+
+          // sidebar left(24) + width(300) + gap(24) = 348px
+          var iframeLeft = 348;
+          iframe.style.left  = iframeLeft + 'px';
+          iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
+
+          if (!iframe.getAttribute('data-loaded')) {
+            iframe.src = 'Energy Ave.html?embed';
+            iframe.setAttribute('data-loaded', '1');
+          }
+
+          // rAF forces browser to register opacity:0 / translateX(-20px)
+          // as the start state before animating to the end state
+          requestAnimationFrame(function() {
+            sidebar.classList.add('sidebar-ready');
+            setTimeout(function() {
+              document.getElementById('cs-panel').classList.add('cs-visible');
+              document.body.style.overflow = 'hidden';
+            }, 16);
+          });
+        }, 266); // 250ms card fade + 16ms buffer
+      }
+
+      function exitProjects() {
+        if (!inProjectsView) return;
+        inProjectsView = false;
+
+        // Phase 1 — sidebar and case study fade out (250ms / 300ms)
+        document.getElementById('projects-sidebar').classList.remove('sidebar-ready');
+        document.getElementById('cs-panel').classList.remove('cs-visible');
+        document.body.style.overflow = '';
+
+        // Phase 2 — home cards fade back in after sidebar is gone
+        setTimeout(function() {
+          document.body.classList.remove('state-projects');
+        }, 316); // 300ms sidebar fade + 16ms buffer
+      }
+
+      // React (Babel) renders asynchronously — poll until elements exist
+      function setupToggle() {
+        var card     = document.getElementById('card-projects');
+        var closeBtn = document.getElementById('projects-close');
+        if (!card || !closeBtn) { requestAnimationFrame(setupToggle); return; }
+
+        card.addEventListener('click', function() { enterProjects(); });
+        closeBtn.addEventListener('click', function(e) { e.stopPropagation(); exitProjects(); });
+      }
+
+      setupToggle();
+
+      // ── Page-leave fade for all anchor navigation ────────────────
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        e.preventDefault();
+        document.body.classList.add('page-leaving');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+
+    })();
+  </script>
+
+</body>
+</html>

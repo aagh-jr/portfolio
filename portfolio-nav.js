@@ -1,10 +1,10 @@
 // Shared nav + footer injector
 
 (function () {
-  const PAGE = location.pathname.split('/').pop() || 'index.html';
+  const PAGE = location.pathname.split('/').pop() || 'home.html';
 
   const links = [
-    { href: 'index.html',    label: 'Home' },
+    { href: 'home.html',    label: 'Home' },
     { href: 'projects.html', label: 'Projects' },
     { href: 'about.html',    label: 'About' },
     { href: 'contact.html',  label: 'Contact' },
@@ -14,7 +14,7 @@
   nav.className = 'pf-nav';
   nav.innerHTML = `
     <div class="pf-nav-inner">
-      <a href="index.html" class="pf-nav-logo">Abel Angel<span>.</span></a>
+      <a href="home.html" class="pf-nav-logo">Abel Angel<span>.</span></a>
       <div class="pf-nav-links">
         ${links.map(l => `<a href="${l.href}" class="${PAGE === l.href ? 'active' : ''}">${l.label}</a>`).join('')}
       </div>
