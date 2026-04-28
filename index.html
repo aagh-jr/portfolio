@@ -331,64 +331,70 @@
           if (isExpanded) return;
           isExpanded = true;
 
-          // 1. Snapshot position before touching the DOM
-          savedRect             = card.getBoundingClientRect();
-          savedStyle.transition = card.style.transition;
+          // 1. Kill any hover transform/shadow instantly so the rect we
+          //    capture reflects the card's true resting position, not a
+          //    lifted state. Without this the card "jumps" when mouseLeave
+          //    fires and clears the transform after we've already snapped.
+          savedStyle.transition   = card.style.transition;
           savedStyle.borderRadius = card.style.borderRadius;
-          savedStyle.cursor     = card.style.cursor;
+          savedStyle.cursor       = card.style.cursor;
+          card.style.transition   = 'none';
+          card.style.transform    = '';
+          card.style.boxShadow    = '';
+          card.offsetWidth; // flush so the reset is painted before we measure
 
-          // 2. Fade siblings out (they remain in the DOM so the grid row
-          //    height doesn't collapse, keeping layout stable)
+          // 2. Capture the true resting position
+          savedRect = card.getBoundingClientRect();
+
+          // 3. Fade siblings out
           getSiblings().forEach(function(el) {
             el.style.transition    = 'opacity 0.18s ease';
             el.style.opacity       = '0';
             el.style.pointerEvents = 'none';
           });
 
-          // 3. Snap card to position:fixed at its current viewport coords —
-          //    visually identical to where it sits in the grid, no jump
-          card.style.transition = 'none';
-          card.style.position   = 'fixed';
-          card.style.top        = savedRect.top    + 'px';
-          card.style.left       = savedRect.left   + 'px';
-          card.style.width      = savedRect.width  + 'px';
-          card.style.height     = savedRect.height + 'px';
-          card.style.margin     = '0';
-          card.style.zIndex     = '200';
-          card.style.cursor     = 'default';
+          // 4. Snap card to position:fixed at its exact current location —
+          //    still transition:none so this is invisible
+          card.style.position = 'fixed';
+          card.style.top      = savedRect.top    + 'px';
+          card.style.left     = savedRect.left   + 'px';
+          card.style.width    = savedRect.width  + 'px';
+          card.style.height   = savedRect.height + 'px';
+          card.style.margin   = '0';
+          card.style.zIndex   = '200';
+          card.style.cursor   = 'default';
 
-          // 4. Force a reflow so the browser paints the snapped position
-          //    before we re-enable transitions
-          card.offsetWidth;
+          // 5. rAF ensures the browser has *painted* the snapped frame
+          //    before we enable transitions — prevents the double-rect flash
+          requestAnimationFrame(function() {
+            card.style.transition = SHAPE_T;
 
-          // 5. Re-enable transitions (shape properties only)
-          card.style.transition = SHAPE_T;
+            // 6. Morph to a slim left-side navigator panel
+            var PAD    = 24;
+            var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
+            var panelH = window.innerHeight - PAD * 2;
+            card.style.width        = panelW + 'px';
+            card.style.height       = panelH + 'px';
+            card.style.left         = PAD + 'px';
+            card.style.top          = PAD + 'px';
+            card.style.borderRadius = savedStyle.borderRadius;
+            card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
 
-          // 6. Morph to a slim left-side navigator panel
-          var PAD    = 24;
-          var panelW = Math.round(Math.min(320, window.innerWidth * 0.25));
-          var panelH = window.innerHeight - PAD * 2;
-          card.style.width        = panelW + 'px';
-          card.style.height       = panelH + 'px';
-          card.style.left         = PAD + 'px';
-          card.style.top          = PAD + 'px';
-          card.style.borderRadius = savedStyle.borderRadius;
-          card.style.boxShadow    = '0 8px 40px rgba(0,0,0,0.1)';
+            // 7. Class toggle: collapsed content fades out, panel fades in
+            card.classList.add('card-expanded');
+            document.body.style.overflow = 'hidden';
 
-          // 7. Class toggle: collapsed content fades out, panel fades in
-          card.classList.add('card-expanded');
-          document.body.style.overflow = 'hidden';
-
-          // 8. Position and reveal the case study iframe to the right of the card
-          var iframe = document.getElementById('cs-iframe');
-          var iframeLeft = PAD + panelW + PAD;
-          iframe.style.left  = iframeLeft + 'px';
-          iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
-          if (!iframe.getAttribute('data-loaded')) {
-            iframe.src = 'Energy Ave.html?embed';
-            iframe.setAttribute('data-loaded', '1');
-          }
-          document.getElementById('cs-panel').classList.add('cs-visible');
+            // 8. Position and reveal the case study iframe to the right of the card
+            var iframe = document.getElementById('cs-iframe');
+            var iframeLeft = PAD + panelW + PAD;
+            iframe.style.left  = iframeLeft + 'px';
+            iframe.style.width = (window.innerWidth - iframeLeft) + 'px';
+            if (!iframe.getAttribute('data-loaded')) {
+              iframe.src = 'Energy Ave.html?embed';
+              iframe.setAttribute('data-loaded', '1');
+            }
+            document.getElementById('cs-panel').classList.add('cs-visible');
+          }); // end requestAnimationFrame
         }
 
         function collapse() {
