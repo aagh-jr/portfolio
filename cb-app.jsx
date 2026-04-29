@@ -128,15 +128,6 @@ const CBApp = () => {
       <CBOutcomeSection />
       <CBReflectionSection />
 
-      <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)', padding: '64px 40px 80px', textAlign: 'center', background: '#fff' }}>
-        <div style={{ fontSize: 13, color: '#bbb', marginBottom: 16, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 500 }}>Case Study</div>
-        <div style={{ fontSize: 32, fontWeight: 500, color: '#111', marginBottom: 24, letterSpacing: '-0.025em', fontFamily: 'Lora, Georgia, serif', fontStyle: 'italic' }}>Cabrillo National Monument.</div>
-        <a href="index.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#999', fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(0,0,0,0.12)', paddingBottom: 2, transition: 'color 0.15s' }}
-          onMouseEnter={e => e.currentTarget.style.color = '#111'}
-          onMouseLeave={e => e.currentTarget.style.color = '#999'}>
-          ← Back to Home
-        </a>
-      </div>
     </div>
   );
 };
