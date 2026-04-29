@@ -5,7 +5,7 @@ const IS_EMBED = new URLSearchParams(window.location.search).has('embed');
 const PROJECTS = [
   { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UXR', 'Product Design', 'EdTech'], href: 'Energy Ave.html', available: true },
   { id: 2, title: "Val's Kitchen", year: '2024', tags: ['UXR', 'Product Design', 'B2B'], href: 'Project 02.html', available: true },
-  { id: 3, title: 'Project 03', year: null, href: 'Project 03.html', available: false },
+  { id: 3, title: 'Cabrillo NM', year: '2023', tags: ['Visual Design', 'Print', 'NPS'], href: 'Project 03.html', available: true },
   { id: 4, title: 'Project 04', year: null, href: 'Project 04.html', available: false },
 ];
 
