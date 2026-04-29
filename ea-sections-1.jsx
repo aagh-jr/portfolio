@@ -42,27 +42,29 @@ const HeroSection = () =>
         <div style={{
           padding: '16px 32px 16px',
           borderLeft: '1px solid rgba(0,0,0,0.08)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6,
         }}>
-          {[
-            { label: 'Figma Files', href: '#' /* CONFIRM: paste Figma URL here */ },
-            { label: 'Full Report',  href: '#' /* CONFIRM: paste full report URL or PDF link here */ },
-          ].map(({ label, href }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                fontSize: 14, fontWeight: 500, color: '#111',
-                textDecoration: 'none', transition: 'opacity 0.15s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-            >
-              {label}
-              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
-                <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-          ))}
+          <div style={{ fontSize: 10, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 5 }}>Links</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {[
+              { label: 'Figma Files', href: '#' /* CONFIRM: paste Figma URL here */ },
+              { label: 'Full Report',  href: '#' /* CONFIRM: paste full report URL or PDF link here */ },
+            ].map(({ label, href }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  fontSize: 14, fontWeight: 500, color: '#111',
+                  textDecoration: 'none', transition: 'opacity 0.15s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              >
+                {label}
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
+                  <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
