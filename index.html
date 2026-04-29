@@ -15,7 +15,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #fcf9f3;
+      background: #ffffff;
       font-family: 'Manrope', sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -63,7 +63,7 @@
       height: calc(100vh - 48px);
       background: #f6f3ed;
       border-radius: 18px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1.5px solid rgba(0,0,0,0.05);
       padding: 28px 32px;
       z-index: 200;
       display: flex;
@@ -111,7 +111,7 @@
     .panel-close {
       width: 32px; height: 32px;
       border-radius: 8px;
-      border: 1px solid rgba(0,0,0,0.1);
+      border: 1.5px solid rgba(0,0,0,0.1);
       background: rgba(0,0,0,0.04);
       color: #71717a;
       font-size: 14px;
@@ -316,7 +316,7 @@
       };
 
       const cardBg = '#f6f3ed';
-      const cardBorder = '1px solid rgba(0,0,0,0.05)';
+      const cardBorder = '1.5px solid rgba(0,0,0,0.05)';
       const cardBase = {
         background: cardBg, border: cardBorder, borderRadius: 18,
         padding: 33, cursor: 'pointer',
@@ -412,7 +412,7 @@
                   width: '100%', textAlign: 'left', fontFamily: 'inherit',
                   padding: '14px 16px', borderRadius: 12,
                   background: activeId === p.id ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.02)',
-                  border: activeId === p.id ? '1px solid rgba(0,0,0,0.12)' : '1px solid rgba(0,0,0,0.05)',
+                  border: activeId === p.id ? '1.5px solid rgba(0,0,0,0.12)' : '1.5px solid rgba(0,0,0,0.05)',
                   cursor: 'pointer', transition: 'background 0.15s, border-color 0.15s',
                   opacity: p.available ? 1 : 0.5,
                 }}

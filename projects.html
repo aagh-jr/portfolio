@@ -12,7 +12,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #fcf9f3;
+      background: #ffffff;
       background-image:
         radial-gradient(at 20% 30%, rgba(171,195,233,0.35) 0px, transparent 55%),
         radial-gradient(at 75% 70%, rgba(255,221,152,0.25) 0px, transparent 50%),
@@ -34,7 +34,7 @@
       display: flex; align-items: center; justify-content: center;
       transition: box-shadow 0.15s; cursor: pointer;
     }
-    .nav-btn.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
+    .nav-btn.active { box-shadow: 0 0 0 2px rgba(0,0,0,0.22); }
     .nav-btn svg { display: block; }
     .nav-sep { display: none; }
 
@@ -71,13 +71,13 @@
       background: rgba(255, 255, 255, 0.38);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.78);
+      border: 1.5px solid rgba(255, 255, 255, 0.78);
       box-shadow:
         0 4px 32px rgba(0,0,0,0.08),
-        inset 0 1.5px 0 rgba(255,255,255,1),
-        inset 0 -1px 0 rgba(255,255,255,0.2),
-        inset 1.5px 0 0 rgba(255,255,255,0.55),
-        inset -1.5px 0 0 rgba(255,255,255,0.2);
+        inset 0 2px 0 rgba(255,255,255,1),
+        inset 0 -1.5px 0 rgba(255,255,255,0.2),
+        inset 2px 0 0 rgba(255,255,255,0.55),
+        inset -2px 0 0 rgba(255,255,255,0.2);
       transition: transform 0.25s, box-shadow 0.25s;
     }
     /* diagonal light sweep — top-left refraction */
@@ -109,10 +109,10 @@
       transform: translateY(-5px);
       box-shadow:
         0 20px 56px rgba(0,0,0,0.12),
-        inset 0 1.5px 0 rgba(255,255,255,1),
-        inset 0 -1px 0 rgba(255,255,255,0.2),
-        inset 1.5px 0 0 rgba(255,255,255,0.55),
-        inset -1.5px 0 0 rgba(255,255,255,0.2);
+        inset 0 2px 0 rgba(255,255,255,1),
+        inset 0 -1.5px 0 rgba(255,255,255,0.2),
+        inset 2px 0 0 rgba(255,255,255,0.55),
+        inset -2px 0 0 rgba(255,255,255,0.2);
     }
     .project-thumb, .project-title, .project-desc { position: relative; z-index: 1; }
 
