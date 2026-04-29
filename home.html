@@ -160,7 +160,14 @@
       const card    = document.getElementById('card-projects');
       const sidebar = document.getElementById('projects-sidebar');
       const csPanel = document.getElementById('cs-panel');
+      const iframe  = document.getElementById('cs-iframe');
       if (!card || !sidebar || !csPanel) return;
+
+      /* Safety net: if the preload didn't run (e.g. rapid click before
+         useEffect's idle callback fires), set iframe src now */
+      if (iframe && !iframe.getAttribute('src')) {
+        iframe.src = 'Energy Ave.html?embed';
+      }
 
       clearCardHover(card);
 
@@ -296,13 +303,16 @@
       const [activeId, setActiveId] = React.useState(1);
 
       /* Preload the iframe right after mount so the case study panel
-         reveals already-painted content (no white flash on first open) */
+         reveals already-painted content. Use getAttribute('src') for the
+         empty check — iframe.src (the property) resolves "" to the host
+         page URL and is always truthy. */
       React.useEffect(() => {
         const iframe = document.getElementById('cs-iframe');
-        if (!iframe || iframe.src) return;
+        if (!iframe) return;
+        if (iframe.getAttribute('src')) return;
         const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 200));
         idle(() => {
-          if (!iframe.src) iframe.src = 'Energy Ave.html?embed';
+          if (!iframe.getAttribute('src')) iframe.src = 'Energy Ave.html?embed';
         });
       }, []);
 
