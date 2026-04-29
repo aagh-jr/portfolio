@@ -24,7 +24,7 @@ const HeroSection = () =>
 
       {/* Metadata row */}
       <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gap: 0,
+        display: 'grid', gridTemplateColumns: 'repeat(5, auto)', gap: 0,
         width: 'fit-content', marginBottom: 64,
         borderTop: '1px solid rgba(0,0,0,0.08)',
         borderBottom: '1px solid rgba(0,0,0,0.08)',
@@ -38,6 +38,32 @@ const HeroSection = () =>
             <div style={{ fontSize: 14, fontWeight: 500, color: '#111' }}>{v}</div>
           </div>
         )}
+        {/* Links cell — Figma + Full report */}
+        <div style={{
+          padding: '16px 32px 16px',
+          borderLeft: '1px solid rgba(0,0,0,0.08)',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6,
+        }}>
+          {[
+            { label: 'Figma Files', href: '#' /* CONFIRM: paste Figma URL here */ },
+            { label: 'Full Report',  href: '#' /* CONFIRM: paste full report URL or PDF link here */ },
+          ].map(({ label, href }) => (
+            <a key={label} href={href} target="_blank" rel="noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                fontSize: 14, fontWeight: 500, color: '#111',
+                textDecoration: 'none', transition: 'opacity 0.15s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+            >
+              {label}
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
+                <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          ))}
+        </div>
       </div>
 
       <Placeholder label="Hero screenshot — Energy Ave gameplay" height={480} note="Drop game screenshot / screen recording here — bedroom or bathroom scene" />
