@@ -4,15 +4,40 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦭</text></svg>">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project 04 — Coming Soon</title>
+  <title>UCSD Laundry App — UX Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #faf9f6; font-family: 'Manrope', sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; }
-    a { color: inherit; text-decoration: none; }
-  
+    :root {
+      --cream: #FAFAF8;
+      --white: #FFFFFF;
+      --black: #111111;
+      --gray: #6B6B6B;
+      --border: rgba(0,0,0,0.08);
+      --green: #3DAA74;
+      --green-light: #F0FAF5;
+      --amber: #E07D2E;
+      --accent: #3DAA74;
+      --font: 'DM Sans', sans-serif;
+      --serif: 'Lora', Georgia, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    ::selection { background: #EBF7F2; color: #2A8A5C; }
+
     .nav-pill {
       position: fixed; top: 16px; right: 48px; z-index: 300;
       display: flex; align-items: center; gap: 16px; padding: 8px;
@@ -22,111 +47,75 @@
       display: flex; align-items: center; justify-content: center;
       transition: box-shadow 0.15s; text-decoration: none;
     }
-    .nav-btn.active { box-shadow: 0 0 0 1.5px rgba(0,0,0,0.22); }
+    .nav-btn.active { box-shadow: 0 0 0 2px rgba(0,0,0,0.22); }
     @media (max-width: 768px) { .nav-pill { right: 20px; } }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: #EBF7F2;
+      color: var(--accent, #3DAA74);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 10px 16px;
+      text-align: left;
+    }
+    td {
+      padding: 11px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(20,20,20,0.06);
+      vertical-align: middle;
+      line-height: 1.5;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(61,170,116,0.025); }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+
+    section { padding: var(--section-pad, 96px 0); }
+    button { font-family: var(--font); }
+
+    body { transition: opacity 0.3s ease-in-out; }
+    body.page-entering, body.page-leaving { opacity: 0; }
+
+    body.is-embed .nav-pill  { display: none !important; }
   </style>
 </head>
 <body>
+
   <nav class="nav-pill" aria-label="Site navigation">
     <a href="contact.html" class="nav-btn" title="Contact" style="color:#71717a">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 5.5L8 9.5L14 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </a>
   </nav>
+
   <div id="root"></div>
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script type="text/babel">
-    const PROJECTS = [
-      { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UXR', 'Product Design', 'EdTech'], href: 'Energy Ave.html', available: true },
-      { id: 2, title: 'Project 02', year: null, href: 'Project 02.html', available: false },
-      { id: 3, title: 'Project 03', year: null, href: 'Project 03.html', available: false },
-      { id: 4, title: 'Project 04', year: null, href: 'Project 04.html', available: false },
-    ];
+  <script type="text/babel" src="ea-shared.jsx"></script>
+  <script type="text/babel" src="ld-sections.jsx"></script>
+  <script type="text/babel" src="ld-app.jsx"></script>
 
-    const ProjectsCard = () => {
-      const currentFile = window.location.pathname.split('/').pop() || window.location.href.split('/').pop();
-      return (
-        <div style={{
-          position: 'fixed',
-          top: '5vw',
-          bottom: '5vw',
-          left: '5vw',
-          width: '18vw',
-          background: 'rgba(255, 255, 255, 0.35)',
-          backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-          borderRadius: 20,
-          border: '1px solid rgba(255, 255, 255, 0.55)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          zIndex: 100,
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 18px 14px' }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#141414', letterSpacing: '-0.01em' }}>Projects</span>
-            <a href="index.html" style={{
-              background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: 100,
-              width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', textDecoration: 'none', flexShrink: 0, transition: 'background 0.15s',
-            }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.13)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.07)'}
-            >
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#141414" strokeWidth="1.5" strokeLinejoin="round"/>
-              </svg>
-            </a>
-          </div>
-          <div style={{ padding: '10px 12px', flex: 1, overflowY: 'auto' }}>
-            {PROJECTS.map((p) => {
-              const isActive = decodeURIComponent(currentFile) === p.href;
-              return (
-                <a key={p.id} href={p.href}
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '14px 16px', borderRadius: 14,
-                    background: isActive ? 'rgba(0,0,0,0.03)' : 'transparent',
-                    marginBottom: 2, cursor: 'pointer', textDecoration: 'none', transition: 'background 0.15s',
-                  }}
-                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(0,0,0,0.03)'; }}
-                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
-                >
-                  <div>
-                    <div style={{ fontSize: 15, fontWeight: isActive ? 700 : 400, color: p.available ? '#141414' : '#b8b8b0', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6 }}>{p.title}</div>
-                    {p.available && p.tags ? (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                        {p.tags.map(t => (
-                          <span key={t} style={{ fontSize: 10, fontWeight: 600, color: '#888', background: 'rgba(0,0,0,0.06)', borderRadius: 100, padding: '2px 8px', letterSpacing: '0.01em' }}>{t}</span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div style={{ fontSize: 12, color: '#a8a8a0', fontWeight: 400 }}>{p.available ? p.year : 'Coming soon'}</div>
-                    )}
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      );
-    };
-
-    const Page = () => (
-      <>
-        <ProjectsCard />
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: 260, paddingRight: 48 }}>
-          <div style={{ textAlign: 'center', maxWidth: 480 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, color: '#c0c0b8', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>04</div>
-            <h1 style={{ fontSize: 56, fontWeight: 700, color: '#d8d8d0', letterSpacing: '-0.025em', lineHeight: 1, marginBottom: 16, fontFamily: 'Manrope, sans-serif' }}>Project 04</h1>
-            <p style={{ fontSize: 15, color: '#c8c8c0', lineHeight: 1.6 }}>Coming soon</p>
-          </div>
-        </div>
-      </>
-    );
-
-    ReactDOM.createRoot(document.getElementById('root')).render(<Page />);
+  <script>
+    (function() {
+      if (new URLSearchParams(location.search).has('embed')) {
+        document.body.classList.add('is-embed');
+      }
+      document.body.classList.add('page-entering');
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
+      });
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        e.preventDefault();
+        document.body.classList.add('page-leaving');
+        setTimeout(function() { window.location.href = href; }, 300);
+      });
+    })();
   </script>
 </body>
 </html>

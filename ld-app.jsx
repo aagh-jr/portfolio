@@ -1,33 +1,21 @@
-// vk-app.jsx — Val's Kitchen App: nav, projects card, composition
+// ld-app.jsx — UCSD Laundry App: nav, projects card, composition
 
-const VK_IS_EMBED = new URLSearchParams(window.location.search).has('embed');
+const LD_IS_EMBED = new URLSearchParams(window.location.search).has('embed');
 
-const VK_PROJECTS = [
+const LD_PROJECTS = [
   { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UXR', 'Product Design', 'EdTech'], href: 'Energy Ave.html', available: true },
   { id: 2, title: "Val's Kitchen", year: '2024', tags: ['UXR', 'Product Design', 'B2B'], href: 'Project 02.html', available: true },
   { id: 3, title: 'Cabrillo NM', year: '2023', tags: ['Visual Design', 'Print', 'NPS'], href: 'Project 03.html', available: true },
   { id: 4, title: 'UCSD Laundry App', year: '2025', tags: ['UX Design', 'Participatory'], href: 'Project 04.html', available: true },
 ];
 
-const VK_NAV_ITEMS = [
-  { id: 'overview',     label: 'Overview' },
-  { id: 'role',         label: 'My Role' },
-  { id: 'methodology',  label: 'Methods' },
-  { id: 'participants', label: 'Scenarios' },
-  { id: 'findings',     label: 'Findings' },
-  { id: 'synthesis',    label: 'Synthesis' },
-  { id: 'decisions',    label: 'Decisions' },
-  { id: 'prototype',    label: 'Prototype' },
-  { id: 'reflection',   label: 'Reflection' },
-];
-
-const VK_TWEAK_DEFAULTS = {
+const LD_TWEAK_DEFAULTS = {
   accentColor: '#3DAA74',
   spacing: 'normal',
   showProgress: true,
 };
 
-const VKProjectsCard = () => {
+const LDProjectsCard = () => {
   const currentFile = window.location.pathname.split('/').pop() || window.location.href.split('/').pop();
   return (
     <div id="projects-card" style={{
@@ -57,7 +45,7 @@ const VKProjectsCard = () => {
         </a>
       </div>
       <div style={{ padding: '10px 12px', flex: 1, overflowY: 'auto' }}>
-        {VK_PROJECTS.map((p) => {
+        {LD_PROJECTS.map((p) => {
           const isActive = decodeURIComponent(currentFile) === p.href;
           return (
             <a key={p.id} href={p.href} style={{
@@ -100,7 +88,7 @@ const VKProjectsCard = () => {
   );
 };
 
-const VKProgressBar = ({ accent }) => {
+const LDProgressBar = ({ accent }) => {
   const [pct, setPct] = React.useState(0);
   React.useEffect(() => {
     const onScroll = () => {
@@ -118,8 +106,8 @@ const VKProgressBar = ({ accent }) => {
   );
 };
 
-const VKApp = () => {
-  const [tweaks] = React.useState(VK_TWEAK_DEFAULTS);
+const LDApp = () => {
+  const [tweaks] = React.useState(LD_TWEAK_DEFAULTS);
   const accent = tweaks.accentColor;
   const sectionPadding = tweaks.spacing === 'compact' ? '64px 0' : tweaks.spacing === 'spacious' ? '128px 0' : '96px 0';
 
@@ -129,21 +117,18 @@ const VKApp = () => {
 
   return (
     <div style={{ '--section-pad': sectionPadding }}>
-      {!VK_IS_EMBED && <VKProjectsCard />}
-      {!VK_IS_EMBED && tweaks.showProgress && <VKProgressBar accent={accent} />}
-      <VKHeroSection accent={accent} />
-      <VKOverviewSection />
-      <VKRoleSection />
-      <VKMethodologySection />
-      <VKParticipantsSection />
-      <VKFindingsSection />
-      <VKSynthesisSection />
-      <VKDecisionsSection />
-      <VKPrototypeSection />
-      <VKReflectionSection />
-
+      {!LD_IS_EMBED && <LDProjectsCard />}
+      {!LD_IS_EMBED && tweaks.showProgress && <LDProgressBar accent={accent} />}
+      <LDHeroSection accent={accent} />
+      <LDOverviewSection />
+      <LDRoleSection />
+      <LDResearchSection />
+      <LDFeaturesSection />
+      <LDDesignSection />
+      <LDParticipatorySection />
+      <LDOutcomeSection />
     </div>
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(<VKApp />);
+ReactDOM.createRoot(document.getElementById('root')).render(<LDApp />);
