@@ -100,7 +100,7 @@ const SectionWrap = ({ id, children, style = {} }) => (
 const Container = ({ children, noBorder = false }) => {
   const embed = new URLSearchParams(window.location.search).has('embed');
   return (
-    <div style={{ marginLeft: embed ? 0 : '23vw', width: embed ? '100%' : '70vw', boxSizing: 'border-box' }}>
+    <div style={{ marginLeft: embed ? 0 : '23vw', width: embed ? '100%' : '70vw', paddingLeft: embed ? '5%' : 0, paddingRight: embed ? '5%' : 0, boxSizing: 'border-box' }}>
       <div style={{ maxWidth: embed ? 'none' : 580, margin: '0 auto', padding: '36px 48px 0', borderTop: noBorder ? 'none' : `1px solid ${V2.border}` }}>
         {children}
       </div>
