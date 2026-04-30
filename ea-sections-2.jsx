@@ -68,18 +68,37 @@ const StakeholderSection = () => (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 40 }}>
         {[
           { name: 'Ron Kagan', org: 'PlanetFlip — Founder', method: 'Zoom',
-            insights: ['Past teams designed concepts but never implemented them', 'Community engagement and scalability were top priorities'] },
+            insights: ['Past teams designed concepts but never implemented them', 'Community engagement and scalability were top priorities'],
+            icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z" />
+                <path d="M10 9l5 3l-5 3z" />
+              </svg>
+            )},
           { name: 'A-Bel Gong', org: 'SD Climate Collaborative', method: 'In-person',
-            insights: ['Workplaces increasingly need sustainability training', 'Surfaced a workplace use case beyond our K–12 focus'] },
+            insights: ['Workplaces increasingly need sustainability training', 'Surfaced a workplace use case beyond our K–12 focus'],
+            icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
+                <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                <path d="M17 10h2a2 2 0 0 1 2 2v1" />
+                <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
+              </svg>
+            )},
           { name: 'NPS Staff', org: 'National Park Service', method: 'In-person',
-            insights: ['Local orgs need accessible engagement tools', 'Validated public institution use case'] },
-        ].map(({ name, org, method, insights }) => (
+            insights: ['Local orgs need accessible engagement tools', 'Validated public institution use case'],
+            icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+              </svg>
+            )},
+        ].map(({ name, org, method, insights, icon }) => (
           <Card key={name}>
             <div style={{ width: 40, height: 40, background: V2.accentBg, borderRadius: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
-              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="7" r="4" fill={V2.accent}/>
-                <path d="M2 17c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke={V2.accent} strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
+              {icon}
             </div>
             <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 2 }}>{name}</div>
             <div style={{ fontSize: 13, color: V2.muted, marginBottom: 10 }}>{org}</div>

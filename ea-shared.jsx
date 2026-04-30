@@ -112,38 +112,33 @@ const MethodIcon = ({ type, size = 44 }) => {
   const s = size;
   const icons = {
     interview: (
-      <svg width={s} height={s} viewBox="0 0 52 52" fill="none">
-        <rect x="6" y="8" width="40" height="26" rx="10" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
-        <circle cx="17" cy="21" r="3" fill={V2.accent}/><circle cx="26" cy="21" r="3" fill={V2.accent}/><circle cx="35" cy="21" r="3" fill={V2.accent}/>
-        <path d="M16 34 L11 44 L26 40" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5" strokeLinejoin="round"/>
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
       </svg>
     ),
     survey: (
-      <svg width={s} height={s} viewBox="0 0 52 52" fill="none">
-        <rect x="8" y="4" width="36" height="44" rx="7" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
-        <line x1="15" y1="16" x2="37" y2="16" stroke={V2.accent} strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="15" y1="24" x2="37" y2="24" stroke={V2.accent} strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="15" y1="32" x2="28" y2="32" stroke={V2.accent} strokeWidth="1.5" strokeLinecap="round"/>
-        <circle cx="40" cy="40" r="8" fill={V2.accent}/>
-        <path d="M36 40 L39 43 L44 36" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+        <line x1="6" x2="10" y1="11" y2="11" />
+        <line x1="8" x2="8" y1="9" y2="13" />
+        <line x1="15" x2="15.01" y1="12" y2="12" strokeWidth={2.5} />
+        <line x1="18" x2="18.01" y1="10" y2="10" strokeWidth={2.5} />
       </svg>
     ),
     usability: (
-      <svg width={s} height={s} viewBox="0 0 52 52" fill="none">
-        <rect x="4" y="6" width="44" height="30" rx="7" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
-        <line x1="20" y1="36" x2="32" y2="36" stroke={V2.accent} strokeWidth="1.5"/>
-        <line x1="26" y1="36" x2="26" y2="46" stroke={V2.accent} strokeWidth="1.5"/>
-        <line x1="20" y1="46" x2="32" y2="46" stroke={V2.accent} strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M20 24 L28 18 L28 30 Z" fill={V2.accent}/>
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+        <path d="M9 17h6" />
+        <path d="M9 13h6" />
       </svg>
     ),
     competitive: (
-      <svg width={s} height={s} viewBox="0 0 52 52" fill="none">
-        <rect x="4" y="4" width="20" height="20" rx="5" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
-        <rect x="28" y="4" width="20" height="20" rx="5" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
-        <rect x="4" y="28" width="20" height="20" rx="5" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
-        <rect x="28" y="28" width="20" height="20" rx="5" fill={V2.accent}/>
-        <path d="M32 38 L37 43 L44 34" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+        <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+        <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+        <path d="M4 20h14" />
       </svg>
     ),
     matrix: (
