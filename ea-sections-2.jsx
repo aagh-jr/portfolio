@@ -69,36 +69,54 @@ const StakeholderSection = () => (
         {[
           { name: 'Ron Kagan', org: 'PlanetFlip — Founder', method: 'Zoom',
             insights: ['Past teams designed concepts but never implemented them', 'Community engagement and scalability were top priorities'],
-            icon: (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z" />
-                <path d="M10 9l5 3l-5 3z" />
-              </svg>
-            )},
+            iconType: 'user' },
           { name: 'A-Bel Gong', org: 'SD Climate Collaborative', method: 'In-person',
             insights: ['Workplaces increasingly need sustainability training', 'Surfaced a workplace use case beyond our K–12 focus'],
-            icon: (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
-                <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                <path d="M17 10h2a2 2 0 0 1 2 2v1" />
-                <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
-              </svg>
-            )},
+            iconType: 'user' },
           { name: 'NPS Staff', org: 'National Park Service', method: 'In-person',
             insights: ['Local orgs need accessible engagement tools', 'Validated public institution use case'],
-            icon: (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-              </svg>
-            )},
-        ].map(({ name, org, method, insights, icon }) => (
+            iconType: 'group' },
+        ].map(({ name, org, method, insights, iconType }) => (
           <Card key={name}>
-            <div style={{ width: 40, height: 40, background: V2.accentBg, borderRadius: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
-              {icon}
+            <div
+              style={{ width: 40, height: 40, background: V2.accentBg, borderRadius: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}
+              onMouseEnter={e => {
+                const gs = e.currentTarget.querySelectorAll('g');
+                if (iconType === 'user') {
+                  gs[0].style.transform = 'scale(1.05) translateY(-1px)';
+                } else {
+                  gs[0].style.transform = 'scale(1.05) translateY(-2px)';
+                  gs[1].style.transform = 'scale(1.02) translateX(1px)';
+                  gs[2].style.transform = 'scale(1.02) translateX(-1px)';
+                }
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.querySelectorAll('g').forEach(g => { g.style.transform = ''; });
+              }}
+            >
+              {iconType === 'user' ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                  <g style={{ transformOrigin: '50% 50%', transformBox: 'fill-box', transition: 'transform 0.25s ease-out' }}>
+                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                  </g>
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                  <g style={{ transformOrigin: '50% 50%', transformBox: 'fill-box', transition: 'transform 0.25s ease-out' }}>
+                    <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
+                  </g>
+                  <g style={{ transformOrigin: '50% 50%', transformBox: 'fill-box', transition: 'transform 0.3s ease-out 0.05s' }}>
+                    <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M17 10h2a2 2 0 0 1 2 2v1" />
+                  </g>
+                  <g style={{ transformOrigin: '50% 50%', transformBox: 'fill-box', transition: 'transform 0.3s ease-out 0.05s' }}>
+                    <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
+                  </g>
+                </svg>
+              )}
             </div>
             <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 2 }}>{name}</div>
             <div style={{ fontSize: 13, color: V2.muted, marginBottom: 10 }}>{org}</div>
