@@ -1,4 +1,4 @@
-// ea-app.jsx — Nav + App + Tweaks
+// ea-app-v2.jsx — updated app shell for v2 visual system
 
 const IS_EMBED = new URLSearchParams(window.location.search).has('embed');
 
@@ -24,15 +24,9 @@ const NAV_ITEMS = [
   { id: 'reflection',   label: 'Reflection' },
 ];
 
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentColor": "#3DAA74",
-  "spacing": "normal",
-  "showProgress": true
-}/*EDITMODE-END*/;
-
-/* ── LEFT: standalone Projects card ── */
+/* ── LEFT: Projects sidebar card ── */
 const ProjectsCard = () => {
-  const currentFile = window.location.pathname.split('/').pop() || window.location.href.split('/').pop();
+  const currentFile = decodeURIComponent(window.location.pathname.split('/').pop() || window.location.href.split('/').pop());
 
   return (
     <div id="projects-card" style={{
@@ -41,12 +35,10 @@ const ProjectsCard = () => {
       bottom: '5vw',
       left: '5vw',
       width: '18vw',
-      background: 'rgba(255, 255, 255, 0.35)',
-      backdropFilter: 'blur(24px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+      background: V2.dark,
       borderRadius: 20,
-      border: '1px solid rgba(255, 255, 255, 0.55)',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
+      border: '1px solid rgba(255,255,255,0.06)',
+      boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
@@ -55,75 +47,79 @@ const ProjectsCard = () => {
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '16px 18px 14px',
+        padding: '18px 18px 14px',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
       }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: '#141414', letterSpacing: '-0.01em' }}>Projects</span>
-        <a href="home.html" style={{
-          background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: 100,
+        <span style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Selected Work</span>
+        <a href="index.html" style={{
+          background: 'rgba(255,255,255,0.07)', border: 'none', borderRadius: 100,
           width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', textDecoration: 'none', flexShrink: 0,
           transition: 'background 0.15s',
         }}
-          onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.13)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.07)'}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.14)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.07)'}
         >
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-            <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#141414" strokeWidth="1.5" strokeLinejoin="round"/>
+            <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinejoin="round"/>
           </svg>
         </a>
       </div>
 
       {/* Project list */}
-      <div style={{ padding: '10px 12px', flex: 1, overflowY: 'auto' }}>
+      <div style={{ padding: '10px 10px', flex: 1, overflowY: 'auto' }}>
         {PROJECTS.map((p) => {
-          const isActive = decodeURIComponent(currentFile) === p.href;
+          const isActive = currentFile === p.href || currentFile === p.href.replace('.html', ' v2.html');
           return (
             <a key={p.id} href={p.href}
               style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '14px 16px',
-                borderRadius: 14,
-                background: isActive ? 'rgba(0,0,0,0.03)' : 'transparent',
-                marginBottom: 2,
+                display: 'block',
+                padding: '14px 14px',
+                borderRadius: 12,
+                background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
+                border: isActive ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
+                marginBottom: 3,
                 cursor: 'pointer',
                 textDecoration: 'none',
                 transition: 'background 0.15s',
               }}
-              onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(0,0,0,0.03)'; }}
+              onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
               onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
             >
-              <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
                 <div style={{
-                  fontSize: 15, fontWeight: isActive ? 700 : 400,
-                  color: p.available ? '#141414' : '#b8b8b0',
-                  letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6,
+                  fontSize: 14, fontWeight: isActive ? 600 : 400,
+                  color: isActive ? '#ffffff' : 'rgba(255,255,255,0.65)',
+                  letterSpacing: '-0.015em', lineHeight: 1.2,
                 }}>{p.title}</div>
-                {p.available && p.tags ? (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                    {p.tags.map(t => (
-                      <span key={t} style={{
-                        fontSize: 10, fontWeight: 600, color: '#888',
-                        background: 'rgba(0,0,0,0.06)', borderRadius: 100,
-                        padding: '2px 8px', letterSpacing: '0.01em',
-                      }}>{t}</span>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{ fontSize: 12, color: '#a8a8a0', fontWeight: 400 }}>
-                    {p.available ? p.year : 'Coming soon'}
-                  </div>
-                )}
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.04em' }}>{p.year}</div>
               </div>
+              {p.available && p.tags && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {p.tags.map(t => (
+                    <span key={t} style={{
+                      fontSize: 10, fontWeight: 500,
+                      color: 'rgba(255,255,255,0.3)',
+                      letterSpacing: '0.02em',
+                    }}>{t}</span>
+                  ))}
+                </div>
+              )}
             </a>
           );
         })}
+      </div>
+
+      {/* Footer */}
+      <div style={{ padding: '14px 18px', borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.04em' }}>Abel Angel · 2025</div>
       </div>
     </div>
   );
 };
 
 /* ── RIGHT: vertical TOC ── */
-const TOCSidebar = ({ accent }) => {
+const TOCSidebar = () => {
   const [active, setActive] = React.useState('overview');
 
   React.useEffect(() => {
@@ -150,29 +146,24 @@ const TOCSidebar = ({ accent }) => {
 
   return (
     <div style={{
-      position: 'fixed',
-      top: '50%',
-      right: 24,
+      position: 'fixed', top: '50%', right: 24,
       transform: 'translateY(-50%)',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 2,
-      zIndex: 100,
+      display: 'flex', flexDirection: 'column', gap: 2, zIndex: 100,
     }}>
       {NAV_ITEMS.map(({ id, label }) => {
         const isActive = active === id;
         return (
           <button key={id} onClick={() => scrollTo(id)} style={{
-            background: 'none', border: 'none',
-            textAlign: 'right', padding: '4px 0',
-            fontSize: 12, fontWeight: isActive ? 600 : 400,
-            color: isActive ? '#141414' : '#b0b0a8',
+            background: 'none', border: 'none', textAlign: 'right',
+            padding: '3px 0', fontSize: 11,
+            fontWeight: isActive ? 600 : 400,
+            color: isActive ? V2.ink : 'rgba(30,30,26,0.3)',
             cursor: 'pointer', fontFamily: 'inherit',
-            letterSpacing: '-0.01em', lineHeight: 1.4,
+            letterSpacing: '-0.01em', lineHeight: 1.5,
             transition: 'color 0.15s',
           }}
-            onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#555'; }}
-            onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#b0b0a8'; }}
+            onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = V2.muted; }}
+            onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'rgba(30,30,26,0.3)'; }}
           >
             {label}
           </button>
@@ -182,7 +173,7 @@ const TOCSidebar = ({ accent }) => {
   );
 };
 
-const ProgressBar = ({ accent }) => {
+const ProgressBar = () => {
   const [pct, setPct] = React.useState(0);
   React.useEffect(() => {
     const onScroll = () => {
@@ -194,92 +185,18 @@ const ProgressBar = ({ accent }) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 199, background: 'rgba(0,0,0,0.06)' }}>
-      <div style={{ height: '100%', width: `${pct}%`, background: accent, transition: 'width 0.1s linear', borderRadius: '0 2px 2px 0' }} />
-    </div>
-  );
-};
-
-const TweaksPanel = ({ tweaks, setTweaks, visible }) => {
-  if (!visible) return null;
-  const update = (key, val) => {
-    const next = { ...tweaks, [key]: val };
-    setTweaks(next);
-    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
-  };
-  const accents = [
-    { label: 'Green', value: '#3DAA74' },
-    { label: 'Indigo', value: '#5B6EE8' },
-    { label: 'Amber', value: '#E07D2E' },
-    { label: 'Rose', value: '#D94F6B' },
-  ];
-  return (
-    <div style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 300, background: 'white', borderRadius: 20, padding: '24px 22px', boxShadow: '0 8px 40px rgba(0,0,0,0.14)', width: 240, fontFamily: 'inherit' }}>
-      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: 18 }}>Tweaks</div>
-      <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10, color: '#333' }}>Accent Color</div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          {accents.map(({ label, value }) => (
-            <button key={value} onClick={() => update('accentColor', value)} title={label} style={{
-              width: 30, height: 30, borderRadius: 100, background: value, border: tweaks.accentColor === value ? '3px solid #141414' : '3px solid transparent',
-              cursor: 'pointer', transition: 'border 0.15s',
-            }} />
-          ))}
-        </div>
-      </div>
-      <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10, color: '#333' }}>Section Spacing</div>
-        <div style={{ display: 'flex', gap: 6 }}>
-          {['compact', 'normal', 'spacious'].map(s => (
-            <button key={s} onClick={() => update('spacing', s)} style={{
-              flex: 1, padding: '6px 4px', borderRadius: 10, border: tweaks.spacing === s ? `2px solid ${tweaks.accentColor}` : '2px solid #eee',
-              background: tweaks.spacing === s ? tweaks.accentColor + '14' : 'white',
-              fontSize: 11, fontWeight: 600, color: tweaks.spacing === s ? tweaks.accentColor : '#888',
-              cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize',
-            }}>{s}</button>
-          ))}
-        </div>
-      </div>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: '#333' }}>Reading Progress</span>
-          <button onClick={() => update('showProgress', !tweaks.showProgress)} style={{
-            width: 40, height: 22, borderRadius: 100, background: tweaks.showProgress ? tweaks.accentColor : '#ddd',
-            border: 'none', cursor: 'pointer', position: 'relative', transition: 'background 0.2s',
-          }}>
-            <span style={{ position: 'absolute', top: 3, left: tweaks.showProgress ? 20 : 2, width: 16, height: 16, background: 'white', borderRadius: 100, transition: 'left 0.2s', boxShadow: '0 1px 4px rgba(0,0,0,0.2)' }} />
-          </button>
-        </div>
-      </div>
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 2, zIndex: 199, background: 'rgba(0,0,0,0.06)' }}>
+      <div style={{ height: '100%', width: `${pct}%`, background: V2.accent, transition: 'width 0.1s linear' }} />
     </div>
   );
 };
 
 const App = () => {
-  const [tweaks, setTweaks] = React.useState(TWEAK_DEFAULTS);
-  const [tweaksVisible, setTweaksVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    window.addEventListener('message', (e) => {
-      if (e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
-      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
-    });
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-  }, []);
-
-  const accent = tweaks.accentColor;
-  const sectionPadding = tweaks.spacing === 'compact' ? '64px 0' : tweaks.spacing === 'spacious' ? '128px 0' : '96px 0';
-
-  React.useEffect(() => {
-    document.documentElement.style.setProperty('--accent', accent);
-  }, [accent]);
-
   return (
-    <div style={{ '--section-pad': sectionPadding }}>
+    <div>
       {!IS_EMBED && <ProjectsCard />}
-      {/* <TOCSidebar accent={accent} /> */}
-      {!IS_EMBED && tweaks.showProgress && <ProgressBar accent={accent} />}
-      <HeroSection accent={accent} />
+      {!IS_EMBED && <ProgressBar />}
+      <HeroSection />
       <OverviewSection />
       <ResearchGoalsSection />
       <MethodologySection />
@@ -292,8 +209,6 @@ const App = () => {
       <InsightsSection />
       <DesignImpactSection />
       <ReflectionSection />
-
-      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible} />
     </div>
   );
 };
