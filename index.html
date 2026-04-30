@@ -342,6 +342,7 @@
                     ...cardBase, gridColumn: '1 / -1',
                     cursor: 'default', minHeight: 260,
                     justifyContent: 'center',
+                    background: 'transparent', border: 'none', boxShadow: 'none',
                   }}>
                     <div style={{
                       fontSize: 40, fontWeight: 800, letterSpacing: '-0.016em',
@@ -361,7 +362,7 @@
                   {/* ── Projects card — click triggers morph ── */}
                   <div id="card-projects" className="anim-up-1"
                     onClick={enterProjects}
-                    style={{ ...cardBase, minHeight: 400 }}
+                    style={{ ...cardBase, minHeight: 400, background: '#f4f4f2' }}
                     onMouseEnter={e => {
                       e.currentTarget.style.transform = 'translateY(-4px)';
                       e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)';
@@ -378,7 +379,7 @@
                   </div>
 
                   {/* ── About Me ── */}
-                  <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 400 }}
+                  <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 400, background: '#f4f4f2' }}
                     onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow2').style.opacity = 1; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow2').style.opacity = 0; }}
                   >
@@ -387,7 +388,7 @@
                   </a>
 
                   {/* ── Contact ── */}
-                  <a href="contact.html" className="anim-up-3" style={{ ...cardBase, minHeight: 400 }}
+                  <a href="contact.html" className="anim-up-3" style={{ ...cardBase, minHeight: 400, background: '#f4f4f2' }}
                     onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.08)'; e.currentTarget.querySelector('.card-glow3').style.opacity = 1; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.querySelector('.card-glow3').style.opacity = 0; }}
                   >
