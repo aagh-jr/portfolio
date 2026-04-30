@@ -8,13 +8,13 @@ const Round1Section = () => (
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Method</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            A two-part protocol: a <strong>clickability/affordance test</strong> (what do users think is interactive?) and a <strong>cognitive walkthrough</strong> of static wireframes (can they reconstruct the game's logic without guidance?).
+            A <strong>clickability/affordance test</strong> (what looks interactive?) plus a <strong>cognitive walkthrough</strong> of static wireframes (can users reconstruct the logic unaided?).
           </p>
         </Card>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Why At Wireframe Stage</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            Identifying affordance problems before development is significantly cheaper than post-build discovery. This let us validate the core interaction model without committing engineering time.
+            Catching affordance problems pre-build is far cheaper than post-build. We validated the core interaction model before committing engineering time.
           </p>
         </Card>
       </div>
@@ -122,11 +122,11 @@ const Round2Section = () => (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 36 }}>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Method</div>
-          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>Participants played the fully functional game, then completed a 7-question post-task attitudinal survey. Behavioral observation was combined with self-reported experience data.</p>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>Participants played the full game, then took a 7-question post-task survey. Behavioral data + self-reported experience.</p>
         </Card>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>Why This Method</div>
-          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>Observation tells us what users <em>do</em>. Survey tells us how they <em>feel</em>. Both matter for a product whose success depends on voluntary, intrinsically motivated engagement.</p>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>Observation shows what users <em>do</em>. Surveys show how they <em>feel</em>. For a voluntary, intrinsically motivated product, both matter.</p>
         </Card>
       </div>
 
@@ -177,13 +177,13 @@ const Round2Section = () => (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {[
           { theme: 'Aesthetics & Atmosphere', color: '#4a8a6a', label: '✓ Unanimous Positive',
-            body: 'All seven participants praised the visual and audio design. Common descriptors: "cute," "chill," "relaxing," "immersive." Multiple made unprompted comparisons to early 2000s browser games and indie titles — a genuine differentiator in a category of sterile educational software.' },
+            body: 'All seven praised the visuals and audio. Descriptors: "cute," "chill," "relaxing," "immersive." Unprompted comparisons to early-2000s browser games and indie titles — a real differentiator in a sterile category.' },
           { theme: 'Challenge & Reward', color: V2.warn, label: '⚠ Primary Pain Point',
-            body: 'The most consistent criticism: a lack of challenge. Interactable items were easy to spot; the game didn\'t push users. Ron Kagan noted it felt aimed at elementary schoolers. The pattern was clear enough to require iteration.' },
+            body: 'The clearest criticism: lack of challenge. Interactables were too easy to spot; Ron Kagan noted it felt aimed at elementary schoolers. The pattern was strong enough to require iteration.' },
           { theme: 'Point Visibility', color: V2.warn, label: '⚠ Actionable UX Gap',
-            body: 'Kagan recommended earned points be displayed numerically and that items flash on click. Alessandra noted the energy bar on cards should reflect cumulative value. The most immediately actionable feedback from the entire round.' },
+            body: 'Kagan flagged that points should be numerically visible and items should flash on click. Alessandra noted the energy bar should reflect cumulative value. The most actionable feedback of the round.' },
           { theme: 'Discoverability', color: V2.warn, label: '⚠ UI Gap',
-            body: 'It was not immediately clear that the back button was what added points to the score — a discoverability issue needing explicit surfacing in the interface.' },
+            body: 'Not immediately clear the back button was what added points to the score — needed explicit UI surfacing.' },
         ].map(({ theme, color, label, body }) => (
           <Card key={theme} style={{ borderLeft: `4px solid ${color}`, padding: '20px 24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>

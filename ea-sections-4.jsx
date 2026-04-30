@@ -49,13 +49,13 @@ const InsightsSection = () => {
   const insights = [
     { num: '1', color: V2.accent,
       title: 'The interaction model works. The reward model doesn\'t — yet.',
-      body: 'Users consistently understood how to play without instruction — a clear validation of the core interaction design. But the emotional payoff wasn\'t strong enough. The game was clear; it wasn\'t satisfying. These are different problems with different solutions.' },
+      body: 'Users played without instruction — the interaction design works. But the emotional payoff didn\'t land. Clear ≠ satisfying — different problems, different solutions.' },
     { num: '2', color: V2.accent,
       title: 'The aesthetic direction is a genuine competitive advantage.',
-      body: 'Every participant responded positively to the visual and audio design — a unanimous signal in a category where educational games are often visually sterile. This was worth protecting in all future iterations.' },
+      body: 'Every participant praised the visuals and audio — unanimous in a category of sterile educational games. Worth protecting in every iteration.' },
     { num: '3', color: V2.warn,
       title: 'The target audience wasn\'t fully represented in testing.',
-      body: 'Both rounds skewed toward college-aged UCSD students. Only Preesha, 13, came close to the actual target demographic. A dedicated round with 8–12 year olds would likely surface fundamentally different friction points.' },
+      body: 'Both rounds skewed to UCSD undergrads. Only Preesha, 13, was near the target demo. A round with 8–12 year olds would likely surface different friction.' },
   ];
 
   return (
@@ -157,19 +157,19 @@ const ReflectionSection = () => (
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 14 }}>What Went Well</div>
           <p style={{ fontSize: 14, lineHeight: 1.85, color: '#444', marginBottom: 12 }}>
-            The two-round testing structure was the most valuable methodological decision. Separating formative (wireframes) from summative (working build) testing let us catch affordance problems before they were built in.
+            The two-round structure was the most valuable methodological choice. Splitting formative (wireframes) from summative (build) caught affordance problems before they were built in.
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
-            The mixed-methods approach — observation + attitudinal survey — gave us a richer picture than either alone. The gap between task completion and satisfaction was where the most interesting design work lived.
+            Mixed methods — observation + survey — gave a richer picture than either alone. The gap between completion and satisfaction was where the most interesting design work lived.
           </p>
         </Card>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: V2.warn, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 14 }}>What I'd Do Differently</div>
           <p style={{ fontSize: 14, lineHeight: 1.85, color: '#444', marginBottom: 12 }}>
-            The biggest gap was participant representation. Both rounds skewed toward college-aged UCSD students. A dedicated round with 8–12 year olds would have surfaced different friction points — reading level, attention span, concept comprehension.
+            The biggest gap was participant representation — both rounds skewed to UCSD undergrads. A round with 8–12 year olds would've surfaced different friction: reading level, attention span, comprehension.
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
-            I'd also push for a longitudinal component — a follow-up survey 1–2 weeks post-play to measure whether any energy-saving behaviors were actually adopted at home. That's the more important, currently unanswered question.
+            I'd also push for a longitudinal component — a follow-up 1–2 weeks post-play to measure whether energy-saving behaviors stuck at home. The more important, still-unanswered question.
           </p>
         </Card>
       </div>

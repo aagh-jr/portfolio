@@ -87,13 +87,13 @@ const OverviewSection = () =>
         <Card>
           <div style={{ fontSize: 10, fontWeight: 700, color: V2.accent, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 12 }}>Challenge</div>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#3a3a34', margin: 0 }}>
-            Most sustainability education prioritizes information delivery over interactive engagement. People — especially younger users — already <em>know</em> energy conservation matters. What they lack is an accessible, engaging tool that turns awareness into habit-forming behavior.
+            Sustainability education leans on information delivery, not interactive engagement. Younger users already <em>know</em> it matters — they need a tool that turns awareness into habit.
           </p>
         </Card>
         <Card>
           <div style={{ fontSize: 10, fontWeight: 700, color: V2.accent, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 12 }}>Our Approach</div>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#3a3a34', margin: 0 }}>
-            PlanetFlip had existing game concepts that hadn't been implemented or validated. Our team designed a fully playable, research-backed game from scratch: educationally grounded, immediately usable without instruction, and engaging enough to sustain attention.
+            PlanetFlip had concepts but nothing built or validated. We designed a fully playable, research-backed game from scratch: educationally grounded, usable without instruction, and engaging enough to hold attention.
           </p>
         </Card>
       </div>
@@ -102,7 +102,7 @@ const OverviewSection = () =>
       <div style={{ background: V2.dark, borderRadius: 20, padding: '36px 40px', marginBottom: 40 }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>Research Question</div>
         <p style={{ fontSize: 20, lineHeight: 1.65, fontStyle: 'italic', fontWeight: 300, color: 'rgba(255,255,255,0.88)', margin: 0, maxWidth: 680, fontFamily: 'Lora, Georgia, serif' }}>
-          "How might we design a gamified experience that teaches energy conservation in a way that is engaging enough to complete, intuitive enough to use without instruction, and meaningful enough that players connect gameplay to real life?"
+          "How might we design a gamified energy conservation experience that's engaging to complete, intuitive without instruction, and meaningful enough to translate to real life?"
         </p>
       </div>
 

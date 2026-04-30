@@ -49,11 +49,11 @@ const CompetitiveAnalysisSection = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
           <Card style={{ background: V2.accentBg, boxShadow: 'none' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Who Was Served</div>
-            <p style={{ fontSize: 14, lineHeight: 1.75, color: V2.ink, margin: 0 }}>K–6 students were well-covered. Older students and adults were underserved — Financial Freedom was the only game with appropriate complexity, but account requirements limited reach.</p>
+            <p style={{ fontSize: 14, lineHeight: 1.75, color: V2.ink, margin: 0 }}>K–6 was well-served. Older students and adults were underserved — Financial Freedom had the right complexity but locked content behind accounts.</p>
           </Card>
           <Card style={{ background: V2.dark, boxShadow: 'none' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: V2.accent, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>The Opportunity</div>
-            <p style={{ fontSize: 14, lineHeight: 1.75, color: 'rgba(255,255,253,0.75)', margin: 0 }}>A game for elementary-to-middle school users balancing tight interactive learning with short engaging loops — freely accessible, no account required.</p>
+            <p style={{ fontSize: 14, lineHeight: 1.75, color: 'rgba(255,255,253,0.75)', margin: 0 }}>A game for elementary-to-middle school: tight interactive learning, short engaging loops, no account required.</p>
           </Card>
         </div>
       </Container>
