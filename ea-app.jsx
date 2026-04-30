@@ -34,7 +34,7 @@ const ProjectsCard = () => {
       top: '5vw',
       bottom: '5vw',
       left: '5vw',
-      width: '18vw',
+      width: '14vw',
       background: V2.dark,
       borderRadius: 20,
       border: '1px solid rgba(255,255,255,0.06)',
