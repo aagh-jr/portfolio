@@ -320,12 +320,12 @@
       const cardShadow = '-10px -10px 30px 0px #ffffff, 10px 10px 30px 0px rgba(174,174,192,0.4)';
       const cardBase = {
         background: cardBg, border: cardBorder, borderRadius: 18,
-        padding: 33, cursor: 'pointer',
+        padding: 15, cursor: 'pointer',
         position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         transition: 'transform 0.25s, box-shadow 0.25s', textDecoration: 'none', color: 'inherit',
       };
       const labelStyle = {
-        fontSize: 32, fontWeight: 800, color: '#1c1c18',
+        fontSize: 17, fontWeight: 800, color: '#1c1c18',
         letterSpacing: '-0.02em', lineHeight: 1.2,
         position: 'relative', zIndex: 1,
       };
@@ -345,17 +345,6 @@
                     justifyContent: 'center',
                     background: 'transparent', border: 'none', boxShadow: 'none',
                   }}>
-                    {[
-                      { top: 0,    left: 0    },
-                      { top: 0,    right: 0   },
-                      { bottom: 0, left: 0    },
-                      { bottom: 0, right: 0   },
-                    ].map((pos, i) => (
-                      <div key={i} style={{
-                        position: 'absolute', width: 8, height: 8,
-                        background: '#1c1c18', ...pos,
-                      }} />
-                    ))}
                     <div style={{
                       fontSize: 40, fontWeight: 800, letterSpacing: '-0.016em',
                       lineHeight: 1, marginBottom: 24,
@@ -374,7 +363,7 @@
                   {/* ── Projects card — click triggers morph ── */}
                   <div id="card-projects" className="anim-up-1"
                     onClick={enterProjects}
-                    style={{ ...cardBase, minHeight: 400, boxShadow: cardShadow }}
+                    style={{ ...cardBase, minHeight: 140, boxShadow: cardShadow }}
                     onMouseEnter={e => {
                       e.currentTarget.style.transform = 'translateY(-4px)';
                       e.currentTarget.style.boxShadow = '-14px -14px 36px 0px #ffffff, 14px 14px 36px 0px rgba(174,174,192,0.5)';
@@ -391,7 +380,7 @@
                   </div>
 
                   {/* ── About Me ── */}
-                  <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 400, boxShadow: cardShadow }}
+                  <a href="about.html" className="anim-up-2" style={{ ...cardBase, minHeight: 140, boxShadow: cardShadow }}
                     onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '-14px -14px 36px 0px #ffffff, 14px 14px 36px 0px rgba(174,174,192,0.5)'; e.currentTarget.querySelector('.card-glow2').style.opacity = 1; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = cardShadow; e.currentTarget.querySelector('.card-glow2').style.opacity = 0; }}
                   >
@@ -400,7 +389,7 @@
                   </a>
 
                   {/* ── Contact ── */}
-                  <a href="contact.html" className="anim-up-3" style={{ ...cardBase, minHeight: 400, boxShadow: cardShadow }}
+                  <a href="contact.html" className="anim-up-3" style={{ ...cardBase, minHeight: 140, boxShadow: cardShadow }}
                     onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '-14px -14px 36px 0px #ffffff, 14px 14px 36px 0px rgba(174,174,192,0.5)'; e.currentTarget.querySelector('.card-glow3').style.opacity = 1; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = cardShadow; e.currentTarget.querySelector('.card-glow3').style.opacity = 0; }}
                   >
