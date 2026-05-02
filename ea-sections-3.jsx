@@ -37,6 +37,20 @@ const Round1Section = () => (
 
       <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6, color: V2.ink }}>Part 1 — Affordance Test Results</div>
       <p style={{ fontSize: 14, color: V2.muted, marginBottom: 18, lineHeight: 1.6 }}>Participants circled elements they believed were interactive. Coded as hit, miss, or false positive.</p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+        <Photo
+          src="uploads/ea-bedroom-wireframe.png"
+          alt="Bedroom lo-fi wireframe with labeled elements"
+          caption="Bedroom wireframe — labeled elements shown to participants."
+          background="#f4f4f1"
+        />
+        <Photo
+          src="uploads/ea-bathroom-wireframe.png"
+          alt="Bathroom lo-fi wireframe with labeled elements"
+          caption="Bathroom wireframe — same affordance test, second room."
+          background="#f4f4f1"
+        />
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 36 }}>
         {[
           { room: '🛏 Bedroom', rows: [
@@ -82,6 +96,22 @@ const Round1Section = () => (
       </div>
 
       <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 14, color: V2.ink }}>Part 2 — Cognitive Walkthrough</div>
+      <div style={{ marginBottom: 24 }}>
+        <Photo
+          src="uploads/ea-flow-game.png"
+          alt="Lo-fi flow diagram — title screen to component card"
+          caption="Game flow diagram shown to participants — title → room → click → component card."
+          background="#dde8f0"
+        />
+      </div>
+      <div style={{ marginBottom: 24 }}>
+        <Photo
+          src="uploads/ea-flow-next.png"
+          alt="Lo-fi flow diagram — next button branching"
+          caption="Next-button flow — branches to congrats screen or returns to the room."
+          background="#dde8f0"
+        />
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 28 }}>
         {[
           { name: 'Cody',    summary: 'Quickly reconstructed game logic. Could articulate what triggered each screen transition without prompting.' },
@@ -170,8 +200,6 @@ const Round2Section = () => (
           <Stat value="12 min" label="Avg. Session Length" sub="Target: 10 min" accent={V2.accent} />
         </div>
       </div>
-
-      <Placeholder label="Survey results chart — Q1 through Q7 responses" height={180} note="Bar chart: 7 questions × 7 participants. Overlay target thresholds." />
 
       <div style={{ fontSize: 13, fontWeight: 600, margin: '36px 0 16px', color: V2.ink }}>Qualitative Themes</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

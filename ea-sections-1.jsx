@@ -74,7 +74,11 @@ const HeroSection = () =>
         </div>
       </div>
 
-      <Placeholder label="Hero screenshot — Energy Ave gameplay" height={500} note="Drop game screenshot / screen recording here — bedroom or bathroom scene" />
+      <Photo
+        src="uploads/ea-bedroom-hifi.png"
+        alt="Energy Ave bedroom level — pixel-art gameplay"
+        caption="Bedroom level — final hi-fi build."
+      />
     </Container>
   </SectionWrap>;
 
@@ -107,6 +111,13 @@ const OverviewSection = () =>
       </div>
 
       <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: V2.ink, letterSpacing: '-0.01em' }}>What is Energy Ave?</h3>
+      <div style={{ marginBottom: 20 }}>
+        <Photo
+          src="uploads/ea-title-hifi.png"
+          alt="Energy Ave title screen"
+          caption="Title screen — pixel-art aesthetic carried through every scene."
+        />
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
         {[
           ['Room by Room', 'Players navigate a virtual home — bedroom, bathroom, kitchen — clicking on items in each space.', 'rgba(184,118,42,0.07)', V2.accent],

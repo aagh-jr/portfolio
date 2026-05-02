@@ -3,9 +3,11 @@
 const CompetitiveAnalysisSection = () => {
   const games = [
     { title: 'Space Waste Odyssey', org: 'PBS Kids', fit: 'K–6',
+      image: 'uploads/ea-comp-space-waste.png',
       pros: ['Closed captioning', 'Multi-level progression', 'High-quality visuals'],
       cons: ['Levels too long', 'No penalties for inaction', 'Low urgency — no time constraints'] },
     { title: 'Become an Energy Champion', org: 'National Energy Foundation', fit: 'K–8',
+      image: 'uploads/ea-comp-energy-champion.png',
       pros: ['Good educational content', 'Character customization'],
       cons: ['Highly repetitive mini-games', 'Hard to navigate', 'No accessibility features'] },
     { title: 'Fidget Power', org: 'PBS Kids / Design Squad', fit: 'K–6',
@@ -21,8 +23,14 @@ const CompetitiveAnalysisSection = () => {
       <Container>
         <SectionHeader num={4} title="Competitive Analysis" subtitle="Four existing games. One clear gap." />
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 36 }}>
-          {games.map(({ title, org, pros, cons, fit }) => (
+          {games.map(({ title, org, pros, cons, fit, image }) => (
             <Card key={title}>
+              {image && (
+                <img src={image} alt={`${title} screenshot`} style={{
+                  display: 'block', width: '100%', height: 140,
+                  objectFit: 'cover', borderRadius: 10, marginBottom: 14,
+                }} />
+              )}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
                 <div>
                   <div style={{ fontSize: 15, fontWeight: 700, color: V2.ink }}>{title}</div>

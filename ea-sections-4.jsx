@@ -113,6 +113,18 @@ const DesignImpactSection = () => (
       </div>
 
       <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 14, color: V2.ink }}>5 Specific Changes From Testing</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+        <Photo
+          src="uploads/ea-pc-card.png"
+          alt="Final hi-fi Personal Computer info card"
+          caption="Final info card — point value made visible, energy bar shows running total."
+        />
+        <Photo
+          src="uploads/ea-energy-bar.png"
+          alt="Energy bar fill states from empty to full"
+          caption="Energy bar progression — five fill states give cumulative feedback."
+        />
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 40 }}>
         {[
           ['Point Visibility',    'Point values made numerically visible on each interaction card'],
@@ -153,6 +165,13 @@ const ReflectionSection = () => (
   <SectionWrap id="reflection">
     <Container>
       <SectionHeader num={12} title="Reflection" />
+      <div style={{ marginBottom: 28 }}>
+        <Photo
+          src="uploads/ea-gameplay-irl.jpg"
+          alt="Energy Ave being played on a laptop"
+          caption="Energy Ave in the wild — a participant playing the final build."
+        />
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#4a6aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 14 }}>What Went Well</div>
