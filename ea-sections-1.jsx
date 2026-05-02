@@ -74,10 +74,9 @@ const HeroSection = () =>
         </div>
       </div>
 
-      <Photo
-        src="uploads/ea-bedroom-hifi.png"
-        alt="Energy Ave bedroom level — pixel-art gameplay"
-        caption="Bedroom level — final hi-fi build."
+      <Video
+        src="uploads/ea-gameplay.mp4"
+        caption="Bedroom level — final hi-fi build (2× speed)."
       />
     </Container>
   </SectionWrap>;

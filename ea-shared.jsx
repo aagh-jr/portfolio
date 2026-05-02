@@ -48,6 +48,28 @@ const Photo = ({ src, alt, caption, radius = 14, background }) => (
   </figure>
 );
 
+const Video = ({ src, caption, radius = 14, background }) => (
+  <figure style={{ margin: 0 }}>
+    <video
+      src={src}
+      autoPlay
+      loop
+      muted
+      playsInline
+      style={{
+        display: 'block', width: '100%', height: 'auto',
+        borderRadius: radius, background: background || 'transparent',
+      }}
+    />
+    {caption && (
+      <figcaption style={{
+        marginTop: 10, fontSize: 12, color: V2.muted,
+        lineHeight: 1.6, textAlign: 'center',
+      }}>{caption}</figcaption>
+    )}
+  </figure>
+);
+
 const Tag = ({ children, color = 'default' }) => {
   const p = {
     default:     { fg: V2.muted,       border: V2.border,                     bg: 'transparent' },
@@ -189,4 +211,4 @@ const HitMiss = ({ v }) => {
   return <span style={{ color: '#ddd', fontSize: 12 }}>—</span>;
 };
 
-Object.assign(window, { V2, Placeholder, Photo, Tag, Stat, QuoteBlock, Card, SectionHeader, SectionWrap, Container, MethodIcon, HitMiss });
+Object.assign(window, { V2, Placeholder, Photo, Video, Tag, Stat, QuoteBlock, Card, SectionHeader, SectionWrap, Container, MethodIcon, HitMiss });
