@@ -1,4 +1,4 @@
-// cb-sections.jsx — Cabrillo National Monument case study sections
+// cb-sections.jsx — Cabrillo National Monument Interpretation Program case study
 
 const CBHeroSection = () =>
 <SectionWrap id="hero" style={{ padding: '120px 0 80px' }}>
@@ -12,11 +12,11 @@ const CBHeroSection = () =>
       </h1>
 
       <div style={{ fontSize: 13, color: '#aaa', fontWeight: 500, letterSpacing: '0.01em', marginBottom: 32, whiteSpace: 'nowrap' }}>
-        Visual Design &nbsp;·&nbsp; Print &nbsp;·&nbsp; Public Engagement &nbsp;·&nbsp; National Park Service
+        Program Management &nbsp;·&nbsp; Public Engagement &nbsp;·&nbsp; Stakeholder Coordination &nbsp;·&nbsp; National Park Service
       </div>
 
-      <p style={{ fontSize: 18, lineHeight: 1.75, color: '#777', maxWidth: 580, marginBottom: 56, fontWeight: 400 }}>
-        Two terms designing visitor-facing materials for a real National Monument — an activity booklet and explorer passport for Open Tower Day, plus an educational card game on California food webs.
+      <p style={{ fontSize: 18, lineHeight: 1.75, color: '#777', maxWidth: 620, marginBottom: 56, fontWeight: 400 }}>
+        Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs end-to-end so they survived past my tenure.
       </p>
 
       <div style={{
@@ -25,7 +25,7 @@ const CBHeroSection = () =>
         borderTop: '1px solid rgba(0,0,0,0.08)',
         borderBottom: '1px solid rgba(0,0,0,0.08)',
       }}>
-        {[['Role', 'Design Intern'], ['Duration', '2 Terms'], ['Client', 'Cabrillo NM (NPS)'], ['Output', 'Printed Materials']].map(([l, v], i) =>
+        {[['Role', 'Interpretation Associate'], ['Duration', '2 Terms (multi-season)'], ['Client', 'Cabrillo NM (NPS)'], ['Output', 'Programs, SOPs, materials']].map(([l, v], i) =>
           <div key={l} style={{
             padding: '16px 32px 16px', paddingLeft: i === 0 ? 0 : 32,
             borderLeft: i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none',
@@ -36,7 +36,7 @@ const CBHeroSection = () =>
         )}
       </div>
 
-      <Placeholder label="Hero image — printed materials at a live event" height={480} note="Drop a photo here: activity booklets fanned out, or kids using them at Open Tower Day, or the Eco-Web cards in play" />
+      <Placeholder label="Hero image — visitors at a live program" height={480} note="Best photo: visitors using whale-watching binoculars at Kelp Forest Overlook, kids with the Open Tower Day booklet, or the Eco-Web cards mid-game" />
     </Container>
   </SectionWrap>;
 
@@ -44,110 +44,109 @@ const CBHeroSection = () =>
 const CBOverviewSection = () =>
 <SectionWrap id="overview" style={{ background: '#fff' }}>
     <Container>
-      <SectionHeader num={1} title="The Context" subtitle="Designing for visitors who don't know they're a user." />
+      <SectionHeader num={1} title="The Program" subtitle="Public engagement at a federal park, against a fixed audience and a fixed calendar." />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Setting</div>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#333', margin: 0 }}>
-            Cabrillo National Monument sits at the tip of Point Loma in San Diego — a National Park Service site with two distinct ecosystems (coastal scrub on the bluffs, an intertidal zone below) and a historic lighthouse. Visitors arrive across all ages and prior knowledge levels, often with limited time and no formal guide.
+            Cabrillo National Monument sits at the tip of Point Loma in San Diego — coastal scrub on the bluffs, an intertidal zone below, and the Old Point Loma Lighthouse on top. Visitors arrive across all ages, languages, and prior knowledge levels, often for an hour at most.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Brief</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Role</div>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#333', margin: 0 }}>
-            Across two terms I produced two distinct deliverables: a set of materials for Open Tower Day (a recurring public event at the lighthouse) and an educational card game (Eco-Web) covering the park's two ecosystems. Both had to engage a wide audience, work in print, and survive deployment without a facilitator on hand.
+            I worked as an Associate in the park's Interpretation program — the team responsible for the educational and cultural programming visitors actually engage with. My remit covered scoping, designing, facilitating, measuring, and writing the SOPs that let the next person run each program without me.
           </p>
         </Card>
       </div>
       <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 40 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>DESIGN CHALLENGE</div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>PROGRAM CHALLENGE</div>
         <p style={{ fontSize: 21, lineHeight: 1.6, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760 }}>
-          "How do you make printed visitor materials that engage a 7-year-old and a 70-year-old, work without staff to explain them, and still feel worth keeping after the visit ends?"
+          "How do you run public-engagement programs that scale across staff turnover, multiple seasons, and a 7-to-70 audience — when your only signal is whether someone walks up?"
         </p>
       </div>
     </Container>
   </SectionWrap>;
 
 
-const CBRoleSection = () =>
-<SectionWrap id="role">
+const CBPlaybookSection = () =>
+<SectionWrap id="playbook">
     <Container>
-      <SectionHeader num={2} title="My Role" subtitle="Solo on the design craft. Embedded in a team for coordination, feedback, and approval." />
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
-        <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Owned</div>
-          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            <li>Concept and layout for both deliverables</li>
-            <li>Illustration, typography, and visual system</li>
-            <li>Print-ready file production</li>
-            <li>Activity selection and content scoping</li>
-          </ul>
-        </Card>
-        <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Coordinated</div>
-          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            <li>Subject-matter review with NPS rangers and educators</li>
-            <li>Stakeholder approval cycles before printing</li>
-            <li>Alignment with park branding and tone guidelines</li>
-            <li>Logistics around event timing and quantities</li>
-          </ul>
-        </Card>
+      <SectionHeader num={2} title="The Playbook" subtitle="A repeatable model I wrote down so the next intern wouldn't start from scratch." />
+
+      <p style={{ fontSize: 15, lineHeight: 1.8, color: '#555', maxWidth: 720, marginBottom: 32 }}>
+        Most of the work was running events. The most useful artifact I produced was the <em>process</em> behind them: a written guide called <strong>"A Mini Guide on Pop-Up Programs"</strong> that codified the 7-step model below. Future associates inherit a system, not just a folder of files.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 28 }}>
+        {[
+          ['01', 'Theme', 'Pick the message and the educational anchor first. Activities follow.'],
+          ['02', 'Interpretive Question', 'What question do we want a visitor to walk away asking? Drives engagement, not recall.'],
+          ['03', 'Research', 'The most time-consuming step. Done in a shared workspace so the next person can fact-check.'],
+          ['04', 'Materials', 'Designed in Canva/Adobe; resourceful with what the office already has. Print-ready.'],
+          ['05', 'Location', 'Picked for visitor flow + proximity to the resource being interpreted (e.g., whale overlook for whales).'],
+          ['06', 'Activity & Promotion', 'Built for a wide age range. Promoted via partner social channels in advance.'],
+          ['07', 'Measurement', 'Clicker counts of meaningful interactions, worksheet completions, prizes given out — logged for end-of-year reporting.'],
+        ].map(([n, title, desc]) =>
+          <Card key={n} style={{ padding: '22px 22px 20px' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', letterSpacing: '0.12em', marginBottom: 10 }}>STEP {n}</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 8 }}>{title}</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#555' }}>{desc}</div>
+          </Card>
+        )}
       </div>
-      <div style={{ marginTop: 28, fontSize: 13, color: '#888', lineHeight: 1.7, maxWidth: 720 }}>
-        The work itself was solo, but it didn't happen in a vacuum. Designing for a federal agency means building in time for review, learning the institutional voice, and translating ranger feedback into design changes. Most of my craft decisions were filtered through that loop.
+
+      <div style={{ padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Why this mattered</div>
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+          The Interpretation program runs on rotating interns and seasonal staff. Without documented process, every new associate reinvents the wheel and the program loses institutional memory. Writing the playbook was a deliberate PM move — one document that compounds across every future event.
+        </p>
       </div>
     </Container>
   </SectionWrap>;
 
 
-const CBOpenTowerSection = () =>
-<SectionWrap id="opentower" style={{ background: '#fff' }}>
+const CBWhaleWatchingSection = () =>
+<SectionWrap id="whalewatching" style={{ background: '#fff' }}>
     <Container>
-      <SectionHeader num={3} title="Project 01 — Open Tower Day" subtitle="An activity booklet and Historical Explorer passport for a recurring event at the Old Point Loma Lighthouse." />
+      <SectionHeader num={3} title="Initiative 01 — Guided Whale Watching" subtitle="A multi-week program run two seasons in a row, with a documented handoff for the third." />
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Audience</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Opportunity</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            Open Tower Day brings the public into the lighthouse for a one-day event. Visitors range widely in age and prior knowledge. Materials had to work for a 7-year-old completing a bingo card and a 70-year-old paging through park history.
+            Gray whales migrate past Point Loma every December–February. Cabrillo was historically a pioneer in land-based whale watching, but the program had lapsed. I designed and ran a multi-week pop-up to revive it — first in 2024, then expanded for 2025.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Constraints</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Owned</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            Print only — no app, no QR, no facilitator. Files had to ship before the event and there'd be no patching them after. Distribution had to work at-scale: hand it to a visitor, walk away.
+            Program scoping, partnership with subject experts, activity workbook, on-site facilitation, social promotion across two seasons, weekly tuning based on attendance, and the SOP that let the program run again in 2025 without me re-spec'ing it.
           </p>
         </Card>
       </div>
 
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>Two formats, two audiences</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, marginBottom: 36 }}>
-        <Card>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 8 }}>Activity Booklet (single page)</div>
-          <p style={{ fontSize: 13, lineHeight: 1.7, color: '#555', margin: '0 0 12px' }}>
-            Designed for kids and family groups. A completion-arc structure (finish the booklet, win a prize) gives visitors a reason to stay engaged across the whole event.
-          </p>
-          <div style={{ fontSize: 12, color: '#888', lineHeight: 1.7 }}>
-            Activities: word hunt, drawing prompt (Old Point Loma Lighthouse), stamp collection (Old + New lighthouses), staff fact interview, event participation, and a bingo card with park-specific items (Sea Dahlia, Shaw's Agave, Cabrillo Statue, CA Towhee).
-          </div>
-        </Card>
-        <Card>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 8 }}>Historical Explorer Passport (multi-page)</div>
-          <p style={{ fontSize: 13, lineHeight: 1.7, color: '#555', margin: '0 0 12px' }}>
-            Designed as a collectible — something a visitor takes home and keeps. Mirrors the format of real National Park passports, with stamp pages for "Lighthouse Explorer" and "Historical Explorer" branches.
-          </p>
-          <div style={{ fontSize: 12, color: '#888', lineHeight: 1.7 }}>
-            Multi-page format gives older visitors and history-minded guests something denser to engage with, without watering down the booklet for kids.
-          </div>
-        </Card>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>Program shape</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 32 }}>
+        {[
+          ['Cadence', '4 Saturdays per season, 10:30am–12:30pm, at Kelp Forest & Whale Watch Overlook.'],
+          ['Materials', 'Borrowed binoculars, fact sheets, and a Gray Whale Activity Book (anatomy match, migration map, observation centerfold, final report) I designed in Canva.'],
+          ['Promotion', 'IG posts on partner accounts in the weeks leading up — flyer art, dated week-by-week schedule. Eye-catching > information-dense.'],
+          ['Facilitation', 'Walk visitors from the Visitor Center to the overlook, hand out binoculars, guide what to look for (flukes, spouts, boat trails), answer the standard 4 questions.'],
+        ].map(([t, d]) =>
+          <Card key={t} style={{ padding: '20px 22px' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#111', marginBottom: 6 }}>{t}</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#555' }}>{d}</div>
+          </Card>
+        )}
       </div>
 
-      <Placeholder label="Photos / scans of the printed activity booklet + passport" height={420} note="Best to drop in an actual scan or photo here — both items side by side, or the booklet open showing activities" />
+      <Placeholder label="Whale Watching: promo art, activity book scan, on-site photo" height={420} note="Best stack: the blue 'Guided Whale Watching' IG flyer + the 'Whale you join us?' photo + a scan of the activity book" />
 
       <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Bingo as wayfinding</div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Cross-functional</div>
         <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-          The bingo card doubles as a scavenger hunt. Items chosen — Sea Dahlia, Shaw's Agave, CA Towhee, Cabrillo Statue — exist at specific locations around the park, encouraging visitors to slow down and look at things they'd otherwise walk past. The game structure does the interpretive work without an extra sign.
+          I partnered with Park Ranger Amanda, who had run earlier versions, to absorb institutional knowledge before launch. Then I wrote a public Canva for the activity book and a Grey Whale Watching SOP — both editable so future facilitators can extend the program rather than rebuild it.
         </p>
       </div>
     </Container>
@@ -157,21 +156,35 @@ const CBOpenTowerSection = () =>
 const CBEcoWebSection = () =>
 <SectionWrap id="ecoweb">
     <Container>
-      <SectionHeader num={4} title="Project 02 — Eco-Web" subtitle="A two-set educational card game on California food webs, covering both ecosystems at the park." />
+      <SectionHeader num={4} title="Initiative 02 — Eco-Web" subtitle="A two-deck educational card game on California food webs, designed against explicit user-research requirements." />
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Audience</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Brief</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            Students and park visitors in a guided activity setting. The game is facilitator-led: a ranger or teacher draws a scenario card, and players reason out what happens to the food web.
+            A reusable activity for outreach events and classrooms that explains how disruptions cascade through an ecosystem — without a science background and without losing a 10-year-old halfway through.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Pedagogical Frame</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Frame</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            Scenario prompts are open-ended — "What do you think will happen?" — so the game drives discussion and reasoning instead of testing recall. The right answer is the conversation, not a card flip.
+            Facilitator-led: a ranger or teacher draws a scenario card and players reason out cascading effects. The right answer is the conversation, not a card flip.
           </p>
         </Card>
+      </div>
+
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>User-centered requirements (from the SOP)</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14, marginBottom: 32 }}>
+        {[
+          ['Cognitive Load', 'Has to be quick and digestible. A long, dense activity loses participants mid-way. Each card carries one idea.', '#EBF7F2', '#2A8A5C'],
+          ['Accessibility', 'Plain language for scientific terms. Designed for ESL learners, K–12 students, and adults across knowledge levels.', '#FAF7F2', '#666'],
+          ['Learning Outcome', 'Players walk away knowing X, Y, Z — but more importantly, motivated to repeat what they learned. Conversation over correctness.', '#FDF0E6', '#B85C0D'],
+        ].map(([title, desc, bg, accent]) =>
+          <div key={title} style={{ background: bg, borderRadius: 18, padding: '22px 20px', border: `1.5px solid ${accent}22` }}>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8, color: accent }}>{title}</div>
+            <div style={{ fontSize: 13, color: '#555', lineHeight: 1.65 }}>{desc}</div>
+          </div>
+        )}
       </div>
 
       <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>The card system</h3>
@@ -186,61 +199,146 @@ const CBEcoWebSection = () =>
           </thead>
           <tbody>
             <tr>
-              <td style={{ fontWeight: 600, fontSize: 14 }}>Animal Cards (double-sided)</td>
-              <td style={{ color: '#555', fontSize: 13 }}>California native species across two ecosystems — coastal scrub (Bumble Bee, Prickly Pear, Black Phoebe, Cooper's Hawk, Grey Fox, Gopher Snake, Red-tailed Hawk, Crawford's Grey Shrew, Desert Cottontail) and intertidal/marine (Brown Algae, Bat Star, Blueband Hermit Crab, Garibaldi, Osprey, Common Dolphin)</td>
-              <td style={{ color: '#777', fontSize: 13 }}>Establish the food web before scenarios begin</td>
+              <td style={{ fontWeight: 600, fontSize: 14 }}>Animal Cards</td>
+              <td style={{ color: '#555', fontSize: 13 }}>California natives across two ecosystems — coastal scrub (Bumble Bee, Prickly Pear, Black Phoebe, Cooper's Hawk, Grey Fox, Gopher Snake, Red-tailed Hawk, Crawford's Grey Shrew, Desert Cottontail) and intertidal/marine (Brown Algae, Bat Star, Blueband Hermit Crab, Garibaldi, Osprey, Common Dolphin)</td>
+              <td style={{ color: '#777', fontSize: 13 }}>Build the food web before scenarios begin</td>
             </tr>
             <tr>
-              <td style={{ fontWeight: 600, fontSize: 14 }}>Scenario Cards (single-sided)</td>
+              <td style={{ fontWeight: 600, fontSize: 14 }}>Scenario Cards</td>
               <td style={{ color: '#555', fontSize: 13 }}>Disruption events — disease, new predator, drought, chemical spill, invasive species, ocean acidification, intertidal invader</td>
               <td style={{ color: '#777', fontSize: 13 }}>Trigger reasoning about cascading effects</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 600, fontSize: 14 }}>Resource Icons</td>
+              <td style={{ color: '#555', fontSize: 13 }}>Sunlight, Water (H₂O), Nutrient (N/C) atomic-style icons used as a shared visual vocabulary across both decks</td>
+              <td style={{ color: '#777', fontSize: 13 }}>Same language across ecosystems → cards mix and combine</td>
             </tr>
           </tbody>
         </table>
       </Card>
 
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>Visual system</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 32 }}>
-        {[
-          ['Shared Icon Language', 'Sunlight, Water (H₂O), Nutrient (N/C) icons rendered as atomic diagrams. Same visual vocabulary across both ecosystems lets cards mix and combine.', '#EBF7F2', '#2A8A5C'],
-          ['Trophic Hierarchy', 'Each card carries a prey-icon row (Mammals, Birds, Bugs, Fish, etc.). Players see what eats what at a glance — no text needed.', '#FAF7F2', '#666'],
-          ['Common + Scientific', 'Every species shows both names. Keeps the game accurate enough for classroom use, accessible enough for a 7-year-old.', '#FDF0E6', '#B85C0D']
-        ].map(([title, desc, bg, accent]) =>
-          <div key={title} style={{ background: bg, borderRadius: 18, padding: '22px 20px', border: `1.5px solid ${accent}22` }}>
-            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8, color: accent }}>{title}</div>
-            <div style={{ fontSize: 13, color: '#555', lineHeight: 1.65 }}>{desc}</div>
-          </div>
-        )}
-      </div>
+      <Placeholder label="Eco-Web cards — animal cards + scenario cards + icon system" height={420} note="Best: the green-bordered card set fanned out, scenario cards stacked alongside" />
 
-      <Placeholder label="Photos of Eco-Web card sets" height={420} note="Drop in card scans or fanned-out arrangement: animal cards on one side, scenario cards on the other" />
+      <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Built to be extended</div>
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+          The SOP I wrote includes a "Future Refinements" section — a 4-step process (research → wireframe the new relationships → design new cards → user-test before merging) so future staff can extend the deck without breaking the visual or pedagogical system.
+        </p>
+      </div>
     </Container>
   </SectionWrap>;
 
 
-const CBConstraintsSection = () =>
-<SectionWrap id="constraints" style={{ background: '#fff' }}>
+const CBFlowerHuntSection = () =>
+<SectionWrap id="flowerhunt" style={{ background: '#fff' }}>
     <Container>
-      <SectionHeader num={5} title="Designing for Print + Public" subtitle="Three constraints that shaped every craft decision." />
+      <SectionHeader num={5} title="Initiative 03 — Junior Botanist (Spring Flower Hunt)" subtitle="A native-plant scavenger hunt — and the only program where I got to A/B test the launch." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What it was</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Visitors got a foldable scavenger hunt at the Visitor Center, walked the park's grassland and coastal trails to find five native plants, photographed their favorite, and returned to redeem a prize. An accompanying info table — with live plants from the park greenhouse — caught visitors who didn't want to walk.
+          </p>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Cross-functional</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Coordinated with Patricia, the park's Vegetation Specialist, to request a crate of in-bloom plants from the greenhouse for the table. Live plants ended up being the centerpiece — a reminder that the right ask to the right partner beats anything I could've designed alone.
+          </p>
+        </Card>
+      </div>
+
+      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 32 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>THE DATA POINT I CARE ABOUT</div>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: '0 0 18px', maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+          The first run was a quiet test. The second run — same activity, same location, same staff — went out with full social-media advertisement.
+        </p>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontWeight: 500, color: '#3DAA74', margin: 0, maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+          It pulled <span style={{ fontWeight: 700 }}>10× the participants.</span>
+        </p>
+      </div>
+
+      <p style={{ fontSize: 15, lineHeight: 1.8, color: '#555', maxWidth: 720, marginBottom: 24 }}>
+        That gap is the whole reason I take program-level promotion seriously. The activity wasn't the lever — the activity was already good. The lever was making sure people knew it existed before they showed up at the park. Every program I ran after that got a real promotion plan baked into the timeline, not bolted on at the end.
+      </p>
+
+      <Placeholder label="Junior Botanist scavenger hunt — foldable book + plant grid" height={380} note="Best: the folded scavenger hunt with the native plant photo grid (Sea Dahlia, CA Sunflower, Mojave Yucca, etc.)" />
+    </Container>
+  </SectionWrap>;
+
+
+const CBOtherInitiativesSection = () =>
+<SectionWrap id="other">
+    <Container>
+      <SectionHeader num={6} title="Program Breadth" subtitle="Smaller initiatives that filled out the program calendar — each treated as a real launch." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
+        {[
+          {
+            title: 'Open Tower Day',
+            desc: 'Activity booklet + Historical Explorer passport for the lighthouse open-tower event. Bingo card doubles as a scavenger hunt — items like Sea Dahlia, Shaw\'s Agave, and the Cabrillo Statue exist at specific locations and pull visitors through the full park.',
+          },
+          {
+            title: 'Cabrillo Birthday Pop-Up',
+            desc: 'Visitors made birthday cards for the park\'s anniversary — sharing memories and what they enjoy. Coloring-friendly, designed to hand to a kid with no instruction.',
+          },
+          {
+            title: 'Día de los Muertos',
+            desc: 'Cultural program celebrating Día de los Muertos — promotional poster and on-site altar activity. Brought a tradition into the park calendar that hadn\'t been programmed before.',
+          },
+          {
+            title: 'Gratitude Season',
+            desc: 'Community gratitude tree — visitors wrote what they\'re thankful for on a leaf and stuck it on a shared tree near the Visitor Center. Asynchronous, low-touch, high participation.',
+          },
+          {
+            title: 'Nature Journal',
+            desc: 'A two-page observational worksheet (date, weather, location, "I feel / I wonder / I notice" + sketch space) used across multiple programs. Reusable across seasons rather than one-off.',
+          },
+        ].map(t =>
+          <Card key={t.title} style={{ padding: '22px 22px 20px' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 8 }}>{t.title}</div>
+            <div style={{ fontSize: 13, lineHeight: 1.7, color: '#555' }}>{t.desc}</div>
+          </Card>
+        )}
+      </div>
+
+      <Placeholder label="Mosaic of program collateral" height={300} note="Drop a 2-row image grid here: Birthday flyer, Gratitude tree, Día de los Muertos altar art, Nature Journal scan, Open Tower Day booklet" />
+    </Container>
+  </SectionWrap>;
+
+
+const CBMeasurementSection = () =>
+<SectionWrap id="measurement" style={{ background: '#fff' }}>
+    <Container>
+      <SectionHeader num={7} title="Measurement & Iteration" subtitle="What I tracked, why, and how the numbers changed how I ran the next program." />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         {[
           {
-            title: 'No facilitator',
-            desc: "The Open Tower Day materials had to be self-explanatory. A visitor picks one up at the entrance and can use it without instruction. That meant every activity had to be readable in under 10 seconds and obvious in what it asks for."
+            n: '01',
+            title: 'Interpretive contacts',
+            desc: 'Clicker counts of meaningful interactions — required for end-of-year reporting at the park level. The same number tells you whether your pop-up is working and gives leadership a quantifiable program impact at the end of the season.',
           },
           {
-            title: 'No second print run',
-            desc: 'Print is unforgiving. There\'s no "push an update" after a printing error. Every typo, every alignment mistake, every color the printer mangled — that\'s what visitors get. Files were proof-read against print samples before sign-off.'
+            n: '02',
+            title: 'Worksheet completion rate',
+            desc: 'For programs that used activity books, I tracked how many were handed out vs. completed. That ratio tells you whether the activity is the draw or whether people are just collecting collateral.',
           },
           {
-            title: 'No assumed prior knowledge',
-            desc: "Designing for the public, not for design audiences. The Eco-Web icons had to be readable without a legend explaining them. The bingo plants had to be findable without a botanical guide. The lighthouse drawing prompt had to work for a kid who's never drawn a building before."
-          }
-        ].map((d, i) =>
-          <Card key={i} style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 18, padding: '22px 26px' }}>
+            n: '03',
+            title: 'Promotion lift',
+            desc: 'The 10× participation gap between the test and advertised runs of Junior Botanist. After that data point, every program got a real promotion plan baked into the timeline — not bolted on at the end.',
+          },
+          {
+            n: '04',
+            title: 'Multi-week tuning',
+            desc: 'Whale Watching ran four Saturdays. If attendance dropped or visitors weren\'t engaging with the workbook, I had three more weekends to adjust the pitch, the materials, or the location. Each weekend was an iteration.',
+          },
+        ].map(d =>
+          <Card key={d.n} style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 18, padding: '22px 26px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', letterSpacing: '0.12em', textTransform: 'uppercase', paddingTop: 4 }}>
-              0{i + 1}
+              {d.n}
             </div>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#111', marginBottom: 6 }}>{d.title}</div>
@@ -253,27 +351,37 @@ const CBConstraintsSection = () =>
   </SectionWrap>;
 
 
-const CBOutcomeSection = () =>
-<SectionWrap id="outcome">
+const CBHandoffSection = () =>
+<SectionWrap id="handoff">
     <Container>
-      <SectionHeader num={6} title="Outcome" subtitle="Real materials, distributed at real events, used by real visitors." />
+      <SectionHeader num={8} title="Coordination & Handoff" subtitle="The people I worked through, and the documents I left behind." />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Open Tower Day</div>
-          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            The activity booklet and Historical Explorer passport were printed and distributed across multiple Open Tower Day events at Cabrillo National Monument. Visitors completed them on-site; the prize incentive drove kids and families through the full event arc.
-          </p>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Stakeholders</div>
+          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
+            <li><strong>Park Rangers</strong> — subject experts for whale watching, lighthouse history, marine ecology</li>
+            <li><strong>Vegetation Specialist (Patricia)</strong> — live native plants from the park greenhouse</li>
+            <li><strong>Supervisors</strong> — content and timing approval before printing or promoting</li>
+            <li><strong>Park social media</strong> — partner accounts on Instagram for promotion reach</li>
+            <li><strong>Volunteer interpretive staff</strong> — facilitators on event days when programs ran multi-station</li>
+          </ul>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Eco-Web</div>
-          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            The card game was produced for use in guided educational sessions, supporting facilitators in walking groups through both ecosystems and disruption scenarios.
-          </p>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I left for the next associate</div>
+          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
+            <li><strong>"A Mini Guide on Pop-Up Programs"</strong> — the 7-step playbook</li>
+            <li><strong>Grey Whale Watching SOP</strong> — multi-week program runbook</li>
+            <li><strong>Eco-Web Mini SOP</strong> — facilitator script + future-refinement guide</li>
+            <li><strong>Public Canva files</strong> — for the activity books and flyers, editable by future staff</li>
+            <li><strong>Promotion templates</strong> — IG post layouts dated and reusable season-to-season</li>
+          </ul>
         </Card>
       </div>
 
-      <Placeholder label="Photo from Open Tower Day — visitors using the materials" height={300} note="If you have any event photos showing the booklets in the wild, that's the highest-impact visual you could put here" />
+      <div style={{ marginTop: 28, fontSize: 13, color: '#888', lineHeight: 1.7, maxWidth: 760 }}>
+        The Interpretation program runs on rotating staff. The deliverable that mattered most wasn't any one event — it was making sure the next person didn't have to start from scratch.
+      </div>
     </Container>
   </SectionWrap>;
 
@@ -281,19 +389,23 @@ const CBOutcomeSection = () =>
 const CBReflectionSection = () =>
 <SectionWrap id="reflection" style={{ background: '#fff' }}>
     <Container>
-      <SectionHeader num={7} title="Reflection" />
+      <SectionHeader num={9} title="Reflection" subtitle="What program management at a federal park taught me, in PM terms." />
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Learned</div>
-          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            Print discipline. Designing for a fixed event with a real deadline and real visitors is a different muscle from iterative digital work. There's no fallback. Every design decision either works for someone walking up cold or it doesn't, and you find out the day of.
-          </p>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Transferable skills</div>
+          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.8, color: '#444', margin: 0 }}>
+            <li>Scoping under hard constraints (fixed events, fixed audience, no rollback)</li>
+            <li>Cross-functional coordination with subject experts</li>
+            <li>Shipping to a real launch date with measurable outcomes</li>
+            <li>Iterating based on quantitative + qualitative signal</li>
+            <li>Writing documentation that survives staff turnover</li>
+          </ul>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I'd Bring Forward</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I'd bring forward</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
-            The constraints from print — no tooltips, no error states, no second chances — are the same constraints that make any design better. Anything that needs hover text to explain itself is one design layer away from breaking.
+            Programs aren't projects. A project ends; a program has to be runnable next season by someone who wasn't there. That mindset — designing for handoff, measuring for the next iteration, writing things down before you forget them — is what I carry into every product role.
           </p>
         </Card>
       </div>
@@ -301,7 +413,7 @@ const CBReflectionSection = () =>
       <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px' }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>WHAT THIS TAUGHT ME</div>
         <p style={{ fontSize: 19, lineHeight: 1.65, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
-          Print is the cleanest test of whether a design works. If a 7-year-old can use it without help, you've designed something good. If they need an explanation, you've designed a wireframe.
+          The best work I did at Cabrillo wasn't an event. It was the document that let the next person run the event without me — and the data point that told them whether to bother promoting it.
         </p>
       </div>
     </Container>
@@ -309,6 +421,8 @@ const CBReflectionSection = () =>
 
 
 Object.assign(window, {
-  CBHeroSection, CBOverviewSection, CBRoleSection, CBOpenTowerSection,
-  CBEcoWebSection, CBConstraintsSection, CBOutcomeSection, CBReflectionSection
+  CBHeroSection, CBOverviewSection, CBPlaybookSection,
+  CBWhaleWatchingSection, CBEcoWebSection, CBFlowerHuntSection,
+  CBOtherInitiativesSection, CBMeasurementSection, CBHandoffSection,
+  CBReflectionSection,
 });
