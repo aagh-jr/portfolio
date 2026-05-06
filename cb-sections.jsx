@@ -36,7 +36,9 @@ const CBHeroSection = () =>
         )}
       </div>
 
-      <Placeholder label="Hero image — visitors at a live program" height={480} note="Best photo: visitors using whale-watching binoculars at Kelp Forest Overlook, kids with the Open Tower Day booklet, or the Eco-Web cards mid-game" />
+      <div style={{ borderRadius: 22, overflow: 'hidden', background: '#FAFAF8' }}>
+        <img src="screenshots/cabrillo/hero-altar.jpg" alt="Día de los Muertos altar at the Cabrillo Visitor Center" style={{ width: '100%', height: 'auto', display: 'block' }} />
+      </div>
     </Container>
   </SectionWrap>;
 
@@ -141,7 +143,18 @@ const CBWhaleWatchingSection = () =>
         )}
       </div>
 
-      <Placeholder label="Whale Watching: promo art, activity book scan, on-site photo" height={420} note="Best stack: the blue 'Guided Whale Watching' IG flyer + the 'Whale you join us?' photo + a scan of the activity book" />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+        {[
+          ['whale-ig-1.png', 'Guided Whale Watching IG flyer (2025 season)'],
+          ['whale-ig-2.png', 'Calendar IG post listing the four Saturdays'],
+          ['whale-photo.jpg', 'Whale tail photographed from a Cabrillo overlook'],
+          ['whale-activity-book.png', 'Gray Whale Activity Book — front and back pages'],
+        ].map(([file, alt]) =>
+          <div key={file} style={{ borderRadius: 14, overflow: 'hidden', background: '#FAFAF8', border: '1px solid rgba(0,0,0,0.06)' }}>
+            <img src={`screenshots/cabrillo/${file}`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '1 / 1', display: 'block' }} />
+          </div>
+        )}
+      </div>
 
       <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Cross-functional</div>
@@ -217,7 +230,33 @@ const CBEcoWebSection = () =>
         </table>
       </Card>
 
-      <Placeholder label="Eco-Web cards — animal cards + scenario cards + icon system" height={420} note="Best: the green-bordered card set fanned out, scenario cards stacked alongside" />
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>The full deck</h3>
+      <p style={{ fontSize: 14, lineHeight: 1.7, color: '#666', maxWidth: 720, marginBottom: 24 }}>
+        15 species across two decks — coastal scrub on top, intertidal/marine on the bottom row. Each card carries a photograph, common + scientific name, and the prey-icon row that drives the food-web reasoning.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, padding: 14, background: '#F4F4F1', borderRadius: 18 }}>
+        {[
+          ['card-black-phoebe', 'Black Phoebe'],
+          ['card-coopers-hawk', "Cooper's Hawk"],
+          ['card-red-tailed-hawk', 'Red-tailed Hawk'],
+          ['card-grey-shrew', "Crawford's Grey Shrew"],
+          ['card-grey-fox', 'Grey Fox'],
+          ['card-gopher-snake', 'Gopher Snake'],
+          ['card-desert-cottontail', 'Desert Cottontail'],
+          ['card-bumble-bee', 'California Bumble Bee'],
+          ['card-prickly-pear', 'Coastal Prickly Pear'],
+          ['card-bat-star', 'Bat Star'],
+          ['card-blueband-hermit', 'Blueband Hermit Crab'],
+          ['card-brown-algae', 'Brown Algae'],
+          ['card-garibaldi', 'Garibaldi'],
+          ['card-osprey', 'Osprey'],
+          ['card-common-dolphin', 'Common Dolphin'],
+        ].map(([file, alt]) =>
+          <div key={file} style={{ aspectRatio: '0.515 / 1', overflow: 'hidden', borderRadius: 6 }}>
+            <img src={`screenshots/cabrillo/${file}.png`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          </div>
+        )}
+      </div>
 
       <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Built to be extended</div>
@@ -263,7 +302,9 @@ const CBFlowerHuntSection = () =>
         That gap is the whole reason I take program-level promotion seriously. The activity wasn't the lever — the activity was already good. The lever was making sure people knew it existed before they showed up at the park. Every program I ran after that got a real promotion plan baked into the timeline, not bolted on at the end.
       </p>
 
-      <Placeholder label="Junior Botanist scavenger hunt — foldable book + plant grid" height={380} note="Best: the folded scavenger hunt with the native plant photo grid (Sea Dahlia, CA Sunflower, Mojave Yucca, etc.)" />
+      <div style={{ borderRadius: 18, overflow: 'hidden', background: '#FAFAF8', border: '1px solid rgba(0,0,0,0.06)' }}>
+        <img src="screenshots/cabrillo/flower-hunt.png" alt="Junior Botanist scavenger hunt — foldable book and native plant identification grid" style={{ width: '100%', height: 'auto', display: 'block' }} />
+      </div>
     </Container>
   </SectionWrap>;
 
@@ -303,7 +344,19 @@ const CBOtherInitiativesSection = () =>
         )}
       </div>
 
-      <Placeholder label="Mosaic of program collateral" height={300} note="Drop a 2-row image grid here: Birthday flyer, Gratitude tree, Día de los Muertos altar art, Nature Journal scan, Open Tower Day booklet" />
+      <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+        {[
+          ['birthday-card.png', 'Cabrillo Birthday Pop-Up flyer', '#FFF'],
+          ['gratitude-season.png', 'Gratitude Season tree activity flyer', '#FFF'],
+          ['dia-de-muertos-poster.png', 'Día de los Muertos altar poster', '#FFF'],
+          ['nature-journal.png', 'Nature Journal observational worksheet', '#FFF'],
+          ['open-tower-book.png', 'Open Tower Day activity booklet (folded layout)', '#F4F4F1'],
+        ].map(([file, alt, bg]) =>
+          <div key={file} style={{ borderRadius: 14, overflow: 'hidden', background: bg, border: '1px solid rgba(0,0,0,0.06)' }}>
+            <img src={`screenshots/cabrillo/${file}`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '4 / 5', display: 'block' }} />
+          </div>
+        )}
+      </div>
     </Container>
   </SectionWrap>;
 
