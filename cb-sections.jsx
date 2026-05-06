@@ -1,5 +1,143 @@
 // cb-sections.jsx — Cabrillo National Monument Interpretation Program case study
 
+const CB_FLIP_MS = 750;
+const CB_FLIP_EASE = 'cubic-bezier(.3,.7,.4,1)';
+
+const CBFlippingPage = ({ frontSrc, backSrc, direction, onDone }) => {
+  const [rot, setRot] = React.useState(direction === 'forward' ? 0 : -180);
+  React.useEffect(() => {
+    const r1 = requestAnimationFrame(() => {
+      const r2 = requestAnimationFrame(() => {
+        setRot(direction === 'forward' ? -180 : 0);
+      });
+      CBFlippingPage._raf2 = r2;
+    });
+    const t = setTimeout(() => onDone(), CB_FLIP_MS);
+    return () => { cancelAnimationFrame(r1); clearTimeout(t); };
+  }, []);
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      transformStyle: 'preserve-3d',
+      transformOrigin: 'left center',
+      transform: `rotateY(${rot}deg)`,
+      transition: `transform ${CB_FLIP_MS}ms ${CB_FLIP_EASE}`,
+      pointerEvents: 'none',
+      boxShadow: rot < 0 && rot > -180 ? '0 8px 22px rgba(0,0,0,0.18)' : 'none',
+    }}>
+      <img src={frontSrc} alt="" style={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        objectFit: 'cover', backfaceVisibility: 'hidden', borderRadius: 4,
+      }} />
+      <img src={backSrc} alt="" style={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        objectFit: 'cover', backfaceVisibility: 'hidden',
+        transform: 'rotateY(180deg)', borderRadius: 4,
+      }} />
+    </div>
+  );
+};
+
+const CBFlipbook = ({ pages, aspectRatio = '0.65 / 1', label = '', maxWidth = 480 }) => {
+  const [current, setCurrent] = React.useState(0);
+  const [flip, setFlip] = React.useState(null);
+  const containerRef = React.useRef(null);
+
+  const next = React.useCallback(() => {
+    if (flip || current >= pages.length - 1) return;
+    setFlip({ direction: 'forward', from: current, to: current + 1 });
+  }, [flip, current, pages.length]);
+
+  const prev = React.useCallback(() => {
+    if (flip || current === 0) return;
+    setFlip({ direction: 'backward', from: current - 1, to: current });
+  }, [flip, current]);
+
+  const onFlipDone = React.useCallback(() => {
+    setCurrent(c => flip ? flip.to : c);
+    setFlip(null);
+  }, [flip]);
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (!containerRef.current || !containerRef.current.matches(':hover, :focus-within')) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [next, prev]);
+
+  const underIdx = flip ? flip.to : current;
+
+  return (
+    <div ref={containerRef} tabIndex={0} style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18,
+      outline: 'none', userSelect: 'none',
+    }}>
+      <div style={{
+        perspective: '2200px', width: '100%', maxWidth, aspectRatio,
+        position: 'relative',
+      }}>
+        {/* Spine shadow */}
+        <div style={{
+          position: 'absolute', top: 0, bottom: 0, left: -6, width: 12,
+          background: 'linear-gradient(to right, rgba(0,0,0,0.18), transparent)',
+          borderRadius: '4px 0 0 4px', pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'relative', width: '100%', height: '100%',
+          background: '#fff', borderRadius: 4,
+          boxShadow: '0 14px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)',
+        }}>
+          <img src={pages[underIdx]} alt={`Page ${underIdx + 1} of ${pages.length}`} style={{
+            position: 'absolute', inset: 0, width: '100%', height: '100%',
+            objectFit: 'cover', borderRadius: 4, display: 'block',
+          }} />
+          {flip && (
+            <CBFlippingPage
+              key={`${flip.from}-${flip.direction}-${Date.now()}`}
+              frontSrc={pages[flip.direction === 'forward' ? flip.from : flip.from]}
+              backSrc={pages[flip.direction === 'forward' ? flip.to : flip.to]}
+              direction={flip.direction}
+              onDone={onFlipDone}
+            />
+          )}
+          {/* Click zones */}
+          <div onClick={prev} style={{
+            position: 'absolute', top: 0, bottom: 0, left: 0, width: '30%',
+            cursor: current === 0 || flip ? 'default' : 'w-resize',
+            zIndex: 2,
+          }} aria-label="Previous page" />
+          <div onClick={next} style={{
+            position: 'absolute', top: 0, bottom: 0, right: 0, width: '30%',
+            cursor: current === pages.length - 1 || flip ? 'default' : 'e-resize',
+            zIndex: 2,
+          }} aria-label="Next page" />
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <button onClick={prev} disabled={current === 0 || !!flip} style={{
+          background: 'rgba(0,0,0,0.06)', border: 'none', borderRadius: 100,
+          width: 36, height: 36, cursor: (current === 0 || flip) ? 'default' : 'pointer',
+          opacity: (current === 0 || flip) ? 0.35 : 1, fontSize: 14,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }} aria-label="Previous page">←</button>
+        <div style={{ fontSize: 12, color: '#888', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', minWidth: 90, textAlign: 'center' }}>
+          {label ? `${label} — ` : ''}{current + 1} / {pages.length}
+        </div>
+        <button onClick={next} disabled={current === pages.length - 1 || !!flip} style={{
+          background: 'rgba(0,0,0,0.06)', border: 'none', borderRadius: 100,
+          width: 36, height: 36, cursor: (current === pages.length - 1 || flip) ? 'default' : 'pointer',
+          opacity: (current === pages.length - 1 || flip) ? 0.35 : 1, fontSize: 14,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }} aria-label="Next page">→</button>
+      </div>
+    </div>
+  );
+};
+
+
 const CBHeroSection = () =>
 <SectionWrap id="hero" style={{ padding: '120px 0 80px' }}>
     <Container noBorder>
@@ -143,17 +281,42 @@ const CBWhaleWatchingSection = () =>
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 40 }}>
         {[
           ['whale-ig-1.png', 'Guided Whale Watching IG flyer (2025 season)'],
           ['whale-ig-2.png', 'Calendar IG post listing the four Saturdays'],
           ['whale-photo.jpg', 'Whale tail photographed from a Cabrillo overlook'],
-          ['whale-activity-book.png', 'Gray Whale Activity Book — front and back pages'],
         ].map(([file, alt]) =>
           <div key={file} style={{ borderRadius: 14, overflow: 'hidden', background: '#FAFAF8', border: '1px solid rgba(0,0,0,0.06)' }}>
             <img src={`screenshots/cabrillo/${file}`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '1 / 1', display: 'block' }} />
           </div>
         )}
+      </div>
+
+      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 36px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+        <div style={{ textAlign: 'center', maxWidth: 520 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The activity book</div>
+          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
+            Flip through the Gray Whale Watching booklet
+          </h3>
+          <p style={{ fontSize: 13, color: '#aaa', margin: 0, lineHeight: 1.7 }}>
+            Cover → instructions → anatomy match → migration map → observation centerfold → final report → thank-you stamp page. Click the right edge to turn each page.
+          </p>
+        </div>
+        <CBFlipbook
+          pages={[
+            'screenshots/cabrillo/wb-1-cover.png',
+            'screenshots/cabrillo/wb-2-instructions.png',
+            'screenshots/cabrillo/wb-3-anatomy.png',
+            'screenshots/cabrillo/wb-4-map.png',
+            'screenshots/cabrillo/wb-5-draw.png',
+            'screenshots/cabrillo/wb-6-final-report.png',
+            'screenshots/cabrillo/wb-7-thanks.png',
+          ]}
+          aspectRatio="0.65 / 1"
+          label="Whale Book"
+          maxWidth={420}
+        />
       </div>
 
       <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
@@ -344,18 +507,44 @@ const CBOtherInitiativesSection = () =>
         )}
       </div>
 
-      <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+      <div style={{ marginTop: 24, marginBottom: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
         {[
           ['birthday-card.png', 'Cabrillo Birthday Pop-Up flyer', '#FFF'],
           ['gratitude-season.png', 'Gratitude Season tree activity flyer', '#FFF'],
           ['dia-de-muertos-poster.png', 'Día de los Muertos altar poster', '#FFF'],
           ['nature-journal.png', 'Nature Journal observational worksheet', '#FFF'],
-          ['open-tower-book.png', 'Open Tower Day activity booklet (folded layout)', '#F4F4F1'],
         ].map(([file, alt, bg]) =>
           <div key={file} style={{ borderRadius: 14, overflow: 'hidden', background: bg, border: '1px solid rgba(0,0,0,0.06)' }}>
             <img src={`screenshots/cabrillo/${file}`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '4 / 5', display: 'block' }} />
           </div>
         )}
+      </div>
+
+      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 36px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+        <div style={{ textAlign: 'center', maxWidth: 520 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The Open Tower Day booklet</div>
+          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
+            Eight panels, page by page
+          </h3>
+          <p style={{ fontSize: 13, color: '#aaa', margin: 0, lineHeight: 1.7 }}>
+            One folded sheet, eight panels — cover, how-to-play, word hunt, "ask a ranger" prompt, draw, BINGO, lighthouse stamps, and event checklist. Click the right edge to flip.
+          </p>
+        </div>
+        <CBFlipbook
+          pages={[
+            'screenshots/cabrillo/otd-1-cover.png',
+            'screenshots/cabrillo/otd-2-how-to-play.png',
+            'screenshots/cabrillo/otd-3-word-hunt.png',
+            'screenshots/cabrillo/otd-4-park-fact.png',
+            'screenshots/cabrillo/otd-5-draw.png',
+            'screenshots/cabrillo/otd-6-bingo.png',
+            'screenshots/cabrillo/otd-7-stamps.png',
+            'screenshots/cabrillo/otd-8-events.png',
+          ]}
+          aspectRatio="0.65 / 1"
+          label="OTD Book"
+          maxWidth={380}
+        />
       </div>
     </Container>
   </SectionWrap>;
