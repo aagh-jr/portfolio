@@ -7,234 +7,323 @@
   <title>Projects — Abel Angel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #FAFAF7;
+      --paper: #FFFFFF;
+      --ink: #141413;
+      --muted: #6B6B65;
+      --rule: rgba(20, 20, 19, 0.09);
+      --rule-strong: rgba(20, 20, 19, 0.16);
+      --accent: #B5462E;
+      --accent-soft: #F4E4DA;
+      --serif: 'Fraunces', 'Cardo', Georgia, serif;
+      --sans:  'Manrope', system-ui, sans-serif;
+      --mono:  'JetBrains Mono', ui-monospace, monospace;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #f0f0f3;
-      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
       min-height: 100vh;
     }
     a { color: inherit; text-decoration: none; }
-    a.project-item { color: inherit; }
+    ::selection { background: var(--accent-soft); color: var(--ink); }
 
-    /* ── NAV ── */
-    .nav-pill {
-      position: fixed; top: 16px; right: 48px; z-index: 200;
-      display: flex; align-items: center; gap: 16px; padding: 8px;
-    }
-    .nav-btn {
-      width: 40px; height: 40px; border-radius: 9999px;
-      display: flex; align-items: center; justify-content: center;
-      transition: box-shadow 0.15s; cursor: pointer;
-    }
-    .nav-btn.active { box-shadow: 0 0 0 2px rgba(0,0,0,0.22); }
-    .nav-btn svg { display: block; }
-    .nav-sep { display: none; }
-
-    /* ── LAYOUT ── */
-    .page-wrap { max-width: 1280px; margin: 0 auto; padding: 0 40px 0 20px; }
-    .main {
-      max-width: 1200px;
-      padding: 150px 48px 96px 24px;
-      display: flex; flex-direction: column; gap: 40px;
-    }
-
-    /* ── HEADING ── */
-    .page-heading {
-      font-family: 'Manrope', sans-serif;
-      font-size: 40px; font-weight: 800; color: #a0a09a;
-      letter-spacing: -0.016em; line-height: 1.2;
-      padding-left: 28px;
-    }
-
-    /* ── PROJECTS GRID ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .project-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border: 1.5px solid rgba(255, 255, 255, 0.78);
-      box-shadow:
-        0 4px 32px rgba(0,0,0,0.08),
-        inset 0 2px 0 rgba(255,255,255,1),
-        inset 0 -1.5px 0 rgba(255,255,255,0.2),
-        inset 2px 0 0 rgba(255,255,255,0.55),
-        inset -2px 0 0 rgba(255,255,255,0.2);
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-    /* diagonal light sweep — top-left refraction */
-    .project-item::before {
+    body::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.28) 0%,
-        rgba(255,255,255,0.06) 35%,
-        transparent 60%
-      );
+      position: fixed; inset: 0;
       pointer-events: none;
-      z-index: 2;
-    }
-    /* top-edge catch light */
-    .project-item::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 12%; right: 12%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95) 30%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.95) 70%, transparent);
-      pointer-events: none;
-      z-index: 3;
-    }
-    .project-item:hover {
-      transform: translateY(-5px);
-      box-shadow:
-        0 20px 56px rgba(0,0,0,0.12),
-        inset 0 2px 0 rgba(255,255,255,1),
-        inset 0 -1.5px 0 rgba(255,255,255,0.2),
-        inset 2px 0 0 rgba(255,255,255,0.55),
-        inset -2px 0 0 rgba(255,255,255,0.2);
-    }
-    .project-thumb, .project-title, .project-desc { position: relative; z-index: 1; }
-
-    /* thumbnail */
-    .project-thumb {
-      height: 420px;
-      border-bottom: 1px solid rgba(255,255,255,0.5);
-    }
-    .project-thumb--blue {
-      background: radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #ffffff 100%);
-    }
-    .project-thumb--red {
-      background: linear-gradient(180deg, #ffffff 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(248,187,180,0.75) 80.2%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%);
-    }
-    .project-thumb--green {
-      background: radial-gradient(circle at 50% 65%, rgba(200,220,180,0.85) 0%, rgba(220,210,170,0.55) 40%, #ffffff 100%);
-    }
-    .project-thumb--purple {
-      background: radial-gradient(circle at 50% 50%, rgba(195,185,225,0.75) 0%, rgba(210,200,235,0.45) 40%, #ffffff 100%);
+      z-index: 1;
+      opacity: 0.045;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* title + description */
-    .project-title {
-      font-size: 32px; font-weight: 800; color: #1c1c18;
-      letter-spacing: -0.016em; line-height: 1.2;
-      margin-bottom: 6px;
-      padding: 24px 28px 0;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .project-desc {
-      font-size: 15px; font-weight: 400; color: #555;
-      line-height: 1.55;
-      padding: 0 28px 28px;
-    }
+    .anim    { animation: fadeUp 600ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+    .anim-d1 { animation-delay: 80ms; }
+    .anim-d2 { animation-delay: 160ms; }
+    .anim-d3 { animation-delay: 240ms; }
+    .anim-d4 { animation-delay: 320ms; }
+    .anim-d5 { animation-delay: 400ms; }
+    .anim-d6 { animation-delay: 480ms; }
 
-    /* ── PAGE TRANSITIONS ── */
-    body { transition: opacity 0.3s ease-in-out; }
+    body { transition: opacity 0.22s ease-in-out, transform 0.22s ease-in-out; }
     body.page-entering, body.page-leaving { opacity: 0; }
 
-    /* ── HEADING SLIDE-IN ── */
-    @keyframes slideInLeft {
-      from { transform: translateX(-28px); }
-      to   { transform: translateX(0); }
+    .back-link {
+      position: fixed; top: 24px; left: 24px; z-index: 200;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px 8px 12px;
+      border-radius: 9999px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 13px; font-weight: 600;
+      transition: border-color 160ms ease, color 160ms ease, transform 160ms ease;
     }
-    .page-heading { animation: slideInLeft 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+    .back-link:hover { border-color: var(--ink); color: var(--ink); transform: translateX(-2px); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .nav-pill { right: 20px; gap: 12px; }
-      .main { padding: 120px 24px 64px; }
-      .page-heading { font-size: 28px; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-thumb { height: 220px; }
-      .project-title { font-size: 24px; }
-      .project-desc { font-size: 18px; }
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 2; }
+    .masthead {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 28px 0 16px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead .ml { display: flex; align-items: baseline; gap: 20px; }
+    .mast-mark {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .mast-mark .dot { color: var(--accent); }
+    .mast-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .heading-block {
+      padding: 88px 0 48px;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .heading-block h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(56px, 8vw, 96px);
+      line-height: 0.96;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      font-variation-settings: "opsz" 144;
+    }
+    .heading-block h1 em { font-style: italic; }
+    .heading-block h1 .period { color: var(--accent); font-style: normal; }
+    .heading-block .lede {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.45;
+      color: var(--ink);
+      max-width: 580px;
+      font-variation-settings: "opsz" 72;
+    }
+
+    /* table-of-contents style index */
+    .index-list {
+      padding: 24px 0 56px;
+      border-top: 1px solid var(--rule-strong);
+    }
+    .index-row {
+      display: grid;
+      grid-template-columns: 60px 1fr 200px 80px 32px;
+      gap: 24px;
+      align-items: baseline;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--rule);
+      transition: padding 200ms ease;
+    }
+    .index-row:hover {
+      padding-left: 16px;
+      padding-right: 0;
+    }
+    .index-row:hover .ir-title { color: var(--accent); }
+    .index-row:hover .ir-arrow { color: var(--accent); transform: translateX(4px); }
+
+    .ir-num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--muted);
+      font-weight: 500;
+      font-variation-settings: "opsz" 72;
+    }
+    .ir-title-block {
+      display: flex; flex-direction: column; gap: 8px;
+      min-width: 0;
+    }
+    .ir-title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      transition: color 180ms ease;
+      font-variation-settings: "opsz" 96;
+    }
+    .ir-title .period { color: var(--accent); }
+    .ir-desc {
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 500;
+      max-width: 560px;
+    }
+    .ir-tags {
+      display: flex; gap: 6px;
+      flex-wrap: wrap;
+    }
+    .ir-tag {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 4px 10px;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .ir-year {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-align: right;
+    }
+    .ir-arrow {
+      font-family: var(--serif);
+      font-size: 26px;
+      color: var(--muted);
+      transition: color 180ms ease, transform 180ms ease;
+      text-align: right;
+    }
+
+    .colophon {
+      border-top: 1px solid var(--rule);
+      padding: 22px 0 36px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @media (max-width: 920px) {
+      .index-row {
+        grid-template-columns: 40px 1fr 60px;
+        grid-template-rows: auto auto;
+        gap: 16px 18px;
+      }
+      .ir-tags, .ir-arrow { grid-column: 2; }
+      .ir-tags { margin-top: 4px; }
+      .ir-year { grid-column: 3; grid-row: 1; }
+      .ir-arrow { display: none; }
+    }
+    @media (max-width: 600px) {
+      .page-wrap { padding: 0 24px; }
+      .heading-block { padding: 56px 0 32px; }
+      .colophon { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .back-link { top: 16px; left: 16px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- FLOATING NAV PILL -->
-  <nav class="nav-pill" aria-label="Site navigation">
-    <a href="index.html" class="nav-btn" title="Home">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#71717a" stroke-width="1.5" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <!-- Projects active -->
-    <a href="projects.html" class="nav-btn active" title="Projects">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <a href="about.html" class="nav-btn" title="About">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="8" cy="5.5" r="2.5" stroke="#71717a" stroke-width="1.5"/>
-        <path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </a>
-    <div class="nav-sep"></div>
-    <a href="contact.html" class="nav-btn" title="Contact">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/>
-        <path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </a>
-  </nav>
+  <a href="index.html" class="back-link" aria-label="Back to home">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Index</span>
+  </a>
 
-  <!-- MAIN CONTENT -->
   <div class="page-wrap">
-    <main class="main">
-
-      <h1 class="page-heading">Projects</h1>
-
-      <div class="projects-grid">
-
-        <!-- Project 1 — Energy Ave -->
-        <a href="Energy Ave.html" class="project-item">
-          <div class="project-thumb project-thumb--blue"></div>
-          <p class="project-title">Energy Ave.</p>
-          <p class="project-desc">A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.</p>
-        </a>
-
-        <!-- Project 2 — Val's Kitchen -->
-        <a href="Project 02.html" class="project-item">
-          <div class="project-thumb project-thumb--red"></div>
-          <p class="project-title">Val's Kitchen.</p>
-          <p class="project-desc">A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.</p>
-        </a>
-
-        <!-- Project 3 — Cabrillo National Monument -->
-        <a href="Project 03.html" class="project-item">
-          <div class="project-thumb project-thumb--green"></div>
-          <p class="project-title">Cabrillo NM.</p>
-          <p class="project-desc">Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs from Whale Watching to Eco-Web.</p>
-        </a>
-
-        <!-- Project 4 — UCSD Laundry App -->
-        <a href="Project 04.html" class="project-item">
-          <div class="project-thumb project-thumb--purple"></div>
-          <p class="project-title">UCSD Laundry App.</p>
-          <p class="project-desc">A campus laundry app designed through a participatory design lens — six-person team, COMM 124A, lo-fi to hi-fi covering machine status, lost-and-found, and reporting.</p>
-        </a>
-
+    <header class="masthead anim">
+      <div class="ml">
+        <span class="mast-mark">Abel Angel<span class="dot">.</span></span>
+        <span class="mast-meta">01 / Projects</span>
       </div>
+      <span class="mast-meta">04 entries · 2023–2025</span>
+    </header>
 
-    </main>
+    <section class="heading-block">
+      <h1 class="anim anim-d1">Selected <em>works</em><span class="period">.</span></h1>
+      <p class="lede anim anim-d2">Four case studies in UX research, product design, and program management — chronological, longest first.</p>
+    </section>
+
+    <section class="index-list">
+      <a href="Energy Ave.html" class="index-row anim anim-d3">
+        <span class="ir-num">01.</span>
+        <div class="ir-title-block">
+          <h2 class="ir-title">Energy Ave<span class="period">.</span></h2>
+          <p class="ir-desc">A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.</p>
+        </div>
+        <div class="ir-tags">
+          <span class="ir-tag">UX Research</span>
+          <span class="ir-tag">Game Design</span>
+          <span class="ir-tag">EdTech</span>
+        </div>
+        <span class="ir-year">2024</span>
+        <span class="ir-arrow">→</span>
+      </a>
+
+      <a href="Project 02.html" class="index-row anim anim-d4">
+        <span class="ir-num">02.</span>
+        <div class="ir-title-block">
+          <h2 class="ir-title">Val's Kitchen<span class="period">.</span></h2>
+          <p class="ir-desc">A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.</p>
+        </div>
+        <div class="ir-tags">
+          <span class="ir-tag">UX Research</span>
+          <span class="ir-tag">Product Design</span>
+          <span class="ir-tag">B2B</span>
+        </div>
+        <span class="ir-year">2024</span>
+        <span class="ir-arrow">→</span>
+      </a>
+
+      <a href="Project 03.html" class="index-row anim anim-d5">
+        <span class="ir-num">03.</span>
+        <div class="ir-title-block">
+          <h2 class="ir-title">Cabrillo NM<span class="period">.</span></h2>
+          <p class="ir-desc">Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs from Whale Watching to Eco-Web.</p>
+        </div>
+        <div class="ir-tags">
+          <span class="ir-tag">PM</span>
+          <span class="ir-tag">Public Engagement</span>
+          <span class="ir-tag">NPS</span>
+        </div>
+        <span class="ir-year">2023</span>
+        <span class="ir-arrow">→</span>
+      </a>
+
+      <a href="Project 04.html" class="index-row anim anim-d6">
+        <span class="ir-num">04.</span>
+        <div class="ir-title-block">
+          <h2 class="ir-title">UCSD Laundry App<span class="period">.</span></h2>
+          <p class="ir-desc">A campus laundry app designed through a participatory design lens — six-person team, COMM 124A, lo-fi to hi-fi covering machine status, lost-and-found, and reporting.</p>
+        </div>
+        <div class="ir-tags">
+          <span class="ir-tag">UX Design</span>
+          <span class="ir-tag">Participatory</span>
+        </div>
+        <span class="ir-year">2025</span>
+        <span class="ir-arrow">→</span>
+      </a>
+    </section>
+
+    <footer class="colophon">
+      <span>Designed &amp; built by Abel · 2025</span>
+      <span>Set in Fraunces &amp; Manrope · San Diego</span>
+    </footer>
   </div>
 
   <script>
@@ -243,7 +332,6 @@
       requestAnimationFrame(function() {
         requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
       });
-
       document.addEventListener('click', function(e) {
         var link = e.target.closest('a[href]');
         if (!link) return;
@@ -255,5 +343,6 @@
       });
     })();
   </script>
+
 </body>
 </html>
