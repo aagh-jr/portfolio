@@ -394,23 +394,30 @@
               <span style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Projects</span>
               <button className="panel-close" onClick={exitProjects} aria-label="Close">✕</button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, flex: 1, overflowY: 'auto' }}>
               {PROJECTS.map(p => (
                 <button key={p.id} onClick={() => loadProject(p)} style={{
-                  width: '100%', textAlign: 'left', fontFamily: 'inherit',
-                  padding: '14px 16px', borderRadius: 12,
-                  background: activeId === p.id ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.02)',
-                  border: activeId === p.id ? '1.5px solid rgba(0,0,0,0.12)' : '1.5px solid rgba(0,0,0,0.05)',
-                  cursor: 'pointer', transition: 'background 0.15s, border-color 0.15s',
-                  opacity: p.available ? 1 : 0.5,
+                  textAlign: 'left', fontFamily: 'inherit',
+                  padding: '24px 24px', borderRadius: 16,
+                  background: 'rgba(0,0,0,0.03)',
+                  border: '1.5px solid rgba(0,0,0,0.07)',
+                  cursor: p.available ? 'pointer' : 'default',
+                  transition: 'background 0.15s, transform 0.15s, box-shadow 0.15s',
+                  opacity: p.available ? 1 : 0.45,
+                  display: 'flex', flexDirection: 'column', gap: 12,
                 }}
-                  onMouseEnter={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; }}
-                  onMouseLeave={e => { if (activeId !== p.id) e.currentTarget.style.background = 'rgba(0,0,0,0.02)'; }}
+                  onMouseEnter={e => { if (p.available) { e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.03)'; e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
                 >
-                  <div style={{ fontSize: 15, fontWeight: p.available ? 700 : 400, color: '#1c1c18', letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6 }}>{p.title}</div>
-                  <div style={{ fontSize: 11, color: '#71717a' }}>
-                    {p.available ? p.tags.join(' · ') : 'Coming soon'}
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+                      {p.available ? p.tags.join(' · ') : 'Coming soon'} <span style={{ color: 'rgba(0,0,0,0.2)' }}>· {p.year}</span>
+                    </div>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.15 }}>{p.title}</div>
                   </div>
+                  {p.desc && (
+                    <div style={{ fontSize: 14, color: '#71717a', lineHeight: 1.6, fontWeight: 400 }}>{p.desc}</div>
+                  )}
                 </button>
               ))}
             </div>
