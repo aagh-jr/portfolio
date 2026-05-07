@@ -1,138 +1,289 @@
 // cb-sections.jsx — Cabrillo National Monument Interpretation Program case study
 
-const CB_FLIP_MS = 750;
+const CB_FLIP_MS = 850;
 const CB_FLIP_EASE = 'cubic-bezier(.3,.7,.4,1)';
+const CB_PAGE_ASPECT = 0.65; // page width / height
 
-const CBFlippingPage = ({ frontSrc, backSrc, direction, onDone }) => {
-  const [rot, setRot] = React.useState(direction === 'forward' ? 0 : -180);
+const CBUseInView = (threshold = 0.15) => {
+  const ref = React.useRef(null);
+  const [seen, setSeen] = React.useState(false);
   React.useEffect(() => {
-    const r1 = requestAnimationFrame(() => {
-      const r2 = requestAnimationFrame(() => {
-        setRot(direction === 'forward' ? -180 : 0);
-      });
-      CBFlippingPage._raf2 = r2;
-    });
-    const t = setTimeout(() => onDone(), CB_FLIP_MS);
-    return () => { cancelAnimationFrame(r1); clearTimeout(t); };
-  }, []);
+    if (!ref.current || seen) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setSeen(true);
+        obs.disconnect();
+      }
+    }, { threshold });
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [seen, threshold]);
+  return [ref, seen];
+};
+
+const CBFlipPage = ({ src, side, alt }) => {
+  if (!src) return null;
   return (
     <div style={{
-      position: 'absolute', inset: 0,
-      transformStyle: 'preserve-3d',
-      transformOrigin: 'left center',
-      transform: `rotateY(${rot}deg)`,
-      transition: `transform ${CB_FLIP_MS}ms ${CB_FLIP_EASE}`,
-      pointerEvents: 'none',
-      boxShadow: rot < 0 && rot > -180 ? '0 8px 22px rgba(0,0,0,0.18)' : 'none',
+      position: 'absolute', top: 0, bottom: 0,
+      [side === 'left' ? 'left' : 'right']: 0,
+      width: '50%',
+      borderRadius: side === 'left' ? '6px 0 0 6px' : '0 6px 6px 0',
+      overflow: 'hidden',
+      background: '#fff',
+      boxShadow: side === 'left'
+        ? 'inset -8px 0 16px -8px rgba(0,0,0,0.10)'
+        : 'inset 8px 0 16px -8px rgba(0,0,0,0.10)',
     }}>
-      <img src={frontSrc} alt="" style={{
-        position: 'absolute', inset: 0, width: '100%', height: '100%',
-        objectFit: 'cover', backfaceVisibility: 'hidden', borderRadius: 4,
-      }} />
-      <img src={backSrc} alt="" style={{
-        position: 'absolute', inset: 0, width: '100%', height: '100%',
-        objectFit: 'cover', backfaceVisibility: 'hidden',
-        transform: 'rotateY(180deg)', borderRadius: 4,
+      <img src={src} alt={alt || ''} style={{
+        width: '100%', height: '100%', objectFit: 'cover', display: 'block',
       }} />
     </div>
   );
 };
 
-const CBFlipbook = ({ pages, aspectRatio = '0.65 / 1', label = '', maxWidth = 480 }) => {
+const CBFlippingLeaf = ({ frontSrc, backSrc, fromRot, toRot, onDone }) => {
+  const [rot, setRot] = React.useState(fromRot);
+  React.useEffect(() => {
+    let r2;
+    const r1 = requestAnimationFrame(() => {
+      r2 = requestAnimationFrame(() => setRot(toRot));
+    });
+    const t = setTimeout(onDone, CB_FLIP_MS);
+    return () => {
+      cancelAnimationFrame(r1);
+      if (r2) cancelAnimationFrame(r2);
+      clearTimeout(t);
+    };
+  }, []);
+  const mid = rot < -10 && rot > -170;
+  return (
+    <div style={{
+      position: 'absolute', top: 0, bottom: 0, right: 0,
+      width: '50%',
+      transformStyle: 'preserve-3d',
+      transformOrigin: 'left center',
+      transform: `rotateY(${rot}deg)`,
+      transition: `transform ${CB_FLIP_MS}ms ${CB_FLIP_EASE}`,
+      pointerEvents: 'none',
+      zIndex: 3,
+      filter: mid ? 'drop-shadow(0 12px 20px rgba(0,0,0,0.28))' : 'none',
+    }}>
+      {frontSrc && (
+        <img src={frontSrc} alt="" style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover', backfaceVisibility: 'hidden',
+          borderRadius: '0 6px 6px 0', background: '#fff',
+        }} />
+      )}
+      {backSrc && (
+        <img src={backSrc} alt="" style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover', backfaceVisibility: 'hidden',
+          transform: 'rotateY(180deg)',
+          borderRadius: '6px 0 0 6px', background: '#fff',
+        }} />
+      )}
+    </div>
+  );
+};
+
+const CBFlipbook = ({ pages, label = '', maxPageHeight = 460 }) => {
+  // Build views from pages: cover (single right), spreads, back (single left)
+  const views = React.useMemo(() => {
+    const result = [];
+    if (!pages || pages.length === 0) return result;
+    result.push({ left: null, right: pages[0] });
+    for (let i = 1; i < pages.length - 1; i += 2) {
+      result.push({ left: pages[i], right: pages[i + 1] || null });
+    }
+    if (pages.length > 1) result.push({ left: pages[pages.length - 1], right: null });
+    return result;
+  }, [pages]);
+
   const [current, setCurrent] = React.useState(0);
   const [flip, setFlip] = React.useState(null);
   const containerRef = React.useRef(null);
 
-  const next = React.useCallback(() => {
-    if (flip || current >= pages.length - 1) return;
-    setFlip({ direction: 'forward', from: current, to: current + 1 });
-  }, [flip, current, pages.length]);
+  const canPrev = !flip && current > 0;
+  const canNext = !flip && current < views.length - 1;
 
   const prev = React.useCallback(() => {
     if (flip || current === 0) return;
-    setFlip({ direction: 'backward', from: current - 1, to: current });
+    setFlip({ direction: 'backward', from: current, to: current - 1 });
   }, [flip, current]);
 
-  const onFlipDone = React.useCallback(() => {
-    setCurrent(c => flip ? flip.to : c);
-    setFlip(null);
-  }, [flip]);
+  const goNext = React.useCallback(() => {
+    if (flip || current >= views.length - 1) return;
+    setFlip({ direction: 'forward', from: current, to: current + 1 });
+  }, [flip, current, views.length]);
 
   React.useEffect(() => {
     const onKey = (e) => {
-      if (!containerRef.current || !containerRef.current.matches(':hover, :focus-within')) return;
-      if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+      if (!containerRef.current) return;
+      const inFocus = containerRef.current.matches(':hover, :focus-within');
+      if (!inFocus) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [next, prev]);
+  }, [goNext, prev]);
 
-  const underIdx = flip ? flip.to : current;
+  const onFlipDone = React.useCallback(() => {
+    setCurrent(c => (flip ? flip.to : c));
+    setFlip(null);
+  }, [flip]);
+
+  const view = views[current] || { left: null, right: null };
+  const target = flip ? views[flip.to] : null;
+
+  // Compute hybrid bottom layer + leaf during animation
+  let bottomLeft = view.left;
+  let bottomRight = view.right;
+  let leafFront = null, leafBack = null, leafFromRot = 0, leafToRot = -180;
+  if (flip && target) {
+    if (flip.direction === 'forward') {
+      bottomRight = target.right;        // revealed under the rotating leaf
+      leafFront = view.right;            // page leaving from right
+      leafBack = target.left;            // page arriving on left
+      leafFromRot = 0;
+      leafToRot = -180;
+    } else {
+      bottomLeft = target.left;          // revealed under the rotating leaf
+      leafFront = target.right;          // page arriving on right
+      leafBack = view.left;              // page leaving from left
+      leafFromRot = -180;
+      leafToRot = 0;
+    }
+  }
+
+  const pageWidth = maxPageHeight * CB_PAGE_ASPECT;
+  const bookWidth = pageWidth * 2;
+
+  const arrowStyle = (visible) => ({
+    width: 52, height: 52, borderRadius: 100,
+    background: 'rgba(255,255,255,0.10)',
+    border: '1px solid rgba(255,255,255,0.18)',
+    color: 'rgba(255,255,255,0.92)',
+    cursor: visible ? 'pointer' : 'default',
+    opacity: visible ? 1 : 0,
+    pointerEvents: visible ? 'auto' : 'none',
+    transition: 'opacity 220ms ease, background 150ms ease, transform 150ms ease',
+    fontSize: 22, fontWeight: 400, lineHeight: 1,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0, padding: 0,
+  });
 
   return (
-    <div ref={containerRef} tabIndex={0} style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18,
-      outline: 'none', userSelect: 'none',
+    <div ref={containerRef} tabIndex={-1} style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      gap: 24, outline: 'none', userSelect: 'none', width: '100%',
     }}>
+      <button
+        type="button"
+        onClick={prev}
+        disabled={!canPrev}
+        style={arrowStyle(canPrev)}
+        onMouseEnter={(e) => { if (canPrev) { e.currentTarget.style.background = 'rgba(255,255,255,0.22)'; e.currentTarget.style.transform = 'scale(1.05)'; } }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'scale(1)'; }}
+        aria-label="Previous page"
+      >‹</button>
+
       <div style={{
-        perspective: '2200px', width: '100%', maxWidth, aspectRatio,
+        flexShrink: 0,
+        width: bookWidth, maxWidth: '100%',
+        aspectRatio: `${CB_PAGE_ASPECT * 2} / 1`,
+        perspective: '2400px',
         position: 'relative',
       }}>
-        {/* Spine shadow */}
-        <div style={{
-          position: 'absolute', top: 0, bottom: 0, left: -6, width: 12,
-          background: 'linear-gradient(to right, rgba(0,0,0,0.18), transparent)',
-          borderRadius: '4px 0 0 4px', pointerEvents: 'none',
-        }} />
         <div style={{
           position: 'relative', width: '100%', height: '100%',
-          background: '#fff', borderRadius: 4,
-          boxShadow: '0 14px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)',
+          boxShadow: '0 22px 60px rgba(0,0,0,0.32), 0 6px 18px rgba(0,0,0,0.16)',
+          borderRadius: 6,
         }}>
-          <img src={pages[underIdx]} alt={`Page ${underIdx + 1} of ${pages.length}`} style={{
-            position: 'absolute', inset: 0, width: '100%', height: '100%',
-            objectFit: 'cover', borderRadius: 4, display: 'block',
+          {/* Bottom layer */}
+          <CBFlipPage src={bottomLeft} side="left" />
+          <CBFlipPage src={bottomRight} side="right" />
+
+          {/* Spine */}
+          <div style={{
+            position: 'absolute', top: 0, bottom: 0, left: '50%',
+            width: 4, transform: 'translateX(-2px)',
+            background: 'linear-gradient(to right, rgba(0,0,0,0.22), rgba(0,0,0,0.06) 40%, rgba(0,0,0,0.06) 60%, rgba(0,0,0,0.22))',
+            pointerEvents: 'none', zIndex: 5,
           }} />
+
+          {/* Flipping leaf */}
           {flip && (
-            <CBFlippingPage
-              key={`${flip.from}-${flip.direction}-${Date.now()}`}
-              frontSrc={pages[flip.direction === 'forward' ? flip.from : flip.from]}
-              backSrc={pages[flip.direction === 'forward' ? flip.to : flip.to]}
-              direction={flip.direction}
+            <CBFlippingLeaf
+              key={`${flip.from}-${flip.to}-${flip.direction}`}
+              frontSrc={leafFront}
+              backSrc={leafBack}
+              fromRot={leafFromRot}
+              toRot={leafToRot}
               onDone={onFlipDone}
             />
           )}
+
           {/* Click zones */}
-          <div onClick={prev} style={{
-            position: 'absolute', top: 0, bottom: 0, left: 0, width: '30%',
-            cursor: current === 0 || flip ? 'default' : 'w-resize',
-            zIndex: 2,
-          }} aria-label="Previous page" />
-          <div onClick={next} style={{
-            position: 'absolute', top: 0, bottom: 0, right: 0, width: '30%',
-            cursor: current === pages.length - 1 || flip ? 'default' : 'e-resize',
-            zIndex: 2,
-          }} aria-label="Next page" />
+          <div
+            onClick={prev}
+            style={{
+              position: 'absolute', top: 0, bottom: 0, left: 0, width: '50%',
+              cursor: canPrev ? 'pointer' : 'default', zIndex: 4,
+            }}
+            aria-hidden="true"
+          />
+          <div
+            onClick={goNext}
+            style={{
+              position: 'absolute', top: 0, bottom: 0, right: 0, width: '50%',
+              cursor: canNext ? 'pointer' : 'default', zIndex: 4,
+            }}
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Page counter */}
+        <div style={{
+          position: 'absolute', bottom: -36, left: 0, right: 0,
+          textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.5)',
+          fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
+        }}>
+          {label ? `${label} — ` : ''}{current + 1} / {views.length}
         </div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <button onClick={prev} disabled={current === 0 || !!flip} style={{
-          background: 'rgba(0,0,0,0.06)', border: 'none', borderRadius: 100,
-          width: 36, height: 36, cursor: (current === 0 || flip) ? 'default' : 'pointer',
-          opacity: (current === 0 || flip) ? 0.35 : 1, fontSize: 14,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }} aria-label="Previous page">←</button>
-        <div style={{ fontSize: 12, color: '#888', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', minWidth: 90, textAlign: 'center' }}>
-          {label ? `${label} — ` : ''}{current + 1} / {pages.length}
-        </div>
-        <button onClick={next} disabled={current === pages.length - 1 || !!flip} style={{
-          background: 'rgba(0,0,0,0.06)', border: 'none', borderRadius: 100,
-          width: 36, height: 36, cursor: (current === pages.length - 1 || flip) ? 'default' : 'pointer',
-          opacity: (current === pages.length - 1 || flip) ? 0.35 : 1, fontSize: 14,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }} aria-label="Next page">→</button>
-      </div>
+
+      <button
+        type="button"
+        onClick={goNext}
+        disabled={!canNext}
+        style={arrowStyle(canNext)}
+        onMouseEnter={(e) => { if (canNext) { e.currentTarget.style.background = 'rgba(255,255,255,0.22)'; e.currentTarget.style.transform = 'scale(1.05)'; } }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'scale(1)'; }}
+        aria-label="Next page"
+      >›</button>
+    </div>
+  );
+};
+
+const CBEcoCard = ({ src, alt, index }) => {
+  const [ref, seen] = CBUseInView(0.15);
+  return (
+    <div ref={ref} style={{
+      aspectRatio: '0.515 / 1',
+      overflow: 'hidden',
+      borderRadius: 14,
+      boxShadow: seen ? '0 6px 18px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06)' : 'none',
+      opacity: seen ? 1 : 0,
+      transform: seen ? 'translateY(0) scale(1)' : 'translateY(28px) scale(0.92)',
+      transition: `opacity 720ms cubic-bezier(.2,.7,.3,1) ${index * 45}ms, transform 720ms cubic-bezier(.2,.7,.3,1) ${index * 45}ms, box-shadow 720ms ease ${index * 45}ms`,
+      willChange: 'opacity, transform',
+    }}>
+      <img src={src} alt={alt} style={{
+        width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+      }} />
     </div>
   );
 };
@@ -293,7 +444,7 @@ const CBWhaleWatchingSection = () =>
         )}
       </div>
 
-      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 36px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
         <div style={{ textAlign: 'center', maxWidth: 520 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The activity book</div>
           <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
@@ -308,14 +459,14 @@ const CBWhaleWatchingSection = () =>
             'screenshots/cabrillo/wb-1-cover.png',
             'screenshots/cabrillo/wb-2-instructions.png',
             'screenshots/cabrillo/wb-3-anatomy.png',
+            'screenshots/cabrillo/wb-5a-draw-l.png',
+            'screenshots/cabrillo/wb-5b-draw-r.png',
             'screenshots/cabrillo/wb-4-map.png',
-            'screenshots/cabrillo/wb-5-draw.png',
             'screenshots/cabrillo/wb-6-final-report.png',
             'screenshots/cabrillo/wb-7-thanks.png',
           ]}
-          aspectRatio="0.65 / 1"
           label="Whale Book"
-          maxWidth={420}
+          maxPageHeight={460}
         />
       </div>
 
@@ -397,7 +548,7 @@ const CBEcoWebSection = () =>
       <p style={{ fontSize: 14, lineHeight: 1.7, color: '#666', maxWidth: 720, marginBottom: 24 }}>
         15 species across two decks — coastal scrub on top, intertidal/marine on the bottom row. Each card carries a photograph, common + scientific name, and the prey-icon row that drives the food-web reasoning.
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, padding: 14, background: '#F4F4F1', borderRadius: 18 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 16, padding: 22, background: '#F4F4F1', borderRadius: 22 }}>
         {[
           ['card-black-phoebe', 'Black Phoebe'],
           ['card-coopers-hawk', "Cooper's Hawk"],
@@ -414,10 +565,13 @@ const CBEcoWebSection = () =>
           ['card-garibaldi', 'Garibaldi'],
           ['card-osprey', 'Osprey'],
           ['card-common-dolphin', 'Common Dolphin'],
-        ].map(([file, alt]) =>
-          <div key={file} style={{ aspectRatio: '0.515 / 1', overflow: 'hidden', borderRadius: 6 }}>
-            <img src={`screenshots/cabrillo/${file}.png`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-          </div>
+        ].map(([file, alt], i) =>
+          <CBEcoCard
+            key={file}
+            src={`screenshots/cabrillo/${file}.png`}
+            alt={alt}
+            index={i}
+          />
         )}
       </div>
 
@@ -520,7 +674,7 @@ const CBOtherInitiativesSection = () =>
         )}
       </div>
 
-      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 36px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
         <div style={{ textAlign: 'center', maxWidth: 520 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The Open Tower Day booklet</div>
           <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
@@ -541,9 +695,8 @@ const CBOtherInitiativesSection = () =>
             'screenshots/cabrillo/otd-7-stamps.png',
             'screenshots/cabrillo/otd-8-events.png',
           ]}
-          aspectRatio="0.65 / 1"
           label="OTD Book"
-          maxWidth={380}
+          maxPageHeight={420}
         />
       </div>
     </Container>
