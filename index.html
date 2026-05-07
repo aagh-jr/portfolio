@@ -58,7 +58,7 @@
     #projects-sidebar {
       position: fixed;
       top: 24px;
-      left: calc(15vw + 24px);
+      left: calc(7.5vw + 24px);
       width: calc(85vw - 48px);
       height: calc(100vh - 48px);
       background: #f0f0f3;
@@ -91,7 +91,7 @@
       top: 0;
       right: 0;
       bottom: 0;
-      left: 15vw;
+      left: 7.5vw;
       z-index: 190;
       background: #fff;
       opacity: 0;
@@ -190,7 +190,7 @@
       const t = `${MORPH_DUR}ms ${MORPH_EASE}`;
       sidebar.style.transition = `top ${t}, left ${t}, width ${t}, height ${t}`;
       sidebar.style.top    = '24px';
-      sidebar.style.left   = (window.innerWidth * 0.15 + 24) + 'px';
+      sidebar.style.left   = (window.innerWidth * 0.075 + 24) + 'px';
       sidebar.style.width  = (window.innerWidth * 0.85 - 48) + 'px';
       sidebar.style.height = (window.innerHeight - 48) + 'px';
 
