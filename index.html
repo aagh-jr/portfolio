@@ -59,7 +59,7 @@
       position: fixed;
       top: 24px;
       left: calc(30vw + 24px);
-      width: 300px;
+      width: calc(70vw - 48px);
       height: calc(100vh - 48px);
       background: #f0f0f3;
       border-radius: 18px;
@@ -191,7 +191,7 @@
       sidebar.style.transition = `top ${t}, left ${t}, width ${t}, height ${t}`;
       sidebar.style.top    = '24px';
       sidebar.style.left   = (window.innerWidth * 0.3 + 24) + 'px';
-      sidebar.style.width  = '300px';
+      sidebar.style.width  = (window.innerWidth * 0.7 - 48) + 'px';
       sidebar.style.height = (window.innerHeight - 48) + 'px';
 
       /* Reveal sidebar contents just before the morph completes */
@@ -199,14 +199,12 @@
         sidebar.classList.remove('morphing');
       }, MORPH_DUR - 100));
 
-      /* After morph: reveal the case study panel */
       pendingTimers.push(setTimeout(() => {
         sidebar.style.transition = '';
         sidebar.style.top = '';
         sidebar.style.left = '';
         sidebar.style.width = '';
         sidebar.style.height = '';
-        csPanel.classList.add('cs-visible');
         document.body.style.overflow = 'hidden';
       }, MORPH_DUR));
     }
@@ -223,7 +221,6 @@
 
       const cardRect = card.getBoundingClientRect();
 
-      csPanel.classList.remove('cs-visible');
       document.body.style.overflow = '';
 
       sidebar.classList.add('morphing');
@@ -338,7 +335,7 @@
                       fontSize: 40, fontWeight: 800, letterSpacing: '-0.016em',
                       lineHeight: 1, marginBottom: 24,
                     }}>
-                      <span style={{ color: '#71717a', fontWeight: 400 }}>Hey! I'm </span>
+                      <span style={{ color: '#71717a', fontWeight: 800 }}>Hey! I'm </span>
                       <span style={{ color: '#141414' }}>Abel Angel</span>
                     </div>
                     <p className="anim-fade-d1" style={{
