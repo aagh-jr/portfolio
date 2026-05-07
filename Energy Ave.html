@@ -59,20 +59,26 @@
     img { max-width: 100%; display: block; }
 
     .page {
-      max-width: 1180px; margin: 0 auto;
+      max-width: var(--col-width);
+      margin: 0 auto;
       padding: 64px var(--pad-x) 120px;
-      display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); gap: 80px;
     }
-    .sidebar { position: sticky; top: 64px; align-self: start; height: max-content; }
-    .sidebar-name { font-family: var(--font-display); font-weight: 500; font-size: 21px; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 28px; }
-    .sidebar-meta { display: grid; gap: 18px; }
+    .sidebar { display: none; }
     .meta-row .meta-label { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
     .meta-row .meta-value { font-size: var(--fs-small); line-height: 1.5; color: var(--ink); }
     .meta-link { display: inline-flex; align-items: center; gap: 6px; border-bottom: none; }
     .meta-link::after { content: "↗"; font-size: 0.9em; opacity: 0.6; }
-    .meta-strip { display: none; }
+    .meta-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 24px;
+      padding: 22px 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: var(--gap-block);
+    }
 
-    .article { max-width: var(--col-width); width: 100%; margin: 0 auto; }
+    .article { width: 100%; }
     .article > * + * { margin-top: var(--gap-block); }
 
     .hero { margin-bottom: var(--gap-section); }
@@ -288,9 +294,7 @@
     /* ── Responsive ── */
     @media (max-width: 900px) {
       :root { --pad-x: 28px; }
-      .page { grid-template-columns: 1fr; gap: 0; padding-top: 80px; }
-      .sidebar { display: none; }
-      .meta-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; padding: 18px 0 28px; border-bottom: 1px solid var(--hairline); margin-bottom: 56px; }
+      .meta-strip { grid-template-columns: 1fr 1fr; }
       .hero-title { font-size: 40px; }
       .stat-grid, .affinity-grid, .change-list, .keyfix-list, .outcomes { grid-template-columns: 1fr; }
       .gallery-2 { grid-template-columns: 1fr; }
@@ -326,27 +330,7 @@
 
   <div class="page">
 
-    <!-- Sticky sidebar (desktop) -->
-    <aside class="sidebar" aria-label="Project metadata">
-      <div class="sidebar-name">Energy Ave.</div>
-      <div class="sidebar-meta">
-        <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
-        <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 People · ENG&nbsp;100D</div></div>
-        <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks · Winter 2025</div></div>
-        <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
-        <div class="meta-row"><div class="meta-label">Links</div><div class="meta-value"><a class="meta-link" href="#">Figma Files</a><br/><a class="meta-link" href="#">Full Report</a></div></div>
-      </div>
-    </aside>
-
     <article class="article">
-
-      <!-- Mobile metadata strip -->
-      <div class="meta-strip">
-        <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
-        <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks</div></div>
-        <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 · ENG&nbsp;100D</div></div>
-        <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
-      </div>
 
       <!-- HERO -->
       <header class="hero" id="hero">
@@ -354,6 +338,14 @@
         <h1 class="hero-title">Energy Ave.</h1>
         <p class="hero-dek">Designing a gamified energy conservation experience for PlanetFlip — research-backed, fully playable, and built in 10 weeks.</p>
       </header>
+
+      <!-- METADATA STRIP -->
+      <div class="meta-strip">
+        <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
+        <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks · Winter 2025</div></div>
+        <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 People · ENG&nbsp;100D</div></div>
+        <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
+      </div>
 
       <!-- GAMEPLAY VIDEO -->
       <figure class="fig" style="margin-bottom: var(--gap-section);">
