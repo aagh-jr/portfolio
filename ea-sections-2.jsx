@@ -197,10 +197,108 @@ const ConceptSelectionSection = () => (
         ))}
       </div>
 
-      <QuoteBlock
-        text="Trash Dash scored higher on feasibility, but stakeholder feedback consistently favored the life-sim approach. Energy Ave was the most balanced choice across every dimension that mattered."
-        author="Team Rationale"
-      />
+      {/* Criteria weight legend */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: V2.muted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>
+          Criteria &amp; Weights
+        </div>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {[['Usability', 4], ['Feasibility', 4], ['Functionality', 3], ['Desirability', 2], ['Eco-Sustainability', 1]].map(([c, w]) => (
+            <div key={c} style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: V2.white, border: `1px solid ${V2.border}`,
+              borderRadius: 100, padding: '5px 14px',
+            }}>
+              <span style={{ fontSize: 13, color: V2.ink }}>{c}</span>
+              <span style={{
+                width: 20, height: 20, borderRadius: 100,
+                background: V2.accentBg,
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 11, fontWeight: 700, color: V2.accent, flexShrink: 0,
+              }}>{w}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Score bars — diverging from Energy Ave baseline = 0 */}
+      <Card style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: V2.muted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 20 }}>
+          Weighted Total Scores — relative to Energy Ave (baseline = 0)
+        </div>
+        {[
+          { name: 'Trash Dash',           score:  1, winner: false },
+          { name: 'Energy Ave',           score:  0, winner: true  },
+          { name: 'Waste Management Sim', score: -3, winner: false },
+          { name: 'Ocean Cleanup Quest',  score: -6, winner: false },
+        ].map(({ name, score, winner }, i, arr) => {
+          const RANGE = 14;
+          const zeroPos = 50;
+          const barLen = Math.abs(score) / RANGE * 100;
+          const isNeg = score < 0;
+          return (
+            <div key={name} style={{
+              display: 'grid', gridTemplateColumns: '172px 1fr 52px',
+              gap: 14, alignItems: 'center',
+              marginBottom: i < arr.length - 1 ? 18 : 0,
+            }}>
+              <div style={{
+                fontSize: 13, lineHeight: 1.3,
+                fontWeight: winner ? 700 : 400,
+                color: winner ? V2.ink : V2.muted,
+                display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap',
+              }}>
+                {name}
+                {winner && <Tag color="blue">Selected</Tag>}
+              </div>
+              <div style={{ position: 'relative', height: 10, background: 'rgba(42,43,42,0.05)', borderRadius: 100 }}>
+                {/* zero line */}
+                <div style={{
+                  position: 'absolute', left: `${zeroPos}%`, top: -4, bottom: -4,
+                  width: 2, background: V2.accent, borderRadius: 1, opacity: 0.5,
+                }} />
+                {/* bar */}
+                {score !== 0 && (
+                  <div style={{
+                    position: 'absolute',
+                    left: isNeg ? `${zeroPos - barLen}%` : `${zeroPos}%`,
+                    width: `${barLen}%`,
+                    height: '100%',
+                    background: isNeg ? V2.warn : '#4a8a6a',
+                    borderRadius: 100,
+                    opacity: 0.75,
+                  }} />
+                )}
+                {/* Energy Ave dot */}
+                {winner && (
+                  <div style={{
+                    position: 'absolute', left: `${zeroPos}%`, top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 14, height: 14, borderRadius: 100,
+                    background: V2.accent, boxShadow: `0 0 0 3px ${V2.accentBg}`,
+                  }} />
+                )}
+              </div>
+              <div style={{
+                fontSize: 14, fontWeight: 700, textAlign: 'right',
+                color: winner ? V2.accent : score > 0 ? '#4a8a6a' : V2.warn,
+              }}>
+                {score > 0 ? `+${score}` : score}
+              </div>
+            </div>
+          );
+        })}
+      </Card>
+
+      {/* Tradeoff callout */}
+      <div style={{ background: V2.warnBg, borderRadius: 14, padding: '20px 24px', border: `1px solid rgba(232,120,154,0.2)` }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: V2.warn, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>
+          The Tradeoff the Matrix Surfaced
+        </div>
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: '#555', margin: 0 }}>
+          Trash Dash edged Energy Ave by 1 weighted point — but its advantage came entirely from Feasibility (w=4), where a 60-second mini-game naturally outscores a multi-room simulation. Energy Ave led on Usability and Desirability, the criteria stakeholder interviews had consistently flagged as primary. Without the matrix, the team would have defaulted to the simpler build and called it pragmatism.
+        </p>
+      </div>
     </Container>
   </SectionWrap>
 );

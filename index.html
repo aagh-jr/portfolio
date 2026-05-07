@@ -421,8 +421,6 @@
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 
-  {/* Case study overlay — iframe src set in HTML so it loads with the page,
-      independent of React mount / idle callback timing */}
   <div id="cs-panel">
     <iframe id="cs-iframe" src="Energy Ave.html?embed" title="Case study" allowtransparency="true"></iframe>
   </div>
@@ -434,25 +432,6 @@
       document.body.classList.add('page-entering');
       requestAnimationFrame(function() {
         requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
-      });
-
-      /* ── Page-leave fade for anchor navigation ── */
-      document.addEventListener('click', function(e) {
-        var link = e.target.closest('a[href]');
-        if (!link) return;
-        var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
-        e.preventDefault();
-        document.body.classList.add('page-leaving');
-        setTimeout(function() { window.location.href = href; }, 300);
-      });
-
-    })();
-  </script>
-
-</body>
-</html>
-tAnimationFrame(function() { document.body.classList.remove('page-entering'); });
       });
 
       /* ── Page-leave fade for anchor navigation ── */

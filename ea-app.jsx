@@ -10,6 +10,7 @@ const PROJECTS = [
 ];
 
 const NAV_ITEMS = [
+  { id: 'my-role',      label: 'My Role' },
   { id: 'overview',     label: 'Overview' },
   { id: 'goals',        label: 'Goals' },
   { id: 'methodology',  label: 'Methods' },
@@ -197,6 +198,7 @@ const App = () => {
       {!IS_EMBED && <ProjectsCard />}
       {!IS_EMBED && <ProgressBar />}
       <HeroSection />
+      <MyRoleSection />
       <OverviewSection />
       <ResearchGoalsSection />
       <MethodologySection />

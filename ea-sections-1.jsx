@@ -74,6 +74,16 @@ const HeroSection = () =>
         </div>
       </div>
 
+      {/* Executive Summary */}
+      <div style={{ marginTop: 48, marginBottom: 56, paddingTop: 36, borderTop: `1px solid ${V2.border}` }}>
+        <div style={{ fontSize: 10, fontWeight: 600, color: V2.muted, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
+          Executive Summary
+        </div>
+        <p style={{ fontSize: 16, lineHeight: 1.9, color: '#3a3a34', margin: 0, maxWidth: 580 }}>
+          Energy Ave is a fully playable, browser-based game teaching household energy conservation through room-by-room interaction — designed, tested, and shipped in 10 weeks for PlanetFlip, a K–12 sustainability platform. I led user research across two formal study rounds, conducted stakeholder interviews with NPS staff, and drove concept selection using a weighted decision matrix. The team shipped in March 2025, meeting or exceeding all five pre-defined success metrics: 12-minute average sessions, 90% task success, 80% knowledge improvement, 2.5-month development timeline, and full mobile and desktop accessibility.
+        </p>
+      </div>
+
       <Video
         src="uploads/ea-gameplay.mp4"
         caption="Bedroom level — final hi-fi build (2× speed)."
@@ -277,4 +287,32 @@ const MethodologySection = () =>
     </Container>
   </SectionWrap>;
 
-Object.assign(window, { HeroSection, OverviewSection, ResearchGoalsSection, MethodologySection });
+const MyRoleSection = () =>
+  <SectionWrap id="my-role" style={{ background: V2.white }}>
+    <Container>
+      <SectionHeader num={0} title="My Role" subtitle="Lead researcher on an 8-person team." />
+
+      {/* Contribution tags */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
+        {[
+          'Stakeholder Interviews (NPS)',
+          'Concept Evaluation & Selection',
+          'Study 1 Procedure & Introduction',
+          'Study 2 Execution',
+          'Conclusions & Recommendations',
+          'Initial Wireframes & Lo-fi',
+          'Hi-fi Design Contributions',
+          'Item Cards & Variant Design',
+          'Survey Response Chart',
+        ].map((c) => <Tag key={c} color="gray">{c}</Tag>)}
+      </div>
+
+      <Card>
+        <p style={{ fontSize: 15, lineHeight: 1.9, color: '#444', margin: 0 }}>
+          My primary contribution was research. I designed the structure for both testing rounds — a formative affordance test and cognitive walkthrough on static wireframes, followed by a summative gameplay observation and post-task survey — and wrote the Study 1 introduction and procedure. I led the Study 2 sessions with stakeholders and student participants, synthesized findings into the project's conclusions and recommendations, and built the user test survey response chart. I also conducted in-person stakeholder interviews with NPS staff and drove the concept evaluation process that selected Energy Ave over three competing designs. Within an 8-person team, I was the lead researcher: the person who designed the studies, ran the sessions, and ensured findings translated into product decisions.
+        </p>
+      </Card>
+    </Container>
+  </SectionWrap>;
+
+Object.assign(window, { HeroSection, OverviewSection, ResearchGoalsSection, MethodologySection, MyRoleSection });
