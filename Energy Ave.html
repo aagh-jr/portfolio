@@ -355,6 +355,12 @@
         <p class="hero-dek">Designing a gamified energy conservation experience for PlanetFlip — research-backed, fully playable, and built in 10 weeks.</p>
       </header>
 
+      <!-- GAMEPLAY VIDEO -->
+      <figure class="fig" style="margin-bottom: var(--gap-section);">
+        <video id="gameplayVideo" src="uploads/ea-gameplay.mp4" autoplay loop muted playsinline style="width:100%;height:auto;border-radius:12px;border:1px solid var(--hairline);display:block;background:#f4f3ee;"></video>
+        <figcaption>Energy Ave — gameplay footage (2× speed).</figcaption>
+      </figure>
+
       <!-- SECTION 01: The Problem -->
       <section class="s reveal" id="overview" data-toc="The Problem">
         <h2 class="section-title">01 — The Problem</h2>
@@ -837,6 +843,9 @@
       });
     }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
     $$('.reveal').forEach((el) => io.observe(el));
+
+    const vid = $('#gameplayVideo');
+    if (vid) vid.playbackRate = 2.0;
 
     document.body.setAttribute('data-mounted', 'true');
   })();
