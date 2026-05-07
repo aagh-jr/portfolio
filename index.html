@@ -295,24 +295,9 @@
       const [activeId, setActiveId] = React.useState(1);
 
       const loadProject = (p) => {
-        if (!p.href) return;
-        if (activeId === p.id) return;
-        const iframe = document.getElementById('cs-iframe');
-        if (!iframe) return;
-        const newSrc = p.available ? p.href + '?embed' : p.href;
-        setActiveId(p.id);
-
-        /* Crossfade: fade out, swap src, fade back in once load fires */
-        iframe.style.opacity = '0';
-        const swap = () => {
-          iframe.src = newSrc;
-          const reveal = () => {
-            iframe.removeEventListener('load', reveal);
-            requestAnimationFrame(() => { iframe.style.opacity = '1'; });
-          };
-          iframe.addEventListener('load', reveal);
-        };
-        setTimeout(swap, 200);
+        if (!p.href || !p.available) return;
+        document.body.classList.add('page-leaving');
+        setTimeout(() => { window.location.href = p.href; }, 260);
       };
 
       const cardBg = '#f0f0f3';
