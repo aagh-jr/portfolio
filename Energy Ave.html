@@ -1,129 +1,844 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦭</text></svg>">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Energy Ave — UX Research Case Study</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <style>
+    :root {
+      --bg: #FAFAF7;
+      --ink: #1A1A1A;
+      --muted: #6B6B6B;
+      --hairline: rgba(26, 26, 26, 0.08);
+      --hairline-strong: rgba(26, 26, 26, 0.14);
+      --accent: #2F5D4F;
+      --accent-soft: rgba(47, 93, 79, 0.10);
+      --selection: rgba(47, 93, 79, 0.18);
+      --warn: #B05070;
+      --warn-soft: rgba(176, 80, 112, 0.10);
+      --good: #4a8a6a;
+      --good-soft: rgba(74, 138, 106, 0.10);
+
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --fs-body: 17px;
+      --fs-small: 14px;
+      --fs-label: 11px;
+      --fs-h2: 19px;
+      --fs-h3: 16px;
+      --fs-display: 56px;
+      --lh-body: 1.62;
+
+      --gap-section: 110px;
+      --gap-block: 28px;
+      --col-width: 640px;
+      --sidebar-width: 220px;
+      --pad-x: 56px;
+
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+      --dur: 180ms;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #fffffd;
-      color: #1e1e1a;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 17px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      background: var(--bg); color: var(--ink);
+      font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-body);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     }
-    ::selection { background: rgba(182,194,254,0.25); color: #1e1e1a; }
-    button { font-family: 'DM Sans', sans-serif; }
+    ::selection { background: var(--selection); color: var(--ink); }
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); transition: border-color var(--dur) var(--ease); }
+    a:hover { border-bottom-color: var(--accent); }
+    button { font-family: inherit; font-size: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    img { max-width: 100%; display: block; }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+    .page {
+      max-width: 1180px; margin: 0 auto;
+      padding: 64px var(--pad-x) 120px;
+      display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); gap: 80px;
+    }
+    .sidebar { position: sticky; top: 64px; align-self: start; height: max-content; }
+    .sidebar-name { font-family: var(--font-display); font-weight: 500; font-size: 21px; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 28px; }
+    .sidebar-meta { display: grid; gap: 18px; }
+    .meta-row .meta-label { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .meta-row .meta-value { font-size: var(--fs-small); line-height: 1.5; color: var(--ink); }
+    .meta-link { display: inline-flex; align-items: center; gap: 6px; border-bottom: none; }
+    .meta-link::after { content: "↗"; font-size: 0.9em; opacity: 0.6; }
+    .meta-strip { display: none; }
 
-    /* Page transitions */
-    body { transition: opacity 0.3s ease-in-out; }
-    body.page-entering, body.page-leaving { opacity: 0; }
+    .article { max-width: var(--col-width); width: 100%; }
+    .article > * + * { margin-top: var(--gap-block); }
 
-    body.is-embed .nav-pill { display: none !important; }
+    .hero { margin-bottom: var(--gap-section); }
+    .hero-eyebrow { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+    .hero-title { font-family: var(--font-display); font-weight: 500; font-size: var(--fs-display); line-height: 1.02; letter-spacing: -0.025em; margin-bottom: 28px; text-wrap: balance; }
+    .hero-dek { font-size: 21px; line-height: 1.45; color: var(--ink); max-width: 580px; text-wrap: pretty; }
 
-    table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; }
-    td { vertical-align: middle; }
+    section.s { scroll-margin-top: 96px; }
+    section.s + section.s { margin-top: var(--gap-section); }
+    h2.section-title { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-h2); letter-spacing: -0.005em; margin-bottom: 8px; }
+    .section-sub { font-size: var(--fs-small); color: var(--muted); margin-bottom: 28px; max-width: 520px; line-height: 1.55; }
+    h3.subsection { font-weight: 600; font-size: var(--fs-h3); margin-top: 32px; margin-bottom: 12px; }
+    p { text-wrap: pretty; }
+    p + p { margin-top: 16px; }
+
+    .reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
+    .reveal.is-in { opacity: 1; transform: none; }
+
+    /* ── Floating nav pill ── */
+    .nav-pill { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 50; background: rgba(20, 20, 18, 0.96); color: #FAFAF7; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 28px rgba(0,0,0,0.18); backdrop-filter: blur(8px); max-width: calc(100vw - 32px); }
+    .nav-pill-button { display: flex; align-items: center; gap: 14px; padding: 9px 18px 9px 14px; color: inherit; border-radius: 999px; }
+    .nav-pill-progress { width: 22px; height: 22px; flex-shrink: 0; }
+    .nav-pill-progress svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .nav-pill-progress circle { fill: none; stroke-width: 2; }
+    .nav-pill-progress .track { stroke: rgba(255,255,255,0.15); }
+    .nav-pill-progress .fill { stroke: #FAFAF7; stroke-linecap: round; transition: stroke-dashoffset 80ms linear; }
+    .nav-pill-section { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .nav-pill-pct { color: rgba(255,255,255,0.55); font-variant-numeric: tabular-nums; font-size: 12px; }
+    .nav-pill-caret { width: 8px; height: 8px; border-right: 1.5px solid rgba(255,255,255,0.55); border-bottom: 1.5px solid rgba(255,255,255,0.55); transform: rotate(45deg); transition: transform var(--dur) var(--ease); margin-left: 2px; }
+    .nav-pill[data-open="true"] .nav-pill-caret { transform: rotate(-135deg); }
+    .nav-pill-toc { max-height: 0; overflow: hidden; transition: max-height 220ms var(--ease); padding: 0 6px; }
+    .nav-pill[data-open="true"] .nav-pill-toc { max-height: 620px; padding: 4px 6px 8px; }
+    .nav-pill-toc ol { list-style: none; counter-reset: toc; }
+    .nav-pill-toc li { counter-increment: toc; }
+    .nav-pill-toc a { display: flex; gap: 12px; padding: 8px 12px; border-radius: 999px; color: rgba(255,255,255,0.78); border-bottom: none; font-size: 13px; }
+    .nav-pill-toc a::before { content: counter(toc, decimal-leading-zero); color: rgba(255,255,255,0.4); font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 11px; flex-shrink: 0; padding-top: 1px; }
+    .nav-pill-toc a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-pill-toc a[data-current="true"] { color: #fff; background: rgba(255,255,255,0.06); }
+
+    /* ── UI Cards ── */
+    .ui-card { border: 1px solid var(--hairline-strong); border-radius: 14px; padding: 28px; background: #fff; }
+    .ui-card-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+    /* ── Pull quote ── */
+    .pullquote { border-left: 2px solid var(--ink); padding: 6px 0 6px 22px; margin: 36px 0 36px 4px; font-family: var(--font-display); font-style: italic; font-size: 24px; line-height: 1.4; letter-spacing: -0.005em; font-weight: 400; color: var(--ink); text-wrap: pretty; }
+    .pullquote-cite { display: block; margin-top: 14px; font-family: var(--font-body); font-style: normal; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+
+    /* ── Stat grid ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 28px 0; margin: 32px 0; }
+    .stat { display: flex; flex-direction: column; gap: 6px; }
+    .stat-num { font-family: var(--font-display); font-weight: 500; font-size: 44px; line-height: 1; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .stat-cap { font-size: 13px; line-height: 1.4; color: var(--muted); max-width: 200px; }
+    .stat-sub { font-size: 12px; color: var(--accent); font-weight: 500; }
+
+    /* ── Figures ── */
+    figure.fig { margin: 28px 0; }
+    figure.fig img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--hairline); background: #f4f3ee; }
+    figure.fig figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); line-height: 1.55; text-align: center; }
+
+    .gallery-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+    .gallery-2 figure { margin: 0; }
+    .gallery-2 img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; border-radius: 12px; border: 1px solid var(--hairline); background: #f4f3ee; }
+    .gallery-2 figcaption { margin-top: 10px; font-size: 12.5px; color: var(--muted); line-height: 1.5; text-align: center; }
+
+    /* ── Tables ── */
+    table.data { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    table.data th { text-align: left; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 10px 14px 10px 0; border-bottom: 1px solid var(--hairline-strong); font-weight: 500; }
+    table.data td { padding: 11px 14px 11px 0; border-bottom: 1px solid var(--hairline); vertical-align: top; line-height: 1.5; }
+    table.data tr:last-child td { border-bottom: none; }
+
+    /* ── Tags ── */
+    .tag { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: 0.03em; border: 1px solid var(--hairline-strong); color: var(--muted); background: transparent; line-height: 1.6; }
+    .tag.green { color: var(--accent); border-color: var(--accent-soft); background: var(--accent-soft); }
+    .tag.amber { color: var(--warn); border-color: var(--warn-soft); background: var(--warn-soft); }
+
+    .hit  { color: var(--good); font-weight: 600; font-size: 12px; }
+    .miss { color: var(--warn); font-weight: 600; font-size: 12px; }
+    .none { color: var(--hairline-strong); font-size: 12px; }
+
+    /* ── COMPETITIVE ANALYSIS — 2×2 card grid ── */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin: 24px 0;
+    }
+    .comp-card {
+      border: 1px solid var(--hairline-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+    .comp-card-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-bottom: 1px solid var(--hairline);
+      background: #f4f3ee;
+      display: block;
+    }
+    .comp-card-thumb-empty {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #f0eeea;
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .comp-card-body {
+      padding: 20px 22px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .comp-card-name { font-weight: 600; font-size: 14.5px; color: var(--ink); }
+    .comp-card-publisher { font-size: 12px; color: var(--muted); }
+    .comp-card-pros { font-size: 13px; line-height: 1.6; }
+    .comp-card-cons { font-size: 13px; line-height: 1.6; }
+    .comp-card-pros::before { content: "+ "; color: var(--good); font-weight: 700; }
+    .comp-card-cons::before { content: "− "; color: var(--warn); font-weight: 700; }
+
+    /* ── STAKEHOLDER INTERVIEWS — 1×3 UI cards ── */
+    .interviewee-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .interviewee-card {
+      border: 1px solid var(--hairline-strong);
+      border-radius: 14px;
+      padding: 24px 20px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .interviewee-header {}
+    .interviewee-name { font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+    .interviewee-org { font-size: 12px; color: var(--muted); line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
+    .interviewee-divider { height: 1px; background: var(--hairline); }
+    .interviewee-insights { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .interviewee-insights li { display: flex; gap: 10px; font-size: 13px; line-height: 1.6; color: #444; }
+    .interviewee-insights li::before { content: "→"; color: var(--accent); font-weight: 600; flex-shrink: 0; font-size: 13px; }
+
+    /* ── Concept grid ── */
+    .concept-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 32px; }
+    .concept { padding: 20px 18px; border-radius: 12px; border: 1px solid var(--hairline); position: relative; }
+    .concept.winner { background: var(--ink); color: #FAFAF7; border-color: var(--ink); }
+    .concept .c-name { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+    .concept .c-desc { font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+    .concept.winner .c-desc { color: rgba(255,255,253,0.7); }
+    .concept .c-badge { position: absolute; top: -10px; left: 16px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
+
+    /* ── Key fixes ── */
+    .keyfix { background: var(--warn-soft); border-radius: 14px; padding: 22px 26px; margin-top: 24px; }
+    .keyfix-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warn); margin-bottom: 12px; font-weight: 600; }
+    .keyfix-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px; }
+    .keyfix-list li { list-style: none; display: flex; gap: 10px; font-size: 13.5px; line-height: 1.6; }
+    .keyfix-list li::before { content: "!"; color: var(--warn); font-weight: 700; flex-shrink: 0; }
+
+    /* ── Themes ── */
+    .theme { padding: 18px 22px; border-left: 3px solid var(--ink); border-radius: 0 10px 10px 0; background: #fff; border-top: 1px solid var(--hairline); border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); margin-bottom: 12px; }
+    .theme.warn { border-left-color: var(--warn); }
+    .theme .t-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+    .theme .t-name { font-weight: 600; font-size: 14.5px; }
+    .theme .t-tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .theme.warn .t-tag { color: var(--warn); }
+    .theme p { font-size: 14px; line-height: 1.65; color: #444; margin: 0; }
+
+    /* ── Affinity ── */
+    .affinity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+    .affinity { padding: 20px 18px; border: 1px solid var(--hairline); border-top: 3px solid var(--ink); border-radius: 0 0 12px 12px; background: #fff; }
+    .affinity.warn { border-top-color: var(--warn); }
+    .affinity.neutral { border-top-color: var(--muted); }
+    .affinity .a-label { font-weight: 600; font-size: 13.5px; margin-bottom: 12px; }
+    .affinity ul { list-style: none; display: grid; gap: 8px; }
+    .affinity li { font-size: 12.5px; line-height: 1.55; color: #555; padding-left: 12px; position: relative; }
+    .affinity li::before { content: "·"; position: absolute; left: 0; color: var(--ink); font-weight: 700; }
+
+    /* ── Insights ── */
+    .insight { padding: 20px 22px; border: 1px solid var(--hairline); border-left: 3px solid var(--ink); border-radius: 0 12px 12px 0; background: #fff; margin-bottom: 14px; }
+    .insight.warn { border-left-color: var(--warn); }
+    .insight h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 8px; line-height: 1.45; }
+    .insight p { font-size: 13.5px; line-height: 1.7; color: #555; margin: 0; }
+    .insight .i-num { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+
+    /* ── Changes ── */
+    .change-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .change { background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .change-num { min-width: 22px; height: 22px; background: var(--accent); border-radius: 999px; color: #fff; font-size: 11px; font-weight: 600; display: grid; place-items: center; flex-shrink: 0; }
+    .change-name { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
+    .change-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+    /* ── Outcomes ── */
+    .outcomes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+    .outcome { padding: 22px 20px; border: 1px solid var(--hairline); border-radius: 12px; background: #fff; }
+    .outcome .o-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+    .outcome .o-desc { font-size: 13px; color: #555; line-height: 1.6; }
+
+    .endmark { margin-top: 40px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: left; }
+    .endmark::before { content: "❋"; display: inline-block; margin-right: 8px; color: var(--accent); font-size: 13px; transform: translateY(1px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      :root { --pad-x: 28px; }
+      .page { grid-template-columns: 1fr; gap: 0; padding-top: 80px; }
+      .sidebar { display: none; }
+      .meta-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; padding: 18px 0 28px; border-bottom: 1px solid var(--hairline); margin-bottom: 56px; }
+      .hero-title { font-size: 40px; }
+      .stat-grid, .affinity-grid, .change-list, .keyfix-list, .outcomes { grid-template-columns: 1fr; }
+      .gallery-2 { grid-template-columns: 1fr; }
+      .comp-grid { grid-template-columns: 1fr; }
+      .interviewee-grid { grid-template-columns: 1fr; }
+      .concept-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    body:not([data-mounted]) .page,
+    body:not([data-mounted]) .nav-pill { opacity: 0; }
+    body { transition: opacity 220ms ease; }
   </style>
 </head>
 <body>
 
-  <div id="root"></div>
-  <script type="text/babel" src="ea-shared.jsx"></script>
-  <script type="text/babel" src="ea-sections-1.jsx"></script>
-  <script type="text/babel" src="ea-sections-2.jsx"></script>
-  <script type="text/babel" src="ea-sections-3.jsx"></script>
-  <script type="text/babel" src="ea-sections-4.jsx"></script>
-  <script type="text/babel" src="ea-app.jsx"></script>
+  <!-- Floating progress + TOC pill -->
+  <nav class="nav-pill" id="navPill" aria-label="Section index">
+    <button class="nav-pill-button" id="navPillBtn" aria-expanded="false" aria-controls="navPillToc">
+      <span class="nav-pill-progress" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <circle class="track" cx="12" cy="12" r="9.5"></circle>
+          <circle class="fill" cx="12" cy="12" r="9.5" id="progressCircle" stroke-dasharray="59.69" stroke-dashoffset="59.69"></circle>
+        </svg>
+      </span>
+      <span class="nav-pill-section" id="navPillSection">Overview</span>
+      <span class="nav-pill-pct" id="navPillPct">0%</span>
+      <span class="nav-pill-caret" aria-hidden="true"></span>
+    </button>
+    <div class="nav-pill-toc" id="navPillToc">
+      <ol id="tocList"></ol>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- Sticky sidebar (desktop) -->
+    <aside class="sidebar" aria-label="Project metadata">
+      <div class="sidebar-name">Energy Ave.</div>
+      <div class="sidebar-meta">
+        <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
+        <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 People · ENG&nbsp;100D</div></div>
+        <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks · Winter 2025</div></div>
+        <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
+        <div class="meta-row"><div class="meta-label">Links</div><div class="meta-value"><a class="meta-link" href="#">Figma Files</a><br/><a class="meta-link" href="#">Full Report</a></div></div>
+      </div>
+    </aside>
+
+    <article class="article">
+
+      <!-- Mobile metadata strip -->
+      <div class="meta-strip">
+        <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
+        <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks</div></div>
+        <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 · ENG&nbsp;100D</div></div>
+        <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
+      </div>
+
+      <!-- HERO -->
+      <header class="hero" id="hero">
+        <div class="hero-eyebrow">UX Research · Game Design · EdTech · 2024</div>
+        <h1 class="hero-title">Energy Ave.</h1>
+        <p class="hero-dek">Designing a gamified energy conservation experience for PlanetFlip — research-backed, fully playable, and built in 10 weeks.</p>
+      </header>
+
+      <!-- SECTION 01: The Problem -->
+      <section class="s reveal" id="overview" data-toc="The Problem">
+        <h2 class="section-title">01 — The Problem</h2>
+        <div class="section-sub">The gap between awareness and action is climate's hardest challenge.</div>
+        <div class="ui-card">
+          <div class="ui-card-label">Challenge</div>
+          <p style="margin-top:0;">Sustainability education leans on information delivery, not interactive engagement. Younger users already <em>know</em> it matters — they need a tool that turns awareness into habit.</p>
+        </div>
+        <div class="ui-card" style="margin-top:14px;">
+          <div class="ui-card-label">Our Approach</div>
+          <p style="margin-top:0;">PlanetFlip had concepts but nothing built or validated. We designed a fully playable, research-backed game from scratch: educationally grounded, usable without instruction, and engaging enough to hold attention.</p>
+        </div>
+
+        <div class="pullquote">
+          How might we design a gamified energy conservation experience that's engaging to complete, intuitive without instruction, and meaningful enough to translate to real life?
+          <span class="pullquote-cite">— Research Question</span>
+        </div>
+
+        <h3 class="subsection">What is Energy Ave?</h3>
+        <figure class="fig">
+          <img src="uploads/ea-title-hifi.png" alt="Energy Ave title screen" />
+          <figcaption>Title screen — pixel-art aesthetic carried through every scene.</figcaption>
+        </figure>
+
+        <div class="ui-card">
+          <div class="ui-card-label">Room by Room</div>
+          <p style="margin-top:0;">Players navigate a virtual home — bedroom, bathroom, kitchen — clicking on items in each space.</p>
+        </div>
+        <div class="ui-card" style="margin-top:12px;">
+          <div class="ui-card-label">Spot &amp; Fix</div>
+          <p style="margin-top:0;">Tap household appliances and electronics to identify and correct energy-wasting behaviors.</p>
+        </div>
+        <div class="ui-card" style="margin-top:12px;">
+          <div class="ui-card-label">Learn &amp; Earn</div>
+          <p style="margin-top:0;">Each interaction triggers a real-world energy fact card. Earn points, fill the meter, unlock the next room.</p>
+        </div>
+      </section>
+
+      <!-- SECTION 02: Goals -->
+      <section class="s reveal" id="goals" data-toc="Goals">
+        <h2 class="section-title">02 — Research Goals &amp; Questions</h2>
+        <table class="data">
+          <thead><tr><th>Research Question</th><th>Research Goal</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RQ1.</strong> What patterns in existing sustainability games drive or kill engagement?</td><td>Understand what makes existing sustainability games succeed or fail at engaging users.</td></tr>
+            <tr><td><strong>RQ2.</strong> Which concept best meets the needs of our target users and client?</td><td>Identify which concept best balances educational impact, usability, feasibility, and engagement.</td></tr>
+            <tr><td><strong>RQ3.</strong> Can users understand how to play without a tutorial?</td><td>Validate whether the interaction model is intuitive without explicit instruction.</td></tr>
+            <tr><td><strong>RQ4.</strong> Does the game motivate players to apply energy-saving habits in real life?</td><td>Evaluate whether the game teaches, engages, and motivates real-world behavior change.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="subsection">Success Metrics — Defined Upfront</h3>
+        <table class="data">
+          <thead><tr><th>Metric</th><th>Method</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td>User Engagement</td><td>Session Timing</td><td><span class="tag amber">≥ 10 min/session</span></td></tr>
+            <tr><td>Task Success Rate</td><td>Usability Testing</td><td><span class="tag amber">≥ 85%</span></td></tr>
+            <tr><td>Knowledge Improvement</td><td>Pre/Post Survey</td><td><span class="tag amber">≥ 75% of users improve</span></td></tr>
+            <tr><td>Development Feasibility</td><td>Timeline Tracking</td><td><span class="tag amber">≤ 3 months</span></td></tr>
+            <tr><td>Device Accessibility</td><td>Technical Testing</td><td><span class="tag amber">Mobile &amp; desktop</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SECTION 03: Methodology -->
+      <section class="s reveal" id="methodology" data-toc="Methods">
+        <h2 class="section-title">03 — Methodology</h2>
+        <div class="section-sub">A mixed-methods approach across four research phases — behavioral and attitudinal.</div>
+        <div class="ui-card"><div class="ui-card-label">Phase 01 · Competitive Analysis</div><p style="margin-top:0;">Audited 4 gamified sustainability tools to map the landscape and identify the gap.</p></div>
+        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Phase 02 · Stakeholder Interviews</div><p style="margin-top:0;">PlanetFlip, SD Climate Collaborative &amp; Cabrillo NPS — 3 orgs, 3 perspectives.</p></div>
+        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Phase 03 · Formative Testing</div><p style="margin-top:0;">Affordance test + cognitive walkthrough on static wireframes before any code was written.</p></div>
+        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Phase 04 · Summative Testing</div><p style="margin-top:0;">Full gameplay observation + 7-question post-task attitudinal survey.</p></div>
+      </section>
+
+      <!-- SECTION 04: Competitive Analysis — 2×2 card grid -->
+      <section class="s reveal" id="competitive" data-toc="Competitive">
+        <h2 class="section-title">04 — Competitive Analysis</h2>
+        <div class="section-sub">Four existing games. One clear gap.</div>
+
+        <div class="comp-grid">
+          <div class="comp-card">
+            <img class="comp-card-thumb" src="uploads/ea-comp-space-waste.png" alt="Space Waste Odyssey" />
+            <div class="comp-card-body">
+              <div>
+                <div class="comp-card-name">Space Waste Odyssey</div>
+                <div class="comp-card-publisher">PBS Kids · Ages K–6</div>
+              </div>
+              <p class="comp-card-pros">Closed captioning, multi-level progression, high-quality visuals.</p>
+              <p class="comp-card-cons">Levels too long, no penalties for inaction, low urgency — no time constraints.</p>
+            </div>
+          </div>
+
+          <div class="comp-card">
+            <img class="comp-card-thumb" src="uploads/ea-comp-energy-champion.png" alt="Become an Energy Champion" />
+            <div class="comp-card-body">
+              <div>
+                <div class="comp-card-name">Become an Energy Champion</div>
+                <div class="comp-card-publisher">National Energy Foundation · Ages K–8</div>
+              </div>
+              <p class="comp-card-pros">Good educational content, character customization.</p>
+              <p class="comp-card-cons">Highly repetitive mini-games, hard to navigate, no accessibility features.</p>
+            </div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-card-thumb-empty">No screenshot</div>
+            <div class="comp-card-body">
+              <div>
+                <div class="comp-card-name">Fidget Power</div>
+                <div class="comp-card-publisher">PBS Kids · Design Squad · Ages K–6</div>
+              </div>
+              <p class="comp-card-pros">Location-based mini-games, strong loading screen.</p>
+              <p class="comp-card-cons">Repetitive tasks, thin sustainability info, dead end after completion.</p>
+            </div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-card-thumb-empty">No screenshot</div>
+            <div class="comp-card-body">
+              <div>
+                <div class="comp-card-name">Financial Freedom</div>
+                <div class="comp-card-publisher">Legends of Learning · Ages 6–12</div>
+              </div>
+              <p class="comp-card-pros">Penalizes unsustainable choices, avatar customization.</p>
+              <p class="comp-card-cons">Requires account to access, slow pacing, too complex for younger users.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection">Who was served — and who wasn't</h3>
+        <p>K–6 was well-served. Older students and adults were underserved — Financial Freedom had the right complexity but locked content behind accounts. Our opportunity: a game for elementary-to-middle school: tight interactive learning, short engaging loops, no account required.</p>
+      </section>
+
+      <!-- SECTION 05: Stakeholder Interviews — 1×3 UI cards -->
+      <section class="s reveal" id="stakeholders" data-toc="Interviews">
+        <h2 class="section-title">05 — Stakeholder Interviews</h2>
+        <div class="section-sub">Three organizations. Three perspectives that shaped our direction.</div>
+
+        <div class="interviewee-grid">
+          <div class="interviewee-card">
+            <div class="interviewee-header">
+              <div class="interviewee-name">Ron Kagan</div>
+              <div class="interviewee-org">
+                <span>PlanetFlip — Founder</span>
+                <span class="tag">Zoom</span>
+              </div>
+            </div>
+            <div class="interviewee-divider"></div>
+            <ul class="interviewee-insights">
+              <li>Past teams designed concepts but never implemented them.</li>
+              <li>Community engagement and scalability were top priorities.</li>
+            </ul>
+          </div>
+
+          <div class="interviewee-card">
+            <div class="interviewee-header">
+              <div class="interviewee-name">A-Bel Gong</div>
+              <div class="interviewee-org">
+                <span>SD Climate Collaborative</span>
+                <span class="tag">In-person</span>
+              </div>
+            </div>
+            <div class="interviewee-divider"></div>
+            <ul class="interviewee-insights">
+              <li>Workplaces increasingly need sustainability training.</li>
+              <li>Surfaced a workplace use case beyond our K–12 focus.</li>
+            </ul>
+          </div>
+
+          <div class="interviewee-card">
+            <div class="interviewee-header">
+              <div class="interviewee-name">NPS Staff</div>
+              <div class="interviewee-org">
+                <span>National Park Service</span>
+                <span class="tag">In-person</span>
+              </div>
+            </div>
+            <div class="interviewee-divider"></div>
+            <ul class="interviewee-insights">
+              <li>Local orgs need accessible engagement tools.</li>
+              <li>Validated public institution use case.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="subsection">Concept Feedback — Capture Grid</h3>
+        <table class="data">
+          <thead><tr><th>Category</th><th>What Stakeholders Said</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag green">Liked</span></td><td>Life-sim aesthetic, real-world integration. "Cozy" feel similar to Animal Crossing and Stardew Valley.</td></tr>
+            <tr><td><span class="tag amber">Wished</span></td><td>More critical thinking, community-building, and customization options.</td></tr>
+            <tr><td><span class="tag">Questions</span></td><td>Multiple paths? Consequences for wrong choices? Single sustainability theme?</td></tr>
+            <tr><td><span class="tag green">Ideas</span></td><td>Character customization, virtual pets, community gardening, water conservation, clothing recycling.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SECTION 06: Concept Selection -->
+      <section class="s reveal" id="concept" data-toc="Concept">
+        <h2 class="section-title">06 — Choosing a Concept</h2>
+        <div class="section-sub">Four ideas. One weighted decision matrix. One winner — for the right reasons.</div>
+        <div class="concept-grid">
+          <div class="concept"><div class="c-name">Ocean Cleanup Quest</div><div class="c-desc">Navigate a submarine removing trash from ocean reefs.</div></div>
+          <div class="concept"><div class="c-name">Waste Management Sim</div><div class="c-desc">Life-sim: manage resources and minimize waste across a town.</div></div>
+          <div class="concept winner"><span class="c-badge">Selected ✓</span><div class="c-name">Energy Ave</div><div class="c-desc">Conserve energy in a virtual home by finding and fixing energy-wasting behaviors room by room.</div></div>
+          <div class="concept"><div class="c-name">Trash Dash</div><div class="c-desc">60-second timed sorting game: categorize waste for a high score.</div></div>
+        </div>
+        <div class="pullquote">
+          Trash Dash scored higher on feasibility, but stakeholder feedback consistently favored the life-sim approach. Energy Ave was the most balanced choice across every dimension that mattered.
+          <span class="pullquote-cite">— Team Rationale</span>
+        </div>
+      </section>
+
+      <!-- SECTION 07: Round 1 Formative Testing -->
+      <section class="s reveal" id="round1" data-toc="Round 1">
+        <h2 class="section-title">07 — Round 1 · Formative Testing</h2>
+        <div class="section-sub">Affordance test + cognitive walkthrough — before a single line of code was written.</div>
+        <div class="ui-card"><div class="ui-card-label">Method</div><p style="margin-top:0;">A <strong>clickability/affordance test</strong> (what looks interactive?) plus a <strong>cognitive walkthrough</strong> of static wireframes (can users reconstruct the logic unaided?).</p></div>
+        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Why At Wireframe Stage</div><p style="margin-top:0;">Catching affordance problems pre-build is far cheaper than post-build. We validated the core interaction model before committing engineering time.</p></div>
+
+        <h3 class="subsection">Participants</h3>
+        <table class="data">
+          <thead><tr><th>Name</th><th>Background</th><th>Gaming</th></tr></thead>
+          <tbody>
+            <tr><td>Cody Trinh, 21</td><td>UCSD 4th Year, Human Biology</td><td><span class="tag">Experienced</span></td></tr>
+            <tr><td>Paul Manchala, 21</td><td>UCSD 4th Year, Aerospace Engineering</td><td><span class="tag">Casual</span></td></tr>
+            <tr><td>Preesha Shah, 13 <span class="tag green">Target demo</span></td><td>8th Grader</td><td><span class="tag">Casual</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="subsection">Part 1 — Affordance Test Results</h3>
+        <p style="font-size:14px;color:var(--muted);">Participants circled elements they believed were interactive. Coded as hit, miss, or false positive.</p>
+        <div class="gallery-2">
+          <figure><img src="uploads/ea-bedroom-wireframe.png" alt="Bedroom lo-fi wireframe" /><figcaption>Bedroom wireframe — labeled elements shown to participants.</figcaption></figure>
+          <figure><img src="uploads/ea-bathroom-wireframe.png" alt="Bathroom lo-fi wireframe" /><figcaption>Bathroom wireframe — same affordance test, second room.</figcaption></figure>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+          <div>
+            <div class="ui-card-label">🛏 Bedroom</div>
+            <table class="data" style="font-size:12.5px;">
+              <thead><tr><th>Element</th><th>Inter.</th><th>Cody</th><th>Paul</th></tr></thead>
+              <tbody>
+                <tr><td>PC / Laptop</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Lamp</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Light switch</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Thermostat</td><td><span class="tag green">Yes</span></td><td><span class="miss">✗ Miss</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Window</td><td><span class="tag green">Yes</span></td><td><span class="miss">✗ Miss</span></td><td><span class="miss">✗ Miss</span></td></tr>
+                <tr><td>Bed</td><td><span class="tag">No</span></td><td><span class="miss">✗ False+</span></td><td><span class="miss">✗ False+</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="ui-card-label">🚿 Bathroom</div>
+            <table class="data" style="font-size:12.5px;">
+              <thead><tr><th>Element</th><th>Inter.</th><th>Cody</th><th>Paul</th></tr></thead>
+              <tbody>
+                <tr><td>Blow dryer</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Light switch</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Outlet</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Shower faucet</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="none">—</span></td></tr>
+                <tr><td>Sink</td><td><span class="tag green">Yes</span></td><td><span class="miss">✗ Miss</span></td><td><span class="hit">✓ Hit</span></td></tr>
+                <tr><td>Toilet</td><td><span class="tag">No</span></td><td><span class="miss">✗ False+</span></td><td><span class="none">—</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3 class="subsection">Part 2 — Cognitive Walkthrough</h3>
+        <figure class="fig"><img src="uploads/ea-flow-game.png" alt="Lo-fi flow diagram — title to component card" /><figcaption>Game flow diagram shown to participants — title → room → click → component card.</figcaption></figure>
+        <figure class="fig"><img src="uploads/ea-flow-next.png" alt="Lo-fi flow diagram — next button branching" /><figcaption>Next-button flow — branches to congrats screen or returns to the room.</figcaption></figure>
+
+        <div class="ui-card"><div class="ui-card-label">Cody</div><p style="margin-top:0;">Quickly reconstructed game logic. Could articulate what triggered each screen transition without prompting.</p></div>
+        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Paul</div><p style="margin-top:0;">"Aha moment" — initially flagged the bed as interactive, then self-corrected: only electricity-conducting items should be clickable. Validated the game's internal logic.</p></div>
+        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Preesha</div><p style="margin-top:0;">Perceived it as a "storyline through a household." Correctly predicted pop-ups on click. Called it "super cute" — specifically praised the 8-bit aesthetics.</p></div>
+
+        <div class="keyfix">
+          <div class="keyfix-label">Key Fixes Flagged</div>
+          <ul class="keyfix-list">
+            <li>Increase visual affordance for thermostat &amp; window — add glow or animation cue.</li>
+            <li>Reduce visual weight of the bed — consistently selected as interactive despite being passive.</li>
+            <li>Fix energy bar update logic (Preesha flagged it was not updating correctly).</li>
+            <li>Implement the timer — pause button appeared non-functional to participants.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SECTION 08: Round 2 Summative Testing -->
+      <section class="s reveal" id="round2" data-toc="Round 2">
+        <h2 class="section-title">08 — Round 2 · Summative Testing</h2>
+        <div class="section-sub">Full gameplay + post-task survey. Did the finished product meet our success metrics?</div>
+        <div class="ui-card"><div class="ui-card-label">Method</div><p style="margin-top:0;">Participants played the full game, then took a 7-question post-task survey. Behavioral data + self-reported experience.</p></div>
+        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Why This Method</div><p style="margin-top:0;">Observation shows what users <em>do</em>. Surveys show how they <em>feel</em>. For a voluntary, intrinsically motivated product, both matter.</p></div>
+
+        <h3 class="subsection">Participants (n=7)</h3>
+        <table class="data">
+          <thead><tr><th>Participant</th><th>Background</th><th>Gaming</th></tr></thead>
+          <tbody>
+            <tr><td>Ron Kagan</td><td>PlanetFlip Founder</td><td><span class="tag">—</span></td></tr>
+            <tr><td>Navaeh Gutierrez</td><td>UCSD 4th Year, Biochemistry</td><td><span class="tag">Little to none</span></td></tr>
+            <tr><td>Litzy Perea</td><td>UCSD, Linguistics &amp; Cognition</td><td><span class="tag">Little</span></td></tr>
+            <tr><td>Holda Ashmina</td><td>UCSD, Psychology</td><td><span class="tag">Little</span></td></tr>
+            <tr><td>Amina</td><td>UCSD, Cognitive Science</td><td><span class="tag">Average</span></td></tr>
+            <tr><td>Daniel</td><td>UCSD, Computer Science</td><td><span class="tag">Above average</span></td></tr>
+            <tr><td>Alessandra</td><td>UCSD, Pre-Dental</td><td><span class="tag">Above average</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="subsection">Results vs. Success Metrics</h3>
+        <div class="stat-grid">
+          <div class="stat"><div class="stat-num">90%</div><div class="stat-cap">Task Success Rate</div><div class="stat-sub">Target: 85% ✓</div></div>
+          <div class="stat"><div class="stat-num">80%</div><div class="stat-cap">Knowledge Improvement</div><div class="stat-sub">Target: 75% ✓</div></div>
+          <div class="stat"><div class="stat-num">12 min</div><div class="stat-cap">Avg. Session Length</div><div class="stat-sub">Target: 10 min ✓</div></div>
+          <div class="stat"><div class="stat-num">100%</div><div class="stat-cap">Said goal was clear</div></div>
+          <div class="stat"><div class="stat-num">100%</div><div class="stat-cap">Praised visuals &amp; music</div></div>
+        </div>
+
+        <h3 class="subsection">Qualitative Themes</h3>
+        <div class="theme">
+          <div class="t-head"><span class="t-name">Aesthetics &amp; Atmosphere</span><span class="t-tag" style="color:var(--good);">✓ Unanimous Positive</span></div>
+          <p>All seven praised the visuals and audio. Descriptors: "cute," "chill," "relaxing," "immersive." Unprompted comparisons to early-2000s browser games and indie titles — a real differentiator in a sterile category.</p>
+        </div>
+        <div class="theme warn">
+          <div class="t-head"><span class="t-name">Challenge &amp; Reward</span><span class="t-tag">⚠ Primary Pain Point</span></div>
+          <p>The clearest criticism: lack of challenge. Interactables were too easy to spot; Ron Kagan noted it felt aimed at elementary schoolers. The pattern was strong enough to require iteration.</p>
+        </div>
+        <div class="theme warn">
+          <div class="t-head"><span class="t-name">Point Visibility</span><span class="t-tag">⚠ Actionable UX Gap</span></div>
+          <p>Kagan flagged that points should be numerically visible and items should flash on click. Alessandra noted the energy bar should reflect cumulative value. The most actionable feedback of the round.</p>
+        </div>
+        <div class="theme warn">
+          <div class="t-head"><span class="t-name">Discoverability</span><span class="t-tag">⚠ UI Gap</span></div>
+          <p>Not immediately clear the back button was what added points to the score — needed explicit UI surfacing.</p>
+        </div>
+      </section>
+
+      <!-- SECTION 09: Synthesis -->
+      <section class="s reveal" id="affinity" data-toc="Synthesis">
+        <h2 class="section-title">09 — Synthesis &amp; Affinity Themes</h2>
+        <div class="section-sub">Three patterns emerged across behavioral observation, survey data, and stakeholder input.</div>
+        <div class="affinity-grid">
+          <div class="affinity"><div class="a-label">Interaction Clarity</div><ul><li>All participants reconstructed game logic without instruction.</li><li>Flow was self-evident across all experience levels.</li><li>Internal logic was intuitive (electric-only items).</li></ul></div>
+          <div class="affinity warn"><div class="a-label">Reward Satisfaction</div><ul><li>Emotional payoff of earning points was weak for many users.</li><li>High completion ≠ high motivation — a critical gap.</li><li>Feedback loop needed to be faster and more visible.</li></ul></div>
+          <div class="affinity neutral"><div class="a-label">Aesthetic Resonance</div><ul><li>Unanimous praise for pixel-art visual direction.</li><li>Audio design called out unprompted by all 7 participants.</li><li>Comparisons to Stardew Valley, Unpacking, Barbie.com.</li></ul></div>
+        </div>
+      </section>
+
+      <!-- SECTION 10: Key Insights -->
+      <section class="s reveal" id="insights" data-toc="Insights">
+        <h2 class="section-title">10 — Key Insights</h2>
+        <div class="section-sub">Three findings that shaped everything that came after.</div>
+        <div class="insight"><div class="i-num">Insight 01</div><h4>The interaction model works. The reward model doesn't — yet.</h4><p>Users played without instruction — the interaction design works. But the emotional payoff didn't land. Clear ≠ satisfying — different problems, different solutions.</p></div>
+        <div class="insight"><div class="i-num">Insight 02</div><h4>The aesthetic direction is a genuine competitive advantage.</h4><p>Every participant praised the visuals and audio — unanimous in a category of sterile educational games. Worth protecting in every iteration.</p></div>
+        <div class="insight warn"><div class="i-num">Insight 03</div><h4>The target audience wasn't fully represented in testing.</h4><p>Both rounds skewed to UCSD undergrads. Only Preesha, 13, was near the target demo. A round with 8–12 year olds would likely surface different friction.</p></div>
+      </section>
+
+      <!-- SECTION 11: Impact on Design -->
+      <section class="s reveal" id="impact" data-toc="Impact">
+        <h2 class="section-title">11 — Impact on Design</h2>
+        <div class="section-sub">How research directly — and traceably — changed what got built.</div>
+        <div class="ui-card"><div class="ui-card-label">Phase 1 · Concept Selection · Research → Decision</div><p style="margin-top:0;">Competitive analysis + stakeholder interviews ruled out three of four concepts. Without the weighted matrix, the team might have selected Trash Dash — higher feasibility, but lower on dimensions that mattered most.</p></div>
+        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Phase 2 · Wireframe to Build · Research → Engineering</div><p style="margin-top:0;">Round 1 identified three elements needing stronger visual signals before development, saving significant rework. The cognitive walkthrough confirmed no tutorial was needed — a major scope reduction.</p></div>
+        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Phase 3 · Build to Ship · Research → Iteration</div><p style="margin-top:0;">Five specific product changes mapped directly to Round 2 findings — each to a specific participant observation or survey response, not guesswork.</p></div>
+
+        <h3 class="subsection">5 Specific Changes From Testing</h3>
+        <div class="gallery-2">
+          <figure><img src="uploads/ea-pc-card.png" alt="Final hi-fi Personal Computer info card" /><figcaption>Final info card — point value made visible, energy bar shows running total.</figcaption></figure>
+          <figure><img src="uploads/ea-energy-bar.png" alt="Energy bar fill states from empty to full" /><figcaption>Energy bar progression — five fill states give cumulative feedback.</figcaption></figure>
+        </div>
+        <ul class="change-list">
+          <li class="change"><span class="change-num">1</span><span><div class="change-name">Point Visibility</div><div class="change-desc">Point values made numerically visible on each interaction card.</div></span></li>
+          <li class="change"><span class="change-num">2</span><span><div class="change-name">Click Animation</div><div class="change-desc">Items flash visually on click — confirms the interaction registered.</div></span></li>
+          <li class="change"><span class="change-num">3</span><span><div class="change-name">Audio Feedback</div><div class="change-desc">Sound cues added to item interactions for tactile feel.</div></span></li>
+          <li class="change"><span class="change-num">4</span><span><div class="change-name">Energy Bar Fix</div><div class="change-desc">Energy bar updated to show running total, not just points just added.</div></span></li>
+          <li class="change"><span class="change-num">5</span><span><div class="change-name">Back Button Clarity</div><div class="change-desc">Back button behavior made more visually explicit in the UI.</div></span></li>
+        </ul>
+
+        <h3 class="subsection">Broader Outcomes</h3>
+        <div class="outcomes">
+          <div class="outcome"><div class="o-label">🎮 Game Shipped</div><div class="o-desc">Fully playable in Construct3 by March 18, 2025 — all five pre-defined success metrics met or exceeded.</div></div>
+          <div class="outcome"><div class="o-label">📱 Social Launch</div><div class="o-desc">An Instagram account was created for launch outreach, generating early interest from the sustainability community.</div></div>
+          <div class="outcome"><div class="o-label">🌍 Platform Interest</div><div class="o-desc">PlanetFlip expressed interest in integrating Energy Ave for partner climate orgs. SD Climate Collaborative flagged it for their curriculum.</div></div>
+        </div>
+      </section>
+
+      <!-- SECTION 12: Reflection -->
+      <section class="s reveal" id="reflection" data-toc="Reflection">
+        <h2 class="section-title">12 — Reflection</h2>
+        <figure class="fig"><img src="uploads/ea-gameplay-irl.jpg" alt="Energy Ave being played on a laptop" /><figcaption>Energy Ave in the wild — a participant playing the final build.</figcaption></figure>
+        <div class="ui-card">
+          <div class="ui-card-label">What Went Well</div>
+          <p style="margin-top:0;">The two-round structure was the most valuable methodological choice. Splitting formative (wireframes) from summative (build) caught affordance problems before they were built in.</p>
+          <p>Mixed methods — observation + survey — gave a richer picture than either alone. The gap between completion and satisfaction was where the most interesting design work lived.</p>
+        </div>
+        <div class="ui-card" style="margin-top:14px;">
+          <div class="ui-card-label" style="color:var(--warn);">What I'd Do Differently</div>
+          <p style="margin-top:0;">The biggest gap was participant representation — both rounds skewed to UCSD undergrads. A round with 8–12 year olds would've surfaced different friction: reading level, attention span, comprehension.</p>
+          <p>I'd also push for a longitudinal component — a follow-up 1–2 weeks post-play to measure whether energy-saving behaviors stuck at home. The more important, still-unanswered question.</p>
+        </div>
+        <p class="endmark">End of case study · Energy Ave / PlanetFlip · 2025</p>
+      </section>
+
+    </article>
+  </div>
 
   <script>
-    (function() {
-      // Mark body when loaded as an embedded iframe so CSS can hide chrome
-      if (new URLSearchParams(location.search).has('embed')) {
-        document.body.classList.add('is-embed');
+  (function () {
+    'use strict';
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    // Build TOC from sections
+    const sections = $$('section.s[data-toc]');
+    const tocList = $('#tocList');
+    sections.forEach((sec) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + sec.id;
+      a.textContent = sec.dataset.toc;
+      a.dataset.target = sec.id;
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Pill open/close
+    const navPill = $('#navPill');
+    const navPillBtn = $('#navPillBtn');
+    navPillBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = navPill.dataset.open === 'true';
+      navPill.dataset.open = !open;
+      navPillBtn.setAttribute('aria-expanded', String(!open));
+    });
+    document.addEventListener('click', (e) => {
+      if (!navPill.contains(e.target)) {
+        navPill.dataset.open = 'false';
+        navPillBtn.setAttribute('aria-expanded', 'false');
       }
+    });
 
-      var morphData = sessionStorage.getItem('projects-morph');
+    // Scroll progress + active section
+    const navPillSection = $('#navPillSection');
+    const navPillPct = $('#navPillPct');
+    const progressCircle = $('#progressCircle');
+    const circumference = 2 * Math.PI * 9.5;
+    progressCircle.setAttribute('stroke-dasharray', String(circumference));
+    progressCircle.setAttribute('stroke-dashoffset', String(circumference));
 
-      if (morphData) {
-        // Hide the projects card before React renders it — prevents flash at natural position
-        var hideStyle = document.createElement('style');
-        hideStyle.textContent = '#projects-card { opacity: 0 !important; }';
-        document.head.appendChild(hideStyle);
-
-        sessionStorage.removeItem('projects-morph');
-        var origin = JSON.parse(morphData);
-
-        // Poll each frame until React has rendered #projects-card
-        var deadline = Date.now() + 3000;
-        (function poll() {
-          var card = document.getElementById('projects-card');
-          if (!card) { if (Date.now() < deadline) requestAnimationFrame(poll); return; }
-
-          requestAnimationFrame(function() {
-            var dest = card.getBoundingClientRect();
-            var dx = origin.left - dest.left;
-            var dy = origin.top - dest.top;
-            var sx = origin.width / dest.width;
-            var sy = origin.height / dest.height;
-
-            // Place card at home-card position instantly
-            card.style.transformOrigin = 'top left';
-            card.style.transition = 'none';
-            card.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scaleX(' + sx + ') scaleY(' + sy + ')';
-            card.style.opacity = '1';
-
-            requestAnimationFrame(function() {
-              // Animate to natural position
-              card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
-              card.style.transform = 'translate(0,0) scaleX(1) scaleY(1)';
-
-              card.addEventListener('transitionend', function cleanup(e) {
-                if (e.propertyName !== 'transform') return;
-                hideStyle.remove();
-                card.style.transition = '';
-                card.style.transform = '';
-                card.style.transformOrigin = '';
-                card.style.opacity = '';
-                card.removeEventListener('transitionend', cleanup);
-              });
-            });
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        const pct = Math.max(0, Math.min(1, window.scrollY / Math.max(1, max)));
+        progressCircle.setAttribute('stroke-dashoffset', String(circumference * (1 - pct)));
+        navPillPct.textContent = Math.round(pct * 100) + '%';
+        const triggerLine = window.innerHeight * 0.32;
+        let current = sections[0];
+        for (const sec of sections) {
+          const r = sec.getBoundingClientRect();
+          if (r.top <= triggerLine) current = sec;
+        }
+        if (current) {
+          navPillSection.textContent = current.dataset.toc;
+          $$('#tocList a').forEach((a) => {
+            a.dataset.current = a.dataset.target === current.id ? 'true' : 'false';
           });
-        })();
-
-      } else {
-        document.body.classList.add('page-entering');
-        requestAnimationFrame(function() {
-          requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
-        });
-      }
-
-      document.addEventListener('click', function(e) {
-        var link = e.target.closest('a[href]');
-        if (!link) return;
-        var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
-        e.preventDefault();
-        document.body.classList.add('page-leaving');
-        setTimeout(function() { window.location.href = href; }, 300);
+        }
+        ticking = false;
       });
-    })();
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Scroll-reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    $$('.reveal').forEach((el) => io.observe(el));
+
+    document.body.setAttribute('data-mounted', 'true');
+  })();
   </script>
 </body>
 </html>
