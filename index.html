@@ -58,8 +58,8 @@
     #projects-sidebar {
       position: fixed;
       top: 24px;
-      left: calc(30vw + 24px);
-      width: calc(70vw - 48px);
+      left: calc(15vw + 24px);
+      width: calc(85vw - 48px);
       height: calc(100vh - 48px);
       background: #f0f0f3;
       border-radius: 18px;
@@ -91,7 +91,7 @@
       top: 0;
       right: 0;
       bottom: 0;
-      left: 30vw;
+      left: 15vw;
       z-index: 190;
       background: #fff;
       opacity: 0;
@@ -105,7 +105,7 @@
       position: absolute;
       top: 0;
       left: 348px;
-      width: calc(70vw - 348px);
+      width: calc(85vw - 348px);
       height: 100vh;
       border: none;
       display: block;
@@ -190,8 +190,8 @@
       const t = `${MORPH_DUR}ms ${MORPH_EASE}`;
       sidebar.style.transition = `top ${t}, left ${t}, width ${t}, height ${t}`;
       sidebar.style.top    = '24px';
-      sidebar.style.left   = (window.innerWidth * 0.3 + 24) + 'px';
-      sidebar.style.width  = (window.innerWidth * 0.7 - 48) + 'px';
+      sidebar.style.left   = (window.innerWidth * 0.15 + 24) + 'px';
+      sidebar.style.width  = (window.innerWidth * 0.85 - 48) + 'px';
       sidebar.style.height = (window.innerHeight - 48) + 'px';
 
       /* Reveal sidebar contents just before the morph completes */
