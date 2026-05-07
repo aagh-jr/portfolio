@@ -63,7 +63,20 @@
       margin: 0 auto;
       padding: 64px var(--pad-x) 120px;
     }
-    .sidebar { display: none; }
+    .sidebar {
+      display: block;
+      position: fixed;
+      top: 88px;
+      left: calc(50vw - 598px);
+      width: var(--sidebar-width);
+    }
+    .sidebar-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
+    .sidebar-toc { list-style: none; counter-reset: stoc; display: flex; flex-direction: column; gap: 1px; }
+    .sidebar-toc li { counter-increment: stoc; }
+    .sidebar-toc a { display: flex; gap: 10px; align-items: baseline; padding: 6px 8px; border-radius: 6px; color: var(--muted); border-bottom: none; font-size: 12.5px; line-height: 1.4; transition: color var(--dur) var(--ease), background var(--dur) var(--ease); }
+    .sidebar-toc a::before { content: counter(stoc, decimal-leading-zero); color: var(--hairline-strong); font-family: var(--font-mono); font-size: 10px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .sidebar-toc a:hover { color: var(--ink); background: rgba(26,26,26,0.05); border-bottom: none; }
+    .sidebar-toc a[data-current="true"] { color: var(--ink); font-weight: 500; }
     .meta-row .meta-label { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
     .meta-row .meta-value { font-size: var(--fs-small); line-height: 1.5; color: var(--ink); }
     .meta-link { display: inline-flex; align-items: center; gap: 6px; border-bottom: none; }
@@ -81,15 +94,16 @@
     .article { width: 100%; }
     .article > * + * { margin-top: var(--gap-block); }
 
-    .hero { margin-bottom: var(--gap-section); }
-    .hero-eyebrow { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+    .hero { margin-bottom: 36px; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 18px; margin: 16px 0 20px; }
+    .hero-tags .tag { border: none; background: none; padding: 0; font-size: 13px; }
     .hero-title { font-family: var(--font-display); font-weight: 500; font-size: var(--fs-display); line-height: 1.02; letter-spacing: -0.025em; margin-bottom: 28px; text-wrap: balance; }
     .hero-dek { font-size: 21px; line-height: 1.45; color: var(--ink); max-width: 580px; text-wrap: pretty; }
 
     section.s { scroll-margin-top: 96px; }
     section.s + section.s { margin-top: var(--gap-section); }
     h2.section-title { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-h2); letter-spacing: -0.005em; margin-bottom: 8px; }
-    .section-sub { font-size: var(--fs-small); color: var(--muted); margin-bottom: 28px; max-width: 520px; line-height: 1.55; }
+    .section-sub { font-size: 16px; color: var(--muted); margin-bottom: 28px; max-width: 520px; line-height: 1.55; }
     h3.subsection { font-weight: 600; font-size: var(--fs-h3); margin-top: 32px; margin-bottom: 12px; }
     p { text-wrap: pretty; }
     p + p { margin-top: 16px; }
@@ -98,6 +112,10 @@
     .reveal.is-in { opacity: 1; transform: none; }
 
     /* ── Floating nav pill ── */
+    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 50; background: rgba(20, 20, 18, 0.96); color: #FAFAF7; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 28px rgba(0,0,0,0.18); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 7px; padding: 9px 16px 9px 13px; text-decoration: none; border-bottom: none; transition: background 180ms var(--ease); }
+    .back-btn:hover { background: rgba(40, 40, 38, 0.98); border-bottom: none; color: #fff; }
+    .back-btn-arrow { font-size: 15px; line-height: 1; }
+
     .nav-pill { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 50; background: rgba(20, 20, 18, 0.96); color: #FAFAF7; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 28px rgba(0,0,0,0.18); backdrop-filter: blur(8px); max-width: calc(100vw - 32px); transition: border-radius 180ms var(--ease); }
     .nav-pill[data-open="true"] { border-radius: 10px; }
     .nav-pill-button { display: flex; align-items: center; gap: 14px; padding: 9px 18px 9px 14px; color: inherit; border-radius: 999px; }
@@ -131,7 +149,7 @@
     .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 28px 0; margin: 32px 0; }
     .stat { display: flex; flex-direction: column; gap: 6px; }
     .stat-num { font-family: var(--font-display); font-weight: 500; font-size: 44px; line-height: 1; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
-    .stat-cap { font-size: 13px; line-height: 1.4; color: var(--muted); max-width: 200px; }
+    .stat-cap { font-size: 14px; line-height: 1.4; color: var(--muted); max-width: 200px; }
     .stat-sub { font-size: 12px; color: var(--accent); font-weight: 500; }
 
     /* ── Figures ── */
@@ -204,8 +222,8 @@
     }
     .comp-card-name { font-weight: 600; font-size: 14.5px; color: var(--ink); }
     .comp-card-publisher { font-size: 12px; color: var(--muted); }
-    .comp-card-pros { font-size: 13px; line-height: 1.6; }
-    .comp-card-cons { font-size: 13px; line-height: 1.6; }
+    .comp-card-pros { font-size: 14px; line-height: 1.6; }
+    .comp-card-cons { font-size: 14px; line-height: 1.6; }
     .comp-card-pros::before { content: "+ "; color: var(--good); font-weight: 700; }
     .comp-card-cons::before { content: "− "; color: var(--warn); font-weight: 700; }
 
@@ -230,7 +248,7 @@
     .interviewee-org { font-size: 12px; color: var(--muted); line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
     .interviewee-divider { height: 1px; background: var(--hairline); }
     .interviewee-insights { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .interviewee-insights li { display: flex; gap: 10px; font-size: 13px; line-height: 1.6; color: #444; }
+    .interviewee-insights li { display: flex; gap: 10px; font-size: 14px; line-height: 1.6; color: #444; }
     .interviewee-insights li::before { content: "→"; color: var(--accent); font-weight: 600; flex-shrink: 0; font-size: 13px; }
 
     /* ── Concept grid ── */
@@ -240,7 +258,7 @@
     .concept .c-name { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
     .concept .c-desc { font-size: 12.5px; line-height: 1.55; color: var(--muted); }
     .concept.winner .c-desc { color: rgba(255,255,253,0.7); }
-    .concept .c-badge { position: absolute; top: -10px; left: 16px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
+    .concept .c-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
 
     /* ── Key fixes ── */
     .keyfix { background: var(--warn-soft); border-radius: 14px; padding: 22px 26px; margin-top: 24px; }
@@ -256,7 +274,7 @@
     .theme .t-name { font-weight: 600; font-size: 14.5px; }
     .theme .t-tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
     .theme.warn .t-tag { color: var(--warn); }
-    .theme p { font-size: 14px; line-height: 1.65; color: #444; margin: 0; }
+    .theme p { font-size: 15px; line-height: 1.65; color: #444; margin: 0; }
 
     /* ── Affinity ── */
     .affinity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
@@ -265,33 +283,36 @@
     .affinity.neutral { border-top-color: var(--muted); }
     .affinity .a-label { font-weight: 600; font-size: 13.5px; margin-bottom: 12px; }
     .affinity ul { list-style: none; display: grid; gap: 8px; }
-    .affinity li { font-size: 12.5px; line-height: 1.55; color: #555; padding-left: 12px; position: relative; }
+    .affinity li { font-size: 14px; line-height: 1.55; color: #555; padding-left: 12px; position: relative; }
     .affinity li::before { content: "·"; position: absolute; left: 0; color: var(--ink); font-weight: 700; }
 
     /* ── Insights ── */
     .insight { padding: 20px 22px; border: 1px solid var(--hairline); border-left: 3px solid var(--ink); border-radius: 0 12px 12px 0; background: #fff; margin-bottom: 14px; }
     .insight.warn { border-left-color: var(--warn); }
     .insight h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 8px; line-height: 1.45; }
-    .insight p { font-size: 13.5px; line-height: 1.7; color: #555; margin: 0; }
+    .insight p { font-size: 15px; line-height: 1.7; color: #555; margin: 0; }
     .insight .i-num { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
 
     /* ── Changes ── */
-    .change-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .change { background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
-    .change-num { min-width: 22px; height: 22px; background: var(--accent); border-radius: 999px; color: #fff; font-size: 11px; font-weight: 600; display: grid; place-items: center; flex-shrink: 0; }
-    .change-name { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
-    .change-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    .change-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 65%; margin: 0 auto; }
+    .change { border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: center; }
+    .change-num { min-width: 34px; height: 34px; background: var(--accent); border-radius: 999px; color: #fff; font-size: 16px; font-weight: 600; display: grid; place-items: center; flex-shrink: 0; }
+    .change-name { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .change-desc { font-size: 15px; color: var(--muted); line-height: 1.55; }
 
     /* ── Outcomes ── */
     .outcomes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
     .outcome { padding: 22px 20px; border: 1px solid var(--hairline); border-radius: 12px; background: #fff; }
     .outcome .o-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
-    .outcome .o-desc { font-size: 13px; color: #555; line-height: 1.6; }
+    .outcome .o-desc { font-size: 14px; color: #555; line-height: 1.6; }
 
     .endmark { margin-top: 40px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: left; }
     .endmark::before { content: "❋"; display: inline-block; margin-right: 8px; color: var(--accent); font-size: 13px; transform: translateY(1px); }
 
     /* ── Responsive ── */
+    @media (max-width: 1180px) {
+      .sidebar { display: none; }
+    }
     @media (max-width: 900px) {
       :root { --pad-x: 28px; }
       .meta-strip { grid-template-columns: 1fr 1fr; }
@@ -309,6 +330,12 @@
   </style>
 </head>
 <body>
+
+  <!-- Back button -->
+  <a class="back-btn" href="index.html" aria-label="Back to portfolio">
+    <span class="back-btn-arrow">←</span>
+    <span>Back</span>
+  </a>
 
   <!-- Floating progress + TOC pill -->
   <nav class="nav-pill" id="navPill" aria-label="Section index">
@@ -330,12 +357,21 @@
 
   <div class="page">
 
+    <aside class="sidebar">
+      <div class="sidebar-label">Contents</div>
+      <ol class="sidebar-toc" id="sidebarTocList"></ol>
+    </aside>
+
     <article class="article">
 
       <!-- HERO -->
       <header class="hero" id="hero">
-        <div class="hero-eyebrow">UX Research · Game Design · EdTech · 2024</div>
         <h1 class="hero-title">Energy Ave.</h1>
+        <div class="hero-tags">
+          <span class="tag">UX Research</span>
+          <span class="tag">Game Design</span>
+          <span class="tag">EdTech</span>
+        </div>
         <p class="hero-dek">Designing a gamified energy conservation experience for PlanetFlip — research-backed, fully playable, and built in 10 weeks.</p>
       </header>
 
@@ -357,13 +393,15 @@
       <section class="s reveal" id="overview" data-toc="The Problem">
         <h2 class="section-title">01 — The Problem</h2>
         <div class="section-sub">The gap between awareness and action is climate's hardest challenge.</div>
-        <div class="ui-card">
-          <div class="ui-card-label">Challenge</div>
-          <p style="margin-top:0;">Sustainability education leans on information delivery, not interactive engagement. Younger users already <em>know</em> it matters — they need a tool that turns awareness into habit.</p>
-        </div>
-        <div class="ui-card" style="margin-top:14px;">
-          <div class="ui-card-label">Our Approach</div>
-          <p style="margin-top:0;">PlanetFlip had concepts but nothing built or validated. We designed a fully playable, research-backed game from scratch: educationally grounded, usable without instruction, and engaging enough to hold attention.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:var(--gap-block);">
+          <div class="ui-card">
+            <div class="ui-card-label">Challenge</div>
+            <p style="margin-top:52px;">Sustainability education leans on information delivery, not interactive engagement. Younger users already <em>know</em> it matters — they need a tool that turns awareness into habit.</p>
+          </div>
+          <div class="ui-card">
+            <div class="ui-card-label">Our Approach</div>
+            <p style="margin-top:52px;">PlanetFlip had concepts but nothing built or validated. We designed a fully playable, research-backed game from scratch: educationally grounded, usable without instruction, and engaging enough to hold attention.</p>
+          </div>
         </div>
 
         <div class="pullquote">
@@ -421,10 +459,44 @@
       <section class="s reveal" id="methodology" data-toc="Methods">
         <h2 class="section-title">03 — Methodology</h2>
         <div class="section-sub">A mixed-methods approach across four research phases — behavioral and attitudinal.</div>
-        <div class="ui-card"><div class="ui-card-label">Phase 01 · Competitive Analysis</div><p style="margin-top:0;">Audited 4 gamified sustainability tools to map the landscape and identify the gap.</p></div>
-        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Phase 02 · Stakeholder Interviews</div><p style="margin-top:0;">PlanetFlip, SD Climate Collaborative &amp; Cabrillo NPS — 3 orgs, 3 perspectives.</p></div>
-        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Phase 03 · Formative Testing</div><p style="margin-top:0;">Affordance test + cognitive walkthrough on static wireframes before any code was written.</p></div>
-        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Phase 04 · Summative Testing</div><p style="margin-top:0;">Full gameplay observation + 7-question post-task attitudinal survey.</p></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:var(--gap-block);">
+          <div class="ui-card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+              <div style="width:40px;height:40px;flex-shrink:0;background:var(--accent-soft);border-radius:999px;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>
+              </div>
+              <div class="ui-card-label" style="margin:0;">Competitive Analysis</div>
+            </div>
+            <p style="margin-top:0;">Audited 4 gamified sustainability tools to map the landscape and identify the gap.</p>
+          </div>
+          <div class="ui-card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+              <div style="width:40px;height:40px;flex-shrink:0;background:var(--accent-soft);border-radius:999px;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg>
+              </div>
+              <div class="ui-card-label" style="margin:0;">Stakeholder Interviews</div>
+            </div>
+            <p style="margin-top:0;">PlanetFlip, SD Climate Collaborative &amp; Cabrillo NPS — 3 orgs, 3 perspectives.</p>
+          </div>
+          <div class="ui-card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+              <div style="width:40px;height:40px;flex-shrink:0;background:var(--accent-soft);border-radius:999px;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 17h6"/><path d="M9 13h6"/></svg>
+              </div>
+              <div class="ui-card-label" style="margin:0;">Formative Testing</div>
+            </div>
+            <p style="margin-top:0;">Affordance test + cognitive walkthrough on static wireframes before any code was written.</p>
+          </div>
+          <div class="ui-card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+              <div style="width:40px;height:40px;flex-shrink:0;background:var(--accent-soft);border-radius:999px;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12" stroke-width="2.5"/><line x1="18" x2="18.01" y1="10" y2="10" stroke-width="2.5"/></svg>
+              </div>
+              <div class="ui-card-label" style="margin:0;">Summative Testing</div>
+            </div>
+            <p style="margin-top:0;">Full gameplay observation + 7-question post-task attitudinal survey.</p>
+          </div>
+        </div>
       </section>
 
       <!-- SECTION 04: Competitive Analysis — 2×2 card grid -->
@@ -458,7 +530,6 @@
           </div>
 
           <div class="comp-card">
-            <div class="comp-card-thumb-empty">No screenshot</div>
             <div class="comp-card-body">
               <div>
                 <div class="comp-card-name">Fidget Power</div>
@@ -470,7 +541,6 @@
           </div>
 
           <div class="comp-card">
-            <div class="comp-card-thumb-empty">No screenshot</div>
             <div class="comp-card-body">
               <div>
                 <div class="comp-card-name">Financial Freedom</div>
@@ -493,12 +563,10 @@
 
         <div class="interviewee-grid">
           <div class="interviewee-card">
-            <div class="interviewee-header">
+            <div class="interviewee-header" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
               <div class="interviewee-name">Ron Kagan</div>
-              <div class="interviewee-org">
-                <span>PlanetFlip — Founder</span>
-                <span class="tag">Zoom</span>
-              </div>
+              <div class="interviewee-org"><span>PlanetFlip — Founder</span></div>
             </div>
             <div class="interviewee-divider"></div>
             <ul class="interviewee-insights">
@@ -508,12 +576,10 @@
           </div>
 
           <div class="interviewee-card">
-            <div class="interviewee-header">
+            <div class="interviewee-header" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
               <div class="interviewee-name">A-Bel Gong</div>
-              <div class="interviewee-org">
-                <span>SD Climate Collaborative</span>
-                <span class="tag">In-person</span>
-              </div>
+              <div class="interviewee-org"><span>SD Climate Collaborative</span></div>
             </div>
             <div class="interviewee-divider"></div>
             <ul class="interviewee-insights">
@@ -523,12 +589,10 @@
           </div>
 
           <div class="interviewee-card">
-            <div class="interviewee-header">
-              <div class="interviewee-name">NPS Staff</div>
-              <div class="interviewee-org">
-                <span>National Park Service</span>
-                <span class="tag">In-person</span>
-              </div>
+            <div class="interviewee-header" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1"/><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M17 10h2a2 2 0 0 1 2 2v1"/><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M3 13v-1a2 2 0 0 1 2 -2h2"/></svg>
+              <div class="interviewee-name">Cabrillo Staff</div>
+              <div class="interviewee-org"><span>National Park Service</span></div>
             </div>
             <div class="interviewee-divider"></div>
             <ul class="interviewee-insights">
@@ -538,7 +602,7 @@
           </div>
         </div>
 
-        <h3 class="subsection">Concept Feedback — Capture Grid</h3>
+        <h3 class="subsection">Concept Feedback</h3>
         <table class="data">
           <thead><tr><th>Category</th><th>What Stakeholders Said</th></tr></thead>
           <tbody>
@@ -566,22 +630,31 @@
         </div>
       </section>
 
-      <!-- SECTION 07: Round 1 Formative Testing -->
-      <section class="s reveal" id="round1" data-toc="Round 1">
-        <h2 class="section-title">07 — Round 1 · Formative Testing</h2>
+      <!-- SECTION 07: Study 1 Formative Testing -->
+      <section class="s reveal" id="round1" data-toc="Study 1">
+        <h2 class="section-title">07 — Study 1 · Formative Testing</h2>
         <div class="section-sub">Affordance test + cognitive walkthrough — before a single line of code was written.</div>
-        <div class="ui-card"><div class="ui-card-label">Method</div><p style="margin-top:0;">A <strong>clickability/affordance test</strong> (what looks interactive?) plus a <strong>cognitive walkthrough</strong> of static wireframes (can users reconstruct the logic unaided?).</p></div>
-        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Why At Wireframe Stage</div><p style="margin-top:0;">Catching affordance problems pre-build is far cheaper than post-build. We validated the core interaction model before committing engineering time.</p></div>
+        <div style="margin-top:var(--gap-block);">
+          <p style="font-weight:600;margin-bottom:0;">Method</p>
+          <div style="display:flex;justify-content:center;gap:140px;margin-top:24px;margin-bottom:24px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div style="width:160px;height:160px;background:var(--accent-soft);border-radius:30%;display:flex;align-items:center;justify-content:center;">
+                <img src="https://static.vecteezy.com/system/resources/previews/042/590/841/non_2x/affordance-ux-ui-design-line-icon-illustration-vector.jpg" width="105" height="105" style="object-fit:contain;mix-blend-mode:multiply;" alt="Affordance Test" />
+              </div>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);">Affordance Test</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div style="width:160px;height:160px;background:var(--accent-soft);border-radius:30%;display:flex;align-items:center;justify-content:center;">
+                <img src="https://static.thenounproject.com/png/229115-200.png" width="105" height="105" style="filter:brightness(0);" alt="Cognitive Walkthrough" />
+              </div>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);">Cognitive Walkthrough</span>
+            </div>
+          </div>
+          <p style="color:var(--muted);margin:0;">A <strong style="color:var(--ink);">clickability/affordance test</strong> (what looks interactive?) plus a <strong style="color:var(--ink);">cognitive walkthrough</strong> of static wireframes (can users reconstruct the logic unaided?). Catching affordance problems pre-build is far cheaper than post-build — we validated the core interaction model before committing any engineering time.</p>
+        </div>
 
-        <h3 class="subsection">Participants</h3>
-        <table class="data">
-          <thead><tr><th>Name</th><th>Background</th><th>Gaming</th></tr></thead>
-          <tbody>
-            <tr><td>Cody Trinh, 21</td><td>UCSD 4th Year, Human Biology</td><td><span class="tag">Experienced</span></td></tr>
-            <tr><td>Paul Manchala, 21</td><td>UCSD 4th Year, Aerospace Engineering</td><td><span class="tag">Casual</span></td></tr>
-            <tr><td>Preesha Shah, 13 <span class="tag green">Target demo</span></td><td>8th Grader</td><td><span class="tag">Casual</span></td></tr>
-          </tbody>
-        </table>
+        <h3 class="subsection">Participants (n=3)</h3>
+        <p style="color:var(--muted);margin-top:0;">Two UCSD seniors and one 13-year-old 8th grader.</p>
 
         <h3 class="subsection">Part 1 — Affordance Test Results</h3>
         <p style="font-size:14px;color:var(--muted);">Participants circled elements they believed were interactive. Coded as hit, miss, or false positive.</p>
@@ -589,44 +662,12 @@
           <figure><img src="uploads/ea-bedroom-wireframe.png" alt="Bedroom lo-fi wireframe" /><figcaption>Bedroom wireframe — labeled elements shown to participants.</figcaption></figure>
           <figure><img src="uploads/ea-bathroom-wireframe.png" alt="Bathroom lo-fi wireframe" /><figcaption>Bathroom wireframe — same affordance test, second room.</figcaption></figure>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-          <div>
-            <div class="ui-card-label">🛏 Bedroom</div>
-            <table class="data" style="font-size:12.5px;">
-              <thead><tr><th>Element</th><th>Inter.</th><th>Cody</th><th>Paul</th></tr></thead>
-              <tbody>
-                <tr><td>PC / Laptop</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Lamp</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Light switch</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Thermostat</td><td><span class="tag green">Yes</span></td><td><span class="miss">✗ Miss</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Window</td><td><span class="tag green">Yes</span></td><td><span class="miss">✗ Miss</span></td><td><span class="miss">✗ Miss</span></td></tr>
-                <tr><td>Bed</td><td><span class="tag">No</span></td><td><span class="miss">✗ False+</span></td><td><span class="miss">✗ False+</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div>
-            <div class="ui-card-label">🚿 Bathroom</div>
-            <table class="data" style="font-size:12.5px;">
-              <thead><tr><th>Element</th><th>Inter.</th><th>Cody</th><th>Paul</th></tr></thead>
-              <tbody>
-                <tr><td>Blow dryer</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Light switch</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Outlet</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Shower faucet</td><td><span class="tag green">Yes</span></td><td><span class="hit">✓ Hit</span></td><td><span class="none">—</span></td></tr>
-                <tr><td>Sink</td><td><span class="tag green">Yes</span></td><td><span class="miss">✗ Miss</span></td><td><span class="hit">✓ Hit</span></td></tr>
-                <tr><td>Toilet</td><td><span class="tag">No</span></td><td><span class="miss">✗ False+</span></td><td><span class="none">—</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
         <h3 class="subsection">Part 2 — Cognitive Walkthrough</h3>
         <figure class="fig"><img src="uploads/ea-flow-game.png" alt="Lo-fi flow diagram — title to component card" /><figcaption>Game flow diagram shown to participants — title → room → click → component card.</figcaption></figure>
         <figure class="fig"><img src="uploads/ea-flow-next.png" alt="Lo-fi flow diagram — next button branching" /><figcaption>Next-button flow — branches to congrats screen or returns to the room.</figcaption></figure>
 
-        <div class="ui-card"><div class="ui-card-label">Cody</div><p style="margin-top:0;">Quickly reconstructed game logic. Could articulate what triggered each screen transition without prompting.</p></div>
-        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Paul</div><p style="margin-top:0;">"Aha moment" — initially flagged the bed as interactive, then self-corrected: only electricity-conducting items should be clickable. Validated the game's internal logic.</p></div>
-        <div class="ui-card" style="margin-top:12px;"><div class="ui-card-label">Preesha</div><p style="margin-top:0;">Perceived it as a "storyline through a household." Correctly predicted pop-ups on click. Called it "super cute" — specifically praised the 8-bit aesthetics.</p></div>
+        <p style="color:var(--muted);margin-top:var(--gap-block);">All three participants reconstructed the game's logic without instruction. Cody moved through the flow fluently; Paul had a self-correcting "aha moment" that actually confirmed the game's internal logic — only electricity-conducting items should be clickable. Preesha, the closest to the target age group, read it as a "storyline through a household," correctly predicted the pop-ups, and praised the 8-bit aesthetic unprompted.</p>
 
         <div class="keyfix">
           <div class="keyfix-label">Key Fixes Flagged</div>
@@ -639,34 +680,51 @@
         </div>
       </section>
 
-      <!-- SECTION 08: Round 2 Summative Testing -->
-      <section class="s reveal" id="round2" data-toc="Round 2">
-        <h2 class="section-title">08 — Round 2 · Summative Testing</h2>
+      <!-- SECTION 08: Study 2 Summative Testing -->
+      <section class="s reveal" id="round2" data-toc="Study 2">
+        <h2 class="section-title">08 — Study 2 · Summative Testing</h2>
         <div class="section-sub">Full gameplay + post-task survey. Did the finished product meet our success metrics?</div>
-        <div class="ui-card"><div class="ui-card-label">Method</div><p style="margin-top:0;">Participants played the full game, then took a 7-question post-task survey. Behavioral data + self-reported experience.</p></div>
-        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Why This Method</div><p style="margin-top:0;">Observation shows what users <em>do</em>. Surveys show how they <em>feel</em>. For a voluntary, intrinsically motivated product, both matter.</p></div>
+        <div style="margin-top:var(--gap-block);">
+          <p style="font-weight:600;margin-bottom:0;">Method</p>
+          <div style="display:flex;justify-content:center;gap:140px;margin-top:24px;margin-bottom:24px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div style="width:160px;height:160px;background:var(--accent-soft);border-radius:30%;display:flex;align-items:center;justify-content:center;">
+                <svg width="105" height="105" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg>
+              </div>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);">Gameplay Observation</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+              <div style="width:160px;height:160px;background:var(--accent-soft);border-radius:30%;display:flex;align-items:center;justify-content:center;">
+                <svg width="105" height="105" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"/><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+              </div>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);">Post-task Survey</span>
+            </div>
+          </div>
+          <p style="color:var(--muted);margin:0;">Participants played the full game, then took a 7-question post-task survey. Behavioral data + self-reported experience. Observation shows what users <em>do</em>; surveys show how they <em>feel</em> — for a voluntary, intrinsically motivated product, both matter.</p>
+        </div>
 
         <h3 class="subsection">Participants (n=7)</h3>
-        <table class="data">
-          <thead><tr><th>Participant</th><th>Background</th><th>Gaming</th></tr></thead>
-          <tbody>
-            <tr><td>Ron Kagan</td><td>PlanetFlip Founder</td><td><span class="tag">—</span></td></tr>
-            <tr><td>Navaeh Gutierrez</td><td>UCSD 4th Year, Biochemistry</td><td><span class="tag">Little to none</span></td></tr>
-            <tr><td>Litzy Perea</td><td>UCSD, Linguistics &amp; Cognition</td><td><span class="tag">Little</span></td></tr>
-            <tr><td>Holda Ashmina</td><td>UCSD, Psychology</td><td><span class="tag">Little</span></td></tr>
-            <tr><td>Amina</td><td>UCSD, Cognitive Science</td><td><span class="tag">Average</span></td></tr>
-            <tr><td>Daniel</td><td>UCSD, Computer Science</td><td><span class="tag">Above average</span></td></tr>
-            <tr><td>Alessandra</td><td>UCSD, Pre-Dental</td><td><span class="tag">Above average</span></td></tr>
-          </tbody>
-        </table>
+        <p style="color:var(--muted);margin-top:0;">Seven college-aged participants across UCSD disciplines plus client Ron Kagan, with gaming experience ranging from little to none to above average.</p>
 
         <h3 class="subsection">Results vs. Success Metrics</h3>
-        <div class="stat-grid">
-          <div class="stat"><div class="stat-num">90%</div><div class="stat-cap">Task Success Rate</div><div class="stat-sub">Target: 85% ✓</div></div>
-          <div class="stat"><div class="stat-num">80%</div><div class="stat-cap">Knowledge Improvement</div><div class="stat-sub">Target: 75% ✓</div></div>
-          <div class="stat"><div class="stat-num">12 min</div><div class="stat-cap">Avg. Session Length</div><div class="stat-sub">Target: 10 min ✓</div></div>
-          <div class="stat"><div class="stat-num">100%</div><div class="stat-cap">Said goal was clear</div></div>
-          <div class="stat"><div class="stat-num">100%</div><div class="stat-cap">Praised visuals &amp; music</div></div>
+        <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);gap:0;">
+          <div class="stat" style="padding:24px;border-right:1px solid var(--hairline-strong);border-bottom:1px solid var(--hairline-strong);"><div class="stat-num">90%</div><div class="stat-cap">Task Success Rate</div><span style="display:flex;gap:0;margin-top:16px;justify-content:center;"><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#a8c4e2;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:var(--accent-soft);border-radius:40%;flex-shrink:0;"></span></span><div class="stat-sub" style="margin-top:8px;">Target: 85% ✓</div></div>
+          <div class="stat" style="padding:24px;border-bottom:1px solid var(--hairline-strong);"><div class="stat-num">80%</div><div class="stat-cap">Knowledge Improvement</div><span style="display:flex;gap:0;margin-top:16px;justify-content:center;"><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#7ab896;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:var(--accent-soft);border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:var(--accent-soft);border-radius:40%;flex-shrink:0;"></span></span><div class="stat-sub" style="margin-top:8px;">Target: 75% ✓</div></div>
+          <div class="stat" style="padding:24px;border-right:1px solid var(--hairline-strong);"><div class="stat-num">100%</div><div class="stat-cap">Said goal was clear</div><span style="display:flex;gap:0;margin-top:16px;justify-content:center;"><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f7b27a;border-radius:40%;flex-shrink:0;"></span></span><div class="stat-sub" style="margin-top:8px;">Unanimous</div></div>
+          <div class="stat" style="padding:24px;"><div class="stat-num">100%</div><div class="stat-cap">Praised visuals &amp; music</div><span style="display:flex;gap:0;margin-top:16px;justify-content:center;"><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span><span style="width:34px;height:34px;background:#f4b8d0;border-radius:40%;flex-shrink:0;"></span></span><div class="stat-sub" style="margin-top:8px;">Unanimous</div></div>
+        </div>
+        <div class="stat-grid" style="grid-template-columns:1fr 3fr;border-top:none;margin-top:0;padding:56px 0;">
+          <div class="stat" style="padding-left:24px;"><div class="stat-num">12 min</div><div class="stat-cap">Avg. Session Length</div></div>
+          <div style="display:flex;align-items:center;padding:0;justify-content:flex-end;">
+            <div style="position:relative;width:90%;height:3px;background:var(--ink);transform:translateY(12px);">
+              <div style="position:absolute;left:0;top:-68px;width:80%;height:54px;background:#6B7A8D;border-radius:6px;"></div>
+              <div style="position:absolute;left:-4px;top:-3.5px;width:10px;height:10px;background:var(--ink);border-radius:50%;"></div>
+              <div style="position:absolute;left:calc(33.33% - 2.5px);top:-5px;width:4px;height:13px;background:var(--ink);border-radius:3px;"></div>
+              <div style="position:absolute;left:calc(66.67% - 2.5px);top:-5px;width:4px;height:13px;background:var(--ink);border-radius:3px;"></div>
+              <div style="position:absolute;right:-4px;top:-3.5px;width:10px;height:10px;background:var(--ink);border-radius:50%;"></div>
+              <div style="position:absolute;left:calc(66.67% - 35px);top:10px;font-size:11px;color:var(--muted);white-space:nowrap;font-weight:500;">Target: 10 min</div>
+            </div>
+          </div>
         </div>
 
         <h3 class="subsection">Qualitative Themes</h3>
@@ -712,22 +770,19 @@
       <section class="s reveal" id="impact" data-toc="Impact">
         <h2 class="section-title">11 — Impact on Design</h2>
         <div class="section-sub">How research directly — and traceably — changed what got built.</div>
-        <div class="ui-card"><div class="ui-card-label">Phase 1 · Concept Selection · Research → Decision</div><p style="margin-top:0;">Competitive analysis + stakeholder interviews ruled out three of four concepts. Without the weighted matrix, the team might have selected Trash Dash — higher feasibility, but lower on dimensions that mattered most.</p></div>
-        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Phase 2 · Wireframe to Build · Research → Engineering</div><p style="margin-top:0;">Round 1 identified three elements needing stronger visual signals before development, saving significant rework. The cognitive walkthrough confirmed no tutorial was needed — a major scope reduction.</p></div>
-        <div class="ui-card" style="margin-top:14px;"><div class="ui-card-label">Phase 3 · Build to Ship · Research → Iteration</div><p style="margin-top:0;">Five specific product changes mapped directly to Round 2 findings — each to a specific participant observation or survey response, not guesswork.</p></div>
 
-        <h3 class="subsection">5 Specific Changes From Testing</h3>
-        <div class="gallery-2">
-          <figure><img src="uploads/ea-pc-card.png" alt="Final hi-fi Personal Computer info card" /><figcaption>Final info card — point value made visible, energy bar shows running total.</figcaption></figure>
-          <figure><img src="uploads/ea-energy-bar.png" alt="Energy bar fill states from empty to full" /><figcaption>Energy bar progression — five fill states give cumulative feedback.</figcaption></figure>
-        </div>
-        <ul class="change-list">
+
+        <ul class="change-list" style="grid-template-columns:1fr;margin-top:28px;">
           <li class="change"><span class="change-num">1</span><span><div class="change-name">Point Visibility</div><div class="change-desc">Point values made numerically visible on each interaction card.</div></span></li>
           <li class="change"><span class="change-num">2</span><span><div class="change-name">Click Animation</div><div class="change-desc">Items flash visually on click — confirms the interaction registered.</div></span></li>
           <li class="change"><span class="change-num">3</span><span><div class="change-name">Audio Feedback</div><div class="change-desc">Sound cues added to item interactions for tactile feel.</div></span></li>
           <li class="change"><span class="change-num">4</span><span><div class="change-name">Energy Bar Fix</div><div class="change-desc">Energy bar updated to show running total, not just points just added.</div></span></li>
           <li class="change"><span class="change-num">5</span><span><div class="change-name">Back Button Clarity</div><div class="change-desc">Back button behavior made more visually explicit in the UI.</div></span></li>
         </ul>
+        <div class="gallery-2" style="max-width:85%;margin:56px auto 0;gap:120px;align-items:center;">
+          <figure><img src="uploads/ea-pc-card.png" alt="Final hi-fi Personal Computer info card" style="aspect-ratio:auto;object-fit:contain;height:auto;" /><figcaption>Final info card — point value made visible, energy bar shows running total.</figcaption></figure>
+          <figure><img src="uploads/ea-energy-bar.png" alt="Energy bar fill states from empty to full" style="aspect-ratio:auto;object-fit:contain;height:auto;" /><figcaption>Energy bar progression — five fill states give cumulative feedback.</figcaption></figure>
+        </div>
 
         <h3 class="subsection">Broader Outcomes</h3>
         <div class="outcomes">
@@ -741,15 +796,17 @@
       <section class="s reveal" id="reflection" data-toc="Reflection">
         <h2 class="section-title">12 — Reflection</h2>
         <figure class="fig"><img src="uploads/ea-gameplay-irl.jpg" alt="Energy Ave being played on a laptop" /><figcaption>Energy Ave in the wild — a participant playing the final build.</figcaption></figure>
-        <div class="ui-card">
-          <div class="ui-card-label">What Went Well</div>
-          <p style="margin-top:0;">The two-round structure was the most valuable methodological choice. Splitting formative (wireframes) from summative (build) caught affordance problems before they were built in.</p>
-          <p>Mixed methods — observation + survey — gave a richer picture than either alone. The gap between completion and satisfaction was where the most interesting design work lived.</p>
-        </div>
-        <div class="ui-card" style="margin-top:14px;">
-          <div class="ui-card-label" style="color:var(--warn);">What I'd Do Differently</div>
-          <p style="margin-top:0;">The biggest gap was participant representation — both rounds skewed to UCSD undergrads. A round with 8–12 year olds would've surfaced different friction: reading level, attention span, comprehension.</p>
-          <p>I'd also push for a longitudinal component — a follow-up 1–2 weeks post-play to measure whether energy-saving behaviors stuck at home. The more important, still-unanswered question.</p>
+        <div style="display:flex;flex-direction:column;gap:28px;margin-top:var(--gap-block);">
+          <div>
+            <p style="font-weight:600;margin-bottom:6px;">What Went Well</p>
+            <p style="color:var(--muted);margin:0;">The two-study structure was the most valuable methodological choice. Splitting formative (wireframes) from summative (build) caught affordance problems before they were built in.</p>
+            <p style="color:var(--muted);margin-top:12px;">Mixed methods — observation + survey — gave a richer picture than either alone. The gap between completion and satisfaction was where the most interesting design work lived.</p>
+          </div>
+          <div>
+            <p style="font-weight:600;margin-bottom:6px;">What I'd Do Differently</p>
+            <p style="color:var(--muted);margin:0;">The biggest gap was participant representation — both studies skewed to UCSD undergrads. A study with 8–12 year olds would've surfaced different friction: reading level, attention span, comprehension.</p>
+            <p style="color:var(--muted);margin-top:12px;">I'd also push for a longitudinal component — a follow-up 1–2 weeks post-play to measure whether energy-saving behaviors stuck at home. The more important, still-unanswered question.</p>
+          </div>
         </div>
         <p class="endmark">End of case study · Energy Ave / PlanetFlip · 2025</p>
       </section>
@@ -766,14 +823,17 @@
     // Build TOC from sections
     const sections = $$('section.s[data-toc]');
     const tocList = $('#tocList');
+    const sidebarTocList = $('#sidebarTocList');
     sections.forEach((sec) => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#' + sec.id;
-      a.textContent = sec.dataset.toc;
-      a.dataset.target = sec.id;
-      li.appendChild(a);
-      tocList.appendChild(li);
+      [tocList, sidebarTocList].forEach((list) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + sec.id;
+        a.textContent = sec.dataset.toc;
+        a.dataset.target = sec.id;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
     });
 
     // Pill open/close
@@ -818,7 +878,7 @@
         }
         if (current) {
           navPillSection.textContent = current.dataset.toc;
-          $$('#tocList a').forEach((a) => {
+          $$('#tocList a, #sidebarTocList a').forEach((a) => {
             a.dataset.current = a.dataset.target === current.id ? 'true' : 'false';
           });
         }
