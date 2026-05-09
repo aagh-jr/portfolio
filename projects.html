@@ -44,7 +44,7 @@
     }
     .cards-stack {
       width: 100%;
-      max-width: 1180px;
+      max-width: 960px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -104,11 +104,11 @@
     .corner-nav {
       position: fixed;
       top: 48px;
-      left: max(48px, calc((100vw - 1280px) / 2 + 48px));
+      left: max(-12px, calc((100vw - 1280px) / 2 - 12px));
       z-index: 100;
     }
     .corner-nav a {
-      font-size: 40px;
+      font-size: 34px;
       font-weight: 800;
       color: #1c1c18;
       letter-spacing: -0.016em;
@@ -118,7 +118,7 @@
       transition: color 0.15s;
     }
     .corner-nav a:hover { color: #71717a; }
-    .corner-nav .symbol { font-size: 44px; color: #000; }
+    .corner-nav .symbol { font-size: 38px; color: #000; }
 
     /* ── Under construction badge ── */
     .under-construction {
@@ -140,7 +140,7 @@
       .project-card { flex-direction: column; min-height: auto; }
       .project-image { min-height: 200px; }
       .project-title { font-size: 22px; }
-      .corner-nav { left: 20px; top: 20px; }
+      .corner-nav { left: -40px; top: 20px; }
     }
   </style>
 </head>
