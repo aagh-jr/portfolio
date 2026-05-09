@@ -7,235 +7,164 @@
   <title>Projects — Abel Angel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       background: #f0f0f3;
-      font-family: 'Manrope', sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
     a { color: inherit; text-decoration: none; }
-    a.project-item { color: inherit; }
 
-    /* ── NAV ── */
-    .nav-pill {
-      position: fixed; top: 16px; right: 48px; z-index: 200;
-      display: flex; align-items: center; gap: 16px; padding: 8px;
-    }
-    .nav-btn {
-      width: 40px; height: 40px; border-radius: 9999px;
-      display: flex; align-items: center; justify-content: center;
-      transition: box-shadow 0.15s; cursor: pointer;
-    }
-    .nav-btn.active { box-shadow: 0 0 0 2px rgba(0,0,0,0.22); }
-    .nav-btn svg { display: block; }
-    .nav-sep { display: none; }
+    /* ── Page enter / leave fades ── */
+    body { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+    body.page-entering { opacity: 0; transform: translateY(8px); }
+    body.page-leaving  { opacity: 0; transform: translateY(-8px); }
 
-    /* ── LAYOUT ── */
-    .page-wrap { max-width: 1280px; margin: 0 auto; padding: 0 40px 0 20px; }
-    .main {
-      max-width: 1200px;
-      padding: 150px 48px 96px 24px;
-      display: flex; flex-direction: column; gap: 40px;
+    /* ── Slide-up entrance for the card stack ── */
+    @keyframes cardsSlideUp {
+      from { transform: translateY(100vh); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+    .cards-stack {
+      animation: cardsSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
     }
 
-    /* ── HEADING ── */
-    .page-heading {
-      font-family: 'Manrope', sans-serif;
-      font-size: 40px; font-weight: 800; color: #a0a09a;
-      letter-spacing: -0.016em; line-height: 1.2;
-      padding-left: 28px;
+    /* ── Layout ── */
+    .page-wrap {
+      width: 100%;
+      min-height: 100vh;
+      padding: 60px 48px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
-
-    /* ── PROJECTS GRID ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .project-item {
+    .cards-stack {
+      width: 100%;
+      max-width: 1180px;
       display: flex;
       flex-direction: column;
-      gap: 0;
-      border-radius: 18px;
+      gap: 16px;
+    }
+
+    /* ── Project card ── */
+    .project-card {
+      background: #ffffff;
+      border-radius: 0;
+      border: 1.5px solid rgba(0,0,0,0.18);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      min-height: calc((100vh - 200px) * 4 / 9);
+      display: flex;
       overflow: hidden;
-      position: relative;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border: 1.5px solid rgba(255, 255, 255, 0.78);
-      box-shadow:
-        0 4px 32px rgba(0,0,0,0.08),
-        inset 0 2px 0 rgba(255,255,255,1),
-        inset 0 -1.5px 0 rgba(255,255,255,0.2),
-        inset 2px 0 0 rgba(255,255,255,0.55),
-        inset -2px 0 0 rgba(255,255,255,0.2);
       transition: transform 0.25s, box-shadow 0.25s;
     }
-    /* diagonal light sweep — top-left refraction */
-    .project-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.28) 0%,
-        rgba(255,255,255,0.06) 35%,
-        transparent 60%
-      );
-      pointer-events: none;
-      z-index: 2;
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
     }
-    /* top-edge catch light */
-    .project-item::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 12%; right: 12%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95) 30%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.95) 70%, transparent);
-      pointer-events: none;
-      z-index: 3;
+    .project-text {
+      flex: 1 1 0;
+      padding: 16px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .project-item:hover {
-      transform: translateY(-5px);
-      box-shadow:
-        0 20px 56px rgba(0,0,0,0.12),
-        inset 0 2px 0 rgba(255,255,255,1),
-        inset 0 -1.5px 0 rgba(255,255,255,0.2),
-        inset 2px 0 0 rgba(255,255,255,0.55),
-        inset -2px 0 0 rgba(255,255,255,0.2);
+    .project-meta {
+      font-size: 11px;
+      font-weight: 700;
+      color: #71717a;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
     }
-    .project-thumb, .project-title, .project-desc { position: relative; z-index: 1; }
-
-    /* thumbnail */
-    .project-thumb {
-      height: 420px;
-      border-bottom: 1px solid rgba(255,255,255,0.5);
-    }
-    .project-thumb--blue {
-      background: radial-gradient(circle at 50% 50%, rgba(171,195,233,0.75) 0%, rgba(171,195,233,0.75) 30%, #ffffff 100%);
-    }
-    .project-thumb--red {
-      background: linear-gradient(180deg, #ffffff 59.7%, rgba(247,212,205,0.86) 76.8%, rgba(248,187,180,0.75) 80.2%, rgba(249,110,100,0.75) 89.8%, rgba(249,12,0,0.75) 99.9%);
-    }
-    .project-thumb--green {
-      background: radial-gradient(circle at 50% 65%, rgba(200,220,180,0.85) 0%, rgba(220,210,170,0.55) 40%, #ffffff 100%);
-    }
-    .project-thumb--purple {
-      background: radial-gradient(circle at 50% 50%, rgba(195,185,225,0.75) 0%, rgba(210,200,235,0.45) 40%, #ffffff 100%);
-    }
-
-    /* title + description */
+    .project-meta .year { color: rgba(0,0,0,0.25); }
     .project-title {
-      font-size: 32px; font-weight: 800; color: #1c1c18;
-      letter-spacing: -0.016em; line-height: 1.2;
-      margin-bottom: 6px;
-      padding: 24px 28px 0;
+      font-size: 28px;
+      font-weight: 800;
+      color: #1c1c18;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 0;
     }
     .project-desc {
-      font-size: 15px; font-weight: 400; color: #555;
-      line-height: 1.55;
-      padding: 0 28px 28px;
+      font-size: 14px;
+      color: #71717a;
+      line-height: 1.6;
     }
+    .project-image { flex: 1 1 0; padding: 16px; }
+    .project-image-inner { width: 100%; height: 100%; }
+    .project-image-inner--ea       { background: url(uploads/ea-cover.png) center/cover no-repeat; }
+    .project-image-inner--cabrillo { background: #1b3a28 url(uploads/cabrillo-nps-logo.png) center/40% auto no-repeat; }
+    .project-image-inner--vk       { background: rgba(0,0,0,0.07); }
 
-    /* ── PAGE TRANSITIONS ── */
-    body { transition: opacity 0.3s ease-in-out; }
-    body.page-entering, body.page-leaving { opacity: 0; }
-
-    /* ── HEADING SLIDE-IN ── */
-    @keyframes slideInLeft {
-      from { transform: translateX(-28px); }
-      to   { transform: translateX(0); }
+    /* ── Bottom-right nav ── */
+    .corner-nav {
+      position: fixed;
+      bottom: 48px;
+      right: max(48px, calc((100vw - 1280px) / 2 + 48px));
+      z-index: 100;
     }
-    .page-heading { animation: slideInLeft 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+    .corner-nav a {
+      font-size: 40px;
+      font-weight: 800;
+      color: #1c1c18;
+      letter-spacing: -0.016em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.15s;
+    }
+    .corner-nav a:hover { color: #71717a; }
+    .corner-nav .symbol { font-size: 44px; color: #000; }
 
-    /* ── RESPONSIVE ── */
+    /* ── Responsive ── */
     @media (max-width: 768px) {
-      .nav-pill { right: 20px; gap: 12px; }
-      .main { padding: 120px 24px 64px; }
-      .page-heading { font-size: 28px; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-thumb { height: 220px; }
-      .project-title { font-size: 24px; }
-      .project-desc { font-size: 18px; }
+      .page-wrap { padding: 40px 20px; }
+      .project-card { flex-direction: column; min-height: auto; }
+      .project-image { min-height: 200px; }
+      .project-title { font-size: 22px; }
+      .corner-nav { right: 20px; bottom: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- FLOATING NAV PILL -->
-  <nav class="nav-pill" aria-label="Site navigation">
-    <a href="index.html" class="nav-btn" title="Home">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#71717a" stroke-width="1.5" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <!-- Projects active -->
-    <a href="projects.html" class="nav-btn active" title="Projects">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V12C14 12.83 13.33 13.5 12.5 13.5H3.5C2.67 13.5 2 12.83 2 12V4.5Z" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <a href="about.html" class="nav-btn" title="About">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="8" cy="5.5" r="2.5" stroke="#71717a" stroke-width="1.5"/>
-        <path d="M2.5 14C2.5 11.515 5.015 9.5 8 9.5C10.985 9.5 13.5 11.515 13.5 14" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </a>
-    <div class="nav-sep"></div>
-    <a href="contact.html" class="nav-btn" title="Contact">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#71717a" stroke-width="1.5"/>
-        <path d="M2 5.5L8 9.5L14 5.5" stroke="#71717a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </a>
-  </nav>
-
-  <!-- MAIN CONTENT -->
   <div class="page-wrap">
-    <main class="main">
+    <div class="cards-stack">
 
-      <h1 class="page-heading">Projects</h1>
+      <a href="Energy Ave.html" class="project-card">
+        <div class="project-text">
+          <div class="project-title">Energy Ave.</div>
+          <div class="project-desc">A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.</div>
+        </div>
+        <div class="project-image"><div class="project-image-inner project-image-inner--ea"></div></div>
+      </a>
 
-      <div class="projects-grid">
+      <a href="Project 03.html" class="project-card">
+        <div class="project-text">
+          <div class="project-title">Cabrillo NM.</div>
+          <div class="project-desc">Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs from Whale Watching to Eco-Web.</div>
+        </div>
+        <div class="project-image"><div class="project-image-inner project-image-inner--cabrillo"></div></div>
+      </a>
 
-        <!-- Project 1 — Energy Ave -->
-        <a href="Energy Ave.html" class="project-item">
-          <div class="project-thumb project-thumb--blue"></div>
-          <p class="project-title">Energy Ave.</p>
-          <p class="project-desc">A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.</p>
-        </a>
+      <a href="Project 02.html" class="project-card">
+        <div class="project-text">
+          <div class="project-title">Val's Kitchen.</div>
+          <div class="project-desc">A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.</div>
+        </div>
+        <div class="project-image"><div class="project-image-inner project-image-inner--vk"></div></div>
+      </a>
 
-        <!-- Project 2 — Val's Kitchen -->
-        <a href="Project 02.html" class="project-item">
-          <div class="project-thumb project-thumb--red"></div>
-          <p class="project-title">Val's Kitchen.</p>
-          <p class="project-desc">A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.</p>
-        </a>
-
-        <!-- Project 3 — Cabrillo National Monument -->
-        <a href="Project 03.html" class="project-item">
-          <div class="project-thumb project-thumb--green"></div>
-          <p class="project-title">Cabrillo NM.</p>
-          <p class="project-desc">Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs from Whale Watching to Eco-Web.</p>
-        </a>
-
-        <!-- Project 4 — UCSD Laundry App -->
-        <a href="Project 04.html" class="project-item">
-          <div class="project-thumb project-thumb--purple"></div>
-          <p class="project-title">UCSD Laundry App.</p>
-          <p class="project-desc">A campus laundry app designed through a participatory design lens — six-person team, COMM 124A, lo-fi to hi-fi covering machine status, lost-and-found, and reporting.</p>
-        </a>
-
-      </div>
-
-    </main>
+    </div>
   </div>
+
+  <nav class="corner-nav" aria-label="Page navigation">
+    <a href="index.html"><span class="symbol">←</span> back</a>
+  </nav>
 
   <script>
     (function() {
@@ -255,5 +184,6 @@
       });
     })();
   </script>
+
 </body>
 </html>

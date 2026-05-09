@@ -30,7 +30,7 @@ const LDProjectsCard = () => {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 18px 14px' }}>
         <span style={{ fontSize: 13, fontWeight: 700, color: '#141414', letterSpacing: '-0.01em' }}>Projects</span>
-        <a href="index.html" style={{
+        <a href="projects.html" style={{
           background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: 100,
           width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', textDecoration: 'none', flexShrink: 0,

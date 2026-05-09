@@ -23,6 +23,14 @@
     a { color: inherit; text-decoration: none; }
 
     @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideRight {
+      from { transform: translateX(0); }
+      to   { transform: translateX(101%); }
+    }
+    @keyframes slideLeftBack {
+      from { transform: translateX(101%); }
+      to   { transform: translateX(0); }
+    }
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(56px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -41,21 +49,6 @@
     body { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
     body.page-entering { opacity: 0; transform: translateY(8px); }
     body.page-leaving  { opacity: 0; transform: translateY(-8px); }
-
-    .panel-close {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      border: 1.5px solid rgba(0,0,0,0.1);
-      background: rgba(0,0,0,0.04);
-      color: #71717a;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s, color 0.15s;
-      font-family: inherit;
-      padding: 0;
-    }
-    .panel-close:hover { background: rgba(0,0,0,0.08); color: #1c1c18; }
   </style>
 </head>
 <body>
@@ -64,7 +57,61 @@
 
   <script type="text/babel">
 
+    const ABOUT_TEXT = "I'm a fourth-year at UC San Diego studying Cognitive Science with a focus in Design and Interaction. My work lives at the edge of how people think and how products should respond — I bring research methods, systems thinking, and a deep curiosity about human behavior to every project. Outside of screens you'll find me hiking with a camera or overcooking something in the kitchen.";
+
     const App = () => {
+      const [aboutOpen, setAboutOpen] = React.useState(false);
+      const [aboutClosing, setAboutClosing] = React.useState(false);
+      const [lineRects, setLineRects] = React.useState([]);
+      const textRef = React.useRef(null);
+
+      React.useLayoutEffect(() => {
+        if (!aboutOpen || !textRef.current) {
+          setLineRects([]);
+          return;
+        }
+        const range = document.createRange();
+        range.selectNodeContents(textRef.current);
+        const rects = Array.from(range.getClientRects());
+        const parentRect = textRef.current.getBoundingClientRect();
+        const lineHeightPx = parseFloat(getComputedStyle(textRef.current).lineHeight) || 30;
+        const lines = [];
+        rects.forEach(r => {
+          const top = r.top - parentRect.top;
+          const existing = lines.find(l => Math.abs(l.top - top) < lineHeightPx / 2);
+          if (existing) {
+            existing.left = Math.min(existing.left, r.left - parentRect.left);
+            existing.right = Math.max(existing.right, r.right - parentRect.left);
+            existing.height = Math.max(existing.height, r.height);
+          } else {
+            lines.push({
+              top,
+              left: r.left - parentRect.left,
+              right: r.right - parentRect.left,
+              height: r.height,
+            });
+          }
+        });
+        setLineRects(lines.map(l => ({
+          top: l.top,
+          left: l.left,
+          width: l.right - l.left,
+          height: l.height,
+        })));
+      }, [aboutOpen, aboutClosing]);
+
+      const toggleAbout = () => {
+        if (!aboutOpen && !aboutClosing) {
+          setAboutOpen(true);
+        } else if (aboutOpen && !aboutClosing) {
+          setAboutClosing(true);
+          setTimeout(() => {
+            setAboutOpen(false);
+            setAboutClosing(false);
+          }, 500);
+        }
+      };
+
       const cardBg = '#f0f0f3';
       const cardBorder = 'none';
       const cardShadow = 'none';
@@ -84,7 +131,6 @@
         <>
           {/* ── Home view: bento grid ── */}
           <div id="home-view">
-            <div id="home-content" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1 }}>
             <div className="bento-outer" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px' }}>
               <div style={{ padding: '48px 0 96px' }}>
                 <div className="bento-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
@@ -93,7 +139,8 @@
                   <div className="anim-fade" style={{
                     ...cardBase, gridColumn: '1 / -1',
                     cursor: 'default', minHeight: 260,
-                    justifyContent: 'center',
+                    justifyContent: 'flex-start',
+                    paddingTop: 40,
                     background: 'transparent', border: 'none', boxShadow: 'none',
                   }}>
                     <div style={{
@@ -103,26 +150,39 @@
                       <span style={{ color: '#000', fontWeight: 800 }}>Hey! I'm </span>
                       <span style={{ color: '#000', fontWeight: 800 }}>Abel Angel</span>
                     </div>
-                    <p className="anim-fade-d1" style={{
+                    <div className="anim-fade-d1" style={{
                       fontSize: 25, fontWeight: 700, color: '#71717a',
                       lineHeight: 1.2, maxWidth: 520,
                     }}>
-                      I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.{' '}
-                      <button onClick={() => {}} style={{
-                        width: 26, height: 26, borderRadius: '50%',
-                        background: '#1c1c18', border: 'none',
-                        color: '#fff', fontSize: 15, fontWeight: 400,
-                        cursor: 'pointer', display: 'inline-flex',
-                        alignItems: 'center', justifyContent: 'center',
-                        verticalAlign: 'middle', lineHeight: '26px',
-                        padding: 0, paddingBottom: 1,
-                        transition: 'transform 0.15s',
-                      }}
-                        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.12)'}
-                        onMouseLeave={e => e.currentTarget.style.transform = ''}
-                      >+</button>
-                    </p>
-                    <div className="anim-fade-d1" style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 28 }}>
+                      <span style={{ display: 'block' }}>I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.</span>
+                      {aboutOpen && (
+                        <span ref={textRef} style={{
+                          display: 'block',
+                          position: 'relative',
+                          opacity: lineRects.length > 0 ? 1 : 0,
+                        }}>
+                          {ABOUT_TEXT}
+                          {lineRects.map((rect, i) => {
+                            const stagger = lineRects.length > 1 ? (0.5 - 0.2) / (lineRects.length - 1) : 0;
+                            const delay = aboutClosing
+                              ? ((lineRects.length - 1 - i) * stagger).toFixed(3)
+                              : (i * stagger).toFixed(3);
+                            return (
+                              <span key={i} style={{
+                                position: 'absolute',
+                                top: rect.top, left: rect.left,
+                                width: rect.width + 2, height: rect.height,
+                                background: '#f0f0f3',
+                                animation: aboutClosing
+                                  ? `slideLeftBack 0.2s ease ${delay}s both`
+                                  : `slideRight 0.2s ease ${delay}s forwards`,
+                              }} />
+                            );
+                          })}
+                        </span>
+                      )}
+                    </div>
+                    {!aboutOpen && <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 28, animation: 'fadeIn 0.3s ease both' }}>
                       {[
                         { label: 'abel.aagh@gmail.com', href: 'mailto:abel.aagh@gmail.com' },
                         { label: 'linkedin', href: 'https://www.linkedin.com/in/abel-a-gonzalez' },
@@ -141,170 +201,46 @@
                           >{label}</a>
                         </React.Fragment>
                       ))}
-                    </div>
+                    </div>}
                   </div>
 
                 </div>
               </div>
             </div>
-            </div>
           </div>
 
-          {/* Spacer pushes folder card so only the tab + sliver shows initially */}
-          <div style={{ height: 'calc(100vh - 130px)' }} />
-
-          {/* ── Full-width bottom card (folder shape) ── */}
-          <div id="folder-card" className="anim-fade-d1" style={{ position: 'fixed', top: 'calc(100vh - 130px)', width: '100%', paddingTop: 54, zIndex: 50 }}>
-            {/* Tab */}
-            <div
-              onClick={() => {
-                const target = (window.innerHeight - 130 - window.innerHeight * 0.03) / 1.2;
-                window.scrollTo({ top: target, behavior: 'smooth' });
-              }}
-              style={{
-              position: 'absolute',
-              top: 0,
-              left: 'max(48px, calc((100vw - 1280px) / 2 + 48px))',
-              width: 320,
-              height: 56,
-              background: '#ddeeff',
-              borderRadius: '12px 12px 0 0',
-              border: '1.5px solid rgba(0,0,0,0.1)',
-              borderBottom: 'none',
-              boxShadow: 'none',
-              zIndex: 1,
-              cursor: 'pointer',
-              display: 'flex', alignItems: 'center', paddingLeft: 16,
-            }}>
-              <span style={{ fontSize: 15, fontWeight: 700, color: '#1c1c18', letterSpacing: '-0.01em' }}>Projects</span>
-            </div>
-            {/* Close button — visibility driven by the spring loop */}
-            <button
-              id="close-card"
-              className="panel-close"
-              aria-label="Close"
-              onClick={() => { if (window.closeFolderCard) window.closeFolderCard(); }}
-              style={{
-                position: 'absolute',
-                top: 12,
-                right: 32,
-                zIndex: 2,
-                borderRadius: '50%',
-                opacity: 0,
-                pointerEvents: 'none',
-              }}
-            >✕</button>
-            {/* Card body */}
-            <div style={{
-              width: '100%',
-              minHeight: '100vh',
-              background: '#ddeeff',
-              border: '1.5px solid rgba(0,0,0,0.1)',
-              borderRadius: 18,
-              padding: '60px 48px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-            }}>
-              <div id="inner-card" style={{
-                width: '100%',
-                maxWidth: 1180,
-                maxHeight: 'calc(100vh - 200px)',
-                overflowY: 'auto',
-                overscrollBehavior: 'contain',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 16,
-                opacity: 0,
-                transform: 'translateY(20px)',
-                pointerEvents: 'none',
-              }}>
-                {/* Energy Ave — featured */}
-                <a href="Energy Ave.html" style={{
-                  background: '#ffffff',
-                  borderRadius: 14,
-                  border: '1.5px solid rgba(0,0,0,0.08)',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                  minHeight: 'calc((100vh - 200px) * 4 / 9)',
-                  display: 'flex',
-                  overflow: 'hidden',
-                  textDecoration: 'none',
-                  color: 'inherit',
+          {/* ── Bottom-right nav ── */}
+          <div className="anim-fade-d1" style={{
+            position: 'fixed',
+            bottom: 48,
+            right: 'max(48px, calc((100vw - 1280px) / 2 + 48px))',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            gap: 6,
+            zIndex: 100,
+          }}>
+            {[
+              { label: 'about',    href: '#',             symbol: aboutOpen ? '−' : '+', onClick: toggleAbout },
+              { label: 'projects', href: 'projects.html', symbol: '↗' },
+            ].map(({ label, href, symbol, onClick }) => (
+              <a key={label} href={href}
+                onClick={onClick ? (e) => { e.preventDefault(); onClick(); } : undefined}
+                style={{
+                  fontSize: 40, fontWeight: 800, color: '#1c1c18',
+                  letterSpacing: '-0.016em',
+                  transition: 'color 0.15s',
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
                   cursor: 'pointer',
-                }}>
-                  <div style={{ flex: '1 1 0', padding: '40px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-                      UX Research · Game Design <span style={{ color: 'rgba(0,0,0,0.25)' }}>· 2024</span>
-                    </div>
-                    <div style={{ fontSize: 28, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.15, marginBottom: 16 }}>
-                      Energy Ave.
-                    </div>
-                    <div style={{ fontSize: 14, color: '#71717a', lineHeight: 1.6 }}>
-                      A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.
-                    </div>
-                  </div>
-                  <div style={{ flex: '1 1 0', background: 'url(uploads/ea-cover.png) center/cover no-repeat' }} />
-                </a>
-
-                {/* Cabrillo NM */}
-                <a href="Project 03.html" style={{
-                  background: '#ffffff',
-                  borderRadius: 14,
-                  border: '1.5px solid rgba(0,0,0,0.08)',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                  minHeight: 'calc((100vh - 200px) * 4 / 9)',
-                  display: 'flex',
-                  overflow: 'hidden',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                }}>
-                  <div style={{ flex: '1 1 0', padding: '40px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-                      PM · Public Engagement · NPS <span style={{ color: 'rgba(0,0,0,0.25)' }}>· 2023</span>
-                    </div>
-                    <div style={{ fontSize: 28, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.15, marginBottom: 16 }}>
-                      Cabrillo NM.
-                    </div>
-                    <div style={{ fontSize: 14, color: '#71717a', lineHeight: 1.6 }}>
-                      Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs from Whale Watching to Eco-Web.
-                    </div>
-                  </div>
-                  <div style={{ flex: '1 1 0', background: '#1b3a28 url(uploads/cabrillo-nps-logo.png) center/40% auto no-repeat' }} />
-                </a>
-
-                {/* Val's Kitchen */}
-                <a href="Project 02.html" style={{
-                  background: '#ffffff',
-                  borderRadius: 14,
-                  border: '1.5px solid rgba(0,0,0,0.08)',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                  minHeight: 'calc((100vh - 200px) * 4 / 9)',
-                  display: 'flex',
-                  overflow: 'hidden',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                }}>
-                  <div style={{ flex: '1 1 0', padding: '40px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#71717a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-                      UX Research · Product Design <span style={{ color: 'rgba(0,0,0,0.25)' }}>· 2024</span>
-                    </div>
-                    <div style={{ fontSize: 28, fontWeight: 800, color: '#1c1c18', letterSpacing: '-0.02em', lineHeight: 1.15, marginBottom: 16 }}>
-                      Val's Kitchen.
-                    </div>
-                    <div style={{ fontSize: 14, color: '#71717a', lineHeight: 1.6 }}>
-                      A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.
-                    </div>
-                  </div>
-                  <div style={{ flex: '1 1 0', background: 'rgba(0,0,0,0.07)' }} />
-                </a>
-              </div>
-            </div>
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#71717a'}
+                onMouseLeave={e => e.currentTarget.style.color = '#1c1c18'}
+              >
+                {label}
+                <span style={{ fontSize: 44, opacity: 1, color: '#000', transition: 'opacity 0.15s' }}>{symbol}</span>
+              </a>
+            ))}
           </div>
-
-          {/* Scroll-height placeholder — folder-card is fixed so this keeps the page scrollable */}
-          <div style={{ height: '120vh' }} />
 
         </>
       );
@@ -333,102 +269,6 @@
         setTimeout(function() { window.location.href = href; }, 300);
       });
 
-    })();
-
-    /* ── Folder card spring scroll ── */
-    (function() {
-      function init() {
-        var card    = document.getElementById('folder-card');
-        if (!card) { requestAnimationFrame(init); return; }
-        var content = document.getElementById('home-content');
-        var inner   = document.getElementById('inner-card');
-        var close   = document.getElementById('close-card');
-
-        var INITIAL_OFFSET = 130;  // px of card visible at scroll 0
-        var SCROLL_FACTOR  = 1.2;  // target moves faster than scroll so spring has room to lag
-        var STIFFNESS      = 0.055;
-        var DAMPING        = 0.70; // underdamped — gives recoil when settling
-
-        var currentTop   = window.innerHeight - INITIAL_OFFSET;
-        var velocity     = 0;
-        var targetTop    = currentTop;
-        var isOpen       = false;
-        var ignoreScroll = false;  // suppress scroll-driven target updates during close anim
-
-        function getStopAt() { return window.innerHeight * 0.03; }
-        function getTarget() {
-          if (isOpen) return getStopAt();
-          return Math.max(getStopAt(), window.innerHeight - INITIAL_OFFSET - window.scrollY * SCROLL_FACTOR);
-        }
-
-        window.addEventListener('scroll', function() {
-          if (ignoreScroll) return;
-          targetTop = getTarget();
-        }, { passive: true });
-        window.addEventListener('resize', function() {
-          currentTop = getTarget();
-          targetTop  = currentTop;
-          velocity   = 0;
-          card.style.top = currentTop + 'px';
-        });
-
-        window.closeFolderCard = function() {
-          if (!isOpen) return;
-          isOpen = false;
-          ignoreScroll = true;
-          document.body.style.overflow = '';
-
-          // Drive the spring back down explicitly — don't rely on scroll events firing.
-          // Reset scroll instantly; the fixed card hides the visual jump.
-          targetTop = window.innerHeight - INITIAL_OFFSET;
-          window.scrollTo(0, 0);
-
-          // Re-sync with scroll once the spring has had time to settle.
-          setTimeout(function() {
-            ignoreScroll = false;
-            targetTop = getTarget();
-          }, 1500);
-        };
-
-        (function tick() {
-          velocity   += (targetTop - currentTop) * STIFFNESS;
-          velocity   *= DAMPING;
-          currentTop += velocity;
-          card.style.top = currentTop.toFixed(2) + 'px';
-
-          var startTop = window.innerHeight - INITIAL_OFFSET;
-          var stopTop  = getStopAt();
-          var progress = (startTop - currentTop) / (startTop - stopTop);
-          if (progress < 0) progress = 0;
-          else if (progress > 1) progress = 1;
-
-          if (content) content.style.opacity = (1 - progress).toFixed(3);
-
-          var innerP = (progress - 0.7) / 0.3;  // fade in over last 30% of travel
-          if (innerP < 0) innerP = 0;
-          else if (innerP > 1) innerP = 1;
-
-          if (inner) {
-            inner.style.opacity = innerP.toFixed(3);
-            inner.style.transform = 'translateY(' + ((1 - innerP) * 20).toFixed(2) + 'px)';
-            inner.style.pointerEvents = innerP > 0.5 ? 'auto' : 'none';
-          }
-
-          if (close) {
-            close.style.opacity = innerP.toFixed(3);
-            close.style.pointerEvents = innerP > 0.5 ? 'auto' : 'none';
-          }
-
-          // Lock body scroll once the card has essentially reached the top
-          if (!isOpen && progress > 0.995) {
-            isOpen = true;
-            document.body.style.overflow = 'hidden';
-          }
-
-          requestAnimationFrame(tick);
-        })();
-      }
-      init();
     })();
   </script>
 

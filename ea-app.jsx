@@ -52,7 +52,7 @@ const ProjectsCard = () => {
         borderBottom: '1px solid rgba(255,255,255,0.06)',
       }}>
         <span style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Selected Work</span>
-        <a href="index.html" style={{
+        <a href="projects.html" style={{
           background: 'rgba(255,255,255,0.07)', border: 'none', borderRadius: 100,
           width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', textDecoration: 'none', flexShrink: 0,
