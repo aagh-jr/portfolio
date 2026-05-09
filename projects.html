@@ -100,11 +100,11 @@
     .project-image-inner--cabrillo { background: #1b3a28 url(uploads/cabrillo-nps-logo.png) center/40% auto no-repeat; }
     .project-image-inner--vk       { background: rgba(0,0,0,0.07); }
 
-    /* ── Bottom-right nav ── */
+    /* ── Top-left back nav ── */
     .corner-nav {
       position: fixed;
-      bottom: 48px;
-      right: max(48px, calc((100vw - 1280px) / 2 + 48px));
+      top: 48px;
+      left: max(48px, calc((100vw - 1280px) / 2 + 48px));
       z-index: 100;
     }
     .corner-nav a {
@@ -120,13 +120,27 @@
     .corner-nav a:hover { color: #71717a; }
     .corner-nav .symbol { font-size: 44px; color: #000; }
 
+    /* ── Under construction badge ── */
+    .under-construction {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #71717a;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .page-wrap { padding: 40px 20px; }
       .project-card { flex-direction: column; min-height: auto; }
       .project-image { min-height: 200px; }
       .project-title { font-size: 22px; }
-      .corner-nav { right: 20px; bottom: 20px; }
+      .corner-nav { left: 20px; top: 20px; }
     }
   </style>
 </head>
@@ -151,19 +165,22 @@
         <div class="project-image"><div class="project-image-inner project-image-inner--cabrillo"></div></div>
       </a>
 
-      <a href="Project 02.html" class="project-card">
+      <div class="project-card" style="cursor: default;">
         <div class="project-text">
           <div class="project-title">Val's Kitchen.</div>
           <div class="project-desc">A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.</div>
         </div>
-        <div class="project-image"><div class="project-image-inner project-image-inner--vk"></div></div>
-      </a>
+        <div class="project-image" style="position: relative;">
+          <div class="project-image-inner project-image-inner--vk"></div>
+          <div class="under-construction">Under Construction</div>
+        </div>
+      </div>
 
     </div>
   </div>
 
   <nav class="corner-nav" aria-label="Page navigation">
-    <a href="index.html"><span class="symbol">←</span> back</a>
+    <a href="index.html"><span class="symbol">&lt;</span> back</a>
   </nav>
 
   <script>
