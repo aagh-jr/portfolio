@@ -62,7 +62,7 @@ const ProjectsCard = () => {
           onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.07)'}
         >
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-            <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinejoin="round"/>
+            <path d="M10 3L5 8L10 13" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </a>
       </div>

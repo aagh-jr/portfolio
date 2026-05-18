@@ -15,7 +15,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #f0f0f3;
+      background: #FFFAFA;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -57,7 +57,7 @@
 
   <script type="text/babel">
 
-    const ABOUT_TEXT = "I'm a fourth-year at UC San Diego studying Cognitive Science with a focus in Design and Interaction. My work lives at the edge of how people think and how products should respond — I bring research methods, systems thinking, and a deep curiosity about human behavior to every project. Outside of screens you'll find me hiking with a camera or overcooking something in the kitchen.";
+    const ABOUT_TEXT = "I'm a Cognitive Science graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond, and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican and Bay Area roots have molded a curious and confident mindset in me that strives to innovate.\n\nMy background sits at the intersection of cognitive science, design systems, and emerging AI — I've studied how large language models interact with human cognition, moderated AR usability sessions at Apple, and built and tested products from the ground up. I bring the same curiosity to a research session that I bring to understanding why something works the way it does.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera, or both at the same time.";
 
     const App = () => {
       const [aboutOpen, setAboutOpen] = React.useState(false);
@@ -112,7 +112,7 @@
         }
       };
 
-      const cardBg = '#f0f0f3';
+      const cardBg = '#FFFAFA';
       const cardBorder = 'none';
       const cardShadow = 'none';
       const cardBase = {
@@ -160,6 +160,7 @@
                           display: 'block',
                           position: 'relative',
                           opacity: lineRects.length > 0 ? 1 : 0,
+                          whiteSpace: 'pre-wrap',
                         }}>
                           {ABOUT_TEXT}
                           {lineRects.map((rect, i) => {
@@ -172,7 +173,7 @@
                                 position: 'absolute',
                                 top: rect.top, left: rect.left,
                                 width: rect.width + 2, height: rect.height,
-                                background: '#f0f0f3',
+                                background: '#FFFAFA',
                                 animation: aboutClosing
                                   ? `slideLeftBack 0.2s ease ${delay}s both`
                                   : `slideRight 0.2s ease ${delay}s forwards`,

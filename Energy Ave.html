@@ -11,7 +11,7 @@
 
   <style>
     :root {
-      --bg: #f0f0f3;
+      --bg: #FFFAFA;
       --ink: #1c1c18;
       --muted: #71717a;
       --hairline: rgba(28, 28, 24, 0.08);
@@ -66,15 +66,15 @@
     .sidebar {
       display: block;
       position: fixed;
-      top: 88px;
-      left: calc(50vw - 598px);
+      top: 160px;
+      left: calc(50vw - 660px);
       width: var(--sidebar-width);
     }
     .sidebar-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
     .sidebar-toc { list-style: none; counter-reset: stoc; display: flex; flex-direction: column; gap: 1px; }
     .sidebar-toc li { counter-increment: stoc; }
     .sidebar-toc a { display: flex; gap: 10px; align-items: baseline; padding: 6px 8px; border-radius: 6px; color: var(--muted); border-bottom: none; font-size: 12.5px; line-height: 1.4; transition: color var(--dur) var(--ease), background var(--dur) var(--ease); }
-    .sidebar-toc a::before { content: counter(stoc, decimal-leading-zero); color: var(--hairline-strong); font-family: var(--font-mono); font-size: 10px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .sidebar-toc a::before { content: none; }
     .sidebar-toc a:hover { color: var(--ink); background: rgba(26,26,26,0.05); border-bottom: none; }
     .sidebar-toc a[data-current="true"] { color: var(--ink); font-weight: 500; }
     .meta-row .meta-label { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
@@ -112,9 +112,8 @@
     .reveal.is-in { opacity: 1; transform: none; }
 
     /* ── Floating nav pill ── */
-    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 50; background: rgba(20, 20, 18, 0.96); color: #FAFAF7; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 28px rgba(0,0,0,0.18); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 7px; padding: 9px 16px 9px 13px; text-decoration: none; border-bottom: none; transition: background 180ms var(--ease); }
-    .back-btn:hover { background: rgba(40, 40, 38, 0.98); border-bottom: none; color: #fff; }
-    .back-btn-arrow { font-size: 15px; line-height: 1; }
+    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 50; background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.08); border-radius: 999px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; text-decoration: none; transition: background 180ms; }
+    .back-btn:hover { background: rgba(0,0,0,0.11); color: rgba(0,0,0,0.75); }
 
 
     /* ── UI Cards ── */
@@ -335,15 +334,13 @@
 
   <!-- Back button -->
   <a class="back-btn" href="projects.html" aria-label="Back to projects">
-    <span class="back-btn-arrow">←</span>
-    <span>Back</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
 
 
   <div class="page">
 
     <aside class="sidebar">
-      <div class="sidebar-label">Contents</div>
       <ol class="sidebar-toc" id="sidebarTocList"></ol>
     </aside>
 

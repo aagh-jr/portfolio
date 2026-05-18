@@ -11,7 +11,7 @@
 
   <style>
     :root {
-      --bg: #FAFAF7;
+      --bg: #FFFAFA;
       --ink: #1A1A1A;
       --muted: #6B6B6B;
       --hairline: rgba(26, 26, 26, 0.08);
@@ -68,8 +68,8 @@
     p + p { margin-top: 16px; }
 
     /* Back button */
-    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 50; background: rgba(20, 20, 18, 0.96); color: #FAFAF7; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 28px rgba(0,0,0,0.18); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 7px; padding: 9px 16px 9px 13px; text-decoration: none; border-bottom: none; transition: background 180ms var(--ease); }
-    .back-btn:hover { background: rgba(40, 40, 38, 0.98); border-bottom: none; color: #fff; }
+    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 50; background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.08); border-radius: 999px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; text-decoration: none; transition: background 180ms; }
+    .back-btn:hover { background: rgba(0,0,0,0.11); color: rgba(0,0,0,0.75); }
 
     /* Tags */
     .tag { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: 0.03em; border: 1px solid var(--hairline-strong); color: var(--muted); background: transparent; line-height: 1.6; }
@@ -127,8 +127,7 @@
 <body>
 
   <a class="back-btn" href="Energy Ave.html" aria-label="Back to case study">
-    <span>←</span>
-    <span>Back</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
 
   <div class="page">

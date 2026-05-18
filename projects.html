@@ -12,7 +12,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #f0f0f3;
+      background: #FFFAFA;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -30,7 +30,7 @@
       to   { transform: translateY(0);     opacity: 1; }
     }
     .cards-stack {
-      animation: cardsSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+      animation: cardsSlideUp 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
     }
 
     /* ── Layout ── */
@@ -52,18 +52,16 @@
 
     /* ── Project card ── */
     .project-card {
-      background: #ffffff;
+      background: #FFFAFA;
       border-radius: 0;
       border: 1.5px solid rgba(0,0,0,0.18);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
       min-height: calc((100vh - 200px) * 4 / 9);
       display: flex;
       overflow: hidden;
-      transition: transform 0.25s, box-shadow 0.25s;
+      transition: transform 1s;
     }
     .project-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
     }
     .project-text {
       flex: 1 1 0;
@@ -101,24 +99,8 @@
     .project-image-inner--vk       { background: rgba(0,0,0,0.07); }
 
     /* ── Top-left back nav ── */
-    .corner-nav {
-      position: fixed;
-      top: 48px;
-      left: max(-12px, calc((100vw - 1280px) / 2 - 12px));
-      z-index: 100;
-    }
-    .corner-nav a {
-      font-size: 34px;
-      font-weight: 800;
-      color: #1c1c18;
-      letter-spacing: -0.016em;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.15s;
-    }
-    .corner-nav a:hover { color: #71717a; }
-    .corner-nav .symbol { font-size: 38px; color: #000; }
+    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 100; background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.08); border-radius: 999px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; text-decoration: none; transition: background 180ms; }
+    .back-btn:hover { background: rgba(0,0,0,0.11); color: rgba(0,0,0,0.75); }
 
     /* ── Under construction badge ── */
     .under-construction {
@@ -179,9 +161,9 @@
     </div>
   </div>
 
-  <nav class="corner-nav" aria-label="Page navigation">
-    <a href="index.html"><span class="symbol">&lt;</span> back</a>
-  </nav>
+  <a class="back-btn" href="index.html" aria-label="Back to home">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 
   <script>
     (function() {
