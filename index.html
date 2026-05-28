@@ -57,13 +57,34 @@
 
   <script type="text/babel">
 
-    const ABOUT_TEXT = "I'm a Cognitive Science graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond, and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican and Bay Area roots have molded a curious and confident mindset in me that strives to innovate.\n\nMy background sits at the intersection of cognitive science, design systems, and emerging AI — I've studied how large language models interact with human cognition, moderated AR usability sessions at Apple, and built and tested products from the ground up. I bring the same curiosity to a research session that I bring to understanding why something works the way it does.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera, or both at the same time.";
+    const ABOUT_TEXT = "I'm a Cognitive Science graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or both at the same time.";
+    const INTRO_TEXT = "I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.";
 
     const App = () => {
       const [aboutOpen, setAboutOpen] = React.useState(false);
       const [aboutClosing, setAboutClosing] = React.useState(false);
       const [lineRects, setLineRects] = React.useState([]);
+      const [introLen, setIntroLen] = React.useState(INTRO_TEXT.length);
       const textRef = React.useRef(null);
+      const introAnimRef = React.useRef(null);
+
+      const animateIntro = (from, to, duration, onDone) => {
+        if (introAnimRef.current) cancelAnimationFrame(introAnimRef.current);
+        const start = performance.now();
+        const tick = (now) => {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const len = Math.round(from + (to - from) * progress);
+          setIntroLen(len);
+          if (progress < 1) {
+            introAnimRef.current = requestAnimationFrame(tick);
+          } else {
+            introAnimRef.current = null;
+            if (onDone) onDone();
+          }
+        };
+        introAnimRef.current = requestAnimationFrame(tick);
+      };
 
       React.useLayoutEffect(() => {
         if (!aboutOpen || !textRef.current) {
@@ -101,14 +122,18 @@
       }, [aboutOpen, aboutClosing]);
 
       const toggleAbout = () => {
+        if (introAnimRef.current) return;
         if (!aboutOpen && !aboutClosing) {
-          setAboutOpen(true);
+          animateIntro(INTRO_TEXT.length, 0, 250, () => {
+            setAboutOpen(true);
+          });
         } else if (aboutOpen && !aboutClosing) {
           setAboutClosing(true);
           setTimeout(() => {
             setAboutOpen(false);
             setAboutClosing(false);
-          }, 500);
+            animateIntro(0, INTRO_TEXT.length, 250);
+          }, 250);
         }
       };
 
@@ -154,7 +179,9 @@
                       fontSize: 25, fontWeight: 700, color: '#71717a',
                       lineHeight: 1.2, maxWidth: 520,
                     }}>
-                      <span style={{ display: 'block' }}>I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.</span>
+                      {!aboutOpen && (
+                        <span style={{ display: 'block' }}>{INTRO_TEXT.substring(0, introLen)}</span>
+                      )}
                       {aboutOpen && (
                         <span ref={textRef} style={{
                           display: 'block',
@@ -162,9 +189,13 @@
                           opacity: lineRects.length > 0 ? 1 : 0,
                           whiteSpace: 'pre-wrap',
                         }}>
-                          {ABOUT_TEXT}
+                          {ABOUT_TEXT.split(/(🇲🇽|🌉)/u).map((part, i) =>
+                            part === '🇲🇽' || part === '🌉'
+                              ? <span key={i} style={{ fontSize: '1.3em' }}>{part}</span>
+                              : <React.Fragment key={i}>{part}</React.Fragment>
+                          )}
                           {lineRects.map((rect, i) => {
-                            const stagger = lineRects.length > 1 ? (0.5 - 0.2) / (lineRects.length - 1) : 0;
+                            const stagger = lineRects.length > 1 ? (0.25 - 0.1) / (lineRects.length - 1) : 0;
                             const delay = aboutClosing
                               ? ((lineRects.length - 1 - i) * stagger).toFixed(3)
                               : (i * stagger).toFixed(3);
@@ -175,14 +206,26 @@
                                 width: rect.width + 2, height: rect.height,
                                 background: '#FFFAFA',
                                 animation: aboutClosing
-                                  ? `slideLeftBack 0.2s ease ${delay}s both`
-                                  : `slideRight 0.2s ease ${delay}s forwards`,
+                                  ? `slideLeftBack 0.1s ease ${delay}s both`
+                                  : `slideRight 0.1s ease ${delay}s forwards`,
                               }} />
                             );
                           })}
                         </span>
                       )}
                     </div>
+                    {aboutOpen && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 108,
+                        left: '50%',
+                        right: 15,
+                        height: '50%',
+                        background: '#C8C8C2',
+                        borderRadius: 12,
+                        animation: 'fadeIn 0.3s ease both',
+                      }} />
+                    )}
                     {!aboutOpen && <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 28, animation: 'fadeIn 0.3s ease both' }}>
                       {[
                         { label: 'abel.aagh@gmail.com', href: 'mailto:abel.aagh@gmail.com' },
@@ -238,7 +281,7 @@
                 onMouseLeave={e => e.currentTarget.style.color = '#1c1c18'}
               >
                 {label}
-                <span style={{ fontSize: 44, opacity: 1, color: '#000', transition: 'opacity 0.15s' }}>{symbol}</span>
+                <span style={{ fontSize: 54, opacity: 1, color: '#000', transition: 'opacity 0.15s', display: 'inline-block', width: '48px', textAlign: 'center', lineHeight: 1 }}>{symbol}</span>
               </a>
             ))}
           </div>
