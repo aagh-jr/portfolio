@@ -4,7 +4,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦭</text></svg>">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects — Abel Angel</title>
+  <title>Projects | Abel Angel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -99,8 +99,9 @@
     .project-image-inner--vk       { background: rgba(0,0,0,0.07); }
 
     /* ── Top-left back nav ── */
-    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 100; background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.08); border-radius: 999px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; text-decoration: none; transition: background 180ms; }
-    .back-btn:hover { background: rgba(0,0,0,0.11); color: rgba(0,0,0,0.75); }
+    .back-btn { position: fixed; top: 36px; left: 44px; z-index: 100; display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: #71717a; text-decoration: none; transition: color 180ms; }
+    .back-btn:hover { color: #1c1c18; }
+    .back-btn svg { width: 12px; height: 12px; }
 
     /* ── Under construction badge ── */
     .under-construction {
@@ -134,7 +135,7 @@
       <a href="Energy Ave.html" class="project-card">
         <div class="project-text">
           <div class="project-title">Energy Ave.</div>
-          <div class="project-desc">A gamified energy conservation experience built for PlanetFlip — 10 weeks of UX research, two rounds of user testing, and a fully playable in-browser game.</div>
+          <div class="project-desc">A gamified energy conservation experience built for PlanetFlip: 10 weeks of UX research, two rounds of user testing and a fully playable in-browser game.</div>
         </div>
         <div class="project-image"><div class="project-image-inner project-image-inner--ea"></div></div>
       </a>
@@ -142,27 +143,17 @@
       <a href="Project 03.html" class="project-card">
         <div class="project-text">
           <div class="project-title">Cabrillo NM.</div>
-          <div class="project-desc">Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs from Whale Watching to Eco-Web.</div>
+          <div class="project-desc">Two terms as an Associate in the park's Interpretation program: designing, running, measuring and documenting public engagement programs from Whale Watching to Eco-Web.</div>
         </div>
         <div class="project-image"><div class="project-image-inner project-image-inner--cabrillo"></div></div>
       </a>
-
-      <div class="project-card" style="cursor: default;">
-        <div class="project-text">
-          <div class="project-title">Val's Kitchen.</div>
-          <div class="project-desc">A kitchen inventory app for a real restaurant client — built from paper sheets to a Figma prototype refined by scenario-based usability testing.</div>
-        </div>
-        <div class="project-image" style="position: relative;">
-          <div class="project-image-inner project-image-inner--vk"></div>
-          <div class="under-construction">Under Construction</div>
-        </div>
-      </div>
 
     </div>
   </div>
 
   <a class="back-btn" href="index.html" aria-label="Back to home">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back
   </a>
 
   <script>

@@ -4,7 +4,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦭</text></svg>">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abel Angel — Portfolio</title>
+  <title>Abel Angel Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -23,6 +23,7 @@
     a { color: inherit; text-decoration: none; }
 
     @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
     @keyframes slideRight {
       from { transform: translateX(0); }
       to   { transform: translateX(101%); }
@@ -35,8 +36,8 @@
       from { opacity: 0; transform: translateY(56px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .anim-fade    { animation: fadeIn  0.6s ease-out both; }
-    .anim-fade-d1 { animation: fadeIn  0.6s ease-out 0.2s both; }
+    .anim-fade    { animation: fadeIn  0.75s ease-out both; }
+    .anim-fade-d1 { animation: fadeIn  0.75s ease-out 0.2s both; }
     .anim-up-1    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
     .anim-up-2    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.52s both; }
     .anim-up-3    { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.64s both; }
@@ -46,9 +47,9 @@
       .bento-grid  { grid-template-columns: 1fr !important; }
     }
 
-    body { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
-    body.page-entering { opacity: 0; transform: translateY(8px); }
-    body.page-leaving  { opacity: 0; transform: translateY(-8px); }
+    body { transition: opacity 0.3s ease-in-out; }
+    body.page-entering { opacity: 0; }
+    body.page-leaving  { opacity: 0; }
   </style>
 </head>
 <body>
@@ -57,12 +58,13 @@
 
   <script type="text/babel">
 
-    const ABOUT_TEXT = "I'm a Cognitive Science graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or both at the same time.";
+    const ABOUT_TEXT = "I'm a Cognitive Science 🧠 graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or breaking a sweat and your local pilates studio 🤸🏽.";
     const INTRO_TEXT = "I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.";
 
     const App = () => {
       const [aboutOpen, setAboutOpen] = React.useState(false);
       const [aboutClosing, setAboutClosing] = React.useState(false);
+      const [introFading, setIntroFading] = React.useState(false);
       const [lineRects, setLineRects] = React.useState([]);
       const [introLen, setIntroLen] = React.useState(INTRO_TEXT.length);
       const textRef = React.useRef(null);
@@ -122,12 +124,15 @@
       }, [aboutOpen, aboutClosing]);
 
       const toggleAbout = () => {
-        if (introAnimRef.current) return;
-        if (!aboutOpen && !aboutClosing) {
-          animateIntro(INTRO_TEXT.length, 0, 250, () => {
+        if (introAnimRef.current || introFading || aboutClosing) return;
+        if (!aboutOpen) {
+          setIntroFading(true);
+          setTimeout(() => {
+            setIntroLen(0);
+            setIntroFading(false);
             setAboutOpen(true);
-          });
-        } else if (aboutOpen && !aboutClosing) {
+          }, 250);
+        } else {
           setAboutClosing(true);
           setTimeout(() => {
             setAboutOpen(false);
@@ -176,11 +181,18 @@
                       <span style={{ color: '#000', fontWeight: 800 }}>Abel Angel</span>
                     </div>
                     <div className="anim-fade-d1" style={{
-                      fontSize: 25, fontWeight: 700, color: '#71717a',
-                      lineHeight: 1.2, maxWidth: 520,
+                      fontSize: aboutOpen ? 25 : 40,
+                      fontWeight: aboutOpen ? 700 : 800,
+                      color: '#71717a',
+                      letterSpacing: aboutOpen ? 'normal' : '-0.016em',
+                      lineHeight: 1.2,
+                      maxWidth: aboutOpen ? 520 : '50vw',
                     }}>
                       {!aboutOpen && (
-                        <span style={{ display: 'block' }}>{INTRO_TEXT.substring(0, introLen)}</span>
+                        <span style={{
+                          display: 'block',
+                          animation: introFading ? 'fadeOut 0.25s ease both' : undefined,
+                        }}>{INTRO_TEXT.substring(0, introLen)}</span>
                       )}
                       {aboutOpen && (
                         <span ref={textRef} style={{
@@ -188,26 +200,23 @@
                           position: 'relative',
                           opacity: lineRects.length > 0 ? 1 : 0,
                           whiteSpace: 'pre-wrap',
+                          animation: aboutClosing ? 'fadeOut 0.25s ease both' : undefined,
                         }}>
-                          {ABOUT_TEXT.split(/(🇲🇽|🌉)/u).map((part, i) =>
-                            part === '🇲🇽' || part === '🌉'
-                              ? <span key={i} style={{ fontSize: '1.3em' }}>{part}</span>
+                          {ABOUT_TEXT.split(/(🇲🇽|🌉|🤸🏽|🧠)/u).map((part, i) =>
+                            part === '🇲🇽' || part === '🌉' || part === '🤸🏽' || part === '🧠'
+                              ? <span key={i} style={{ fontSize: '1.3em', verticalAlign: 'middle', display: 'inline-block', lineHeight: 1 }}>{part}</span>
                               : <React.Fragment key={i}>{part}</React.Fragment>
                           )}
                           {lineRects.map((rect, i) => {
                             const stagger = lineRects.length > 1 ? (0.25 - 0.1) / (lineRects.length - 1) : 0;
-                            const delay = aboutClosing
-                              ? ((lineRects.length - 1 - i) * stagger).toFixed(3)
-                              : (i * stagger).toFixed(3);
+                            const delay = (i * stagger).toFixed(3);
                             return (
                               <span key={i} style={{
                                 position: 'absolute',
                                 top: rect.top, left: rect.left,
                                 width: rect.width + 2, height: rect.height,
                                 background: '#FFFAFA',
-                                animation: aboutClosing
-                                  ? `slideLeftBack 0.1s ease ${delay}s both`
-                                  : `slideRight 0.1s ease ${delay}s forwards`,
+                                animation: `slideRight 0.1s ease ${delay}s forwards`,
                               }} />
                             );
                           })}
@@ -215,37 +224,59 @@
                       )}
                     </div>
                     {aboutOpen && (
-                      <div style={{
+                      <img src="uploads/abel-portrait.jpg" alt="Abel" style={{
                         position: 'absolute',
-                        top: 108,
-                        left: '50%',
+                        top: 40,
                         right: 15,
+                        width: 'calc(50% - 15px)',
                         height: '50%',
-                        background: '#C8C8C2',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
                         borderRadius: 12,
-                        animation: 'fadeIn 0.3s ease both',
+                        animation: aboutClosing ? 'fadeOut 0.25s ease both' : 'fadeIn 0.75s ease both',
                       }} />
                     )}
-                    {!aboutOpen && <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 28, animation: 'fadeIn 0.3s ease both' }}>
-                      {[
-                        { label: 'abel.aagh@gmail.com', href: 'mailto:abel.aagh@gmail.com' },
-                        { label: 'linkedin', href: 'https://www.linkedin.com/in/abel-a-gonzalez' },
-                        { label: 'resume',   href: '#' },
-                      ].map(({ label, href }, i) => (
-                        <React.Fragment key={label}>
-                          {i > 0 && <span style={{ color: 'rgba(0,0,0,0.2)', fontSize: 11 }}>/</span>}
-                          <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" style={{
-                            fontSize: 11, fontWeight: 400, color: '#71717a',
-                            letterSpacing: '0.01em', textTransform: 'none',
-                            textDecoration: 'none',
-                            transition: 'color 0.15s',
-                          }}
+                    {!aboutOpen && introLen === INTRO_TEXT.length && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 36, marginTop: 28, animation: introFading ? 'fadeOut 0.25s ease both' : 'fadeIn 0.75s ease both' }}>
+                        {[
+                          {
+                            label: 'Email',
+                            href: 'mailto:abel.aagh@gmail.com',
+                            external: false,
+                            svg: <path d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />,
+                          },
+                          {
+                            label: 'LinkedIn',
+                            href: 'https://www.linkedin.com/in/abel-a-gonzalez',
+                            external: true,
+                            svg: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></>,
+                          },
+                          {
+                            label: 'GitHub',
+                            href: 'https://github.com/aagh-jr',
+                            external: true,
+                            svg: <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />,
+                          },
+                        ].map(({ label, href, external, svg }) => (
+                          <a key={label} href={href}
+                            target={external ? '_blank' : undefined}
+                            rel={external ? 'noreferrer' : undefined}
+                            aria-label={label}
+                            style={{
+                              color: '#71717a',
+                              display: 'inline-flex',
+                              transition: 'color 0.15s',
+                            }}
                             onMouseEnter={e => e.currentTarget.style.color = '#1c1c18'}
                             onMouseLeave={e => e.currentTarget.style.color = '#71717a'}
-                          >{label}</a>
-                        </React.Fragment>
-                      ))}
-                    </div>}
+                          >
+                            <svg width="39" height="39" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              {svg}
+                            </svg>
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                 </div>

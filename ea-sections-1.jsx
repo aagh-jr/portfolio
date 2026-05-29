@@ -12,7 +12,7 @@ const HeroSection = () =>
       }}>
         <span>UX Research</span>
         <span style={{ color: V2.border }}>·</span>
-        <span>Game Design</span>
+        <span>Product Design</span>
         <span style={{ color: V2.border }}>·</span>
         <span>EdTech</span>
         <span style={{ color: V2.border }}>·</span>
