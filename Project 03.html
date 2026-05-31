@@ -7,7 +7,7 @@
   <title>Cabrillo National Monument | PM Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
@@ -26,8 +26,8 @@
       --green-light: #F0FAF5;
       --amber: #E07D2E;
       --accent: #3DAA74;
-      --font: 'DM Sans', sans-serif;
-      --serif: 'Lora', Georgia, serif;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --serif: 'Inter', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, monospace;
       --sidebar-width: 220px;
       --dur: 180ms;
@@ -235,7 +235,7 @@ const Stat = ({ value, label, accent, sub }) => (
     background: V2.white,
     boxShadow: '0 2px 12px rgba(42,43,42,0.05)',
   }}>
-    <span style={{ fontSize: 40, fontWeight: 500, color: accent || V2.accent, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Lora, Georgia, serif' }}>{value}</span>
+    <span style={{ fontSize: 40, fontWeight: 500, color: accent || V2.accent, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{value}</span>
     <span style={{ fontSize: 12, color: V2.muted, lineHeight: 1.4, maxWidth: 110 }}>{label}</span>
     {sub && <span style={{ fontSize: 11, color: accent || V2.accent, fontWeight: 600 }}>{sub}</span>}
   </div>
@@ -243,7 +243,7 @@ const Stat = ({ value, label, accent, sub }) => (
 
 const QuoteBlock = ({ text, author, role }) => (
   <div style={{ padding: '24px 32px', borderLeft: `3px solid ${V2.accent}`, background: V2.accentBg, borderRadius: '0 12px 12px 0' }}>
-    <p style={{ fontSize: 18, lineHeight: 1.8, color: V2.ink, fontStyle: 'italic', margin: 0, fontFamily: 'Lora, Georgia, serif', fontWeight: 400 }}>"{text}"</p>
+    <p style={{ fontSize: 18, lineHeight: 1.8, color: V2.ink, fontStyle: 'italic', margin: 0, fontFamily: 'Inter, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>"{text}"</p>
     {author && <div style={{ marginTop: 12, fontSize: 12, color: V2.muted, fontWeight: 500, letterSpacing: '0.04em' }}>— {author}{role ? `, ${role}` : ''}</div>}
   </div>
 );
@@ -261,7 +261,7 @@ const SectionHeader = ({ num, title, subtitle }) => (
     <div style={{ fontSize: 11, fontWeight: 600, color: V2.muted, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>
       {String(num).padStart(2, '0')}
     </div>
-    <h2 style={{ fontSize: 36, fontWeight: 500, margin: 0, color: V2.ink, lineHeight: 1.12, letterSpacing: '-0.025em', fontFamily: 'Lora, Georgia, serif' }}>{title}</h2>
+    <h2 style={{ fontSize: 36, fontWeight: 500, margin: 0, color: V2.ink, lineHeight: 1.12, letterSpacing: '-0.025em', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{title}</h2>
     {subtitle && <p style={{ marginTop: 14, fontSize: 15, color: V2.muted, lineHeight: 1.7, maxWidth: 600, margin: '14px 0 0' }}>{subtitle}</p>}
   </div>
 );
@@ -644,7 +644,7 @@ const CBHeroSection = () =>
       <h1 style={{
         fontSize: 'clamp(52px, 8vw, 80px)', fontWeight: 500, lineHeight: 1.05,
         letterSpacing: '-0.03em', color: '#111', marginBottom: 16,
-        fontFamily: 'Lora, Georgia, serif', maxWidth: 740,
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif', maxWidth: 740,
       }}>
         Cabrillo National Monument.
       </h1>
@@ -796,7 +796,7 @@ const CBWhaleWatchingSection = () =>
       <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
         <div style={{ textAlign: 'center', maxWidth: 520 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The activity book</div>
-          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
+          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif', letterSpacing: '-0.01em' }}>
             Flip through the Gray Whale Watching booklet
           </h3>
           <p style={{ fontSize: 13, color: '#aaa', margin: 0, lineHeight: 1.7 }}>
@@ -956,10 +956,10 @@ const CBFlowerHuntSection = () =>
 
       <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 32 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>THE DATA POINT I CARE ABOUT</div>
-        <p style={{ fontSize: 24, lineHeight: 1.5, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: '0 0 18px', maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: '0 0 18px', maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
           The first run was a quiet test. The second run — same activity, same location, same staff — went out with full social-media advertisement.
         </p>
-        <p style={{ fontSize: 24, lineHeight: 1.5, fontWeight: 500, color: '#3DAA74', margin: 0, maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontWeight: 500, color: '#3DAA74', margin: 0, maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
           It pulled <span style={{ fontWeight: 700 }}>10× the participants.</span>
         </p>
       </div>
@@ -1026,7 +1026,7 @@ const CBOtherInitiativesSection = () =>
       <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
         <div style={{ textAlign: 'center', maxWidth: 520 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The Open Tower Day booklet</div>
-          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
+          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif', letterSpacing: '-0.01em' }}>
             Eight panels, page by page
           </h3>
           <p style={{ fontSize: 13, color: '#aaa', margin: 0, lineHeight: 1.7 }}>
@@ -1156,7 +1156,7 @@ const CBReflectionSection = () =>
 
       <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px' }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>WHAT THIS TAUGHT ME</div>
-        <p style={{ fontSize: 19, lineHeight: 1.65, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+        <p style={{ fontSize: 19, lineHeight: 1.65, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
           The best work I did at Cabrillo wasn't an event. It was the document that let the next person run the event without me — and the data point that told them whether to bother promoting it.
         </p>
       </div>

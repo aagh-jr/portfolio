@@ -99,7 +99,7 @@ const Stat = ({ value, label, accent, sub }) => (
     background: V2.white,
     boxShadow: '0 2px 12px rgba(42,43,42,0.05)',
   }}>
-    <span style={{ fontSize: 40, fontWeight: 500, color: accent || V2.accent, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Lora, Georgia, serif' }}>{value}</span>
+    <span style={{ fontSize: 40, fontWeight: 500, color: accent || V2.accent, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{value}</span>
     <span style={{ fontSize: 12, color: V2.muted, lineHeight: 1.4, maxWidth: 110 }}>{label}</span>
     {sub && <span style={{ fontSize: 11, color: accent || V2.accent, fontWeight: 600 }}>{sub}</span>}
   </div>
@@ -107,7 +107,7 @@ const Stat = ({ value, label, accent, sub }) => (
 
 const QuoteBlock = ({ text, author, role }) => (
   <div style={{ padding: '24px 32px', borderLeft: `3px solid ${V2.accent}`, background: V2.accentBg, borderRadius: '0 12px 12px 0' }}>
-    <p style={{ fontSize: 18, lineHeight: 1.8, color: V2.ink, fontStyle: 'italic', margin: 0, fontFamily: 'Lora, Georgia, serif', fontWeight: 400 }}>"{text}"</p>
+    <p style={{ fontSize: 18, lineHeight: 1.8, color: V2.ink, fontStyle: 'italic', margin: 0, fontFamily: 'Inter, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>"{text}"</p>
     {author && <div style={{ marginTop: 12, fontSize: 12, color: V2.muted, fontWeight: 500, letterSpacing: '0.04em' }}>— {author}{role ? `, ${role}` : ''}</div>}
   </div>
 );
@@ -125,7 +125,7 @@ const SectionHeader = ({ num, title, subtitle }) => (
     <div style={{ fontSize: 11, fontWeight: 600, color: V2.muted, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>
       {String(num).padStart(2, '0')}
     </div>
-    <h2 style={{ fontSize: 36, fontWeight: 500, margin: 0, color: V2.ink, lineHeight: 1.12, letterSpacing: '-0.025em', fontFamily: 'Lora, Georgia, serif' }}>{title}</h2>
+    <h2 style={{ fontSize: 36, fontWeight: 500, margin: 0, color: V2.ink, lineHeight: 1.12, letterSpacing: '-0.025em', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{title}</h2>
     {subtitle && <p style={{ marginTop: 14, fontSize: 15, color: V2.muted, lineHeight: 1.7, maxWidth: 600, margin: '14px 0 0' }}>{subtitle}</p>}
   </div>
 );
