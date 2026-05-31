@@ -117,7 +117,6 @@ const CBApp = () => {
 
   return (
     <div style={{ '--section-pad': sectionPadding }}>
-      {!CB_IS_EMBED && <CBProjectsCard />}
       {!CB_IS_EMBED && tweaks.showProgress && <CBProgressBar accent={accent} />}
       <CBHeroSection accent={accent} />
       <CBOverviewSection />

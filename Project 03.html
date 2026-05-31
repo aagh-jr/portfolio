@@ -15,9 +15,12 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --cream: #FAFAF8;
-      --white: #FFFFFF;
+      --white: #FFFAFA;
       --black: #111111;
       --gray: #6B6B6B;
+      --muted: #71717a;
+      --hairline: rgba(0,0,0,0.10);
+      --hairline-strong: rgba(0,0,0,0.18);
       --border: rgba(0,0,0,0.08);
       --green: #3DAA74;
       --green-light: #F0FAF5;
@@ -25,6 +28,10 @@
       --accent: #3DAA74;
       --font: 'DM Sans', sans-serif;
       --serif: 'Lora', Georgia, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --sidebar-width: 220px;
+      --dur: 180ms;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
     }
     html { scroll-behavior: smooth; }
     body {
@@ -38,17 +45,38 @@
     }
     ::selection { background: #EBF7F2; color: #2A8A5C; }
 
-    .nav-pill {
-      position: fixed; top: 16px; right: 48px; z-index: 300;
-      display: flex; align-items: center; gap: 16px; padding: 8px;
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 32px;
+      left: 32px;
+      bottom: 32px;
+      width: var(--sidebar-width);
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow-y: auto;
+      z-index: 40;
+      transform: translateX(calc(-100% - 48px));
+      transition: transform 420ms cubic-bezier(0.2, 0, 0, 1);
+      font-family: var(--font-mono);
     }
-    .nav-btn {
-      width: 40px; height: 40px; border-radius: 9999px;
-      display: flex; align-items: center; justify-content: center;
-      transition: box-shadow 0.15s; text-decoration: none;
+    .sidebar.is-open { transform: translateX(0); }
+    .sidebar.is-closing { transform: translateX(calc(-100% - 48px)); }
+    body.is-leaving #root { opacity: 0; transition: opacity 420ms cubic-bezier(0.2, 0, 0, 1); }
+    .sidebar-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--muted); border-bottom: none; margin-bottom: 80px; transition: color var(--dur) var(--ease); text-decoration: none; }
+    .sidebar-back:hover { color: var(--black); }
+    .sidebar-back svg { width: 12px; height: 12px; }
+    .sidebar-toc { list-style: none; display: flex; flex-direction: column; gap: 1px; padding: 0; margin: 0; }
+    .sidebar-toc li { list-style: none; }
+    .sidebar-toc a { display: flex; padding: 6px 8px 6px 20px; border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 14.5px; line-height: 1.4; transition: color var(--dur) var(--ease), background var(--dur) var(--ease); }
+    .sidebar-toc a:hover { color: var(--black); background: rgba(0,0,0,0.05); }
+    .sidebar-toc a[data-current="true"] { color: var(--black); font-weight: 500; }
+    @media (max-width: 1180px) {
+      .sidebar { display: none; }
     }
-    .nav-btn.active { box-shadow: 0 0 0 2px rgba(0,0,0,0.22); }
-    @media (max-width: 768px) { .nav-pill { right: 20px; } }
 
     table { width: 100%; border-collapse: collapse; }
     th {
@@ -78,24 +106,1201 @@
     section { padding: var(--section-pad, 96px 0); }
     button { font-family: var(--font); }
 
-    body { transition: opacity 0.3s ease-in-out; }
+    body { transition: opacity 0.9s ease-in-out; }
     body.page-entering, body.page-leaving { opacity: 0; }
 
-    body.is-embed .nav-pill  { display: none !important; }
+    body.is-embed .sidebar { display: none !important; }
   </style>
 </head>
-<body>
+<body class="page-entering">
 
-  <nav class="nav-pill" aria-label="Site navigation">
-    <a href="contact.html" class="nav-btn" title="Contact" style="color:#71717a">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 5.5L8 9.5L14 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  <aside id="sidebar" class="sidebar">
+    <a class="sidebar-back" href="projects.html">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
     </a>
-  </nav>
+    <ol class="sidebar-toc" id="sidebarTocList">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#playbook">Playbook</a></li>
+      <li><a href="#whalewatching">Whale Watching</a></li>
+      <li><a href="#ecoweb">Eco-Web</a></li>
+      <li><a href="#flowerhunt">Flower Hunt</a></li>
+      <li><a href="#other">Other Programs</a></li>
+      <li><a href="#measurement">Measurement</a></li>
+      <li><a href="#handoff">Handoff</a></li>
+      <li><a href="#reflection">Reflection</a></li>
+    </ol>
+  </aside>
 
   <div id="root"></div>
-  <script type="text/babel" src="ea-shared.jsx"></script>
-  <script type="text/babel" src="cb-sections.jsx"></script>
-  <script type="text/babel" src="cb-app.jsx"></script>
+  <script type="text/babel" data-presets="react">
+// ea-shared-v2.jsx — shared UI primitives — new palette
+
+const V2 = {
+  bg:          '#fffffd',
+  white:       '#ffffff',
+  dark:        '#2a2b2a',
+  ink:         '#2a2b2a',
+  muted:       'rgba(42,43,42,0.45)',
+  border:      'rgba(42,43,42,0.08)',
+  // Palette accents
+  periwinkle:  '#b6c2fe',
+  petal:       '#ffc7d8',
+  sage:        '#bcd8cd',
+  // Semantic
+  accent:      '#b6c2fe',       // periwinkle — positive / highlight
+  accentBg:    'rgba(182,194,254,0.18)',
+  warn:        '#e8789a',       // deeper petal — warnings / issues
+  warnBg:      'rgba(255,199,216,0.25)',
+  neutral:     '#bcd8cd',       // sage — neutral
+  neutralBg:   'rgba(188,216,205,0.22)',
+};
+
+const Placeholder = ({ label, height = 220, note }) => (
+  <div style={{
+    height, borderRadius: 14,
+    background: 'rgba(42,43,42,0.04)',
+    display: 'flex', flexDirection: 'column', alignItems: 'center',
+    justifyContent: 'center', border: '1px dashed rgba(42,43,42,0.12)',
+    gap: 8, padding: 24, textAlign: 'center',
+  }}>
+    <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'rgba(42,43,42,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>[ {label} ]</span>
+    {note && <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'rgba(42,43,42,0.2)', maxWidth: 320, lineHeight: 1.6 }}>{note}</span>}
+  </div>
+);
+
+const Photo = ({ src, alt, caption, radius = 14, background }) => (
+  <figure style={{ margin: 0 }}>
+    <img src={src} alt={alt || caption || ''} style={{
+      display: 'block', width: '100%', height: 'auto',
+      borderRadius: radius, background: background || 'transparent',
+    }} />
+    {caption && (
+      <figcaption style={{
+        marginTop: 10, fontSize: 12, color: V2.muted,
+        lineHeight: 1.6, textAlign: 'center',
+      }}>{caption}</figcaption>
+    )}
+  </figure>
+);
+
+const Video = ({ src, caption, radius = 14, background }) => (
+  <figure style={{ margin: 0 }}>
+    <video
+      src={src}
+      autoPlay
+      loop
+      muted
+      playsInline
+      style={{
+        display: 'block', width: '100%', height: 'auto',
+        borderRadius: radius, background: background || 'transparent',
+      }}
+    />
+    {caption && (
+      <figcaption style={{
+        marginTop: 10, fontSize: 12, color: V2.muted,
+        lineHeight: 1.6, textAlign: 'center',
+      }}>{caption}</figcaption>
+    )}
+  </figure>
+);
+
+const Tag = ({ children, color = 'default' }) => {
+  const p = {
+    default:     { fg: V2.muted,       border: V2.border,                     bg: 'transparent' },
+    green:       { fg: '#2a6e8a',      border: 'rgba(182,194,254,0.5)',        bg: V2.accentBg },
+    amber:       { fg: '#b05070',      border: 'rgba(255,199,216,0.5)',        bg: V2.warnBg },
+    gray:        { fg: V2.muted,       border: V2.border,                     bg: V2.neutralBg },
+    blue:        { fg: '#4a5ab8',      border: 'rgba(182,194,254,0.4)',        bg: V2.accentBg },
+    dark:        { fg: '#fffffd',      border: 'transparent',                  bg: V2.dark },
+    red:         { fg: '#b04030',      border: 'rgba(176,64,48,0.25)',         bg: 'rgba(176,64,48,0.08)' },
+  };
+  const c = p[color] || p.default;
+  return (
+    <span style={{
+      background: c.bg, color: c.fg, border: `1px solid ${c.border}`,
+      borderRadius: 100, padding: '3px 12px',
+      fontSize: 11, fontWeight: 600, display: 'inline-block',
+      lineHeight: 1.6, letterSpacing: '0.03em',
+    }}>{children}</span>
+  );
+};
+
+const Stat = ({ value, label, accent, sub }) => (
+  <div style={{
+    borderRadius: 16, padding: '28px 20px', textAlign: 'center',
+    border: `1px solid ${V2.border}`,
+    display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center',
+    background: V2.white,
+    boxShadow: '0 2px 12px rgba(42,43,42,0.05)',
+  }}>
+    <span style={{ fontSize: 40, fontWeight: 500, color: accent || V2.accent, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Lora, Georgia, serif' }}>{value}</span>
+    <span style={{ fontSize: 12, color: V2.muted, lineHeight: 1.4, maxWidth: 110 }}>{label}</span>
+    {sub && <span style={{ fontSize: 11, color: accent || V2.accent, fontWeight: 600 }}>{sub}</span>}
+  </div>
+);
+
+const QuoteBlock = ({ text, author, role }) => (
+  <div style={{ padding: '24px 32px', borderLeft: `3px solid ${V2.accent}`, background: V2.accentBg, borderRadius: '0 12px 12px 0' }}>
+    <p style={{ fontSize: 18, lineHeight: 1.8, color: V2.ink, fontStyle: 'italic', margin: 0, fontFamily: 'Lora, Georgia, serif', fontWeight: 400 }}>"{text}"</p>
+    {author && <div style={{ marginTop: 12, fontSize: 12, color: V2.muted, fontWeight: 500, letterSpacing: '0.04em' }}>— {author}{role ? `, ${role}` : ''}</div>}
+  </div>
+);
+
+const Card = ({ children, style = {} }) => (
+  <div style={{
+    background: V2.white, borderRadius: 16, padding: '28px',
+    boxShadow: '0 2px 16px rgba(42,43,42,0.06), 0 1px 3px rgba(42,43,42,0.04)',
+    ...style
+  }}>{children}</div>
+);
+
+const SectionHeader = ({ num, title, subtitle }) => (
+  <div style={{ marginBottom: 44 }}>
+    <div style={{ fontSize: 11, fontWeight: 600, color: V2.muted, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>
+      {String(num).padStart(2, '0')}
+    </div>
+    <h2 style={{ fontSize: 36, fontWeight: 500, margin: 0, color: V2.ink, lineHeight: 1.12, letterSpacing: '-0.025em', fontFamily: 'Lora, Georgia, serif' }}>{title}</h2>
+    {subtitle && <p style={{ marginTop: 14, fontSize: 15, color: V2.muted, lineHeight: 1.7, maxWidth: 600, margin: '14px 0 0' }}>{subtitle}</p>}
+  </div>
+);
+
+const SectionWrap = ({ id, children, style = {} }) => (
+  <section id={id} style={{ padding: '56px 0', ...style }}>{children}</section>
+);
+
+const Container = ({ children, noBorder = false }) => {
+  const embed = new URLSearchParams(window.location.search).has('embed');
+  return (
+    <div style={{ width: '100%', paddingLeft: embed ? '10%' : 0, paddingRight: embed ? '10%' : 0, boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: embed ? 'none' : 720, margin: '0 auto', padding: '36px 48px 0', borderTop: noBorder ? 'none' : `1px solid ${V2.border}` }}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const MethodIcon = ({ type, size = 44 }) => {
+  const s = size;
+  const icons = {
+    interview: (
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+      </svg>
+    ),
+    survey: (
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+        <line x1="6" x2="10" y1="11" y2="11" />
+        <line x1="8" x2="8" y1="9" y2="13" />
+        <line x1="15" x2="15.01" y1="12" y2="12" strokeWidth={2.5} />
+        <line x1="18" x2="18.01" y1="10" y2="10" strokeWidth={2.5} />
+      </svg>
+    ),
+    usability: (
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+        <path d="M9 17h6" />
+        <path d="M9 13h6" />
+      </svg>
+    ),
+    competitive: (
+      <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={V2.accent} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+        <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+        <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+        <path d="M4 20h14" />
+      </svg>
+    ),
+    matrix: (
+      <svg width={s} height={s} viewBox="0 0 52 52" fill="none">
+        <rect x="4" y="4" width="44" height="44" rx="7" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
+        <line x1="4" y1="18" x2="48" y2="18" stroke={V2.accent} strokeWidth="1"/>
+        <line x1="4" y1="32" x2="48" y2="32" stroke={V2.accent} strokeWidth="1"/>
+        <line x1="18" y1="4" x2="18" y2="48" stroke={V2.accent} strokeWidth="1"/>
+        <line x1="32" y1="4" x2="32" y2="48" stroke={V2.accent} strokeWidth="1"/>
+        <circle cx="25" cy="25" r="6" fill={V2.accent}/>
+      </svg>
+    ),
+    affinity: (
+      <svg width={s} height={s} viewBox="0 0 52 52" fill="none">
+        <rect x="4" y="4" width="20" height="14" rx="4" fill={V2.accent}/>
+        <rect x="28" y="4" width="20" height="14" rx="4" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
+        <rect x="4" y="24" width="20" height="14" rx="4" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
+        <rect x="28" y="24" width="20" height="14" rx="4" fill={V2.accentBg} stroke={V2.accent} strokeWidth="1.5"/>
+      </svg>
+    ),
+  };
+  return (
+    <div style={{ width: 64, height: 64, background: V2.accentBg, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      {icons[type] || <div style={{ width: s, height: s, background: V2.accentBg, borderRadius: 8 }} />}
+    </div>
+  );
+};
+
+const HitMiss = ({ v }) => {
+  if (v === 'hit')  return <span style={{ color: '#4a8a6a', fontWeight: 700, fontSize: 12 }}>✓ Hit</span>;
+  if (v === 'miss') return <span style={{ color: V2.warn, fontWeight: 700, fontSize: 12 }}>✗ Miss</span>;
+  if (v === 'fp')   return <span style={{ color: V2.warn, fontWeight: 700, fontSize: 12 }}>✗ False+</span>;
+  return <span style={{ color: '#ddd', fontSize: 12 }}>—</span>;
+};
+
+// cb-sections.jsx — Cabrillo National Monument Interpretation Program case study
+
+const CB_FLIP_MS = 850;
+const CB_FLIP_EASE = 'cubic-bezier(.3,.7,.4,1)';
+const CB_PAGE_ASPECT = 0.65; // page width / height
+
+const CBUseInView = (threshold = 0.15) => {
+  const ref = React.useRef(null);
+  const [seen, setSeen] = React.useState(false);
+  React.useEffect(() => {
+    if (!ref.current || seen) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setSeen(true);
+        obs.disconnect();
+      }
+    }, { threshold });
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [seen, threshold]);
+  return [ref, seen];
+};
+
+const CBFlipPage = ({ src, side, alt }) => {
+  if (!src) return null;
+  return (
+    <div style={{
+      position: 'absolute', top: 0, bottom: 0,
+      [side === 'left' ? 'left' : 'right']: 0,
+      width: '50%',
+      borderRadius: side === 'left' ? '6px 0 0 6px' : '0 6px 6px 0',
+      overflow: 'hidden',
+      background: '#fff',
+      boxShadow: side === 'left'
+        ? 'inset -8px 0 16px -8px rgba(0,0,0,0.10)'
+        : 'inset 8px 0 16px -8px rgba(0,0,0,0.10)',
+    }}>
+      <img src={src} alt={alt || ''} style={{
+        width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+      }} />
+    </div>
+  );
+};
+
+const CBFlippingLeaf = ({ frontSrc, backSrc, fromRot, toRot, onDone }) => {
+  const [rot, setRot] = React.useState(fromRot);
+  React.useEffect(() => {
+    let r2;
+    const r1 = requestAnimationFrame(() => {
+      r2 = requestAnimationFrame(() => setRot(toRot));
+    });
+    const t = setTimeout(onDone, CB_FLIP_MS);
+    return () => {
+      cancelAnimationFrame(r1);
+      if (r2) cancelAnimationFrame(r2);
+      clearTimeout(t);
+    };
+  }, []);
+  const mid = rot < -10 && rot > -170;
+  return (
+    <div style={{
+      position: 'absolute', top: 0, bottom: 0, right: 0,
+      width: '50%',
+      transformStyle: 'preserve-3d',
+      transformOrigin: 'left center',
+      transform: `rotateY(${rot}deg)`,
+      transition: `transform ${CB_FLIP_MS}ms ${CB_FLIP_EASE}`,
+      pointerEvents: 'none',
+      zIndex: 3,
+      filter: mid ? 'drop-shadow(0 12px 20px rgba(0,0,0,0.28))' : 'none',
+    }}>
+      {frontSrc && (
+        <img src={frontSrc} alt="" style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover', backfaceVisibility: 'hidden',
+          borderRadius: '0 6px 6px 0', background: '#fff',
+        }} />
+      )}
+      {backSrc && (
+        <img src={backSrc} alt="" style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%',
+          objectFit: 'cover', backfaceVisibility: 'hidden',
+          transform: 'rotateY(180deg)',
+          borderRadius: '6px 0 0 6px', background: '#fff',
+        }} />
+      )}
+    </div>
+  );
+};
+
+const CBFlipbook = ({ pages, label = '', maxPageHeight = 460 }) => {
+  // Build views from pages: cover (single right), spreads, back (single left)
+  const views = React.useMemo(() => {
+    const result = [];
+    if (!pages || pages.length === 0) return result;
+    result.push({ left: null, right: pages[0] });
+    for (let i = 1; i < pages.length - 1; i += 2) {
+      result.push({ left: pages[i], right: pages[i + 1] || null });
+    }
+    if (pages.length > 1) result.push({ left: pages[pages.length - 1], right: null });
+    return result;
+  }, [pages]);
+
+  const [current, setCurrent] = React.useState(0);
+  const [flip, setFlip] = React.useState(null);
+  const containerRef = React.useRef(null);
+
+  const canPrev = !flip && current > 0;
+  const canNext = !flip && current < views.length - 1;
+
+  const prev = React.useCallback(() => {
+    if (flip || current === 0) return;
+    setFlip({ direction: 'backward', from: current, to: current - 1 });
+  }, [flip, current]);
+
+  const goNext = React.useCallback(() => {
+    if (flip || current >= views.length - 1) return;
+    setFlip({ direction: 'forward', from: current, to: current + 1 });
+  }, [flip, current, views.length]);
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (!containerRef.current) return;
+      const inFocus = containerRef.current.matches(':hover, :focus-within');
+      if (!inFocus) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [goNext, prev]);
+
+  const onFlipDone = React.useCallback(() => {
+    setCurrent(c => (flip ? flip.to : c));
+    setFlip(null);
+  }, [flip]);
+
+  const view = views[current] || { left: null, right: null };
+  const target = flip ? views[flip.to] : null;
+
+  // Compute hybrid bottom layer + leaf during animation
+  let bottomLeft = view.left;
+  let bottomRight = view.right;
+  let leafFront = null, leafBack = null, leafFromRot = 0, leafToRot = -180;
+  if (flip && target) {
+    if (flip.direction === 'forward') {
+      bottomRight = target.right;        // revealed under the rotating leaf
+      leafFront = view.right;            // page leaving from right
+      leafBack = target.left;            // page arriving on left
+      leafFromRot = 0;
+      leafToRot = -180;
+    } else {
+      bottomLeft = target.left;          // revealed under the rotating leaf
+      leafFront = target.right;          // page arriving on right
+      leafBack = view.left;              // page leaving from left
+      leafFromRot = -180;
+      leafToRot = 0;
+    }
+  }
+
+  const pageWidth = maxPageHeight * CB_PAGE_ASPECT;
+  const bookWidth = pageWidth * 2;
+
+  const arrowStyle = (visible) => ({
+    width: 52, height: 52, borderRadius: 100,
+    background: 'rgba(255,255,255,0.10)',
+    border: '1px solid rgba(255,255,255,0.18)',
+    color: 'rgba(255,255,255,0.92)',
+    cursor: visible ? 'pointer' : 'default',
+    opacity: visible ? 1 : 0,
+    pointerEvents: visible ? 'auto' : 'none',
+    transition: 'opacity 220ms ease, background 150ms ease, transform 150ms ease',
+    fontSize: 22, fontWeight: 400, lineHeight: 1,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0, padding: 0,
+  });
+
+  return (
+    <div ref={containerRef} tabIndex={-1} style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      gap: 24, outline: 'none', userSelect: 'none', width: '100%',
+    }}>
+      <button
+        type="button"
+        onClick={prev}
+        disabled={!canPrev}
+        style={arrowStyle(canPrev)}
+        onMouseEnter={(e) => { if (canPrev) { e.currentTarget.style.background = 'rgba(255,255,255,0.22)'; e.currentTarget.style.transform = 'scale(1.05)'; } }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'scale(1)'; }}
+        aria-label="Previous page"
+      >‹</button>
+
+      <div style={{
+        flexShrink: 0,
+        width: bookWidth, maxWidth: '100%',
+        aspectRatio: `${CB_PAGE_ASPECT * 2} / 1`,
+        perspective: '2400px',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'relative', width: '100%', height: '100%',
+          boxShadow: '0 22px 60px rgba(0,0,0,0.32), 0 6px 18px rgba(0,0,0,0.16)',
+          borderRadius: 6,
+        }}>
+          {/* Bottom layer */}
+          <CBFlipPage src={bottomLeft} side="left" />
+          <CBFlipPage src={bottomRight} side="right" />
+
+          {/* Spine */}
+          <div style={{
+            position: 'absolute', top: 0, bottom: 0, left: '50%',
+            width: 4, transform: 'translateX(-2px)',
+            background: 'linear-gradient(to right, rgba(0,0,0,0.22), rgba(0,0,0,0.06) 40%, rgba(0,0,0,0.06) 60%, rgba(0,0,0,0.22))',
+            pointerEvents: 'none', zIndex: 5,
+          }} />
+
+          {/* Flipping leaf */}
+          {flip && (
+            <CBFlippingLeaf
+              key={`${flip.from}-${flip.to}-${flip.direction}`}
+              frontSrc={leafFront}
+              backSrc={leafBack}
+              fromRot={leafFromRot}
+              toRot={leafToRot}
+              onDone={onFlipDone}
+            />
+          )}
+
+          {/* Click zones */}
+          <div
+            onClick={prev}
+            style={{
+              position: 'absolute', top: 0, bottom: 0, left: 0, width: '50%',
+              cursor: canPrev ? 'pointer' : 'default', zIndex: 4,
+            }}
+            aria-hidden="true"
+          />
+          <div
+            onClick={goNext}
+            style={{
+              position: 'absolute', top: 0, bottom: 0, right: 0, width: '50%',
+              cursor: canNext ? 'pointer' : 'default', zIndex: 4,
+            }}
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Page counter */}
+        <div style={{
+          position: 'absolute', bottom: -36, left: 0, right: 0,
+          textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.5)',
+          fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
+        }}>
+          {label ? `${label} — ` : ''}{current + 1} / {views.length}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={goNext}
+        disabled={!canNext}
+        style={arrowStyle(canNext)}
+        onMouseEnter={(e) => { if (canNext) { e.currentTarget.style.background = 'rgba(255,255,255,0.22)'; e.currentTarget.style.transform = 'scale(1.05)'; } }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'scale(1)'; }}
+        aria-label="Next page"
+      >›</button>
+    </div>
+  );
+};
+
+const CBEcoCard = ({ src, alt, index }) => {
+  const [ref, seen] = CBUseInView(0.15);
+  return (
+    <div ref={ref} style={{
+      aspectRatio: '0.515 / 1',
+      overflow: 'hidden',
+      borderRadius: 14,
+      boxShadow: seen ? '0 6px 18px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06)' : 'none',
+      opacity: seen ? 1 : 0,
+      transform: seen ? 'translateY(0) scale(1)' : 'translateY(28px) scale(0.92)',
+      transition: `opacity 720ms cubic-bezier(.2,.7,.3,1) ${index * 45}ms, transform 720ms cubic-bezier(.2,.7,.3,1) ${index * 45}ms, box-shadow 720ms ease ${index * 45}ms`,
+      willChange: 'opacity, transform',
+    }}>
+      <img src={src} alt={alt} style={{
+        width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+      }} />
+    </div>
+  );
+};
+
+
+const CBHeroSection = () =>
+<SectionWrap id="hero" style={{ padding: '120px 0 80px' }}>
+    <Container noBorder>
+      <h1 style={{
+        fontSize: 'clamp(52px, 8vw, 80px)', fontWeight: 500, lineHeight: 1.05,
+        letterSpacing: '-0.03em', color: '#111', marginBottom: 16,
+        fontFamily: 'Lora, Georgia, serif', maxWidth: 740,
+      }}>
+        Cabrillo National Monument.
+      </h1>
+
+      <div style={{ fontSize: 13, color: '#aaa', fontWeight: 500, letterSpacing: '0.01em', marginBottom: 32, whiteSpace: 'nowrap' }}>
+        Program Management &nbsp;·&nbsp; Public Engagement &nbsp;·&nbsp; Stakeholder Coordination &nbsp;·&nbsp; National Park Service
+      </div>
+
+      <p style={{ fontSize: 18, lineHeight: 1.75, color: '#777', maxWidth: 620, marginBottom: 56, fontWeight: 400 }}>
+        Two terms as an Associate in the park's Interpretation program — designing, running, measuring, and documenting public engagement programs end-to-end so they survived past my tenure.
+      </p>
+
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gap: 0,
+        width: 'fit-content', marginBottom: 64,
+        borderTop: '1px solid rgba(0,0,0,0.08)',
+        borderBottom: '1px solid rgba(0,0,0,0.08)',
+      }}>
+        {[['Role', 'Interpretation Associate'], ['Duration', '2 Terms (multi-season)'], ['Client', 'Cabrillo NM (NPS)'], ['Output', 'Programs, SOPs, materials']].map(([l, v], i) =>
+          <div key={l} style={{
+            padding: '16px 32px 16px', paddingLeft: i === 0 ? 0 : 32,
+            borderLeft: i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none',
+          }}>
+            <div style={{ fontSize: 10, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 5 }}>{l}</div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: '#111' }}>{v}</div>
+          </div>
+        )}
+      </div>
+
+      <div style={{ borderRadius: 22, overflow: 'hidden', background: '#FAFAF8' }}>
+        <img src="screenshots/cabrillo/hero-altar.jpg" alt="Día de los Muertos altar at the Cabrillo Visitor Center" style={{ width: '100%', height: 'auto', display: 'block' }} />
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBOverviewSection = () =>
+<SectionWrap id="overview" style={{ background: '#fff' }}>
+    <Container>
+      <SectionHeader num={1} title="The Program" subtitle="Public engagement at a federal park, against a fixed audience and a fixed calendar." />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Setting</div>
+          <p style={{ fontSize: 15, lineHeight: 1.8, color: '#333', margin: 0 }}>
+            Cabrillo National Monument sits at the tip of Point Loma in San Diego — coastal scrub on the bluffs, an intertidal zone below, and the Old Point Loma Lighthouse on top. Visitors arrive across all ages, languages, and prior knowledge levels, often for an hour at most.
+          </p>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Role</div>
+          <p style={{ fontSize: 15, lineHeight: 1.8, color: '#333', margin: 0 }}>
+            I worked as an Associate in the park's Interpretation program — the team responsible for the educational and cultural programming visitors actually engage with. My remit covered scoping, designing, facilitating, measuring, and writing the SOPs that let the next person run each program without me.
+          </p>
+        </Card>
+      </div>
+      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 40 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>PROGRAM CHALLENGE</div>
+        <p style={{ fontSize: 21, lineHeight: 1.6, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760 }}>
+          "How do you run public-engagement programs that scale across staff turnover, multiple seasons, and a 7-to-70 audience — when your only signal is whether someone walks up?"
+        </p>
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBPlaybookSection = () =>
+<SectionWrap id="playbook">
+    <Container>
+      <SectionHeader num={2} title="The Playbook" subtitle="A repeatable model I wrote down so the next intern wouldn't start from scratch." />
+
+      <p style={{ fontSize: 15, lineHeight: 1.8, color: '#555', maxWidth: 720, marginBottom: 32 }}>
+        Most of the work was running events. The most useful artifact I produced was the <em>process</em> behind them: a written guide called <strong>"A Mini Guide on Pop-Up Programs"</strong> that codified the 7-step model below. Future associates inherit a system, not just a folder of files.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 28 }}>
+        {[
+          ['01', 'Theme', 'Pick the message and the educational anchor first. Activities follow.'],
+          ['02', 'Interpretive Question', 'What question do we want a visitor to walk away asking? Drives engagement, not recall.'],
+          ['03', 'Research', 'The most time-consuming step. Done in a shared workspace so the next person can fact-check.'],
+          ['04', 'Materials', 'Designed in Canva/Adobe; resourceful with what the office already has. Print-ready.'],
+          ['05', 'Location', 'Picked for visitor flow + proximity to the resource being interpreted (e.g., whale overlook for whales).'],
+          ['06', 'Activity & Promotion', 'Built for a wide age range. Promoted via partner social channels in advance.'],
+          ['07', 'Measurement', 'Clicker counts of meaningful interactions, worksheet completions, prizes given out — logged for end-of-year reporting.'],
+        ].map(([n, title, desc]) =>
+          <Card key={n} style={{ padding: '22px 22px 20px' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', letterSpacing: '0.12em', marginBottom: 10 }}>STEP {n}</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 8 }}>{title}</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#555' }}>{desc}</div>
+          </Card>
+        )}
+      </div>
+
+      <div style={{ padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Why this mattered</div>
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+          The Interpretation program runs on rotating interns and seasonal staff. Without documented process, every new associate reinvents the wheel and the program loses institutional memory. Writing the playbook was a deliberate PM move — one document that compounds across every future event.
+        </p>
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBWhaleWatchingSection = () =>
+<SectionWrap id="whalewatching" style={{ background: '#fff' }}>
+    <Container>
+      <SectionHeader num={3} title="Initiative 01 — Guided Whale Watching" subtitle="A multi-week program run two seasons in a row, with a documented handoff for the third." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Opportunity</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Gray whales migrate past Point Loma every December–February. Cabrillo was historically a pioneer in land-based whale watching, but the program had lapsed. I designed and ran a multi-week pop-up to revive it — first in 2024, then expanded for 2025.
+          </p>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Owned</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Program scoping, partnership with subject experts, activity workbook, on-site facilitation, social promotion across two seasons, weekly tuning based on attendance, and the SOP that let the program run again in 2025 without me re-spec'ing it.
+          </p>
+        </Card>
+      </div>
+
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>Program shape</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 32 }}>
+        {[
+          ['Cadence', '4 Saturdays per season, 10:30am–12:30pm, at Kelp Forest & Whale Watch Overlook.'],
+          ['Materials', 'Borrowed binoculars, fact sheets, and a Gray Whale Activity Book (anatomy match, migration map, observation centerfold, final report) I designed in Canva.'],
+          ['Promotion', 'IG posts on partner accounts in the weeks leading up — flyer art, dated week-by-week schedule. Eye-catching > information-dense.'],
+          ['Facilitation', 'Walk visitors from the Visitor Center to the overlook, hand out binoculars, guide what to look for (flukes, spouts, boat trails), answer the standard 4 questions.'],
+        ].map(([t, d]) =>
+          <Card key={t} style={{ padding: '20px 22px' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#111', marginBottom: 6 }}>{t}</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#555' }}>{d}</div>
+          </Card>
+        )}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 40 }}>
+        {[
+          ['whale-ig-1.png', 'Guided Whale Watching IG flyer (2025 season)'],
+          ['whale-ig-2.png', 'Calendar IG post listing the four Saturdays'],
+          ['whale-photo.jpg', 'Whale tail photographed from a Cabrillo overlook'],
+        ].map(([file, alt]) =>
+          <div key={file} style={{ borderRadius: 14, overflow: 'hidden', background: '#FAFAF8', border: '1px solid rgba(0,0,0,0.06)' }}>
+            <img src={`screenshots/cabrillo/${file}`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '1 / 1', display: 'block' }} />
+          </div>
+        )}
+      </div>
+
+      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+        <div style={{ textAlign: 'center', maxWidth: 520 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The activity book</div>
+          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
+            Flip through the Gray Whale Watching booklet
+          </h3>
+          <p style={{ fontSize: 13, color: '#aaa', margin: 0, lineHeight: 1.7 }}>
+            Cover → instructions → anatomy match → migration map → observation centerfold → final report → thank-you stamp page. Click the right edge to turn each page.
+          </p>
+        </div>
+        <CBFlipbook
+          pages={[
+            'screenshots/cabrillo/wb-1-cover.png',
+            'screenshots/cabrillo/wb-2-instructions.png',
+            'screenshots/cabrillo/wb-3-anatomy.png',
+            'screenshots/cabrillo/wb-5a-draw-l.png',
+            'screenshots/cabrillo/wb-5b-draw-r.png',
+            'screenshots/cabrillo/wb-4-map.png',
+            'screenshots/cabrillo/wb-6-final-report.png',
+            'screenshots/cabrillo/wb-7-thanks.png',
+          ]}
+          label="Whale Book"
+          maxPageHeight={460}
+        />
+      </div>
+
+      <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Cross-functional</div>
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+          I partnered with Park Ranger Amanda, who had run earlier versions, to absorb institutional knowledge before launch. Then I wrote a public Canva for the activity book and a Grey Whale Watching SOP — both editable so future facilitators can extend the program rather than rebuild it.
+        </p>
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBEcoWebSection = () =>
+<SectionWrap id="ecoweb">
+    <Container>
+      <SectionHeader num={4} title="Initiative 02 — Eco-Web" subtitle="A two-deck educational card game on California food webs, designed against explicit user-research requirements." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Brief</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            A reusable activity for outreach events and classrooms that explains how disruptions cascade through an ecosystem — without a science background and without losing a 10-year-old halfway through.
+          </p>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Frame</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Facilitator-led: a ranger or teacher draws a scenario card and players reason out cascading effects. The right answer is the conversation, not a card flip.
+          </p>
+        </Card>
+      </div>
+
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>User-centered requirements (from the SOP)</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14, marginBottom: 32 }}>
+        {[
+          ['Cognitive Load', 'Has to be quick and digestible. A long, dense activity loses participants mid-way. Each card carries one idea.', '#EBF7F2', '#2A8A5C'],
+          ['Accessibility', 'Plain language for scientific terms. Designed for ESL learners, K–12 students, and adults across knowledge levels.', '#FAF7F2', '#666'],
+          ['Learning Outcome', 'Players walk away knowing X, Y, Z — but more importantly, motivated to repeat what they learned. Conversation over correctness.', '#FDF0E6', '#B85C0D'],
+        ].map(([title, desc, bg, accent]) =>
+          <div key={title} style={{ background: bg, borderRadius: 18, padding: '22px 20px', border: `1.5px solid ${accent}22` }}>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8, color: accent }}>{title}</div>
+            <div style={{ fontSize: 13, color: '#555', lineHeight: 1.65 }}>{desc}</div>
+          </div>
+        )}
+      </div>
+
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>The card system</h3>
+      <Card style={{ padding: 0, marginBottom: 22 }}>
+        <table>
+          <thead>
+            <tr>
+              <th>Set</th>
+              <th>Contents</th>
+              <th>Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ fontWeight: 600, fontSize: 14 }}>Animal Cards</td>
+              <td style={{ color: '#555', fontSize: 13 }}>California natives across two ecosystems — coastal scrub (Bumble Bee, Prickly Pear, Black Phoebe, Cooper's Hawk, Grey Fox, Gopher Snake, Red-tailed Hawk, Crawford's Grey Shrew, Desert Cottontail) and intertidal/marine (Brown Algae, Bat Star, Blueband Hermit Crab, Garibaldi, Osprey, Common Dolphin)</td>
+              <td style={{ color: '#777', fontSize: 13 }}>Build the food web before scenarios begin</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 600, fontSize: 14 }}>Scenario Cards</td>
+              <td style={{ color: '#555', fontSize: 13 }}>Disruption events — disease, new predator, drought, chemical spill, invasive species, ocean acidification, intertidal invader</td>
+              <td style={{ color: '#777', fontSize: 13 }}>Trigger reasoning about cascading effects</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 600, fontSize: 14 }}>Resource Icons</td>
+              <td style={{ color: '#555', fontSize: 13 }}>Sunlight, Water (H₂O), Nutrient (N/C) atomic-style icons used as a shared visual vocabulary across both decks</td>
+              <td style={{ color: '#777', fontSize: 13 }}>Same language across ecosystems → cards mix and combine</td>
+            </tr>
+          </tbody>
+        </table>
+      </Card>
+
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>The full deck</h3>
+      <p style={{ fontSize: 14, lineHeight: 1.7, color: '#666', maxWidth: 720, marginBottom: 24 }}>
+        15 species across two decks — coastal scrub on top, intertidal/marine on the bottom row. Each card carries a photograph, common + scientific name, and the prey-icon row that drives the food-web reasoning.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 16, padding: 22, background: '#F4F4F1', borderRadius: 22 }}>
+        {[
+          ['card-black-phoebe', 'Black Phoebe'],
+          ['card-coopers-hawk', "Cooper's Hawk"],
+          ['card-red-tailed-hawk', 'Red-tailed Hawk'],
+          ['card-grey-shrew', "Crawford's Grey Shrew"],
+          ['card-grey-fox', 'Grey Fox'],
+          ['card-gopher-snake', 'Gopher Snake'],
+          ['card-desert-cottontail', 'Desert Cottontail'],
+          ['card-bumble-bee', 'California Bumble Bee'],
+          ['card-prickly-pear', 'Coastal Prickly Pear'],
+          ['card-bat-star', 'Bat Star'],
+          ['card-blueband-hermit', 'Blueband Hermit Crab'],
+          ['card-brown-algae', 'Brown Algae'],
+          ['card-garibaldi', 'Garibaldi'],
+          ['card-osprey', 'Osprey'],
+          ['card-common-dolphin', 'Common Dolphin'],
+        ].map(([file, alt], i) =>
+          <CBEcoCard
+            key={file}
+            src={`screenshots/cabrillo/${file}.png`}
+            alt={alt}
+            index={i}
+          />
+        )}
+      </div>
+
+      <div style={{ marginTop: 28, padding: '22px 26px', background: '#FAFAF8', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Built to be extended</div>
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+          The SOP I wrote includes a "Future Refinements" section — a 4-step process (research → wireframe the new relationships → design new cards → user-test before merging) so future staff can extend the deck without breaking the visual or pedagogical system.
+        </p>
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBFlowerHuntSection = () =>
+<SectionWrap id="flowerhunt" style={{ background: '#fff' }}>
+    <Container>
+      <SectionHeader num={5} title="Initiative 03 — Junior Botanist (Spring Flower Hunt)" subtitle="A native-plant scavenger hunt — and the only program where I got to A/B test the launch." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What it was</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Visitors got a foldable scavenger hunt at the Visitor Center, walked the park's grassland and coastal trails to find five native plants, photographed their favorite, and returned to redeem a prize. An accompanying info table — with live plants from the park greenhouse — caught visitors who didn't want to walk.
+          </p>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Cross-functional</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Coordinated with Patricia, the park's Vegetation Specialist, to request a crate of in-bloom plants from the greenhouse for the table. Live plants ended up being the centerpiece — a reminder that the right ask to the right partner beats anything I could've designed alone.
+          </p>
+        </Card>
+      </div>
+
+      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 32 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>THE DATA POINT I CARE ABOUT</div>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: '0 0 18px', maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+          The first run was a quiet test. The second run — same activity, same location, same staff — went out with full social-media advertisement.
+        </p>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontWeight: 500, color: '#3DAA74', margin: 0, maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+          It pulled <span style={{ fontWeight: 700 }}>10× the participants.</span>
+        </p>
+      </div>
+
+      <p style={{ fontSize: 15, lineHeight: 1.8, color: '#555', maxWidth: 720, marginBottom: 24 }}>
+        That gap is the whole reason I take program-level promotion seriously. The activity wasn't the lever — the activity was already good. The lever was making sure people knew it existed before they showed up at the park. Every program I ran after that got a real promotion plan baked into the timeline, not bolted on at the end.
+      </p>
+
+      <div style={{ borderRadius: 18, overflow: 'hidden', background: '#FAFAF8', border: '1px solid rgba(0,0,0,0.06)' }}>
+        <img src="screenshots/cabrillo/flower-hunt.png" alt="Junior Botanist scavenger hunt — foldable book and native plant identification grid" style={{ width: '100%', height: 'auto', display: 'block' }} />
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBOtherInitiativesSection = () =>
+<SectionWrap id="other">
+    <Container>
+      <SectionHeader num={6} title="Program Breadth" subtitle="Smaller initiatives that filled out the program calendar — each treated as a real launch." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
+        {[
+          {
+            title: 'Open Tower Day',
+            desc: 'Activity booklet + Historical Explorer passport for the lighthouse open-tower event. Bingo card doubles as a scavenger hunt — items like Sea Dahlia, Shaw\'s Agave, and the Cabrillo Statue exist at specific locations and pull visitors through the full park.',
+          },
+          {
+            title: 'Cabrillo Birthday Pop-Up',
+            desc: 'Visitors made birthday cards for the park\'s anniversary — sharing memories and what they enjoy. Coloring-friendly, designed to hand to a kid with no instruction.',
+          },
+          {
+            title: 'Día de los Muertos',
+            desc: 'Cultural program celebrating Día de los Muertos — promotional poster and on-site altar activity. Brought a tradition into the park calendar that hadn\'t been programmed before.',
+          },
+          {
+            title: 'Gratitude Season',
+            desc: 'Community gratitude tree — visitors wrote what they\'re thankful for on a leaf and stuck it on a shared tree near the Visitor Center. Asynchronous, low-touch, high participation.',
+          },
+          {
+            title: 'Nature Journal',
+            desc: 'A two-page observational worksheet (date, weather, location, "I feel / I wonder / I notice" + sketch space) used across multiple programs. Reusable across seasons rather than one-off.',
+          },
+        ].map(t =>
+          <Card key={t.title} style={{ padding: '22px 22px 20px' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 8 }}>{t.title}</div>
+            <div style={{ fontSize: 13, lineHeight: 1.7, color: '#555' }}>{t.desc}</div>
+          </Card>
+        )}
+      </div>
+
+      <div style={{ marginTop: 24, marginBottom: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+        {[
+          ['birthday-card.png', 'Cabrillo Birthday Pop-Up flyer', '#FFF'],
+          ['gratitude-season.png', 'Gratitude Season tree activity flyer', '#FFF'],
+          ['dia-de-muertos-poster.png', 'Día de los Muertos altar poster', '#FFF'],
+          ['nature-journal.png', 'Nature Journal observational worksheet', '#FFF'],
+        ].map(([file, alt, bg]) =>
+          <div key={file} style={{ borderRadius: 14, overflow: 'hidden', background: bg, border: '1px solid rgba(0,0,0,0.06)' }}>
+            <img src={`screenshots/cabrillo/${file}`} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '4 / 5', display: 'block' }} />
+          </div>
+        )}
+      </div>
+
+      <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+        <div style={{ textAlign: 'center', maxWidth: 520 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The Open Tower Day booklet</div>
+          <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Lora, Georgia, serif', letterSpacing: '-0.01em' }}>
+            Eight panels, page by page
+          </h3>
+          <p style={{ fontSize: 13, color: '#aaa', margin: 0, lineHeight: 1.7 }}>
+            One folded sheet, eight panels — cover, how-to-play, word hunt, "ask a ranger" prompt, draw, BINGO, lighthouse stamps, and event checklist. Click the right edge to flip.
+          </p>
+        </div>
+        <CBFlipbook
+          pages={[
+            'screenshots/cabrillo/otd-1-cover.png',
+            'screenshots/cabrillo/otd-2-how-to-play.png',
+            'screenshots/cabrillo/otd-3-word-hunt.png',
+            'screenshots/cabrillo/otd-4-park-fact.png',
+            'screenshots/cabrillo/otd-5-draw.png',
+            'screenshots/cabrillo/otd-6-bingo.png',
+            'screenshots/cabrillo/otd-7-stamps.png',
+            'screenshots/cabrillo/otd-8-events.png',
+          ]}
+          label="OTD Book"
+          maxPageHeight={420}
+        />
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBMeasurementSection = () =>
+<SectionWrap id="measurement" style={{ background: '#fff' }}>
+    <Container>
+      <SectionHeader num={7} title="Measurement & Iteration" subtitle="What I tracked, why, and how the numbers changed how I ran the next program." />
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+        {[
+          {
+            n: '01',
+            title: 'Interpretive contacts',
+            desc: 'Clicker counts of meaningful interactions — required for end-of-year reporting at the park level. The same number tells you whether your pop-up is working and gives leadership a quantifiable program impact at the end of the season.',
+          },
+          {
+            n: '02',
+            title: 'Worksheet completion rate',
+            desc: 'For programs that used activity books, I tracked how many were handed out vs. completed. That ratio tells you whether the activity is the draw or whether people are just collecting collateral.',
+          },
+          {
+            n: '03',
+            title: 'Promotion lift',
+            desc: 'The 10× participation gap between the test and advertised runs of Junior Botanist. After that data point, every program got a real promotion plan baked into the timeline — not bolted on at the end.',
+          },
+          {
+            n: '04',
+            title: 'Multi-week tuning',
+            desc: 'Whale Watching ran four Saturdays. If attendance dropped or visitors weren\'t engaging with the workbook, I had three more weekends to adjust the pitch, the materials, or the location. Each weekend was an iteration.',
+          },
+        ].map(d =>
+          <Card key={d.n} style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 18, padding: '22px 26px' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', letterSpacing: '0.12em', textTransform: 'uppercase', paddingTop: 4 }}>
+              {d.n}
+            </div>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#111', marginBottom: 6 }}>{d.title}</div>
+              <p style={{ fontSize: 14, lineHeight: 1.7, color: '#555', margin: 0 }}>{d.desc}</p>
+            </div>
+          </Card>
+        )}
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBHandoffSection = () =>
+<SectionWrap id="handoff">
+    <Container>
+      <SectionHeader num={8} title="Coordination & Handoff" subtitle="The people I worked through, and the documents I left behind." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Stakeholders</div>
+          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
+            <li><strong>Park Rangers</strong> — subject experts for whale watching, lighthouse history, marine ecology</li>
+            <li><strong>Vegetation Specialist (Patricia)</strong> — live native plants from the park greenhouse</li>
+            <li><strong>Supervisors</strong> — content and timing approval before printing or promoting</li>
+            <li><strong>Park social media</strong> — partner accounts on Instagram for promotion reach</li>
+            <li><strong>Volunteer interpretive staff</strong> — facilitators on event days when programs ran multi-station</li>
+          </ul>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I left for the next associate</div>
+          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
+            <li><strong>"A Mini Guide on Pop-Up Programs"</strong> — the 7-step playbook</li>
+            <li><strong>Grey Whale Watching SOP</strong> — multi-week program runbook</li>
+            <li><strong>Eco-Web Mini SOP</strong> — facilitator script + future-refinement guide</li>
+            <li><strong>Public Canva files</strong> — for the activity books and flyers, editable by future staff</li>
+            <li><strong>Promotion templates</strong> — IG post layouts dated and reusable season-to-season</li>
+          </ul>
+        </Card>
+      </div>
+
+      <div style={{ marginTop: 28, fontSize: 13, color: '#888', lineHeight: 1.7, maxWidth: 760 }}>
+        The Interpretation program runs on rotating staff. The deliverable that mattered most wasn't any one event — it was making sure the next person didn't have to start from scratch.
+      </div>
+    </Container>
+  </SectionWrap>;
+
+
+const CBReflectionSection = () =>
+<SectionWrap id="reflection" style={{ background: '#fff' }}>
+    <Container>
+      <SectionHeader num={9} title="Reflection" subtitle="What program management at a federal park taught me, in PM terms." />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Transferable skills</div>
+          <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.8, color: '#444', margin: 0 }}>
+            <li>Scoping under hard constraints (fixed events, fixed audience, no rollback)</li>
+            <li>Cross-functional coordination with subject experts</li>
+            <li>Shipping to a real launch date with measurable outcomes</li>
+            <li>Iterating based on quantitative + qualitative signal</li>
+            <li>Writing documentation that survives staff turnover</li>
+          </ul>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I'd bring forward</div>
+          <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
+            Programs aren't projects. A project ends; a program has to be runnable next season by someone who wasn't there. That mindset — designing for handoff, measuring for the next iteration, writing things down before you forget them — is what I carry into every product role.
+          </p>
+        </Card>
+      </div>
+
+      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>WHAT THIS TAUGHT ME</div>
+        <p style={{ fontSize: 19, lineHeight: 1.65, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760, fontFamily: 'Lora, Georgia, serif' }}>
+          The best work I did at Cabrillo wasn't an event. It was the document that let the next person run the event without me — and the data point that told them whether to bother promoting it.
+        </p>
+      </div>
+    </Container>
+  </SectionWrap>;
+
+// cb-app.jsx — Cabrillo National Monument App: nav, projects card, composition
+
+const CB_IS_EMBED = new URLSearchParams(window.location.search).has('embed');
+
+const CB_PROJECTS = [
+  { id: 1, title: 'Energy Ave.', year: '2024', tags: ['UXR', 'Product Design', 'EdTech'], href: 'Energy Ave.html', available: true },
+  { id: 2, title: "Val's Kitchen", year: '2024', tags: ['UXR', 'Product Design', 'B2B'], href: 'Project 02.html', available: true },
+  { id: 3, title: 'Cabrillo NM', year: '2023', tags: ['PM', 'Public Engagement', 'NPS'], href: 'Project 03.html', available: true },
+  { id: 4, title: 'UCSD Laundry App', year: '2025', tags: ['UX Design', 'Participatory'], href: 'Project 04.html', available: true },
+];
+
+const CB_TWEAK_DEFAULTS = {
+  accentColor: '#3DAA74',
+  spacing: 'normal',
+  showProgress: true,
+};
+
+const CBProjectsCard = () => {
+  const currentFile = window.location.pathname.split('/').pop() || window.location.href.split('/').pop();
+  return (
+    <div id="projects-card" style={{
+      position: 'fixed', top: '5vw', bottom: '5vw', left: '5vw', width: '18vw',
+      background: 'rgba(255, 255, 255, 0.35)',
+      backdropFilter: 'blur(24px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+      borderRadius: 20,
+      border: '1px solid rgba(255, 255, 255, 0.55)',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)',
+      display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 100,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 18px 14px' }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#141414', letterSpacing: '-0.01em' }}>Projects</span>
+        <a href="projects.html" style={{
+          background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: 100,
+          width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', textDecoration: 'none', flexShrink: 0,
+          transition: 'background 0.15s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.13)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.07)'}
+        >
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#141414" strokeWidth="1.5" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      <div style={{ padding: '10px 12px', flex: 1, overflowY: 'auto' }}>
+        {CB_PROJECTS.map((p) => {
+          const isActive = decodeURIComponent(currentFile) === p.href;
+          return (
+            <a key={p.id} href={p.href} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '14px 16px', borderRadius: 14,
+              background: isActive ? 'rgba(0,0,0,0.03)' : 'transparent',
+              marginBottom: 2, cursor: 'pointer', textDecoration: 'none',
+              transition: 'background 0.15s',
+            }}
+              onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(0,0,0,0.03)'; }}
+              onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+            >
+              <div>
+                <div style={{
+                  fontSize: 15, fontWeight: isActive ? 700 : 400,
+                  color: p.available ? '#141414' : '#b8b8b0',
+                  letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6,
+                }}>{p.title}</div>
+                {p.available && p.tags ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                    {p.tags.map(t => (
+                      <span key={t} style={{
+                        fontSize: 10, fontWeight: 600, color: '#888',
+                        background: 'rgba(0,0,0,0.06)', borderRadius: 100,
+                        padding: '2px 8px', letterSpacing: '0.01em',
+                      }}>{t}</span>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: '#a8a8a0', fontWeight: 400 }}>
+                    {p.available ? p.year : 'Coming soon'}
+                  </div>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const CBProgressBar = ({ accent }) => {
+  const [pct, setPct] = React.useState(0);
+  React.useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - doc.clientHeight;
+      setPct(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 199, background: 'rgba(0,0,0,0.06)' }}>
+      <div style={{ height: '100%', width: `${pct}%`, background: accent, transition: 'width 0.1s linear', borderRadius: '0 2px 2px 0' }} />
+    </div>
+  );
+};
+
+const CBApp = () => {
+  const [tweaks] = React.useState(CB_TWEAK_DEFAULTS);
+  const accent = tweaks.accentColor;
+  const sectionPadding = tweaks.spacing === 'compact' ? '64px 0' : tweaks.spacing === 'spacious' ? '128px 0' : '96px 0';
+
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--accent', accent);
+  }, [accent]);
+
+  return (
+    <div style={{ '--section-pad': sectionPadding }}>
+      {!CB_IS_EMBED && tweaks.showProgress && <CBProgressBar accent={accent} />}
+      <CBHeroSection accent={accent} />
+      <CBOverviewSection />
+      <CBPlaybookSection />
+      <CBWhaleWatchingSection />
+      <CBEcoWebSection />
+      <CBFlowerHuntSection />
+      <CBOtherInitiativesSection />
+      <CBMeasurementSection />
+      <CBHandoffSection />
+      <CBReflectionSection />
+
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<CBApp />);
+
+  </script>
 
   <script>
     (function() {
@@ -103,17 +1308,37 @@
         document.body.classList.add('is-embed');
       }
       document.body.classList.add('page-entering');
+      setTimeout(function() { document.body.classList.remove('page-entering'); }, 30);
+
+      var sidebar = document.getElementById('sidebar');
       requestAnimationFrame(function() {
-        requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
+        requestAnimationFrame(function() { sidebar.classList.add('is-open'); });
       });
+      var sidebarBack = sidebar.querySelector('.sidebar-back');
+      sidebarBack.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var href = sidebarBack.getAttribute('href');
+        sidebar.classList.remove('is-open');
+        sidebar.classList.add('is-closing');
+        document.body.classList.add('is-leaving');
+        sidebar.addEventListener('transitionend', function() {
+          window.location.href = href;
+        }, { once: true });
+      });
+
       document.addEventListener('click', function(e) {
         var link = e.target.closest('a[href]');
-        if (!link) return;
+        if (!link || link === sidebarBack) return;
         var href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
         e.preventDefault();
+        document.body.addEventListener('transitionend', function go(ev) {
+          if (ev.propertyName !== 'opacity') return;
+          document.body.removeEventListener('transitionend', go);
+          window.location.href = href;
+        });
         document.body.classList.add('page-leaving');
-        setTimeout(function() { window.location.href = href; }, 300);
       });
     })();
   </script>

@@ -52,7 +52,7 @@
     body.page-leaving  { opacity: 0; }
   </style>
 </head>
-<body>
+<body class="page-entering">
 
   <div id="root"></div>
 
@@ -340,8 +340,12 @@
         var href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
         e.preventDefault();
+        document.body.addEventListener('transitionend', function go(ev) {
+          if (ev.propertyName !== 'opacity') return;
+          document.body.removeEventListener('transitionend', go);
+          window.location.href = href;
+        });
         document.body.classList.add('page-leaving');
-        setTimeout(function() { window.location.href = href; }, 300);
       });
 
     })();

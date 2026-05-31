@@ -29,8 +29,15 @@
       from { transform: translateY(100vh); opacity: 0; }
       to   { transform: translateY(0);     opacity: 1; }
     }
+    @keyframes cardsSlideDown {
+      from { transform: translateY(0);     opacity: 1; }
+      to   { transform: translateY(100vh); opacity: 0; }
+    }
     .cards-stack {
       animation: cardsSlideUp 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+    body.cards-leaving .cards-stack {
+      animation: cardsSlideDown 0.7s cubic-bezier(0.7, 0, 0.84, 0) both;
     }
 
     /* ── Layout ── */
@@ -127,7 +134,7 @@
     }
   </style>
 </head>
-<body>
+<body class="page-entering">
 
   <div class="page-wrap">
     <div class="cards-stack">
@@ -169,8 +176,22 @@
         var href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
         e.preventDefault();
-        document.body.classList.add('page-leaving');
-        setTimeout(function() { window.location.href = href; }, 300);
+        var card = link.closest('.project-card');
+        if (card) {
+          var stack = document.querySelector('.cards-stack');
+          stack.addEventListener('animationend', function go() {
+            stack.removeEventListener('animationend', go);
+            window.location.href = href;
+          });
+          document.body.classList.add('cards-leaving');
+        } else {
+          document.body.addEventListener('transitionend', function go(ev) {
+            if (ev.propertyName !== 'opacity') return;
+            document.body.removeEventListener('transitionend', go);
+            window.location.href = href;
+          });
+          document.body.classList.add('page-leaving');
+        }
       });
     })();
   </script>
