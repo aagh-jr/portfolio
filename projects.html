@@ -16,156 +16,133 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
+      color: #1c1c18;
     }
     a { color: inherit; text-decoration: none; }
 
     /* ── Page enter / leave fades ── */
-    body { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
-    body.page-entering { opacity: 0; transform: translateY(8px); }
-    body.page-leaving  { opacity: 0; transform: translateY(-8px); }
+    body { transition: opacity 0.3s ease-in-out; }
+    body.page-entering, body.page-leaving { opacity: 0; }
 
-    /* ── Slide-up entrance for the card stack ── */
-    @keyframes cardsSlideUp {
-      from { transform: translateY(100vh); opacity: 0; }
+    /* ── Entrance: slide the masonry up ── */
+    @keyframes masonrySlideUp {
+      from { transform: translateY(60vh); opacity: 0; }
       to   { transform: translateY(0);     opacity: 1; }
     }
-    @keyframes cardsSlideDown {
+    @keyframes masonrySlideDown {
       from { transform: translateY(0);     opacity: 1; }
-      to   { transform: translateY(100vh); opacity: 0; }
+      to   { transform: translateY(60vh);  opacity: 0; }
     }
-    .cards-stack {
-      animation: cardsSlideUp 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    .masonry {
+      animation: masonrySlideUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
     }
-    body.cards-leaving .cards-stack {
-      animation: cardsSlideDown 0.7s cubic-bezier(0.7, 0, 0.84, 0) both;
+    body.masonry-leaving .masonry {
+      animation: masonrySlideDown 0.7s cubic-bezier(0.7, 0, 0.84, 0) both;
     }
 
     /* ── Layout ── */
     .page-wrap {
       width: 100%;
       min-height: 100vh;
-      padding: 60px 48px;
+      padding: 110px 64px 80px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
     }
-    .cards-stack {
+    .masonry {
       width: 100%;
-      max-width: 960px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      max-width: 725px;
+      column-count: 2;
+      column-gap: 20px;
     }
 
-    /* ── Project card ── */
-    .project-card {
-      background: #FFFAFA;
-      border-radius: 0;
-      border: 1.5px solid rgba(0,0,0,0.18);
-      min-height: calc((100vh - 200px) * 4 / 9);
-      display: flex;
+    /* ── Tiles ── */
+    .tile {
+      display: block;
+      break-inside: avoid;
+      margin-bottom: 28px;
+      transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
+    }
+    .tile:hover { transform: translateY(-4px); }
+
+    .tile-image {
+      width: 100%;
+      border-radius: 18px;
       overflow: hidden;
-      transition: transform 1s;
+      position: relative;
     }
-    .project-card:hover {
-      transform: translateY(-3px);
-    }
-    .project-text {
-      flex: 1 1 0;
-      padding: 16px 36px;
+    .tile-image-inner { position: absolute; inset: 0; }
+
+    /* tile size variations to give the masonry shape */
+    .tile--tall  .tile-image { aspect-ratio: 4 / 5; }
+    .tile--wide  .tile-image { aspect-ratio: 5 / 4; }
+
+    /* per-project covers */
+    .tile--ea       .tile-image-inner { background: url(uploads/ea-cover.png) center/cover no-repeat; }
+    .tile--cabrillo .tile-image-inner { background: #1b3a28 url(uploads/cabrillo-nps-logo.png) center/45% auto no-repeat; }
+
+    .tile-meta {
+      padding: 18px 4px 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 6px;
     }
-    .project-meta {
-      font-size: 11px;
-      font-weight: 700;
-      color: #71717a;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .project-meta .year { color: rgba(0,0,0,0.25); }
-    .project-title {
-      font-size: 28px;
+    .tile-title {
+      font-size: 22px;
       font-weight: 800;
       color: #1c1c18;
       letter-spacing: -0.02em;
       line-height: 1.15;
-      margin-bottom: 0;
     }
-    .project-desc {
+    .tile-tagline {
       font-size: 14px;
       color: #71717a;
-      line-height: 1.6;
+      line-height: 1.55;
     }
-    .project-image { flex: 1 1 0; padding: 16px; }
-    .project-image-inner { width: 100%; height: 100%; }
-    .project-image-inner--ea       { background: url(uploads/ea-cover.png) center/cover no-repeat; }
-    .project-image-inner--cabrillo { background: #1b3a28 url(uploads/cabrillo-nps-logo.png) center/40% auto no-repeat; }
-    .project-image-inner--vk       { background: rgba(0,0,0,0.07); }
 
     /* ── Top-left back nav ── */
     .back-btn { position: fixed; top: 36px; left: 44px; z-index: 100; display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: #71717a; text-decoration: none; transition: color 180ms; }
     .back-btn:hover { color: #1c1c18; }
     .back-btn svg { width: 12px; height: 12px; }
 
-    /* ── Under construction badge ── */
-    .under-construction {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #71717a;
-    }
-
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      .page-wrap { padding: 40px 20px; }
-      .project-card { flex-direction: column; min-height: auto; }
-      .project-image { min-height: 200px; }
-      .project-title { font-size: 22px; }
-      .corner-nav { left: -40px; top: 20px; }
+      .page-wrap { padding: 88px 24px 56px; }
+      .masonry { column-count: 1; column-gap: 0; }
+      .tile { margin-bottom: 24px; }
     }
   </style>
 </head>
 <body class="page-entering">
-
-  <div class="page-wrap">
-    <div class="cards-stack">
-
-      <a href="Energy Ave.html" class="project-card">
-        <div class="project-text">
-          <div class="project-title">Energy Ave.</div>
-          <div class="project-desc">A gamified energy conservation experience built for PlanetFlip: 10 weeks of UX research, two rounds of user testing and a fully playable in-browser game.</div>
-        </div>
-        <div class="project-image"><div class="project-image-inner project-image-inner--ea"></div></div>
-      </a>
-
-      <a href="Project 03.html" class="project-card">
-        <div class="project-text">
-          <div class="project-title">Cabrillo NM.</div>
-          <div class="project-desc">Two terms as an Associate in the park's Interpretation program: designing, running, measuring and documenting public engagement programs from Whale Watching to Eco-Web.</div>
-        </div>
-        <div class="project-image"><div class="project-image-inner project-image-inner--cabrillo"></div></div>
-      </a>
-
-    </div>
-  </div>
 
   <a class="back-btn" href="index.html" aria-label="Back to home">
     <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Back
   </a>
 
+  <div class="page-wrap">
+    <div class="masonry">
+
+      <a class="tile tile--ea tile--wide" href="Energy Ave.html">
+        <div class="tile-image"><div class="tile-image-inner"></div></div>
+        <div class="tile-meta">
+          <div class="tile-title">Energy Ave.</div>
+          <div class="tile-tagline">A gamified energy conservation experience built for PlanetFlip: 10 weeks of UX research, two rounds of user testing and a fully playable in-browser game.</div>
+        </div>
+      </a>
+
+      <a class="tile tile--cabrillo tile--tall" href="Project 03.html">
+        <div class="tile-image"><div class="tile-image-inner"></div></div>
+        <div class="tile-meta">
+          <div class="tile-title">Cabrillo NM.</div>
+          <div class="tile-tagline">Two terms as an Associate in the park's Interpretation program: designing, running, measuring and documenting public engagement programs from Whale Watching to Eco-Web.</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
   <script>
     (function() {
-      document.body.classList.add('page-entering');
       requestAnimationFrame(function() {
         requestAnimationFrame(function() { document.body.classList.remove('page-entering'); });
       });
@@ -176,14 +153,14 @@
         var href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
         e.preventDefault();
-        var card = link.closest('.project-card');
-        if (card) {
-          var stack = document.querySelector('.cards-stack');
-          stack.addEventListener('animationend', function go() {
-            stack.removeEventListener('animationend', go);
+        var tile = link.closest('.tile');
+        if (tile) {
+          var masonry = document.querySelector('.masonry');
+          masonry.addEventListener('animationend', function go() {
+            masonry.removeEventListener('animationend', go);
             window.location.href = href;
           });
-          document.body.classList.add('cards-leaving');
+          document.body.classList.add('masonry-leaving');
         } else {
           document.body.addEventListener('transitionend', function go(ev) {
             if (ev.propertyName !== 'opacity') return;
