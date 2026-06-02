@@ -16,16 +16,16 @@
     :root {
       --cream: #FAFAF8;
       --white: #FFFAFA;
-      --black: #111111;
+      --black: #1c1c18;
       --gray: #6B6B6B;
       --muted: #71717a;
       --hairline: rgba(0,0,0,0.10);
       --hairline-strong: rgba(0,0,0,0.18);
       --border: rgba(0,0,0,0.08);
-      --green: #3DAA74;
-      --green-light: #F0FAF5;
-      --amber: #E07D2E;
-      --accent: #3DAA74;
+      --green: #2F5D4F;
+      --green-light: #EEF4F1;
+      --amber: #B05070;
+      --accent: #2F5D4F;
       --font: 'Inter', system-ui, -apple-system, sans-serif;
       --serif: 'Inter', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -43,7 +43,7 @@
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-    ::selection { background: #EBF7F2; color: #2A8A5C; }
+    ::selection { background: #EAF1EC; color: #2F5D4F; }
 
     .sidebar {
       display: flex;
@@ -80,8 +80,8 @@
 
     table { width: 100%; border-collapse: collapse; }
     th {
-      background: #EBF7F2;
-      color: var(--accent, #3DAA74);
+      background: #EAF1EC;
+      color: var(--accent, #2F5D4F);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
@@ -137,35 +137,35 @@
 // ea-shared-v2.jsx — shared UI primitives — new palette
 
 const V2 = {
-  bg:          '#fffffd',
+  bg:          '#FFFAFA',
   white:       '#ffffff',
-  dark:        '#2a2b2a',
-  ink:         '#2a2b2a',
-  muted:       'rgba(42,43,42,0.45)',
-  border:      'rgba(42,43,42,0.08)',
+  dark:        '#1c1c18',
+  ink:         '#1c1c18',
+  muted:       'rgba(28,28,24,0.45)',
+  border:      'rgba(28,28,24,0.08)',
   // Palette accents
-  periwinkle:  '#b6c2fe',
-  petal:       '#ffc7d8',
-  sage:        '#bcd8cd',
+  periwinkle:  '#2F5D4F',
+  petal:       '#B05070',
+  sage:        '#4a8a6a',
   // Semantic
-  accent:      '#b6c2fe',       // periwinkle — positive / highlight
-  accentBg:    'rgba(182,194,254,0.18)',
-  warn:        '#e8789a',       // deeper petal — warnings / issues
-  warnBg:      'rgba(255,199,216,0.25)',
-  neutral:     '#bcd8cd',       // sage — neutral
-  neutralBg:   'rgba(188,216,205,0.22)',
+  accent:      '#2F5D4F',       // periwinkle — positive / highlight
+  accentBg:    'rgba(47,93,79,0.18)',
+  warn:        '#B05070',       // deeper petal — warnings / issues
+  warnBg:      'rgba(176,80,112,0.25)',
+  neutral:     '#4a8a6a',       // sage — neutral
+  neutralBg:   'rgba(74,138,106,0.10)',
 };
 
 const Placeholder = ({ label, height = 220, note }) => (
   <div style={{
     height, borderRadius: 14,
-    background: 'rgba(42,43,42,0.04)',
+    background: 'rgba(28,28,24,0.04)',
     display: 'flex', flexDirection: 'column', alignItems: 'center',
-    justifyContent: 'center', border: '1px dashed rgba(42,43,42,0.12)',
+    justifyContent: 'center', border: '1px dashed rgba(28,28,24,0.12)',
     gap: 8, padding: 24, textAlign: 'center',
   }}>
-    <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'rgba(42,43,42,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>[ {label} ]</span>
-    {note && <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'rgba(42,43,42,0.2)', maxWidth: 320, lineHeight: 1.6 }}>{note}</span>}
+    <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'rgba(28,28,24,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>[ {label} ]</span>
+    {note && <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'rgba(28,28,24,0.2)', maxWidth: 320, lineHeight: 1.6 }}>{note}</span>}
   </div>
 );
 
@@ -209,11 +209,11 @@ const Video = ({ src, caption, radius = 14, background }) => (
 const Tag = ({ children, color = 'default' }) => {
   const p = {
     default:     { fg: V2.muted,       border: V2.border,                     bg: 'transparent' },
-    green:       { fg: '#2a6e8a',      border: 'rgba(182,194,254,0.5)',        bg: V2.accentBg },
-    amber:       { fg: '#b05070',      border: 'rgba(255,199,216,0.5)',        bg: V2.warnBg },
+    green:       { fg: '#2F5D4F',      border: 'rgba(47,93,79,0.5)',        bg: V2.accentBg },
+    amber:       { fg: '#b05070',      border: 'rgba(176,80,112,0.5)',        bg: V2.warnBg },
     gray:        { fg: V2.muted,       border: V2.border,                     bg: V2.neutralBg },
-    blue:        { fg: '#4a5ab8',      border: 'rgba(182,194,254,0.4)',        bg: V2.accentBg },
-    dark:        { fg: '#fffffd',      border: 'transparent',                  bg: V2.dark },
+    blue:        { fg: '#2F5D4F',      border: 'rgba(47,93,79,0.4)',        bg: V2.accentBg },
+    dark:        { fg: '#FFFAFA',      border: 'transparent',                  bg: V2.dark },
     red:         { fg: '#b04030',      border: 'rgba(176,64,48,0.25)',         bg: 'rgba(176,64,48,0.08)' },
   };
   const c = p[color] || p.default;
@@ -233,7 +233,7 @@ const Stat = ({ value, label, accent, sub }) => (
     border: `1px solid ${V2.border}`,
     display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center',
     background: V2.white,
-    boxShadow: '0 2px 12px rgba(42,43,42,0.05)',
+    boxShadow: '0 2px 12px rgba(28,28,24,0.05)',
   }}>
     <span style={{ fontSize: 40, fontWeight: 500, color: accent || V2.accent, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>{value}</span>
     <span style={{ fontSize: 12, color: V2.muted, lineHeight: 1.4, maxWidth: 110 }}>{label}</span>
@@ -251,7 +251,7 @@ const QuoteBlock = ({ text, author, role }) => (
 const Card = ({ children, style = {} }) => (
   <div style={{
     background: V2.white, borderRadius: 16, padding: '28px',
-    boxShadow: '0 2px 16px rgba(42,43,42,0.06), 0 1px 3px rgba(42,43,42,0.04)',
+    boxShadow: '0 2px 16px rgba(28,28,24,0.06), 0 1px 3px rgba(28,28,24,0.04)',
     ...style
   }}>{children}</div>
 );
@@ -274,7 +274,7 @@ const Container = ({ children, noBorder = false }) => {
   const embed = new URLSearchParams(window.location.search).has('embed');
   return (
     <div style={{ width: '100%', paddingLeft: embed ? '10%' : 0, paddingRight: embed ? '10%' : 0, boxSizing: 'border-box' }}>
-      <div style={{ maxWidth: embed ? 'none' : 720, margin: '0 auto', padding: '36px 48px 0', borderTop: noBorder ? 'none' : `1px solid ${V2.border}` }}>
+      <div style={{ maxWidth: embed ? 'none' : 720, margin: '0 auto', padding: '36px 48px 0', borderTop: 'none' }}>
         {children}
       </div>
     </div>
@@ -643,7 +643,7 @@ const CBHeroSection = () =>
     <Container noBorder>
       <h1 style={{
         fontSize: 'clamp(52px, 8vw, 80px)', fontWeight: 500, lineHeight: 1.05,
-        letterSpacing: '-0.03em', color: '#111', marginBottom: 16,
+        letterSpacing: '-0.03em', color: '#1c1c18', marginBottom: 16,
         fontFamily: 'Inter, system-ui, -apple-system, sans-serif', maxWidth: 740,
       }}>
         Cabrillo National Monument.
@@ -660,16 +660,14 @@ const CBHeroSection = () =>
       <div style={{
         display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gap: 0,
         width: 'fit-content', marginBottom: 64,
-        borderTop: '1px solid rgba(0,0,0,0.08)',
-        borderBottom: '1px solid rgba(0,0,0,0.08)',
       }}>
         {[['Role', 'Interpretation Associate'], ['Duration', '2 Terms (multi-season)'], ['Client', 'Cabrillo NM (NPS)'], ['Output', 'Programs, SOPs, materials']].map(([l, v], i) =>
           <div key={l} style={{
             padding: '16px 32px 16px', paddingLeft: i === 0 ? 0 : 32,
-            borderLeft: i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none',
+            borderLeft: 'none',
           }}>
             <div style={{ fontSize: 10, fontWeight: 600, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 5 }}>{l}</div>
-            <div style={{ fontSize: 14, fontWeight: 500, color: '#111' }}>{v}</div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: '#1c1c18' }}>{v}</div>
           </div>
         )}
       </div>
@@ -687,20 +685,20 @@ const CBOverviewSection = () =>
       <SectionHeader num={1} title="The Program" subtitle="Public engagement at a federal park, against a fixed audience and a fixed calendar." />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Setting</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Setting</div>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#333', margin: 0 }}>
             Cabrillo National Monument sits at the tip of Point Loma in San Diego — coastal scrub on the bluffs, an intertidal zone below, and the Old Point Loma Lighthouse on top. Visitors arrive across all ages, languages, and prior knowledge levels, often for an hour at most.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Role</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Role</div>
           <p style={{ fontSize: 15, lineHeight: 1.8, color: '#333', margin: 0 }}>
             I worked as an Associate in the park's Interpretation program — the team responsible for the educational and cultural programming visitors actually engage with. My remit covered scoping, designing, facilitating, measuring, and writing the SOPs that let the next person run each program without me.
           </p>
         </Card>
       </div>
-      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 40 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>PROGRAM CHALLENGE</div>
+      <div style={{ background: '#1c1c18', borderRadius: 22, padding: '36px 40px', marginBottom: 40 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>PROGRAM CHALLENGE</div>
         <p style={{ fontSize: 21, lineHeight: 1.6, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760 }}>
           "How do you run public-engagement programs that scale across staff turnover, multiple seasons, and a 7-to-70 audience — when your only signal is whether someone walks up?"
         </p>
@@ -729,8 +727,8 @@ const CBPlaybookSection = () =>
           ['07', 'Measurement', 'Clicker counts of meaningful interactions, worksheet completions, prizes given out — logged for end-of-year reporting.'],
         ].map(([n, title, desc]) =>
           <Card key={n} style={{ padding: '22px 22px 20px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', letterSpacing: '0.12em', marginBottom: 10 }}>STEP {n}</div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 8 }}>{title}</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', letterSpacing: '0.12em', marginBottom: 10 }}>STEP {n}</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: '#1c1c18', marginBottom: 8 }}>{title}</div>
             <div style={{ fontSize: 13, lineHeight: 1.65, color: '#555' }}>{desc}</div>
           </Card>
         )}
@@ -753,20 +751,20 @@ const CBWhaleWatchingSection = () =>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Opportunity</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Opportunity</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             Gray whales migrate past Point Loma every December–February. Cabrillo was historically a pioneer in land-based whale watching, but the program had lapsed. I designed and ran a multi-week pop-up to revive it — first in 2024, then expanded for 2025.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Owned</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I Owned</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             Program scoping, partnership with subject experts, activity workbook, on-site facilitation, social promotion across two seasons, weekly tuning based on attendance, and the SOP that let the program run again in 2025 without me re-spec'ing it.
           </p>
         </Card>
       </div>
 
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>Program shape</h3>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#1c1c18' }}>Program shape</h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 32 }}>
         {[
           ['Cadence', '4 Saturdays per season, 10:30am–12:30pm, at Kelp Forest & Whale Watch Overlook.'],
@@ -775,7 +773,7 @@ const CBWhaleWatchingSection = () =>
           ['Facilitation', 'Walk visitors from the Visitor Center to the overlook, hand out binoculars, guide what to look for (flukes, spouts, boat trails), answer the standard 4 questions.'],
         ].map(([t, d]) =>
           <Card key={t} style={{ padding: '20px 22px' }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#111', marginBottom: 6 }}>{t}</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#1c1c18', marginBottom: 6 }}>{t}</div>
             <div style={{ fontSize: 13, lineHeight: 1.65, color: '#555' }}>{d}</div>
           </Card>
         )}
@@ -795,7 +793,7 @@ const CBWhaleWatchingSection = () =>
 
       <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
         <div style={{ textAlign: 'center', maxWidth: 520 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The activity book</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The activity book</div>
           <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif', letterSpacing: '-0.01em' }}>
             Flip through the Gray Whale Watching booklet
           </h3>
@@ -836,23 +834,23 @@ const CBEcoWebSection = () =>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Brief</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Brief</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             A reusable activity for outreach events and classrooms that explains how disruptions cascade through an ecosystem — without a science background and without losing a 10-year-old halfway through.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Frame</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>The Frame</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             Facilitator-led: a ranger or teacher draws a scenario card and players reason out cascading effects. The right answer is the conversation, not a card flip.
           </p>
         </Card>
       </div>
 
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>User-centered requirements (from the SOP)</h3>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#1c1c18' }}>User-centered requirements (from the SOP)</h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14, marginBottom: 32 }}>
         {[
-          ['Cognitive Load', 'Has to be quick and digestible. A long, dense activity loses participants mid-way. Each card carries one idea.', '#EBF7F2', '#2A8A5C'],
+          ['Cognitive Load', 'Has to be quick and digestible. A long, dense activity loses participants mid-way. Each card carries one idea.', '#EAF1EC', '#2F5D4F'],
           ['Accessibility', 'Plain language for scientific terms. Designed for ESL learners, K–12 students, and adults across knowledge levels.', '#FAF7F2', '#666'],
           ['Learning Outcome', 'Players walk away knowing X, Y, Z — but more importantly, motivated to repeat what they learned. Conversation over correctness.', '#FDF0E6', '#B85C0D'],
         ].map(([title, desc, bg, accent]) =>
@@ -863,7 +861,7 @@ const CBEcoWebSection = () =>
         )}
       </div>
 
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>The card system</h3>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#1c1c18' }}>The card system</h3>
       <Card style={{ padding: 0, marginBottom: 22 }}>
         <table>
           <thead>
@@ -893,7 +891,7 @@ const CBEcoWebSection = () =>
         </table>
       </Card>
 
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#141414' }}>The full deck</h3>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, color: '#1c1c18' }}>The full deck</h3>
       <p style={{ fontSize: 14, lineHeight: 1.7, color: '#666', maxWidth: 720, marginBottom: 24 }}>
         15 species across two decks — coastal scrub on top, intertidal/marine on the bottom row. Each card carries a photograph, common + scientific name, and the prey-icon row that drives the food-web reasoning.
       </p>
@@ -941,25 +939,25 @@ const CBFlowerHuntSection = () =>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 32 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What it was</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What it was</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             Visitors got a foldable scavenger hunt at the Visitor Center, walked the park's grassland and coastal trails to find five native plants, photographed their favorite, and returned to redeem a prize. An accompanying info table — with live plants from the park greenhouse — caught visitors who didn't want to walk.
           </p>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Cross-functional</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Cross-functional</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             Coordinated with Patricia, the park's Vegetation Specialist, to request a crate of in-bloom plants from the greenhouse for the table. Live plants ended up being the centerpiece — a reminder that the right ask to the right partner beats anything I could've designed alone.
           </p>
         </Card>
       </div>
 
-      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px', marginBottom: 32 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>THE DATA POINT I CARE ABOUT</div>
+      <div style={{ background: '#1c1c18', borderRadius: 22, padding: '36px 40px', marginBottom: 32 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>THE DATA POINT I CARE ABOUT</div>
         <p style={{ fontSize: 24, lineHeight: 1.5, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: '0 0 18px', maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
           The first run was a quiet test. The second run — same activity, same location, same staff — went out with full social-media advertisement.
         </p>
-        <p style={{ fontSize: 24, lineHeight: 1.5, fontWeight: 500, color: '#3DAA74', margin: 0, maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+        <p style={{ fontSize: 24, lineHeight: 1.5, fontWeight: 500, color: '#2F5D4F', margin: 0, maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
           It pulled <span style={{ fontWeight: 700 }}>10× the participants.</span>
         </p>
       </div>
@@ -1004,7 +1002,7 @@ const CBOtherInitiativesSection = () =>
           },
         ].map(t =>
           <Card key={t.title} style={{ padding: '22px 22px 20px' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 8 }}>{t.title}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#1c1c18', marginBottom: 8 }}>{t.title}</div>
             <div style={{ fontSize: 13, lineHeight: 1.7, color: '#555' }}>{t.desc}</div>
           </Card>
         )}
@@ -1025,7 +1023,7 @@ const CBOtherInitiativesSection = () =>
 
       <div style={{ background: '#1a1a1a', borderRadius: 22, padding: '40px 32px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
         <div style={{ textAlign: 'center', maxWidth: 520 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The Open Tower Day booklet</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>The Open Tower Day booklet</div>
           <h3 style={{ fontSize: 22, fontWeight: 500, color: 'white', margin: '0 0 8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif', letterSpacing: '-0.01em' }}>
             Eight panels, page by page
           </h3>
@@ -1081,11 +1079,11 @@ const CBMeasurementSection = () =>
           },
         ].map(d =>
           <Card key={d.n} style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 18, padding: '22px 26px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', letterSpacing: '0.12em', textTransform: 'uppercase', paddingTop: 4 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', letterSpacing: '0.12em', textTransform: 'uppercase', paddingTop: 4 }}>
               {d.n}
             </div>
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#111', marginBottom: 6 }}>{d.title}</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#1c1c18', marginBottom: 6 }}>{d.title}</div>
               <p style={{ fontSize: 14, lineHeight: 1.7, color: '#555', margin: 0 }}>{d.desc}</p>
             </div>
           </Card>
@@ -1102,7 +1100,7 @@ const CBHandoffSection = () =>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Stakeholders</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Stakeholders</div>
           <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
             <li><strong>Park Rangers</strong> — subject experts for whale watching, lighthouse history, marine ecology</li>
             <li><strong>Vegetation Specialist (Patricia)</strong> — live native plants from the park greenhouse</li>
@@ -1112,7 +1110,7 @@ const CBHandoffSection = () =>
           </ul>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I left for the next associate</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I left for the next associate</div>
           <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.85, color: '#444', margin: 0 }}>
             <li><strong>"A Mini Guide on Pop-Up Programs"</strong> — the 7-step playbook</li>
             <li><strong>Grey Whale Watching SOP</strong> — multi-week program runbook</li>
@@ -1137,7 +1135,7 @@ const CBReflectionSection = () =>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, marginBottom: 36 }}>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Transferable skills</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>Transferable skills</div>
           <ul style={{ paddingLeft: 18, fontSize: 14, lineHeight: 1.8, color: '#444', margin: 0 }}>
             <li>Scoping under hard constraints (fixed events, fixed audience, no rollback)</li>
             <li>Cross-functional coordination with subject experts</li>
@@ -1147,15 +1145,15 @@ const CBReflectionSection = () =>
           </ul>
         </Card>
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I'd bring forward</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: 12 }}>What I'd bring forward</div>
           <p style={{ fontSize: 14, lineHeight: 1.75, color: '#444', margin: 0 }}>
             Programs aren't projects. A project ends; a program has to be runnable next season by someone who wasn't there. That mindset — designing for handoff, measuring for the next iteration, writing things down before you forget them — is what I carry into every product role.
           </p>
         </Card>
       </div>
 
-      <div style={{ background: '#141414', borderRadius: 22, padding: '36px 40px' }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#3DAA74', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>WHAT THIS TAUGHT ME</div>
+      <div style={{ background: '#1c1c18', borderRadius: 22, padding: '36px 40px' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#2F5D4F', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16 }}>WHAT THIS TAUGHT ME</div>
         <p style={{ fontSize: 19, lineHeight: 1.65, fontStyle: 'italic', fontWeight: 300, color: 'white', margin: 0, maxWidth: 760, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
           The best work I did at Cabrillo wasn't an event. It was the document that let the next person run the event without me — and the data point that told them whether to bother promoting it.
         </p>
@@ -1175,7 +1173,7 @@ const CB_PROJECTS = [
 ];
 
 const CB_TWEAK_DEFAULTS = {
-  accentColor: '#3DAA74',
+  accentColor: '#2F5D4F',
   spacing: 'normal',
   showProgress: true,
 };
@@ -1194,7 +1192,7 @@ const CBProjectsCard = () => {
       display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 100,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 18px 14px' }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: '#141414', letterSpacing: '-0.01em' }}>Projects</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#1c1c18', letterSpacing: '-0.01em' }}>Projects</span>
         <a href="projects.html" style={{
           background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: 100,
           width: 26, height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -1205,7 +1203,7 @@ const CBProjectsCard = () => {
           onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.07)'}
         >
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-            <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#141414" strokeWidth="1.5" strokeLinejoin="round"/>
+            <path d="M2 6.5L8 2L14 6.5V14H10V10H6V14H2V6.5Z" stroke="#1c1c18" strokeWidth="1.5" strokeLinejoin="round"/>
           </svg>
         </a>
       </div>
@@ -1226,7 +1224,7 @@ const CBProjectsCard = () => {
               <div>
                 <div style={{
                   fontSize: 15, fontWeight: isActive ? 700 : 400,
-                  color: p.available ? '#141414' : '#b8b8b0',
+                  color: p.available ? '#1c1c18' : '#b8b8b0',
                   letterSpacing: '-0.015em', lineHeight: 1.2, marginBottom: 6,
                 }}>{p.title}</div>
                 {p.available && p.tags ? (
