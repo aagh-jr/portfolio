@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Ave — Competitive Analysis</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #FAFAF7;
+      --ink: #1A1A1A;
+      --muted: #6B6B6B;
+      --hairline: rgba(26, 26, 26, 0.08);
+      --hairline-strong: rgba(26, 26, 26, 0.14);
+      --accent: #2F5D4F;
+      --accent-soft: rgba(47, 93, 79, 0.10);
+      --selection: rgba(47, 93, 79, 0.18);
+      --warn: #B05070;
+      --warn-soft: rgba(176, 80, 112, 0.10);
+      --good: #4a8a6a;
+      --good-soft: rgba(74, 138, 106, 0.10);
+
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --fs-body: 17px;
+      --fs-small: 14px;
+      --fs-label: 11px;
+      --fs-h2: 19px;
+      --fs-h3: 16px;
+      --lh-body: 1.62;
+
+      --gap-section: 110px;
+      --gap-block: 28px;
+      --col-width: 820px;
+      --pad-x: 56px;
+
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+      --dur: 180ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-body);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    ::selection { background: var(--selection); color: var(--ink); }
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); transition: border-color var(--dur) var(--ease); }
+    a:hover { border-bottom-color: var(--accent); }
+    img { max-width: 100%; display: block; }
+
+    .page {
+      max-width: var(--col-width);
+      margin: 0 auto;
+      padding: 64px var(--pad-x) 120px;
+    }
+
+    h2.section-title { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-h2); letter-spacing: -0.005em; margin-bottom: 8px; }
+    .section-sub { font-size: 16px; color: var(--muted); margin-bottom: 28px; max-width: 520px; line-height: 1.55; }
+    h3.subsection { font-weight: 600; font-size: var(--fs-h3); margin-top: 32px; margin-bottom: 12px; }
+    p { text-wrap: pretty; }
+    p + p { margin-top: 16px; }
+
+    /* Back button */
+    .back-btn { position: fixed; top: 22px; left: 22px; z-index: 50; background: rgba(20, 20, 18, 0.96); color: #FAFAF7; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 28px rgba(0,0,0,0.18); backdrop-filter: blur(8px); display: flex; align-items: center; gap: 7px; padding: 9px 16px 9px 13px; text-decoration: none; border-bottom: none; transition: background 180ms var(--ease); }
+    .back-btn:hover { background: rgba(40, 40, 38, 0.98); border-bottom: none; color: #fff; }
+
+    /* Tags */
+    .tag { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: 0.03em; border: 1px solid var(--hairline-strong); color: var(--muted); background: transparent; line-height: 1.6; }
+    .tag.green { color: var(--accent); border-color: var(--accent-soft); background: var(--accent-soft); }
+
+    /* Competitive Analysis */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin: 24px 0;
+    }
+    .comp-card {
+      border: 1px solid var(--hairline-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+    .comp-card-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-bottom: 1px solid var(--hairline);
+      background: #f4f3ee;
+      display: block;
+    }
+    .comp-card-body {
+      padding: 20px 22px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .comp-card-name { font-weight: 600; font-size: 14.5px; color: var(--ink); }
+    .comp-card-publisher { font-size: 13px; color: var(--muted); }
+    .comp-card-pros { font-size: 14px; line-height: 1.6; }
+    .comp-card-cons { font-size: 14px; line-height: 1.6; }
+    .comp-card-pros::before { content: "+ "; color: var(--good); font-weight: 700; }
+    .comp-card-cons::before { content: "− "; color: var(--warn); font-weight: 700; }
+
+    .reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
+    .reveal.is-in { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      :root { --pad-x: 28px; }
+      .comp-grid { grid-template-columns: 1fr; }
+    }
+
+    body:not([data-mounted]) .page { opacity: 0; }
+    body { transition: opacity 220ms ease; }
+  </style>
+</head>
+<body>
+
+  <a class="back-btn" href="Energy Ave.html" aria-label="Back to case study">
+    <span>←</span>
+    <span>Back</span>
+  </a>
+
+  <div class="page">
+    <article>
+
+      <header style="margin-bottom:var(--gap-block);">
+        <div style="font-size:var(--fs-label);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Energy Ave · Design Research</div>
+        <h2 class="section-title">Competitive Analysis</h2>
+        <div class="section-sub">Four existing games. One clear gap.</div>
+      </header>
+
+      <div class="comp-grid reveal">
+        <div class="comp-card">
+          <img class="comp-card-thumb" src="uploads/ea-comp-space-waste.png" alt="Space Waste Odyssey" />
+          <div class="comp-card-body">
+            <div>
+              <div class="comp-card-name">Space Waste Odyssey</div>
+              <div class="comp-card-publisher">PBS Kids · Ages K–6</div>
+            </div>
+            <p class="comp-card-pros">Closed captioning, multi-level progression, high-quality visuals.</p>
+            <p class="comp-card-cons">Levels too long, no penalties for inaction, low urgency — no time constraints.</p>
+          </div>
+        </div>
+
+        <div class="comp-card">
+          <img class="comp-card-thumb" src="uploads/ea-comp-energy-champion.png" alt="Become an Energy Champion" />
+          <div class="comp-card-body">
+            <div>
+              <div class="comp-card-name">Become an Energy Champion</div>
+              <div class="comp-card-publisher">National Energy Foundation · Ages K–8</div>
+            </div>
+            <p class="comp-card-pros">Good educational content, character customization.</p>
+            <p class="comp-card-cons">Highly repetitive mini-games, hard to navigate, no accessibility features.</p>
+          </div>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-card-body">
+            <div>
+              <div class="comp-card-name">Fidget Power</div>
+              <div class="comp-card-publisher">PBS Kids · Design Squad · Ages K–6</div>
+            </div>
+            <p class="comp-card-pros">Location-based mini-games, strong loading screen.</p>
+            <p class="comp-card-cons">Repetitive tasks, thin sustainability info, dead end after completion.</p>
+          </div>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-card-body">
+            <div>
+              <div class="comp-card-name">Financial Freedom</div>
+              <div class="comp-card-publisher">Legends of Learning · Ages 6–12</div>
+            </div>
+            <p class="comp-card-pros">Penalizes unsustainable choices, avatar customization.</p>
+            <p class="comp-card-cons">Requires account to access, slow pacing, too complex for younger users.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="subsection">Who was served — and who wasn't</h3>
+      <p>K–6 was well-served. Older students and adults were underserved — Financial Freedom had the right complexity but locked content behind accounts. Our opportunity: a game for elementary-to-middle school: tight interactive learning, short engaging loops, no account required.</p>
+
+    </article>
+  </div>
+
+  <script>
+  (function () {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    document.body.setAttribute('data-mounted', 'true');
+  })();
+  </script>
+</body>
+</html>

@@ -52,14 +52,27 @@
       width: 100%;
       max-width: 760px;
     }
+    .page-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 44px;
+    }
     .page-title {
       font-size: 40px;
       font-weight: 800;
       letter-spacing: -0.016em;
       line-height: 1;
       color: #1c1c18;
-      margin-bottom: 44px;
+      margin-bottom: 0;
     }
+    .back-circle {
+      color: #1c1c18;
+      display: inline-flex;
+      line-height: 0;
+      transition: color 180ms;
+    }
+    .back-circle:hover { color: #71717a; }
     .masonry {
       width: 100%;
       margin-top: 70px;
@@ -192,14 +205,23 @@
 </head>
 <body class="page-entering">
 
-  <a class="back-btn" href="index.html" aria-label="Back to home">
-    <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back
-  </a>
-
   <div class="page-wrap">
     <div class="content">
-    <h1 class="page-title">Projects</h1>
+    <div class="page-head">
+      <a class="back-circle" href="index.html" aria-label="Back to home">
+        <svg width="39" height="39" viewBox="0 0 52 52" fill="none">
+          <mask id="backknock" maskUnits="userSpaceOnUse" x="0" y="0" width="52" height="52">
+            <rect width="52" height="52" fill="white"/>
+            <g stroke="black" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M16 26H36"/>
+              <path d="M24 18L16 26L24 34"/>
+            </g>
+          </mask>
+          <circle cx="26" cy="26" r="23" fill="currentColor" mask="url(#backknock)"/>
+        </svg>
+      </a>
+      <h1 class="page-title">Projects</h1>
+    </div>
     <div class="masonry">
 
       <a class="tile tile--ea" href="Energy Ave.html">

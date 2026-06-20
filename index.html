@@ -168,7 +168,8 @@
                   {/* ── TOP CARD: full width hero ── */}
                   <div className="anim-fade" style={{
                     ...cardBase, gridColumn: '1 / -1',
-                    cursor: 'default', minHeight: 260,
+                    cursor: 'default', minHeight: aboutOpen ? 540 : 260,
+                    overflow: aboutOpen ? 'visible' : 'hidden',
                     justifyContent: 'flex-start',
                     paddingTop: 40,
                     background: 'transparent', border: 'none', boxShadow: 'none',
@@ -301,8 +302,8 @@
             zIndex: 100,
           }}>
             {[
-              { label: 'about',    href: '#',             symbol: aboutOpen ? '−' : '+', onClick: toggleAbout },
-              { label: 'projects', href: 'projects.html', symbol: '↗' },
+              { label: 'About',    href: '#',             symbol: aboutOpen ? '−' : '+', onClick: toggleAbout },
+              { label: 'Projects', href: 'projects.html', symbol: '→' },
             ].map(({ label, href, symbol, onClick }) => (
               <a key={label} href={href}
                 onClick={onClick ? (e) => { e.preventDefault(); onClick(); } : undefined}
@@ -317,7 +318,27 @@
                 onMouseLeave={e => e.currentTarget.style.color = '#1c1c18'}
               >
                 {label}
-                <span style={{ fontSize: 54, opacity: 1, color: '#000', transition: 'opacity 0.15s', display: 'inline-block', width: '48px', textAlign: 'center', lineHeight: 1 }}>{symbol}</span>
+                <svg width="39" height="39" viewBox="0 0 52 52" fill="none" style={{ display: 'inline-block' }}>
+                  <mask id={`navknock-${label}`} maskUnits="userSpaceOnUse" x="0" y="0" width="52" height="52">
+                    <rect width="52" height="52" fill="white" />
+                    <g stroke="black" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" fill="none">
+                      {symbol === '→' ? (
+                        <>
+                          <path d="M16 26H36" />
+                          <path d="M28 18L36 26L28 34" />
+                        </>
+                      ) : symbol === '−' ? (
+                        <path d="M16 26H36" />
+                      ) : (
+                        <>
+                          <path d="M16 26H36" />
+                          <path d="M26 16V36" />
+                        </>
+                      )}
+                    </g>
+                  </mask>
+                  <circle cx="26" cy="26" r="23" fill="currentColor" mask={`url(#navknock-${label})`} />
+                </svg>
               </a>
             ))}
           </div>
@@ -344,7 +365,10 @@
                 style={{
                   fontSize: 40, fontWeight: 800, color: '#1c1c18',
                   letterSpacing: '-0.016em',
-                  lineHeight: 1.2,
+                  lineHeight: 1,
+                  height: 54,
+                  display: 'inline-flex',
+                  alignItems: 'center',
                   transition: 'color 0.15s',
                   cursor: 'pointer',
                 }}
