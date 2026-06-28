@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 /* ============================================================
    Design tokens — matched 1:1 to the original static site
@@ -12,7 +13,7 @@
   --color-hairline-strong: rgba(28, 28, 24, 0.14);
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Fraunces", Georgia, serif;
+  --font-display: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* the signature ease used across the original site */
