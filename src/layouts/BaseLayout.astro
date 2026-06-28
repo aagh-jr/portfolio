@@ -9,6 +9,8 @@ export interface Props {
   image?: string;
   /** Override the canonical path (defaults to the current pathname). */
   canonical?: string;
+  /** Extra class(es) applied to <body> (e.g. per-page zoom). */
+  bodyClass?: string;
 }
 
 const {
@@ -17,6 +19,7 @@ const {
     "Abel Angel — Cognitive Science graduate specializing in UX Design and Human-Computer Interaction. UX research and product design portfolio.",
   image = "/uploads/abel-portrait.jpg",
   canonical,
+  bodyClass,
 } = Astro.props;
 
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
@@ -72,7 +75,7 @@ const ogImage = new URL(image, Astro.site);
     <ClientRouter />
     <slot name="head" />
   </head>
-  <body>
+  <body class={bodyClass}>
     <slot />
     <script>
       import { setupReveals } from "../scripts/reveal";
