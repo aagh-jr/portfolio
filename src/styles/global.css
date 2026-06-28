@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens — matched 1:1 to the original static site
+   bg #FFFAFA · ink #1c1c18 · muted #71717a
+   ============================================================ */
+@theme {
+  --color-bg: #FFFAFA;
+  --color-ink: #1c1c18;
+  --color-muted: #71717a;
+  --color-hairline: rgba(28, 28, 24, 0.08);
+  --color-hairline-strong: rgba(28, 28, 24, 0.14);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* the signature ease used across the original site */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   GSAP scroll-reveal — elements tagged data-reveal start hidden
+   and are animated in by reveal.ts. If JS never runs (or the
+   user prefers reduced motion) they remain fully visible.
+   ============================================================ */
+[data-reveal],
+[data-load-item] {
+  opacity: 1;
+}
+
+/* reveal-ready is added by a blocking head script BEFORE first paint,
+   so tagged elements hide without a flash. No JS / no class = visible. */
+html.reveal-ready [data-reveal],
+html.reveal-ready [data-load-item] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.reveal-ready [data-reveal],
+  html.reveal-ready [data-load-item] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
