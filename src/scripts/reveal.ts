@@ -1,6 +1,13 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+declare global {
+  interface Window {
+    /** True once the visitor has navigated client-side (after first swap). */
+    __spaNav?: boolean;
+  }
+}
+
 gsap.registerPlugin(ScrollTrigger);
 
 const prefersReduced = () =>
@@ -35,11 +42,17 @@ function initScrollReveals() {
  * Above-the-fold load animation: items tagged `data-load-item` inside a
  * `data-load-stagger` container fade up on initial paint, staggered.
  */
-function initLoadStagger() {
+function showLoadStagger(animate: boolean) {
   const groups = gsap.utils.toArray<HTMLElement>("[data-load-stagger]");
   groups.forEach((group) => {
     const items = group.querySelectorAll<HTMLElement>("[data-load-item]");
     if (!items.length) return;
+    if (!animate) {
+      // SPA navigation: View Transitions own the cross-fade, so just reveal
+      // the items instantly (no stagger) — keeps both directions symmetric.
+      gsap.set(items, { opacity: 1, y: 0 });
+      return;
+    }
     const base = parseFloat(group.dataset.loadDelay || "0.05");
     gsap.fromTo(
       items,
@@ -60,7 +73,9 @@ function initLoadStagger() {
 export function runReveals() {
   // Reduced motion: the CSS guard already keeps everything visible.
   if (prefersReduced()) return;
-  initLoadStagger();
+  // The staggered load animation only plays on the initial document load;
+  // subsequent SPA navigations are clean View Transition cross-fades.
+  showLoadStagger(!window.__spaNav);
   initScrollReveals();
   ScrollTrigger.refresh();
 }
@@ -68,11 +83,13 @@ export function runReveals() {
 /**
  * Wire up reveals for Astro's View Transitions lifecycle. `astro:page-load`
  * fires on the initial load and after every navigation; we kill old
- * ScrollTriggers before each swap so they don't leak between pages.
+ * ScrollTriggers before each swap so they don't leak between pages, and flag
+ * that we're now navigating client-side (so entrances don't replay).
  */
 export function setupReveals() {
   document.addEventListener("astro:page-load", runReveals);
   document.addEventListener("astro:before-swap", () => {
+    window.__spaNav = true;
     ScrollTrigger.getAll().forEach((t) => t.kill());
   });
 }

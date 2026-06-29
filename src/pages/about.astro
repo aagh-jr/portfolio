@@ -105,7 +105,6 @@ const parts = aboutText.split(EMOJI);
     from { transform: translateX(0); }
     to   { transform: translateX(101%); }
   }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   .bento-outer { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
   .bento-inner { padding: 48px 0 96px; }
@@ -152,7 +151,6 @@ const parts = aboutText.split(EMOJI);
     display: flex;
     flex-direction: column;
     gap: 20px;
-    animation: fadeIn 0.7s ease both;
   }
   .about-portrait {
     width: 100%;
@@ -191,9 +189,6 @@ const parts = aboutText.split(EMOJI);
   }
   .corner-link:hover { color: #71717a; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .about-side { animation: none; }
-  }
   @media (max-width: 768px) {
     .bento-outer { padding: 0 20px; }
     .bento-grid { grid-template-columns: 1fr; }
@@ -209,6 +204,9 @@ const parts = aboutText.split(EMOJI);
     if (!span || span.dataset.revealed) return;
     span.dataset.revealed = "true";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Only wipe in on the initial document load; arriving via a client-side
+    // navigation uses the symmetric View Transition cross-fade instead.
+    if ((window as any).__spaNav) return;
 
     const range = document.createRange();
     range.selectNodeContents(span);
