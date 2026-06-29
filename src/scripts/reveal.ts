@@ -5,6 +5,8 @@ declare global {
   interface Window {
     /** True once the visitor has navigated client-side (after first swap). */
     __spaNav?: boolean;
+    /** Guards one-time wiring of the projects page toggle/entrance. */
+    __projWired?: boolean;
   }
 }
 
