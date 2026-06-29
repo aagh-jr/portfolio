@@ -8,6 +8,8 @@ tags:
 order: 2
 status: live
 href: /projects/cabrillo
-variant: pile
-pile: cabrillo
+variant: image
+coverImage: /uploads/cabrillo-nps-logo.png
+coverFit: contain
+coverBg: "#1b3a28"
 ---

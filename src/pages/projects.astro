@@ -2,9 +2,9 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.status !== "coming-soon")
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout
@@ -65,11 +65,18 @@ const projects = (await getCollection("projects")).sort(
                     p.data.variant === "pile" && "tile-image--pile",
                   ]}
                   style={
-                    p.data.variant === "cover"
+                    (p.data.variant === "cover" || p.data.variant === "image") &&
+                    p.data.coverBg
                       ? `background:${p.data.coverBg};`
                       : undefined
                   }
                 >
+                  {p.data.variant === "image" && (
+                    <div
+                      class:list={["tile-photo", `tile-photo--${p.data.coverFit}`]}
+                      style={`background-image:url(${p.data.coverImage});`}
+                    />
+                  )}
                   {p.data.pile === "ea" && (
                     <div class="pile">
                       <div class="pile-photo pile-photo--screen" />
@@ -214,24 +221,36 @@ const projects = (await getCollection("projects")).sort(
   .tile-image {
     width: 100%;
     aspect-ratio: 5 / 4;
-    border-radius: 18px;
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     container-type: inline-size;
-    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1),
-      box-shadow 280ms cubic-bezier(0.2, 0, 0, 1);
+    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
   }
   .tile:hover .tile-image {
     transform: translateY(-4px);
-    box-shadow: 0 18px 40px -24px rgba(28, 28, 24, 0.45);
   }
   .cover-label {
     font-size: 30px;
     font-weight: 800;
     letter-spacing: -0.02em;
+  }
+
+  /* Single-image cover. "cover" fills the tile; "contain" centers the image
+     (e.g. a logo) over coverBg with breathing room. */
+  .tile-photo {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .tile-photo--cover { background-size: cover; }
+  .tile-photo--contain {
+    inset: 16%;
+    background-size: contain;
   }
 
   /* ── Photo-pile, scaled to the card via container-query width (cqw) ── */

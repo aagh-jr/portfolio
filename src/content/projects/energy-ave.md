@@ -8,6 +8,7 @@ tags:
 order: 1
 status: live
 href: /projects/energy-ave
-variant: pile
-pile: ea
+variant: image
+coverImage: /uploads/ea-title-hifi.png
+coverFit: cover
 ---

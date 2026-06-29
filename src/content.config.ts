@@ -17,11 +17,17 @@ const projects = defineCollection({
     status: z.enum(["live", "coming-soon"]).default("live"),
     /** Where the tile links (case study route or external URL). */
     href: z.string().optional(),
-    /** Tile artwork: a bespoke photo-pile variant, or a solid cover. */
-    variant: z.enum(["pile", "cover"]).default("cover"),
+    /** Tile artwork: a photo-pile, a single image, or a solid cover. */
+    variant: z.enum(["pile", "image", "cover"]).default("cover"),
     /** Pile id when variant === "pile" (matches CSS in the listing page). */
     pile: z.enum(["ea", "cabrillo"]).optional(),
-    /** Solid cover colour + label when variant === "cover". */
+    /** Image path when variant === "image". */
+    coverImage: z.string().optional(),
+    /** How the image sits in the tile: "cover" fills it, "contain" centers it
+     *  (e.g. a logo) on top of coverBg. */
+    coverFit: z.enum(["cover", "contain"]).default("cover"),
+    /** Solid cover colour + label when variant === "cover" (also the backdrop
+     *  behind a "contain" image). */
     coverBg: z.string().optional(),
     coverFg: z.string().optional(),
     coverLabel: z.string().optional(),

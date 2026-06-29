@@ -15,7 +15,7 @@ const contacts = [
 ];
 ---
 
-<BaseLayout title="Abel Angel — Portfolio" bodyClass="zoom-home">
+<BaseLayout title="Abel Angel — Portfolio" bodyClass="zoom-home home-no-scroll">
   <main id="home" data-load-stagger>
     <div class="bento-outer">
       <div class="bento-inner">
@@ -85,6 +85,16 @@ const contacts = [
   /* Home + About share the original 1.2 zoom, applied via a body class. */
   body.zoom-home {
     zoom: 1.2;
+  }
+
+  /* Home only: it's a single-screen hero, so never scroll the document.
+     Scoped to this class (not the shared zoom-home) so the About page,
+     which does scroll, is unaffected. */
+  html:has(body.home-no-scroll),
+  body.home-no-scroll {
+    height: 100svh;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 </style>
 

@@ -14,6 +14,17 @@ function teardown() {
 
 function init() {
   teardown();
+
+  // Ensure the gameplay demo video autoplays. The muted *attribute* in the
+  // injected markup doesn't reliably set the muted *property* after a View
+  // Transitions swap, which makes browsers block autoplay and freeze the
+  // video on frame 1 — so set it explicitly and kick playback.
+  const video = document.getElementById("gameplayVideo") as HTMLVideoElement | null;
+  if (video) {
+    video.muted = true;
+    video.play().catch(() => {});
+  }
+
   const links = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('.sidebar-toc a[href^="#"]'),
   );

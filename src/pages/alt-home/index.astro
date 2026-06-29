@@ -1,0 +1,267 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const introText =
+  "I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.";
+
+const contacts = [
+  { label: "Email", href: "mailto:abel.aagh@gmail.com", external: false },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/abel-a-gonzalez",
+    external: true,
+  },
+  { label: "GitHub", href: "https://github.com/aagh-jr", external: true },
+];
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout title="Abel Angel — Portfolio" bodyClass="zoom-home home-locked">
+  <main id="home" class="home-split" data-load-stagger>
+    <!-- ── Left sidebar: intro + links (fixed) ── -->
+    <aside class="side">
+      <div class="side-top">
+        <div class="hero-title" data-load-item>
+          <span>Hey! I'm </span><span>Abel Angel</span>
+        </div>
+        <div class="hero-sub" data-load-item>
+          <span class="intro-line">{introText}</span>
+        </div>
+      </div>
+
+      <nav class="side-nav" data-load-item>
+        <a href="/about" class="side-link side-link--about">About</a>
+        {
+          contacts.map((c) => (
+            <a
+              href={c.href}
+              class="side-link"
+              target={c.external ? "_blank" : undefined}
+              rel={c.external ? "noreferrer" : undefined}
+            >
+              {c.label}
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <!-- ── Right column: scrolling project cards ── -->
+    <section class="projects-col" data-load-item>
+      <div class="masonry cols-2" id="grid">
+        {
+          projects.map((p) => {
+            const soon = p.data.status === "coming-soon";
+            const Tag = soon ? "div" : "a";
+            const props = soon ? {} : { href: p.data.href };
+            return (
+              <Tag class:list={["tile", soon && "tile--soon"]} {...props}>
+                <div class="tile-image" />
+
+                <div class="tile-meta">
+                  <div class="tile-title">{p.data.title}</div>
+                  <div class="tile-tagline">{p.data.tagline}</div>
+                  <div class="tile-tags">
+                    {soon && <span class="tag tag--soon">Coming Soon</span>}
+                    {p.data.tags.map((t) => (
+                      <span class="tag">{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </Tag>
+            );
+          })
+        }
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  /* Home + About share the original 1.2 zoom, applied via a body class. */
+  body.zoom-home {
+    zoom: 1.2;
+  }
+
+  /* Home only: lock document scroll so the page never moves. The single
+     scrollable region is the project column (.projects-col). Without this,
+     a wheel over the sidebar scrolls the whole document instead. */
+  html:has(body.home-locked),
+  body.home-locked {
+    height: 100svh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+</style>
+
+<style>
+  /* Split layout: fixed sidebar on the left, scrolling cards on the right.
+     Height is divided by the body's 1.2 zoom so the rendered box fills the
+     visual viewport exactly (zoom scales everything, vh included). */
+  .home-split {
+    display: flex;
+    align-items: stretch;
+    gap: 56px;
+    height: calc(100svh / 1.2);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 48px 40px;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  .side {
+    flex: 0 0 35%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Match the project column's top padding so the "Hey!" line aligns with
+       the top edge of the first project card. */
+    padding-top: 8px;
+  }
+  .side-top {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-title {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -0.016em;
+    line-height: 1;
+    margin-bottom: 24px;
+    color: #000;
+    white-space: nowrap;
+  }
+  .hero-sub {
+    font-size: 22px;
+    font-weight: 800;
+    color: #71717a;
+    letter-spacing: -0.016em;
+    line-height: 1.25;
+    max-width: 30ch;
+  }
+  .intro-line { display: block; }
+
+  .side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .side-link {
+    font-size: 30px;
+    font-weight: 800;
+    color: #1c1c18;
+    letter-spacing: -0.016em;
+    line-height: 1.1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .side-link:hover { color: #71717a; }
+  .side-link--about { color: #e0533d; margin-bottom: 6px; }
+  .side-link--about:hover { color: #b83f2c; }
+
+  /* ── Scrolling project column ── */
+  .projects-col {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 10px 0 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(28, 28, 24, 0.18) transparent;
+  }
+  .projects-col::-webkit-scrollbar { width: 8px; }
+  .projects-col::-webkit-scrollbar-thumb {
+    background: rgba(28, 28, 24, 0.18);
+    border-radius: 999px;
+  }
+
+  .masonry {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 24px;
+    /* Spacing lives on the inner grid (not the scroll container) so the last
+       row's full height is included in the scrollable area — WebKit ignores a
+       scroll container's own bottom padding. */
+    padding-bottom: 64px;
+  }
+
+  /* Card: square placeholder image over the description. */
+  .tile {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Prototype image: a plain square placeholder (piles/photos removed). */
+  .tile-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #1c1c18;
+    border-radius: 4px;
+    background: #fffafa;
+    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1),
+      box-shadow 280ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .tile:not(.tile--soon):hover .tile-image {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -24px rgba(28, 28, 24, 0.45);
+  }
+
+  /* Meta */
+  .tile-meta { display: flex; flex-direction: column; gap: 10px; }
+  .tile-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1c1c18;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .tile-tagline { font-size: 14px; color: #71717a; line-height: 1.55; }
+  .tile-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: #1c1c18;
+    background: transparent;
+    border: 1px solid rgba(28, 28, 24, 0.25);
+    padding: 4px 11px;
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .tag--soon {
+    color: #fffafa;
+    background: #1c1c18;
+    border-color: #1c1c18;
+    font-weight: 600;
+  }
+  .tile--soon { cursor: default; }
+
+  /* Stack on narrow screens: sidebar on top, cards flow below normally. */
+  @media (max-width: 900px) {
+    .home-split {
+      flex-direction: column;
+      height: auto;
+      overflow: visible;
+      gap: 40px;
+      padding: 32px 24px 64px;
+    }
+    .side {
+      flex: none;
+      max-width: none;
+    }
+    .hero-sub { max-width: none; }
+    .projects-col { overflow: visible; padding: 0; }
+    .masonry { grid-template-columns: 1fr; gap: 40px; }
+  }
+</style>
