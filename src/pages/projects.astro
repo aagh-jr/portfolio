@@ -186,9 +186,22 @@ const projects = (await getCollection("projects")).sort(
     grid-template-columns: repeat(2, 1fr);
     gap: 48px 28px;
   }
-  /* 1-per-row: photo 25% smaller than the full card width (piles scale with
-     it via container queries). */
+  /* 1-per-row: centered photo at 75% width (piles scale with it via container
+     queries), with the text below split into two columns — title left,
+     description (+ tags) right. */
+  .masonry.cols-1 .tile { align-items: center; }
   .masonry.cols-1 .tile-image { width: 75%; }
+  .masonry.cols-1 .tile-meta {
+    width: 75%;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    column-gap: 48px;
+    row-gap: 12px;
+    align-items: start;
+  }
+  .masonry.cols-1 .tile-title { grid-column: 1; grid-row: 1; }
+  .masonry.cols-1 .tile-tagline { grid-column: 2; grid-row: 1; }
+  .masonry.cols-1 .tile-tags { grid-column: 2; grid-row: 2; margin-top: 0; }
 
   /* Card: photo over text */
   .tile {
