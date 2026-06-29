@@ -2,10 +2,11 @@
 title: SkinSavior
 tagline: "A skincare ingredient transparency app that helps users understand what's actually in their products — decoding labels into clear, trustworthy insights."
 tags:
-  - Next.js
-  - Expo
-  - Supabase
-  - Claude API
+  - UX Research
+  - UX Design
+  - Interaction Design
+  - Information Architecture
+  - Usability Testing
 order: 3
 status: coming-soon
 variant: cover

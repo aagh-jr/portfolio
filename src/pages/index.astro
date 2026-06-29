@@ -3,8 +3,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const introText =
   "I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.";
-const aboutText =
-  "I'm a Cognitive Science 🧠 graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or breaking a sweat and your local pilates studio 🤸🏽.";
 
 const contacts = [
   { label: "Email", href: "mailto:abel.aagh@gmail.com", external: false },
@@ -23,89 +21,12 @@ const contacts = [
       <div class="bento-inner">
         <div class="bento-grid">
           <!-- ── Hero card ── -->
-          <div class="hero-card" id="heroCard">
+          <div class="hero-card">
             <div class="hero-title" data-load-item>
               <span>Hey! I'm </span><span>Abel Angel</span>
             </div>
-
-            <div class="hero-sub" id="heroSub" data-load-item>
-              <span id="introText" class="intro-line">{introText}</span>
-            </div>
-
-            <!-- About side panel (portrait + contact icons) -->
-            <div class="about-side" id="aboutSide" hidden aria-hidden="true">
-              <img
-                src="/uploads/abel-portrait.jpg"
-                alt="Abel Angel"
-                class="about-portrait"
-              />
-              <div class="about-icons">
-                <a
-                  href="mailto:abel.aagh@gmail.com"
-                  aria-label="Email"
-                  class="icon-link"
-                >
-                  <svg
-                    width="34"
-                    height="34"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"
-                    ></path>
-                  </svg>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/abel-a-gonzalez"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="LinkedIn"
-                  class="icon-link"
-                >
-                  <svg
-                    width="34"
-                    height="34"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"
-                    ></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-                <a
-                  href="https://github.com/aagh-jr"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="GitHub"
-                  class="icon-link"
-                >
-                  <svg
-                    width="34"
-                    height="34"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-                    ></path>
-                  </svg>
-                </a>
-              </div>
+            <div class="hero-sub" data-load-item>
+              <span class="intro-line">{introText}</span>
             </div>
           </div>
         </div>
@@ -114,20 +35,14 @@ const contacts = [
 
     <!-- ── Bottom-right nav ── -->
     <div class="corner-nav corner-nav--right" data-load-item>
-      <a
-        href="#"
-        id="aboutToggle"
-        class="corner-link"
-        role="button"
-        aria-pressed="false"
-      >
+      <a href="/about" class="corner-link">
         About
         <svg width="39" height="39" viewBox="0 0 52 52" fill="none" aria-hidden="true">
           <mask id="navknock-about" maskUnits="userSpaceOnUse" x="0" y="0" width="52" height="52">
             <rect width="52" height="52" fill="white"></rect>
             <g stroke="black" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
               <path d="M16 26H36"></path>
-              <path id="aboutVert" d="M26 16V36"></path>
+              <path d="M28 18L36 26L28 34"></path>
             </g>
           </mask>
           <circle cx="26" cy="26" r="23" fill="currentColor" mask="url(#navknock-about)"></circle>
@@ -167,20 +82,13 @@ const contacts = [
 </BaseLayout>
 
 <style is:global>
-  /* Home page uses the original 1.2 zoom, applied via a body class. */
+  /* Home + About share the original 1.2 zoom, applied via a body class. */
   body.zoom-home {
     zoom: 1.2;
   }
 </style>
 
 <style>
-  @keyframes slideRight {
-    from { transform: translateX(0); }
-    to   { transform: translateX(101%); }
-  }
-  @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
-
   .bento-outer {
     max-width: 1280px;
     margin: 0 auto;
@@ -198,18 +106,11 @@ const contacts = [
   .hero-card {
     grid-column: 1 / -1;
     min-height: 260px;
-    overflow: hidden;
     padding-top: 40px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    position: relative;
   }
-  .hero-card.is-about {
-    min-height: 540px;
-    overflow: visible;
-  }
-
   .hero-title {
     font-size: 40px;
     font-weight: 800;
@@ -218,7 +119,6 @@ const contacts = [
     margin-bottom: 24px;
     color: #000;
   }
-
   .hero-sub {
     font-size: 40px;
     font-weight: 800;
@@ -227,57 +127,7 @@ const contacts = [
     line-height: 1.2;
     max-width: 50vw;
   }
-  .hero-sub.is-about {
-    font-size: 25px;
-    font-weight: 700;
-    letter-spacing: normal;
-    max-width: 520px;
-  }
   .intro-line { display: block; }
-  .about-line {
-    display: block;
-    position: relative;
-    white-space: pre-wrap;
-  }
-  .about-line .emoji {
-    font-size: 1.3em;
-    vertical-align: middle;
-    display: inline-block;
-    line-height: 1;
-  }
-  .reveal-mask {
-    position: absolute;
-    background: #fffafa;
-  }
-
-  .about-side {
-    position: absolute;
-    top: 40px;
-    right: 15px;
-    width: calc(50% - 15px);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .about-side[hidden] { display: none; }
-  .about-portrait {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 12px;
-  }
-  .about-icons {
-    display: flex;
-    align-items: center;
-    gap: 36px;
-  }
-  .icon-link {
-    color: #71717a;
-    display: inline-flex;
-    transition: color 0.15s;
-  }
-  .icon-link:hover { color: #1c1c18; }
 
   .corner-nav {
     position: fixed;
@@ -307,9 +157,7 @@ const contacts = [
     cursor: pointer;
     transition: color 0.15s;
   }
-  .corner-link--contact {
-    height: 54px;
-  }
+  .corner-link--contact { height: 54px; }
   .corner-link:hover { color: #71717a; }
 
   @media (max-width: 768px) {
@@ -317,145 +165,3 @@ const contacts = [
     .bento-grid { grid-template-columns: 1fr; }
   }
 </style>
-
-<script define:vars={{ introText, aboutText }}>
-  function initHome() {
-    const toggle = document.getElementById("aboutToggle");
-    if (!toggle || toggle.dataset.wired) return;
-    toggle.dataset.wired = "true";
-
-    const heroCard = document.getElementById("heroCard");
-    const heroSub = document.getElementById("heroSub");
-    const introEl = document.getElementById("introText");
-    const side = document.getElementById("aboutSide");
-    const vert = document.getElementById("aboutVert");
-    const EMOJI = /(🇲🇽|🌉|🤸🏽|🧠)/u;
-
-    let open = false;
-    let animating = false;
-    let introRef = introEl; // live ref — the intro span is recreated on close
-
-    const buildAboutSpan = () => {
-      const span = document.createElement("span");
-      span.className = "about-line";
-      span.style.opacity = "0";
-      aboutText.split(EMOJI).forEach((part) => {
-        if (EMOJI.test(part)) {
-          const e = document.createElement("span");
-          e.className = "emoji";
-          e.textContent = part;
-          span.appendChild(e);
-        } else {
-          span.appendChild(document.createTextNode(part));
-        }
-      });
-      return span;
-    };
-
-    const measureLines = (el) => {
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      const rects = Array.from(range.getClientRects());
-      const parent = el.getBoundingClientRect();
-      const lh = parseFloat(getComputedStyle(el).lineHeight) || 30;
-      const lines = [];
-      rects.forEach((r) => {
-        const top = r.top - parent.top;
-        const hit = lines.find((l) => Math.abs(l.top - top) < lh / 2);
-        if (hit) {
-          hit.left = Math.min(hit.left, r.left - parent.left);
-          hit.right = Math.max(hit.right, r.right - parent.left);
-          hit.height = Math.max(hit.height, r.height);
-        } else {
-          lines.push({
-            top,
-            left: r.left - parent.left,
-            right: r.right - parent.left,
-            height: r.height,
-          });
-        }
-      });
-      return lines.map((l) => ({
-        top: l.top,
-        left: l.left,
-        width: l.right - l.left,
-        height: l.height,
-      }));
-    };
-
-    const revealAboutLines = (span) => {
-      const lines = measureLines(span);
-      span.style.opacity = "1";
-      const reduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      if (reduced || lines.length === 0) return;
-      const stagger =
-        lines.length > 1 ? (0.25 - 0.1) / (lines.length - 1) : 0;
-      lines.forEach((rect, i) => {
-        const mask = document.createElement("span");
-        mask.className = "reveal-mask";
-        mask.style.top = rect.top + "px";
-        mask.style.left = rect.left + "px";
-        mask.style.width = rect.width + 2 + "px";
-        mask.style.height = rect.height + "px";
-        mask.style.animation = `slideRight 0.1s ease ${(i * stagger).toFixed(3)}s forwards`;
-        span.appendChild(mask);
-      });
-    };
-
-    const openAbout = () => {
-      introRef.style.animation = "fadeOut 0.25s ease both";
-      setTimeout(() => {
-        heroCard.classList.add("is-about");
-        heroSub.classList.add("is-about");
-        const span = buildAboutSpan();
-        heroSub.replaceChildren(span);
-        side.hidden = false;
-        side.setAttribute("aria-hidden", "false");
-        side.style.animation = "fadeIn 0.75s ease both";
-        if (vert) vert.style.display = "none";
-        toggle.setAttribute("aria-pressed", "true");
-        requestAnimationFrame(() => revealAboutLines(span)); // measure post-layout
-        animating = false;
-        open = true;
-      }, 250);
-    };
-
-    const closeAbout = () => {
-      const span = heroSub.querySelector(".about-line");
-      if (span) span.style.animation = "fadeOut 0.25s ease both";
-      side.style.animation = "fadeOut 0.25s ease both";
-      setTimeout(() => {
-        heroCard.classList.remove("is-about");
-        heroSub.classList.remove("is-about");
-        const intro = document.createElement("span");
-        intro.id = "introText";
-        intro.className = "intro-line";
-        intro.textContent = introText;
-        intro.style.animation = "fadeIn 0.25s ease both";
-        heroSub.replaceChildren(intro);
-        introRef = intro; // rebind for the next open
-        side.hidden = true;
-        side.setAttribute("aria-hidden", "true");
-        if (vert) vert.style.display = "";
-        toggle.setAttribute("aria-pressed", "false");
-        animating = false;
-        open = false;
-      }, 250);
-    };
-
-    toggle.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (animating) return;
-      animating = true;
-      open ? closeAbout() : openAbout();
-    });
-  }
-
-  initHome();
-  if (!window.__homeWired) {
-    window.__homeWired = true;
-    document.addEventListener("astro:page-load", initHome);
-  }
-</script>

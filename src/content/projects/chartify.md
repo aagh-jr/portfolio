@@ -2,9 +2,9 @@
 title: Chartify
 tagline: "A Spotify listening-history visualizer that turns your music data into interactive charts and insights — see your taste, trends and top artists at a glance."
 tags:
-  - Spotify API
   - Data Viz
-  - Web App
+  - UX Design
+  - Interaction Design
 order: 4
 status: coming-soon
 variant: cover

@@ -1,0 +1,262 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const aboutText =
+  "I'm a Cognitive Science 🧠 graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or breaking a sweat and your local pilates studio 🤸🏽.";
+
+const EMOJI = /(🇲🇽|🌉|🤸🏽|🧠)/u;
+const parts = aboutText.split(EMOJI);
+---
+
+<BaseLayout
+  title="About | Abel Angel"
+  description="About Abel Angel — a Cognitive Science graduate from UC San Diego specializing in UX Design and Human-Computer Interaction."
+  canonical="/about"
+  bodyClass="zoom-home"
+>
+  <main id="about">
+    <div class="bento-outer">
+      <div class="bento-inner">
+        <div class="bento-grid">
+          <div class="hero-card">
+            <div class="hero-title">
+              <span>Hey! I'm </span><span>Abel Angel</span>
+            </div>
+
+            <div class="hero-sub">
+              <span class="about-line" id="aboutLine">
+                {
+                  parts.map((p) =>
+                    EMOJI.test(p) ? <span class="emoji">{p}</span> : p,
+                  )
+                }
+              </span>
+            </div>
+
+            <div class="about-side">
+              <img
+                src="/uploads/abel-portrait.jpg"
+                alt="Abel Angel"
+                class="about-portrait"
+              />
+              <div class="about-icons">
+                <a href="mailto:abel.aagh@gmail.com" aria-label="Email" class="icon-link">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path>
+                  </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/abel-a-gonzalez" target="_blank" rel="noreferrer" aria-label="LinkedIn" class="icon-link">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                </a>
+                <a href="https://github.com/aagh-jr" target="_blank" rel="noreferrer" aria-label="GitHub" class="icon-link">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Bottom-right nav ── -->
+    <div class="corner-nav corner-nav--right">
+      <a href="/" class="corner-link">
+        Home
+        <svg width="39" height="39" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+          <mask id="navknock-home" maskUnits="userSpaceOnUse" x="0" y="0" width="52" height="52">
+            <rect width="52" height="52" fill="white"></rect>
+            <g stroke="black" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M36 26H16"></path>
+              <path d="M24 18L16 26L24 34"></path>
+            </g>
+          </mask>
+          <circle cx="26" cy="26" r="23" fill="currentColor" mask="url(#navknock-home)"></circle>
+        </svg>
+      </a>
+      <a href="/projects" class="corner-link">
+        Projects
+        <svg width="39" height="39" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+          <mask id="navknock-projects" maskUnits="userSpaceOnUse" x="0" y="0" width="52" height="52">
+            <rect width="52" height="52" fill="white"></rect>
+            <g stroke="black" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M16 26H36"></path>
+              <path d="M28 18L36 26L28 34"></path>
+            </g>
+          </mask>
+          <circle cx="26" cy="26" r="23" fill="currentColor" mask="url(#navknock-projects)"></circle>
+        </svg>
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  body.zoom-home { zoom: 1.2; }
+</style>
+
+<style>
+  @keyframes slideRight {
+    from { transform: translateX(0); }
+    to   { transform: translateX(101%); }
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .bento-outer { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+  .bento-inner { padding: 48px 0 96px; }
+  .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  .hero-card {
+    grid-column: 1 / -1;
+    min-height: 540px;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+  }
+  .hero-title {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -0.016em;
+    line-height: 1;
+    margin-bottom: 24px;
+    color: #000;
+  }
+  .hero-sub {
+    font-size: 25px;
+    font-weight: 700;
+    color: #71717a;
+    line-height: 1.2;
+    max-width: 520px;
+  }
+  .about-line { display: block; position: relative; white-space: pre-wrap; }
+  .about-line .emoji {
+    font-size: 1.3em;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 1;
+  }
+  .reveal-mask { position: absolute; background: #fffafa; }
+
+  .about-side {
+    position: absolute;
+    top: 40px;
+    right: 15px;
+    width: calc(50% - 15px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: fadeIn 0.7s ease both;
+  }
+  .about-portrait {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+  }
+  .about-icons { display: flex; align-items: center; gap: 36px; }
+  .icon-link { color: #71717a; display: inline-flex; transition: color 0.15s; }
+  .icon-link:hover { color: #1c1c18; }
+
+  .corner-nav {
+    position: fixed;
+    bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 100;
+  }
+  .corner-nav--right {
+    right: max(63px, calc((100vw / 1.2 - 1280px) / 2 + 63px));
+    align-items: flex-end;
+  }
+  .corner-link {
+    font-size: 40px;
+    font-weight: 800;
+    color: #1c1c18;
+    letter-spacing: -0.016em;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .corner-link:hover { color: #71717a; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-side { animation: none; }
+  }
+  @media (max-width: 768px) {
+    .bento-outer { padding: 0 20px; }
+    .bento-grid { grid-template-columns: 1fr; }
+    .hero-card { min-height: 0; }
+    .about-side { position: static; width: 100%; margin-top: 28px; }
+    .hero-sub { max-width: none; }
+  }
+</style>
+
+<script>
+  function revealAbout() {
+    const span = document.getElementById("aboutLine");
+    if (!span || span.dataset.revealed) return;
+    span.dataset.revealed = "true";
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(span);
+    const rects = Array.from(range.getClientRects());
+    const parent = span.getBoundingClientRect();
+    const lh = parseFloat(getComputedStyle(span).lineHeight) || 30;
+    const lines: { top: number; left: number; right: number; height: number }[] = [];
+    rects.forEach((r) => {
+      const top = r.top - parent.top;
+      const hit = lines.find((l) => Math.abs(l.top - top) < lh / 2);
+      if (hit) {
+        hit.left = Math.min(hit.left, r.left - parent.left);
+        hit.right = Math.max(hit.right, r.right - parent.left);
+        hit.height = Math.max(hit.height, r.height);
+      } else {
+        lines.push({
+          top,
+          left: r.left - parent.left,
+          right: r.right - parent.left,
+          height: r.height,
+        });
+      }
+    });
+    if (!lines.length) return;
+
+    span.style.opacity = "0";
+    const stagger = lines.length > 1 ? 0.35 / (lines.length - 1) : 0;
+    lines.forEach((l, i) => {
+      const mask = document.createElement("span");
+      mask.className = "reveal-mask";
+      mask.style.top = l.top + "px";
+      mask.style.left = l.left + "px";
+      mask.style.width = l.right - l.left + 2 + "px";
+      mask.style.height = l.height + "px";
+      mask.style.animation = `slideRight 0.12s ease ${(i * stagger).toFixed(3)}s forwards`;
+      span.appendChild(mask);
+    });
+    span.style.opacity = "1";
+  }
+
+  // Each navigation into /about yields a fresh #aboutLine (no `revealed`
+  // flag), so the per-element guard prevents double-masking while the
+  // global flag keeps us from stacking listeners across visits.
+  revealAbout();
+  if (!(window as any).__aboutWired) {
+    (window as any).__aboutWired = true;
+    document.addEventListener("astro:page-load", () =>
+      requestAnimationFrame(revealAbout),
+    );
+  }
+</script>
