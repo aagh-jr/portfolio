@@ -186,6 +186,9 @@ const projects = (await getCollection("projects")).sort(
     grid-template-columns: repeat(2, 1fr);
     gap: 48px 28px;
   }
+  /* 1-per-row: photo 25% smaller than the full card width (piles scale with
+     it via container queries). */
+  .masonry.cols-1 .tile-image { width: 75%; }
 
   /* Card: photo over text */
   .tile {
