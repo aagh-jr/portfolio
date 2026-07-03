@@ -7,6 +7,10 @@ declare global {
     __spaNav?: boolean;
     /** Guards one-time wiring of the projects page toggle/entrance. */
     __projWired?: boolean;
+    /** Guards one-time wiring of the alt-home hero scroll-fade. */
+    __heroFadeWired?: boolean;
+    /** Current scroll/resize handler, so alt-home can replace it across SPA navs. */
+    __heroFadeHandler?: () => void;
   }
 }
 

@@ -25,6 +25,41 @@ function init() {
     video.play().catch(() => {});
   }
 
+  // Booklet flipbooks (Cabrillo): the original interactive viewer was exported
+  // as static HTML with no page-turn logic. Re-wire a lightweight one — each
+  // `.flipbook` carries its page list in `data-pages`; prev/next + clicking
+  // the stage's right/left half turns the page.
+  document.querySelectorAll<HTMLElement>(".flipbook").forEach((fb) => {
+    if (fb.dataset.wired) return;
+    fb.dataset.wired = "1";
+    const pages = (fb.dataset.pages || "").split(",").filter(Boolean);
+    if (!pages.length) return;
+    const img = fb.querySelector<HTMLImageElement>(".flip-img");
+    const prev = fb.querySelector<HTMLButtonElement>(".flip-prev");
+    const next = fb.querySelector<HTMLButtonElement>(".flip-next");
+    const stage = fb.querySelector<HTMLElement>(".flip-stage");
+    const counter = fb.querySelector<HTMLElement>(".flip-counter");
+    if (!img || !prev || !next || !stage || !counter) return;
+    let i = 0;
+    const render = () => {
+      img.src = pages[i];
+      counter.textContent = `${i + 1} / ${pages.length}`;
+      for (const [btn, off] of [[prev, i === 0], [next, i === pages.length - 1]] as const) {
+        btn.disabled = off;
+        btn.style.opacity = off ? "0.3" : "1";
+        btn.style.pointerEvents = off ? "none" : "auto";
+      }
+    };
+    const go = (d: number) => { i = Math.max(0, Math.min(pages.length - 1, i + d)); render(); };
+    prev.addEventListener("click", () => go(-1));
+    next.addEventListener("click", () => go(1));
+    stage.addEventListener("click", (e) => {
+      const r = stage.getBoundingClientRect();
+      go((e.clientX - r.left) / r.width > 0.5 ? 1 : -1);
+    });
+    render();
+  });
+
   const links = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('.sidebar-toc a[href^="#"]'),
   );

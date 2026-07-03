@@ -5,8 +5,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 const introText =
   "I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.";
 
-const contacts = [
-  { label: "Email", href: "mailto:abel.aagh@gmail.com", external: false },
+const navLinks = [
+  { label: "About", href: "/about", external: false },
+  { label: "Contact", href: "mailto:abel.aagh@gmail.com", external: false },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/abel-a-gonzalez",
@@ -20,39 +21,56 @@ const projects = (await getCollection("projects")).sort(
 );
 ---
 
-<BaseLayout title="Abel Angel — Portfolio" bodyClass="zoom-home home-locked">
-  <main id="home" class="home-split" data-load-stagger>
-    <!-- ── Left sidebar: intro + links (fixed) ── -->
-    <aside class="side">
-      <div class="side-top">
-        <div class="hero-title" data-load-item>
-          <span>Hey! I'm </span><span>Abel Angel</span>
-        </div>
-        <div class="hero-sub" data-load-item>
-          <span class="intro-line">{introText}</span>
-        </div>
-      </div>
-
-      <nav class="side-nav" data-load-item>
-        <a href="/about" class="side-link side-link--about">About</a>
+<BaseLayout title="Abel Angel — Portfolio" bodyClass="zoom-home">
+  <main id="home" data-load-stagger>
+    <!-- ── Layer 3 (top): nav + brand. Always visible; the grid tucks
+         beneath this strip. ── -->
+    <header class="site-header">
+      <a href="/" class="brand-mark" id="brandMark" aria-hidden="true">
+        Abel Angel
+      </a>
+      <nav class="top-nav" data-load-item>
         {
-          contacts.map((c) => (
+          navLinks.map((n) => (
             <a
-              href={c.href}
-              class="side-link"
-              target={c.external ? "_blank" : undefined}
-              rel={c.external ? "noreferrer" : undefined}
+              href={n.href}
+              class="nav-link"
+              target={n.external ? "_blank" : undefined}
+              rel={n.external ? "noreferrer" : undefined}
             >
-              {c.label}
+              {n.label}
             </a>
           ))
         }
       </nav>
-    </aside>
+    </header>
 
-    <!-- ── Right column: scrolling project cards ── -->
-    <section class="projects-col" data-load-item>
-      <div class="masonry cols-2" id="grid">
+    <!-- Pastel-blue heart before the "Abel Angel" wordmark. Kept in its own
+         layer (not the header) so the header's difference blend doesn't invert
+         its colour; fades in together with the wordmark on scroll. -->
+    <div class="brand-heart-layer" aria-hidden="true">
+      <span class="brand-heart" id="brandHeart">♥</span>
+    </div>
+
+    <!-- ── Layer 1 (bottom): the intro message. Fixed in place; the grid
+         slides up over it and it fades out as it's covered. ── -->
+    <div class="hero" id="introFade">
+      <div class="hero-title" data-load-item>
+        <span>Hey! I'm </span><span>Abel Angel</span>
+      </div>
+      <div class="hero-sub" data-load-item>
+        <span class="intro-line">{introText}</span>
+      </div>
+    </div>
+
+    <!-- Reserves the first-screen height so the grid starts peeking at the
+         bottom of the viewport. -->
+    <div class="hero-spacer"></div>
+
+    <!-- ── Layer 2 (middle): the project grid. Opaque, in normal flow, so
+         it slides up and covers the message like a sheet of paper. ── -->
+    <div class="grid-bleed" data-load-item>
+      <div class="grid" id="grid">
         {
           projects.map((p) => {
             const soon = p.data.status === "coming-soon";
@@ -60,23 +78,106 @@ const projects = (await getCollection("projects")).sort(
             const props = soon ? {} : { href: p.data.href };
             return (
               <Tag class:list={["tile", soon && "tile--soon"]} {...props}>
-                <div class="tile-image" />
-
-                <div class="tile-meta">
+                <div class="tile-head">
                   <div class="tile-title">{p.data.title}</div>
-                  <div class="tile-tagline">{p.data.tagline}</div>
                   <div class="tile-tags">
-                    {soon && <span class="tag tag--soon">Coming Soon</span>}
-                    {p.data.tags.map((t) => (
-                      <span class="tag">{t}</span>
-                    ))}
+                    {soon && <span class="tag-soon">Coming Soon</span>}
+                    <span class="tag-list">{p.data.tags.join(", ")}</span>
                   </div>
+                </div>
+
+                <div class="tile-body">
+                  {p.data.variant === "cover" ? (
+                    <div
+                      class="frame frame--cover"
+                      style={`background:${p.data.coverBg};`}
+                    >
+                      <span
+                        class="frame-label"
+                        style={`color:${p.data.coverFg};`}
+                      >
+                        {p.data.coverLabel}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      class="frame"
+                      style={
+                        p.data.coverBg ? `background:${p.data.coverBg};` : undefined
+                      }
+                    >
+                      <div
+                        class:list={[
+                          "frame-photo",
+                          `frame-photo--${p.data.coverFit}`,
+                        ]}
+                        style={`background-image:url(${p.data.coverImage});`}
+                      />
+                    </div>
+                  )}
                 </div>
               </Tag>
             );
           })
         }
       </div>
+    </div>
+
+    <!-- ── Second presentation style: horizontal rows, text left (30%) /
+         photo right (70%). ── -->
+    <section class="showcase">
+      {
+        projects.map((p) => {
+          const soon = p.data.status === "coming-soon";
+          const Tag = soon ? "div" : "a";
+          const props = soon ? {} : { href: p.data.href };
+          return (
+            <Tag class:list={["show-row", soon && "show-row--soon"]} {...props}>
+              <div class="show-text">
+                <div class="show-title">{p.data.title}</div>
+                <div class="show-desc">{p.data.tagline}</div>
+                <div class="show-tags">
+                  {soon && <span class="tag-soon">Coming Soon</span>}
+                  <span class="tag-list">{p.data.tags.join(", ")}</span>
+                </div>
+              </div>
+
+              <div class="show-media">
+                <div class="show-cover">
+                  {p.data.variant === "cover" ? (
+                    <div
+                      class="show-frame show-frame--cover"
+                      style={`background:${p.data.coverBg};`}
+                    >
+                      <span
+                        class="show-frame-label"
+                        style={`color:${p.data.coverFg};`}
+                      >
+                        {p.data.coverLabel}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      class="show-frame"
+                      style={
+                        p.data.coverBg ? `background:${p.data.coverBg};` : undefined
+                      }
+                    >
+                      <div
+                        class:list={[
+                          "show-photo",
+                          `show-photo--${p.data.coverFit}`,
+                        ]}
+                        style={`background-image:url(${p.data.coverImage});`}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Tag>
+          );
+        })
+      }
     </section>
   </main>
 </BaseLayout>
@@ -86,47 +187,127 @@ const projects = (await getCollection("projects")).sort(
   body.zoom-home {
     zoom: 1.2;
   }
+</style>
 
-  /* Home only: lock document scroll so the page never moves. The single
-     scrollable region is the project column (.projects-col). Without this,
-     a wheel over the sidebar scrolls the whole document instead. */
-  html:has(body.home-locked),
-  body.home-locked {
-    height: 100svh;
-    overflow: hidden;
-    overscroll-behavior: none;
+<style>
+  /* Alt-home uses Space Mono (scoped to this page; the rest of the site keeps
+     Inter). Space Mono ships only 400/700, so the 800 weights below render at
+     700 — the heaviest available. */
+  #home {
+    font-family: "Space Mono", ui-monospace, monospace;
   }
 </style>
 
 <style>
-  /* Split layout: fixed sidebar on the left, scrolling cards on the right.
-     Height is divided by the body's 1.2 zoom so the rendered box fills the
-     visual viewport exactly (zoom scales everything, vh included). */
-  .home-split {
-    display: flex;
-    align-items: stretch;
-    gap: 56px;
-    height: calc(100svh / 1.2);
+  /* ═══ Three stacked layers ═══
+     The home screen behaves like two sheets of paper: the intro message
+     sits underneath, and the project grid slides up over it as you scroll
+     (which is why the message fades). The nav is a third layer that always
+     stays on top. z-index: header (30) > grid (20) > message (10). */
+
+  /* ── Layer 3: nav + brand (always on top) ── */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 48px 48px 40px;
-    overflow: hidden;
+    min-height: 132px;
+    padding: 0 48px;
+    box-sizing: border-box;
+    z-index: 30;
+    pointer-events: none;
+    /* Difference blend on the whole header so its (white) text renders as the
+       exact inverse of whatever page content sits behind it — near-black on
+       the cream, white over a dark card. Applied here (not on the individual
+       links) because the fixed header forms its own stacking context; blending
+       at the container level lets it pick up the grid painted behind it. */
+    mix-blend-mode: difference;
+  }
+  .top-nav {
+    position: absolute;
+    top: 12px;
+    right: 28px;
+    display: flex;
+    gap: 18px;
+    /* Re-enable clicks on the nav (the header itself is click-through so it
+       never blocks cards scrolling beneath it). The brand mark re-enables
+       its own clicks only once visible, via .brand-mark.visible below. */
+    pointer-events: auto;
+  }
+  .nav-link {
+    font-size: 14.5px;
+    font-weight: 400;
+    /* White text; the header's difference blend turns it into the inverse of
+       whatever is behind it. */
+    color: #fff;
+    letter-spacing: -0.016em;
+    transition: opacity 0.15s;
+  }
+  .nav-link:hover { opacity: 0.6; }
+
+  /* Brand mark: hidden until the intro has fully faded out on scroll,
+     then fades in as a compact wordmark in the top-left corner. */
+  .brand-mark {
+    position: absolute;
+    top: 12px;
+    /* Shifted right to leave room for the pastel-blue heart at left:48. */
+    left: 72px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.016em;
+    /* White text; inverted by the header's difference blend. */
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .brand-mark.visible {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  /* ── Sidebar ── */
-  .side {
-    flex: 0 0 35%;
-    max-width: 460px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    /* Match the project column's top padding so the "Hey!" line aligns with
-       the top edge of the first project card. */
-    padding-top: 8px;
+  /* Pastel-blue heart layer (outside the blended header so it keeps its
+     colour). Mirrors the header's centring so its coordinate system matches
+     the wordmark's. */
+  .brand-heart-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+    box-sizing: border-box;
+    z-index: 31;
+    pointer-events: none;
   }
-  .side-top {
-    display: flex;
-    flex-direction: column;
+  .brand-heart {
+    position: absolute;
+    top: 12px;
+    left: 48px;
+    font-size: 17px;
+    line-height: 1.2;
+    color: #a9cde9;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .brand-heart.visible { opacity: 1; }
+
+  /* ── Layer 1: intro message (fixed underneath, fades on scroll) ── */
+  .hero {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    /* Clears the nav row, plus one extra line of breathing room below it. */
+    padding: 184px 48px 0;
+    box-sizing: border-box;
+    z-index: 10;
+    pointer-events: none;
   }
   .hero-title {
     font-size: 40px;
@@ -135,133 +316,321 @@ const projects = (await getCollection("projects")).sort(
     line-height: 1;
     margin-bottom: 24px;
     color: #000;
-    white-space: nowrap;
+    max-width: 620px;
   }
   .hero-sub {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 800;
     color: #71717a;
     letter-spacing: -0.016em;
-    line-height: 1.25;
-    max-width: 30ch;
+    line-height: 1.3;
+    max-width: 620px;
   }
   .intro-line { display: block; }
 
-  .side-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
-  }
-  .side-link {
-    font-size: 30px;
-    font-weight: 800;
-    color: #1c1c18;
-    letter-spacing: -0.016em;
-    line-height: 1.1;
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-  .side-link:hover { color: #71717a; }
-  .side-link--about { color: #e0533d; margin-bottom: 6px; }
-  .side-link--about:hover { color: #b83f2c; }
-
-  /* ── Scrolling project column ── */
-  .projects-col {
-    flex: 1;
-    min-width: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 8px 10px 0 0;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(28, 28, 24, 0.18) transparent;
-  }
-  .projects-col::-webkit-scrollbar { width: 8px; }
-  .projects-col::-webkit-scrollbar-thumb {
-    background: rgba(28, 28, 24, 0.18);
-    border-radius: 999px;
+  /* Reserves first-screen height so the grid peeks at the bottom initially.
+     Divided by the body's 1.2 zoom so the reserved box matches the visual
+     viewport (zoom scales svh lengths again on render). */
+  .hero-spacer {
+    height: calc((100svh - 110px) / 1.2);
   }
 
-  .masonry {
+  /* ── Layer 2: project grid (slides up and covers the message) ── */
+  .grid-bleed {
+    position: relative;
+    z-index: 20;
     width: 100%;
+    padding: 0 6px;
+    box-sizing: border-box;
+    /* Opaque so it fully occludes the message sliding underneath it. */
+    background: #fffafa;
+  }
+  .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 40px 24px;
-    /* Spacing lives on the inner grid (not the scroll container) so the last
-       row's full height is included in the scrollable area — WebKit ignores a
-       scroll container's own bottom padding. */
-    padding-bottom: 64px;
+    gap: 3px;
+    background: #fffafa;
   }
 
-  /* Card: square placeholder image over the description. */
   .tile {
+    position: relative;
+    aspect-ratio: 3 / 2;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #ccd4d8;
+    /* 25% translucent (75% opaque). */
+    background: rgba(229, 235, 238, 0.75);
     color: inherit;
     text-decoration: none;
   }
-  /* Prototype image: a plain square placeholder (piles/photos removed). */
-  .tile-image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border: 2px solid #1c1c18;
-    border-radius: 4px;
-    background: #fffafa;
-    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1),
-      box-shadow 280ms cubic-bezier(0.2, 0, 0, 1);
-  }
-  .tile:not(.tile--soon):hover .tile-image {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px -24px rgba(28, 28, 24, 0.45);
-  }
-
-  /* Meta */
-  .tile-meta { display: flex; flex-direction: column; gap: 10px; }
-  .tile-title {
-    font-size: 26px;
-    font-weight: 800;
-    color: #1c1c18;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-  .tile-tagline { font-size: 14px; color: #71717a; line-height: 1.55; }
-  .tile-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-  .tag {
-    font-size: 12px;
-    font-weight: 500;
-    color: #1c1c18;
-    background: transparent;
-    border: 1px solid rgba(28, 28, 24, 0.25);
-    padding: 4px 11px;
-    border-radius: 999px;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-  }
-  .tag--soon {
-    color: #fffafa;
-    background: #1c1c18;
-    border-color: #1c1c18;
-    font-weight: 600;
-  }
   .tile--soon { cursor: default; }
 
-  /* Stack on narrow screens: sidebar on top, cards flow below normally. */
+  .tile-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    /* Equal inset so the title sits the same distance from the top edge as
+       from the left edge (line-height:1 on the title removes the extra
+       leading above the text so the visual gaps match). */
+    padding: 16px 16px 0;
+  }
+  .tile-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1c1c18;
+    letter-spacing: -0.016em;
+    line-height: 1;
+  }
+  .tile-tags {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 60%;
+    text-align: right;
+  }
+  .tag-list { font-size: 14px; color: #71717a; line-height: 1.4; }
+  .tag-soon {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1c1c18;
+    white-space: nowrap;
+  }
+
+  .tile-body {
+    position: relative;
+    flex: 1;
+    margin-top: 20px;
+  }
+
+  .frame {
+    position: absolute;
+    top: 0;
+    left: 32px;
+    width: 68%;
+    aspect-ratio: 3 / 2;
+    background: #fffafa;
+    border: 2px solid #1c1c18;
+    border-radius: 4px;
+    box-shadow: 0 12px 28px -14px rgba(28, 28, 24, 0.35);
+    overflow: hidden;
+  }
+  .frame--cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    box-shadow: none;
+  }
+  .frame-label {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .frame-photo {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .frame-photo--cover { background-size: cover; }
+  .frame-photo--contain {
+    inset: 14%;
+    background-size: contain;
+  }
+
+  .tile:not(.tile--soon):hover .frame {
+    transform: translateY(-4px);
+    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  /* ── Second style: horizontal rows — text (30%) left, photo (70%) right ── */
+  .showcase {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 96px 48px 120px;
+    background: #fffafa;
+  }
+  .show-row {
+    display: flex;
+    /* Top-align the text so the title lines up with the top of the photo. */
+    align-items: flex-start;
+    gap: 40px;
+    color: inherit;
+    text-decoration: none;
+  }
+  .show-row--soon { cursor: default; }
+
+  .show-text {
+    flex: 0 0 30%;
+    max-width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .show-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #1c1c18;
+    letter-spacing: -0.016em;
+    line-height: 1.1;
+  }
+  .show-desc { font-size: 15px; color: #71717a; line-height: 1.6; }
+  .show-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .show-media { flex: 0 0 70%; max-width: 70%; }
+  /* Grey box (same size as the photo used to be); the photo is shrunk to a
+     "screen" centred inside it — same idea as the grid tiles. */
+  .show-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #ccd4d8;
+    background: rgba(229, 235, 238, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* The shrunk screen sitting in the centre of the grey box. */
+  .show-frame {
+    position: relative;
+    width: 52%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #fffafa;
+    border: 2px solid #1c1c18;
+    box-shadow: 0 14px 32px -18px rgba(28, 28, 24, 0.45);
+    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .show-frame--cover {
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .show-row:not(.show-row--soon):hover .show-frame {
+    transform: translateY(-4px);
+  }
+  .show-frame-label {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .show-photo {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .show-photo--cover { background-size: cover; }
+  .show-photo--contain {
+    inset: 12%;
+    background-size: contain;
+  }
+
+  /* ── Mobile: drop the paper-slide effect. Everything flows normally in a
+     single column; no fixed layers, no fade. ── */
   @media (max-width: 900px) {
-    .home-split {
-      flex-direction: column;
-      height: auto;
-      overflow: visible;
-      gap: 40px;
-      padding: 32px 24px 64px;
+    .site-header {
+      position: static;
+      min-height: 0;
+      padding: 32px 24px 0;
     }
-    .side {
-      flex: none;
+    /* No fixed gradient strip on mobile (header flows normally here). */
+    .site-header::before { display: none; }
+    .top-nav {
+      position: static;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 16px 24px;
+    }
+    .nav-link { font-size: 18px; }
+    .brand-mark { display: none; }
+
+    .hero {
+      position: static;
       max-width: none;
+      padding: 24px 24px 40px;
+      pointer-events: auto;
+      opacity: 1 !important;
     }
-    .hero-sub { max-width: none; }
-    .projects-col { overflow: visible; padding: 0; }
-    .masonry { grid-template-columns: 1fr; gap: 40px; }
+    .hero-title, .hero-sub { max-width: none; }
+
+    .hero-spacer { display: none; }
+
+    .grid-bleed { position: static; padding: 0 24px; }
+    .grid { grid-template-columns: 1fr; }
+    .tile { aspect-ratio: 4 / 3; }
+
+    /* Showcase stacks: text above the photo, both full width. */
+    .showcase { padding: 56px 24px 72px; gap: 40px; }
+    .show-row { flex-direction: column; align-items: stretch; gap: 16px; }
+    .show-text, .show-media { flex: none; max-width: none; }
   }
 </style>
+
+<script>
+  const FADE_DISTANCE = 260;
+
+  function initHeroFade() {
+    const introEl = document.getElementById("introFade");
+    const brandEl = document.getElementById("brandMark");
+    const heartEl = document.getElementById("brandHeart");
+    if (!introEl || !brandEl) return;
+
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
+
+    const update = () => {
+      // Mobile / reduced-motion: no slide-over effect — message stays put and
+      // fully visible, brand mark hidden.
+      if (reduced || isMobile()) {
+        introEl.style.opacity = "1";
+        brandEl.classList.remove("visible");
+        heartEl?.classList.remove("visible");
+        return;
+      }
+      const progress = Math.min(Math.max(window.scrollY / FADE_DISTANCE, 0), 1);
+      introEl.style.opacity = String(1 - progress);
+      brandEl.classList.toggle("visible", progress >= 1);
+      heartEl?.classList.toggle("visible", progress >= 1);
+    };
+
+    // Re-running on SPA nav: drop previous listeners before re-adding so they
+    // don't stack up across navigations.
+    if (window.__heroFadeHandler) {
+      window.removeEventListener("scroll", window.__heroFadeHandler);
+      window.removeEventListener("resize", window.__heroFadeHandler);
+    }
+    window.__heroFadeHandler = update;
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  initHeroFade();
+  if (!window.__heroFadeWired) {
+    window.__heroFadeWired = true;
+    document.addEventListener("astro:page-load", initHeroFade);
+  }
+</script>
