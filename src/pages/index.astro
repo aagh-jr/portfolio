@@ -115,9 +115,8 @@ const projects = (await getCollection("projects")).sort(
 </style>
 
 <style>
-  /* alt-home-2: body text is Open Sans; the interactive nav elements (nav
-     links + brand link) use Space Grotesk. Scoped to this page; the rest of
-     the site keeps Inter. */
+  /* Home body text is Open Sans; scoped to this page — the rest of the site
+     keeps Inter. Nav/brand (Space Grotesk) live in the shared SiteHeader. */
   #home {
     font-family: "Open Sans", system-ui, -apple-system, sans-serif;
   }
