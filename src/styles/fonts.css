@@ -1,0 +1,48 @@
+/* Self-hosted fonts (matched to the original): Inter 300–800, JetBrains Mono
+   400/500. Removes the render-blocking third-party Google Fonts request. */
+@import "@fontsource/inter/300.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+/* Space Mono (400/700 only) — used by the alt-home page. */
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+/* Open Sans — body text on the alt-home-2 page. */
+@import "@fontsource/open-sans/400.css";
+@import "@fontsource/open-sans/600.css";
+@import "@fontsource/open-sans/700.css";
+@import "@fontsource/open-sans/800.css";
+
+/* Space Grotesk (self-hosted variable font, weights 300–700) — nav on
+   alt-home-2. */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype-variations");
+}
+
+/* Haskoy (self-hosted variable font, weights 100–800). */
+@font-face {
+  font-family: "Haskoy";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/Haskoy-variable.woff2") format("woff2-variations");
+}
+
+/* Lastik (self-hosted, single weight) — headers/titles on alt-home-2. */
+@font-face {
+  font-family: "Lastik";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src:
+    url("/fonts/LastikFreeFont-Free.woff2") format("woff2"),
+    url("/fonts/LastikFreeFont-Free.woff") format("woff");
+}

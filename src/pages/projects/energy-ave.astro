@@ -1,0 +1,15 @@
+---
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import styles from "../../cases/energy-ave-styles.css?raw";
+import body from "../../cases/energy-ave-body.html?raw";
+---
+
+<CaseStudyLayout
+  title="Energy Ave | UX Research Case Study"
+  description="Energy Ave — a gamified energy-conservation experience built for PlanetFlip. 10 weeks of UX research, two rounds of user testing, and a playable in-browser game."
+  canonical="/projects/energy-ave"
+  image="/uploads/ea-cover.png"
+  styles={styles}
+>
+  <Fragment set:html={body} />
+</CaseStudyLayout>

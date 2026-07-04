@@ -1,0 +1,84 @@
+---
+import { ClientRouter } from "astro:transitions";
+import SiteHeader from "../components/SiteHeader.astro";
+import "../styles/global.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  /** OG/Twitter share image, absolute or site-relative path. */
+  image?: string;
+  /** Override the canonical path (defaults to the current pathname). */
+  canonical?: string;
+  /** Extra class(es) applied to <body> (e.g. per-page zoom). */
+  bodyClass?: string;
+  /** Home passes false so its scroll-fade reveals the brand wordmark. */
+  navBrandVisible?: boolean;
+}
+
+const {
+  title = "Abel Angel — Portfolio",
+  description =
+    "Abel Angel — Cognitive Science graduate specializing in UX Design and Human-Computer Interaction. UX research and product design portfolio.",
+  image = "/uploads/abel-portrait.jpg",
+  canonical,
+  bodyClass,
+  navBrandVisible = true,
+} = Astro.props;
+
+const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- 🦭 favicon, preserved from the original site -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦭</text></svg>"
+    />
+
+    <!-- Fonts are self-hosted via @fontsource (see styles/fonts.css) -->
+
+    <!-- Anti-flash guard: hide reveal/load-stagger elements before first
+         paint, unless the visitor prefers reduced motion. -->
+    <script is:inline>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("reveal-ready");
+      }
+    </script>
+
+    <ClientRouter />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <SiteHeader brandVisible={navBrandVisible} />
+    <slot />
+    <script>
+      import { setupReveals } from "../scripts/reveal";
+      setupReveals();
+    </script>
+  </body>
+</html>

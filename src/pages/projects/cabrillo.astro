@@ -1,0 +1,15 @@
+---
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import styles from "../../cases/cabrillo-styles.css?raw";
+import body from "../../cases/cabrillo-body.html?raw";
+---
+
+<CaseStudyLayout
+  title="Cabrillo National Monument | Case Study"
+  description="Cabrillo National Monument — two terms designing, running, measuring and documenting public engagement programs in the park's Interpretation program."
+  canonical="/projects/cabrillo"
+  image="/screenshots/cabrillo/wb-1-cover.png"
+  styles={styles}
+>
+  <Fragment set:html={body} />
+</CaseStudyLayout>
