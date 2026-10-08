@@ -1,0 +1,18 @@
+---
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import styles from "../../cases/skin-savior-styles.css?raw";
+import body from "../../cases/skin-savior-body.html?raw";
+---
+
+<CaseStudyLayout
+  title="SkinSavior | UX Research Case Study"
+  description="SkinSavior — a UX research and product design case study."
+  canonical="/projects/skin-savior"
+  image="/uploads/skinsavior-cover.svg"
+  styles={styles}
+>
+  <Fragment set:html={body} />
+  {import.meta.env.DEV && <>
+    <script is:inline src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  </>}
+</CaseStudyLayout>

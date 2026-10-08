@@ -23,26 +23,38 @@
         <p class="hero-dek">Designing a gamified energy conservation experience for PlanetFlip: research-backed, fully playable and built in 10 weeks.</p>
       </header>
 
-      <!-- METADATA STRIP -->
-      <div class="meta-strip">
-        <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
-        <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks</div></div>
-        <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 People</div></div>
-        <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
-        <div class="meta-row"><div class="meta-label">Links</div><div class="meta-value meta-links"><a href="#" class="meta-link">Play Game</a><a href="#" class="meta-link">Figma Files</a><a href="#" class="meta-link">Final Report</a></div></div>
-      </div>
-
-      <!-- EXECUTIVE SUMMARY -->
-      <div style="margin:40px 0 var(--gap-section);">
-        <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">Executive Summary</div>
-        <p style="font-size:17px;line-height:1.78;color:var(--ink);margin:0;">Energy Ave is a fully playable, browser-based game teaching household energy conservation through room-by-room interaction: designed, tested and shipped in 10 weeks for PlanetFlip, a K–12 sustainability platform. I led user research across two formal study rounds, conducted stakeholder interviews with NPS staff and drove concept selection using a weighted decision matrix. The team shipped in March 2025, meeting or exceeding all five pre-defined success metrics: 12-minute average sessions, 90% task success, 80% knowledge improvement, 2.5-month development timeline and full mobile and desktop accessibility.</p>
-      </div>
-
-      <!-- GAMEPLAY VIDEO -->
-      <figure class="fig" style="margin-bottom: var(--gap-section);">
+      <!-- HERO VISUAL — the thesis: the actual artifact, before any card or stat -->
+      <figure class="fig" style="margin-bottom: var(--space-group);">
         <video id="gameplayVideo" src="/uploads/ea-gameplay.mp4" autoplay="" loop="" muted="" playsinline="" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--hairline);display:block;background:#f4f3ee;"></video>
         <figcaption>Energy Ave gameplay footage (2× speed).</figcaption>
       </figure>
+
+      <!-- TL;DR — everything a recruiter needs without scrolling further -->
+      <div class="tldr-card">
+        <div class="meta-strip">
+          <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Researcher &amp; Designer</div></div>
+          <div class="meta-row"><div class="meta-label">Duration</div><div class="meta-value">10 Weeks</div></div>
+          <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">8 People</div></div>
+          <div class="meta-row"><div class="meta-label">Client</div><div class="meta-value">PlanetFlip</div></div>
+          <div class="meta-row"><div class="meta-label">Links</div><div class="meta-value meta-links"><a href="#" class="meta-link">Play Game</a><a href="#" class="meta-link">Figma Files</a><a href="#" class="meta-link">Final Report</a></div></div>
+        </div>
+        <div class="tldr-outcomes">
+          <div class="tldr-field">
+            <div class="meta-label">Contribution</div>
+            <p class="tldr-value">Lead researcher on an 8-person team: designed both study rounds, ran the Study 2 sessions and drove concept selection with a weighted decision matrix.</p>
+          </div>
+          <div class="tldr-field">
+            <div class="meta-label">Outcome</div>
+            <p class="tldr-value">Shipped March 2025, meeting or exceeding all 5 pre-defined success metrics: 90% task success, 80% knowledge improvement, 12-min avg. session.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXECUTIVE SUMMARY -->
+      <div class="lede">
+        <div class="section-eyebrow">Executive Summary</div>
+        <p>Energy Ave is a fully playable, browser-based game teaching household energy conservation through room-by-room interaction: designed, tested and shipped in 10 weeks for PlanetFlip, a K–12 sustainability platform. I led user research across two formal study rounds, conducted stakeholder interviews with NPS staff and drove concept selection using a weighted decision matrix. The team shipped in March 2025, meeting or exceeding all five pre-defined success metrics: 12-minute average sessions, 90% task success, 80% knowledge improvement, 2.5-month development timeline and full mobile and desktop accessibility.</p>
+      </div>
 
       <!-- MY ROLE -->
       <section class="s" data-reveal id="my-role" data-toc="My Role">
@@ -59,7 +71,7 @@
           <span class="tag">Item Cards &amp; Variant Design</span>
           <span class="tag">Survey Response Chart</span>
         </div>
-        <p style="line-height:1.75;color:var(--muted);margin-top:0;">My primary contribution was research. I designed the structure for both testing rounds: a formative affordance test and cognitive walkthrough on static wireframes, followed by a summative gameplay observation and post-task survey. I also wrote the Study 1 introduction and procedure. I led the Study 2 sessions with stakeholders and student participants, synthesized findings into the project's conclusions and recommendations and built the user test survey response chart. I also conducted in-person stakeholder interviews with NPS staff and drove the concept evaluation process that selected Energy Ave over three competing designs. Within an 8-person team, I was the lead researcher: the person who designed the studies, ran the sessions and ensured findings translated into product decisions.</p>
+        <p style="font-size:19px;line-height:1.75;color:var(--prose);margin-top:0;">My primary contribution was research. I designed the structure for both testing rounds: a formative affordance test and cognitive walkthrough on static wireframes, followed by a summative gameplay observation and post-task survey. I also wrote the Study 1 introduction and procedure. I led the Study 2 sessions with stakeholders and student participants, synthesized findings into the project's conclusions and recommendations and built the user test survey response chart. I also conducted in-person stakeholder interviews with NPS staff and drove the concept evaluation process that selected Energy Ave over three competing designs. Within an 8-person team, I was the lead researcher: the person who designed the studies, ran the sessions and ensured findings translated into product decisions.</p>
       </section>
 
       <!-- SECTION 01: The Problem -->
@@ -301,7 +313,7 @@
         <figure class="fig"><img src="/uploads/ea-flow-game.png" alt="Lo-fi flow diagram, title to component card"><figcaption>Game flow diagram shown to participants: title → room → click → component card.</figcaption></figure>
         <figure class="fig"><img src="/uploads/ea-flow-next.png" alt="Lo-fi flow diagram, next button branching"><figcaption>Next-button flow: branches to congrats screen or returns to the room.</figcaption></figure>
 
-        <p style="color:var(--muted);margin-top:var(--gap-block);">All three participants reconstructed the game's logic without instruction. Cody moved through the flow fluently; Paul had a self-correcting "aha moment" that actually confirmed the game's internal logic: only electricity-conducting items should be clickable. Preesha, the closest to the target age group, read it as a "storyline through a household," correctly predicted the pop-ups and praised the 8-bit aesthetic unprompted.</p>
+        <p style="font-size:19px;line-height:1.75;color:var(--prose);margin-top:var(--gap-block);">All three participants reconstructed the game's logic without instruction. Cody moved through the flow fluently; Paul had a self-correcting "aha moment" that actually confirmed the game's internal logic: only electricity-conducting items should be clickable. Preesha, the closest to the target age group, read it as a "storyline through a household," correctly predicted the pop-ups and praised the 8-bit aesthetic unprompted.</p>
 
         <div class="keyfix">
           <div class="keyfix-label">Key Fixes Flagged</div>
@@ -334,7 +346,7 @@
               <span style="font-size:13px;font-weight:500;color:var(--ink);">Post-task Survey</span>
             </div>
           </div>
-          <p style="color:var(--muted);margin:0;">Participants played the full game, then took a 7-question post-task survey. Behavioral data + self-reported experience. Observation shows what users <em>do</em>; surveys show how they <em>feel</em>. For a voluntary, intrinsically motivated product, both matter.</p>
+          <p style="font-size:19px;line-height:1.75;color:var(--prose);margin:0;">Participants played the full game, then took a 7-question post-task survey. Behavioral data + self-reported experience. Observation shows what users <em>do</em>; surveys show how they <em>feel</em>. For a voluntary, intrinsically motivated product, both matter.</p>
         </div>
 
         <h3 class="subsection">Participants</h3>
@@ -395,6 +407,11 @@
             <div class="t-head"><span class="t-name">Discoverability</span><span class="t-tag">⚠ UI Gap</span></div>
             <p>Not immediately clear the back button was what added points to the score. Needed explicit UI surfacing before the next build iteration.</p>
           </div>
+        </div>
+
+        <div class="pullquote">
+          "This feels like it's aimed at elementary schoolers."
+          <span class="pullquote-cite">P1, stakeholder · the study's clearest single line of criticism</span>
         </div>
       </section>
 

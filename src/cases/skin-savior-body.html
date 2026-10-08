@@ -1,0 +1,198 @@
+<main class="page">
+  <div class="case-intro">
+    <header class="hero" id="hero">
+      <div class="hero-title-row"><h1 class="hero-title" data-tagline=" Skincare guidance graded by evidence, so you can see which product claims are actually backed." aria-label="SkinSavior. Skincare guidance graded by evidence, so you can see which product claims are actually backed.">SkinSavior.</h1></div>
+      <div class="hero-tags">
+        <span class="tag">Product Strategy</span>
+        <span class="tag">User Research</span>
+        <span class="tag">Product Design</span>
+        <span class="tag">Health &amp; Wellness</span>
+      </div>
+    </header>
+
+    <div class="meta-strip">
+      <div class="meta-row"><div class="meta-label">Role</div><div class="meta-value">Co-creator &amp; Product Builder</div></div>
+      <div class="meta-row"><div class="meta-label">Timeline</div><div class="meta-value">June 2026 – Present</div></div>
+      <div class="meta-row"><div class="meta-label">Team</div><div class="meta-value">2 People</div></div>
+      <div class="meta-row"><div class="meta-label">Project</div><div class="meta-value">Personal product</div></div>
+      <div class="meta-row"><div class="meta-label">Links</div><div class="meta-value"><a class="meta-link" href="#demo">Link to demo</a></div></div>
+    </div>
+
+    <div class="tools-strip" aria-label="Tools used on SkinSavior">
+      <div class="tools-label">Tools</div>
+      <div class="tools-list">
+        <span class="tool-item"><img src="/tools/figma.svg" alt="" />Figma</span>
+        <span class="tool-item"><img src="/tools/github.svg" alt="" />GitHub</span>
+        <span class="tool-item"><img src="/tools/user-interviews.svg" alt="" />User Interviews</span>
+        <span class="tool-item"><img src="/tools/openai.svg" alt="" />Codex</span>
+        <span class="tool-item"><img src="/tools/claude-code.svg" alt="" />Claude Code</span>
+        <span class="tool-item"><img src="/tools/supabase.svg" alt="" />Supabase</span>
+        <span class="tool-item"><img src="/tools/vercel.svg" alt="" />Vercel</span>
+      </div>
+    </div>
+
+    <div style="margin:40px 0 var(--gap-section);">
+      <div class="overview-label" style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">Overview</div>
+      <p style="font-size:17px;line-height:1.78;color:var(--ink);margin:0;">SkinSavior is a skincare app my co-founder and I are building to answer a question the existing tools do not answer well: not whether an ingredient is safe, but how strong the evidence is behind what a product says it does. Every app in this space scores safety. We decided early to compete on evidence quality instead, and most of the product decisions since have come back to that 1 choice.</p>
+      <p style="font-size:17px;line-height:1.78;color:var(--ink);margin:16px 0 0;">I own product strategy, the app experience, the skin quiz, the evidence-grading engine, the catalog pipeline and the AI integrations. My co-founder owns the marketing site, database organization and the user survey. It is a working cross-platform prototype (web and mobile), built with Claude Code as the main coding assistant. It is pre-launch, so this is a story about decisions and shipped scope, not traction. I would rather show the reasoning than invent a number.</p>
+    </div>
+  </div>
+
+  <div class="case-layout skin-case-layout">
+    <aside id="sidebar" class="sidebar is-open" aria-label="Case study contents">
+      <a class="sidebar-back" href="/">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back
+      </a>
+      <div class="sidebar-label">Contents</div>
+      <ol class="sidebar-toc" id="sidebarTocList">
+        <li><a href="#problem" data-target="problem" data-current="false">Problem</a></li>
+        <li><a href="#solution" data-target="solution" data-current="false">Solution to the Problem</a></li>
+        <li><a href="#features" data-target="features" data-current="false">Product Features</a></li>
+        <li><a href="#process" data-target="process" data-current="false">Process</a></li>
+        <li><a href="#goals-constraints" data-target="goals-constraints" data-current="false">Goals &amp; Constraints</a></li>
+        <li><a href="#research" data-target="research" data-current="false">Discovery / Research</a></li>
+        <li><a href="#designing" data-target="designing" data-current="false">Design</a></li>
+        <li><a href="#reflection" data-target="reflection" data-current="false">Learning &amp; Reflection</a></li>
+        <li><a href="#tools" data-target="tools" data-current="false">All Tools Used</a></li>
+        <li><a href="#gallery" data-target="gallery" data-current="false">Building &amp; Design Gallery</a></li>
+      </ol>
+    </aside>
+
+    <article class="article skin-article">
+      <section class="s" data-reveal id="problem" data-toc="Problem">
+        <h2 class="section-title">Problem</h2>
+        <p>Skincare marketing runs on claims. “Clinically proven,” “reduces fine lines in 4 weeks,” “dermatologist recommended.” A shopper in the aisle has almost no way to check any of it. The tools that try to help — Yuka, EWG Skin Deep, INCIDecoder, SkinSort, Paula's Choice — turn a product's ingredient list into a single safety score or a list of warnings. That answers “will this hurt me.” It does nothing for the question most people are actually asking, which is “will this do what it says.”</p>
+        <p>There is a second layer most people miss until they start building. Under FDA and FTC rules, acne, eczema and rosacea are disease classifications. The moment a product claims to treat one of them it is making a drug claim, no matter how the sentence is worded. So the obvious feature, “tell the user what will fix their acne,” is not a gap competitors overlooked. It is a legal line, and anything that touches “does this work” has to get it right first.</p>
+      </section>
+
+      <div class="skin-two-up" id="goals-constraints">
+        <section class="s" data-reveal id="goals" data-toc="Goals">
+          <h2 class="section-title">Goals</h2>
+          <ul class="skin-list">
+            <li>Give a non-ingredient person a plain-language answer to “which of this product's claims are actually supported,” per claim, without making them learn chemistry.</li>
+            <li>Ground every grade in a standard I did not invent, so the answer is defensible and not just another opinion score.</li>
+            <li>Stay on the cosmetic side of the FDA line in every piece of copy the product produces.</li>
+            <li>Ship the differentiator first and hold parity features until they can build on it.</li>
+          </ul>
+        </section>
+
+        <section class="s" data-reveal id="constraints" data-toc="Constraints">
+          <h2 class="section-title">Constraints</h2>
+          <ul class="skin-list">
+            <li>2 people, no funding. Every API call has a real cost, so where LLMs run and how often is a product decision, not just an engineering one.</li>
+            <li>I am the only person on the product and design side, so scope discipline is most of the job.</li>
+            <li>Claims language has to stay compliant, which is why we wrote the policy down before building the features that depend on it.</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="s" data-reveal id="process" data-toc="Process">
+        <h2 class="section-title">Process</h2>
+        <p>The work ran in 3 passes: figure out where the real gap was (discovery and research), decide what to build against it (and what to refuse), then build and ship the parts that stand on their own. The sections below follow that order.</p>
+        <div class="process-flow" aria-label="Three-pass product process">
+          <div class="process-node"><strong>Discover</strong><small>Find the real gap</small></div>
+          <span class="process-arrow" aria-hidden="true">→</span>
+          <div class="process-node"><strong>Decide</strong><small>Choose what to build — and refuse</small></div>
+          <span class="process-arrow" aria-hidden="true">→</span>
+          <div class="process-node"><strong>Build &amp; ship</strong><small>Make the differentiator stand alone</small></div>
+        </div>
+      </section>
+
+      <section class="s" data-reveal id="research" data-toc="Discovery / Research">
+        <h2 class="section-title">Discovery / Research</h2>
+
+        <h3 class="skin-subhead">Competitive analysis</h3>
+        <p>My co-founder and I mapped the incumbents against what they actually ship. The finding that shaped strategy was not a gap. It was how full the parity space already is. SkinSort alone ships scanning, match scores, routine tracking, a dupe finder, incompatibility warnings and community. Building any of those first would have been months of work to arrive at “also does what SkinSort does.” The 1 thing none of them do is grade the evidence behind a specific claim.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>Tool</th><th>What it scores</th><th>Per-claim evidence?</th></tr></thead>
+            <tbody>
+              <tr><td>Yuka</td><td>Ingredient safety, single score</td><td>No</td></tr>
+              <tr><td>EWG Skin Deep</td><td>Hazard rating per ingredient</td><td>No</td></tr>
+              <tr><td>INCIDecoder</td><td>Ingredient function and flags</td><td>No</td></tr>
+              <tr><td>SkinSort</td><td>Match score, routines, dupes, community</td><td>No</td></tr>
+              <tr><td>Paula's Choice</td><td>Ingredient ratings by editorial review</td><td>No</td></tr>
+              <tr><td><strong>SkinSavior</strong></td><td><strong>Evidence certainty per ingredient per claim</strong></td><td><strong>Yes</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="skin-subhead">Desk research</h3>
+        <p>If the product is going to say “the evidence for this is strong,” it needs a standard I did not make up. I adapted 2 frameworks clinicians already use: GRADE for rating certainty of evidence, and the Oxford CEBM levels for ranking study types (systematic reviews above randomized trials above cohort studies). PubMed is the source because it is free, structured and citable.</p>
+
+        <h3 class="skin-subhead">User interview</h3>
+        <p>1 interview so far, semi-structured, with a skincare enthusiast who researches every purchase, cares about affordability and repurchasability, and judges products by results. I am not going to call 1 conversation a sample. I am treating what she said as hypotheses for the next 5 or 6 interviews. It produced more usable findings than I expected, and several lined up with decisions I had already made, marked “informed” below.</p>
+        <p>The findings that moved the product:</p>
+        <ul class="skin-list">
+          <li>She likes skincare but does not “do ingredients.” Asked to name what the main ingredient in each product in her routine does, she could not. A person who researches everything, and the ingredient layer is still opaque to her.</li>
+          <li>She reasons about mechanism anyway. She buys a serum marketed for oily skin to handle acne, because it targets the oil, which is the cause. The label category and her reason for buying were different things.</li>
+          <li>Affordability means repurchasability. A $20 cream 10 minutes away beats a $40 cream 30 minutes away, because she needs to buy it again. Small rotation, finishes a product before judging it, no repurchase if nothing improved.</li>
+          <li>She does not track her routine over time and would not use a diary. When she switches products the old one is “gone in her head.”</li>
+          <li>Marketing skepticism is already part of her process. She avoids ad-driven brands and reads Sephora's sponsored-review disclosures to decide how much to trust a review.</li>
+          <li>She dupes by purpose and texture, not ingredient overlap. If recommendations were built for her, she would rank them by product class, purpose and texture.</li>
+        </ul>
+      </section>
+
+      <section class="s" data-reveal id="designing" data-toc="Design">
+        <h2 class="section-title">Design</h2>
+        <p>Five decisions defined the product. For each I have written what I chose and what I rejected.</p>
+
+        <div class="decision"><div class="decision-media">[IMAGE: Evidence-quality strategy]</div><div class="decision-copy"><h3>1. Compete on evidence quality, not safety</h3><p>Safety scoring is crowded and largely solved. Evidence grading is unoccupied, harder to build, and answers the question people are actually asking. This also fixed the build order: the grading engine first, and any feature that only makes sense once grading exists second.</p></div></div>
+        <div class="decision"><div class="decision-media">[IMAGE: Per-claim evidence rows]</div><div class="decision-copy"><h3>2. Grade per claim, not per ingredient</h3><p>The first evidence meter gave 1 score per ingredient. I threw it out. Niacinamide has strong evidence for some outcomes and weak evidence for others, and a single number averages that into noise. The shipped design shows 1 row per claim, so a product's “brightening” claim and its “pore minimizing” claim get separate verdicts.</p><p class="decision-note">Informed by finding 6. Her frustration with “everything” products is what a per-ingredient average produces.</p></div></div>
+        <div class="decision"><div class="decision-media">[IMAGE: Deterministic grading pipeline]</div><div class="decision-copy"><h3>3. Deterministic grade, LLMs only at the edges</h3><p>A grade a language model could hallucinate is not a grade. The pipeline runs in 3 stages with a wall between them. Stage 1, an LLM extracts structured fields from a study (design, sample size, outcome). Stage 2 is deterministic: the GRADE and CEBM rules produce a certainty level with no model in the loop. Stage 3 hands the finished grade to a cheap fast model to write plain-language copy. The model can phrase the result, it cannot change it. This also set the cost structure: expensive reasoning runs once per study at ingestion, the runtime step uses the cheapest model that writes acceptable prose.</p><p class="decision-note">Informed by finding 5. Her conflict-of-interest worry is exactly why the grade cannot be something a model decides.</p></div></div>
+        <div class="decision"><div class="decision-media">[IMAGE: Skin profile quiz]</div><div class="decision-copy"><h3>4. Profile skin on 4 axes, and match the model to the job</h3><p>The quiz does not file you under oily, dry or combination. It profiles 4 independent axes (oiliness, pigmentation, aging, sensitivity), adds a phototype question and the safety fields a dermatology intake form uses (prescription retinoids, pregnancy, known reactions). Those safety fields are also the compliance guardrail: they let the product avoid unsafe ingredients without making a treatment claim. Separately, model usage splits by job: the rarely-run URL ingest uses Claude Opus 4.8 (real reasoning, has to parse a page), the constantly-run explainer uses Gemini 3.1 Flash-Lite (just phrasing a finished grade).</p><p class="decision-note">Informed by finding 2. She reasons about the cause, not the label, and a single type bucket cannot represent that.</p></div></div>
+        <div class="decision"><div class="decision-media">[IMAGE: Claims policy guardrail]</div><div class="decision-copy"><h3>5. Write the claims policy first, and refuse the parity features</h3><p>We wrote the claims-language policy (which terms are disease terms, how to phrase evidence without implying treatment) into the repo before building the evidence card or the explainer prompt, so every template was written against a rule instead of audited after. Match scoring, routine compatibility and a dupe finder are all on the roadmap and none are built, on purpose, because each gets better once it can consume a grade and is a parity feature until then. The interview also changed how I will build the dupe finder: I had it as ingredient overlap, she dupes by purpose and texture, so the ranking will be product class, purpose and texture first.</p><p class="decision-note">Informed by findings 3, 4 and 6. Prices are stored per product for repurchasability, and the skin diary I had scoped early is deprioritized.</p></div></div>
+      </section>
+
+      <section class="s" data-reveal id="solution" data-toc="Solution to the Problem">
+        <h2 class="section-title">Solution to the Problem</h2>
+        <p>The product answers “which claims are supported” by turning each product page into a per-claim evidence view built on the deterministic pipeline above, fed by a real catalog and a quiz that personalizes without needing chemistry from the user. Everything in the next section is built and running in the live demo. The parts that are still roadmap are named as roadmap, not shown as shipped.</p>
+      </section>
+
+      <section class="s" data-reveal id="features" data-toc="Product Features">
+        <h2 class="section-title">Product Features</h2>
+        <ul class="skin-list feature-list">
+          <li><div class="feature-copy"><div class="feature-heading"><strong>Cross-platform from 1 codebase.</strong><button class="feature-toggle" type="button" aria-expanded="false" aria-controls="feature-detail-1">+</button></div><div class="feature-description">Turborepo monorepo, Next.js 15 web and Expo React Native mobile sharing a typed core package, Supabase for auth and Postgres with row-level security on every user table.</div><div class="feature-detail" id="feature-detail-1" hidden>More info placeholder: explain how the shared typed core keeps the web and mobile experiences aligned while Supabase handles authentication and user data.</div></div><div class="feature-placeholder" id="feature-media-1">[IMAGE: Web and mobile product surfaces]</div></li>
+          <li><div class="feature-copy"><div class="feature-heading"><strong>Skin quiz and profile.</strong><button class="feature-toggle" type="button" aria-expanded="false" aria-controls="feature-detail-2">+</button></div><div class="feature-description">13 questions across 4 skin axes, phototype and safety fields, saved to an authenticated per-user profile. The front door for everything personalized.</div><div class="feature-detail" id="feature-detail-2" hidden>More info placeholder: describe how the quiz turns answers into a profile without asking people to identify or understand individual ingredients.</div></div><div class="feature-placeholder" id="feature-media-2">[IMAGE: Skin quiz flow]</div></li>
+          <li><div class="feature-copy"><div class="feature-heading"><strong>Per-claim evidence explainer.</strong><button class="feature-toggle" type="button" aria-expanded="false" aria-controls="feature-detail-3">+</button></div><div class="feature-description">Product pages show an evidence grade, ingredient breakdown and safety flags, with per-claim certainty computed from CEBM study levels, the cached PubMed research behind each ingredient, and a plain-language explanation. 1 row per claim.</div><div class="feature-detail" id="feature-detail-3" hidden>More info placeholder: show how each product claim gets its own evidence row, separating strong support for one outcome from weaker support for another.</div></div><div class="feature-placeholder" id="feature-media-3">[IMAGE: Evidence card]</div></li>
+          <li><div class="feature-copy"><div class="feature-heading"><strong>Browse and global search.</strong><button class="feature-toggle" type="button" aria-expanded="false" aria-controls="feature-detail-4">+</button></div><div class="feature-description">Browse products, ingredients, routines and community, with 1 global search that returns grouped, typed results instead of forcing a category choice up front.</div><div class="feature-detail" id="feature-detail-4" hidden>More info placeholder: describe how one query can return grouped results across the catalog instead of making the user choose a search category first.</div></div><div class="feature-placeholder" id="feature-media-4">[IMAGE: Global search]</div></li>
+          <li><div class="feature-copy"><div class="feature-heading"><strong>Add a product from a URL.</strong><button class="feature-toggle" type="button" aria-expanded="false" aria-controls="feature-detail-5">+</button></div><div class="feature-description">Paste a product link and the app extracts a structured profile with Claude, then adds it to the catalog. This is how the catalog grows past the seed set.</div><div class="feature-detail" id="feature-detail-5" hidden>More info placeholder: outline the URL ingestion flow from pasted product page to structured catalog profile, including where human review can happen.</div></div><div class="feature-placeholder" id="feature-media-5">[IMAGE: Add by URL flow]</div></li>
+          <li><div class="feature-copy"><div class="feature-heading"><strong>Catalog pipeline.</strong><button class="feature-toggle" type="button" aria-expanded="false" aria-controls="feature-detail-6">+</button></div><div class="feature-description">A Python pipeline that seeds and enriches about 730 products and 2,300 ingredients from free, deterministic sources (Open Beauty Facts, brand storefronts, INCIDecoder). No LLM, safe to re-run.</div><div class="feature-detail" id="feature-detail-6" hidden>More info placeholder: explain how deterministic sources make the catalog enrichment repeatable and keep recurring API costs under control.</div></div><div class="feature-placeholder" id="feature-media-6">[IMAGE: Catalog pipeline]</div></li>
+        </ul>
+      </section>
+
+      <section class="s" data-reveal id="reflection" data-toc="Learning &amp; Reflection">
+        <h2 class="section-title">Learning &amp; Reflection</h2>
+        <div class="reflection-block"><h3>Talk to 1 person sooner</h3><p>I built for months on competitive analysis and desk research before I sat down with a single user. The strategy held up, but 1 hour with 1 person re-scoped a roadmap feature and gave me a sharper way to describe the problem than anything I had written. It would not have changed the core bet. It would have saved me from scoping a skin diary.</p></div>
+        <div class="reflection-block"><h3>Scope the legal line first</h3><p>Writing the claims policy before the evidence card felt slow. It was the cheapest decision in the project, because every prompt and template was written against it instead of rewritten after.</p></div>
+        <div class="reflection-block"><h3>Deterministic core, LLM edges</h3><p>Keeping the thing that has to be right (the grade) out of any model's hands, and using models only to extract inputs and phrase outputs, is a pattern I would reuse anywhere the output has to be trusted. It is also the cheapest architecture.</p></div>
+        <div class="reflection-block"><h3>AI building changes what the job is</h3><p>Claude Code let me ship a cross-platform product as the only person on product and design. It did not decide what to build. The hardest work was saying no to the 3 features every competitor already has. A practical note from the same stretch: I ran 2 coding agents against the same working tree during a push and had to start re-checking git state before every commit to keep them from clobbering each other.</p></div>
+      </section>
+
+      <section class="s" data-reveal id="tools" data-toc="All Tools Used">
+        <h2 class="section-title">All Tools Used</h2>
+        <div class="tool-group"><h3>Product and research</h3><p>User interview (1 to date), competitive analysis, GRADE and Oxford CEBM evidence frameworks</p><div class="icon-tool-list"><span class="icon-tool"><img src="/tools/pubmed.svg" alt="" />PubMed</span></div></div>
+        <div class="tool-group"><h3>Frontend</h3><div class="icon-tool-list"><span class="icon-tool"><img src="/tools/nextjs.svg" alt="" />Next.js 15</span><span class="icon-tool"><img src="/tools/react.svg" alt="" />React 19</span><span class="icon-tool"><img src="/tools/typescript.svg" alt="" />TypeScript</span><span class="icon-tool"><img src="/tools/tailwind.svg" alt="" />Tailwind CSS v4</span><span class="icon-tool"><img src="/tools/radix.svg" alt="" />Radix UI</span><span class="icon-tool"><img src="/tools/expo.svg" alt="" />Expo 54</span><span class="icon-tool"><img src="/tools/react.svg" alt="" />React Native 0.81</span></div><p>TanStack Query, React Hook Form with Zod, shadcn-style components, Expo Router, NativeWind, Reanimated</p></div>
+        <div class="tool-group"><h3>Backend and data</h3><div class="icon-tool-list"><span class="icon-tool"><img src="/tools/supabase.svg" alt="" />Supabase</span><span class="icon-tool"><img src="/tools/vercel.svg" alt="" />Vercel</span><span class="icon-tool"><img src="/tools/python.svg" alt="" />Python</span><span class="icon-tool"><img src="/tools/open-beauty-facts.svg" alt="" />Open Beauty Facts</span><span class="icon-tool"><img src="/tools/schema.svg" alt="" />schema.org</span><span class="icon-tool"><img src="/tools/incidecoder.svg" alt="" />INCIDecoder</span></div><p>Postgres, Auth, row-level security, SQL migrations and trigger functions; Python catalog pipeline using brand storefront data.</p></div>
+        <div class="tool-group"><h3>AI and APIs</h3><div class="icon-tool-list"><span class="icon-tool"><img src="/tools/claude.svg" alt="" />Claude API / Claude Code</span><span class="icon-tool"><img src="/tools/gemini.svg" alt="" />Gemini 3.1 Flash-Lite</span><span class="icon-tool"><img src="/tools/pubmed.svg" alt="" />PubMed API</span><span class="icon-tool"><img src="/tools/openai.svg" alt="" />OpenAI Codex</span></div><p>Claude Opus 4.8 handles URL product extraction; Gemini 3.1 Flash-Lite writes runtime explainer copy.</p></div>
+        <div class="tool-group"><h3>Tooling</h3><div class="icon-tool-list"><span class="icon-tool"><img src="/tools/turborepo.svg" alt="" />Turborepo</span><span class="icon-tool"><img src="/tools/bun.svg" alt="" />Bun</span><span class="icon-tool"><img src="/tools/eslint.svg" alt="" />ESLint</span><span class="icon-tool"><img src="/tools/prettier.svg" alt="" />Prettier</span><span class="icon-tool"><img src="/tools/github.svg" alt="" />GitHub</span></div></div>
+      </section>
+
+      <section class="s" data-reveal id="gallery" data-toc="Building &amp; Design Gallery">
+        <h2 class="section-title">Building &amp; Design Gallery</h2>
+        <p>Drop screenshots into the placeholders below. Capture web at 1440 wide and mobile from a device or the Expo simulator, then frame in Figma.</p>
+        <div class="gallery-placeholder">[IMAGE: Hero: product page on web and mobile side by side]</div>
+        <div class="gallery-placeholder">[IMAGE: Quiz flow: axis questions and the safety fields step]</div>
+        <div class="gallery-placeholder">[IMAGE: Evidence card: claim rows with certainty grades and the plain-language explainer]</div>
+        <div class="gallery-placeholder">[IMAGE: Research view: the PubMed studies behind 1 ingredient, study type visible]</div>
+        <div class="gallery-placeholder">[IMAGE: Global search: grouped products, ingredients and brands for a single query]</div>
+        <div class="gallery-placeholder">[IMAGE: /add flow: pasted URL, extraction, resulting product profile]</div>
+        <div class="gallery-placeholder">[IMAGE: 3-stage pipeline diagram: ingestion, deterministic grading, runtime translation]</div>
+        <div class="gallery-placeholder">[IMAGE: Before and after of the recent UI change, if you have the old screenshot or branch]</div>
+      </section>
+
+      <span id="demo" aria-hidden="true"></span>
+    </article>
+  </div>
+</main>

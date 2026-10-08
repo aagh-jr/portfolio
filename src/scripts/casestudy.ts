@@ -60,6 +60,23 @@ function init() {
     render();
   });
 
+  document.querySelectorAll<HTMLButtonElement>(".feature-toggle").forEach((button) => {
+    if (button.dataset.wired) return;
+    const targetId = button.getAttribute("aria-controls");
+    const detail = targetId ? document.getElementById(targetId) : null;
+    if (!detail) return;
+    button.dataset.wired = "1";
+    button.textContent = "+";
+    button.setAttribute("aria-label", "Show more feature information");
+    button.addEventListener("click", () => {
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!expanded));
+      button.textContent = expanded ? "+" : "−";
+      button.setAttribute("aria-label", expanded ? "Show more feature information" : "Hide more feature information");
+      detail.hidden = expanded;
+    });
+  });
+
   const links = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('.sidebar-toc a[href^="#"]'),
   );

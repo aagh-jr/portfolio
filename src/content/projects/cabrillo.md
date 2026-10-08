@@ -5,7 +5,7 @@ tags:
   - Instructional Design
   - Program Design
   - User Experience
-order: 2
+order: 3
 status: live
 href: /projects/cabrillo
 variant: image
