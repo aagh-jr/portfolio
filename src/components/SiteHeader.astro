@@ -6,6 +6,7 @@ export interface Props {
   brandVisible?: boolean;
 }
 const { brandVisible = true } = Astro.props;
+const brandName = "Abel Angel";
 
 const navLinks = [
   { label: "About", href: "/about" },
@@ -19,8 +20,13 @@ const navLinks = [
     class:list={["brand-mark", brandVisible && "visible"]}
     id="brandMark"
     aria-hidden={brandVisible ? undefined : "true"}
+    aria-label="Abel Angel"
   >
-    Abel Angel
+    <!-- One span per letter so the home page can reveal them in a random
+         order as you scroll. Elsewhere they're simply all visible. -->
+    {brandName.split("").map((ch) =>
+      ch === " " ? " " : <span class="brand-letter" aria-hidden="true">{ch}</span>,
+    )}
   </a>
   <nav class="top-nav">
     {
@@ -153,6 +159,17 @@ const navLinks = [
   .brand-mark.visible {
     opacity: 1;
     pointer-events: auto;
+  }
+  /* Per-letter reveal (home only — the scroll script adds .is-hidden /
+     .is-pending). Pending letters show grey, marking the next pair to land. */
+  .brand-letter {
+    transition: opacity 0.25s ease, color 0.25s ease;
+  }
+  .brand-letter.is-pending {
+    color: #b5b5b0;
+  }
+  .brand-letter.is-hidden {
+    opacity: 0;
   }
 
   .brand-heart-layer {

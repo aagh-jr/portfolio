@@ -495,6 +495,20 @@ const projects = (await getCollection("projects")).sort(
 
 <script>
   const FADE_DISTANCE = 260;
+  // The brand wordmark spells itself out over this fraction of a viewport
+  // height of scrolling, revealing LETTERS_PER_STEP random letters at a time.
+  const NAME_REVEAL_FRACTION = 0.9;
+  const LETTERS_PER_STEP = 2;
+
+  // Fisher–Yates shuffle — a fresh random letter order on every page load.
+  function shuffle<T>(items: T[]): T[] {
+    const a = items.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
   function initHeroFade() {
     const introEl = document.getElementById("introFade");
@@ -507,6 +521,10 @@ const projects = (await getCollection("projects")).sort(
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
+    const letters = shuffle(
+      Array.from(brandEl.querySelectorAll<HTMLElement>(".brand-letter")),
+    );
+    const steps = Math.ceil(letters.length / LETTERS_PER_STEP);
 
     const update = () => {
       // Mobile / reduced-motion: no slide-over effect — message stays put and
@@ -524,8 +542,25 @@ const projects = (await getCollection("projects")).sort(
       // it starts fading so the (invisible) fixed layer never blocks the
       // project content behind it.
       introEl.style.pointerEvents = progress > 0 ? "none" : "auto";
-      brandEl.classList.toggle("visible", progress >= 1);
-      heartEl?.classList.toggle("visible", progress >= 1);
+
+      // Name reveal: scroll position maps to a step count. Each step turns the
+      // grey "next up" pair black and greys in the following pair of the
+      // shuffled order, until the last pair lands black. Scrolling back up
+      // plays it in reverse.
+      const nameProgress = Math.min(
+        Math.max(window.scrollY / (window.innerHeight * NAME_REVEAL_FRACTION), 0),
+        1,
+      );
+      const solid =
+        nameProgress > 0 ? Math.floor(nameProgress * steps) * LETTERS_PER_STEP : 0;
+      const pending =
+        nameProgress > 0 ? Math.min(solid + LETTERS_PER_STEP, letters.length) : 0;
+      letters.forEach((el, i) => {
+        el.classList.toggle("is-pending", i >= solid && i < pending);
+        el.classList.toggle("is-hidden", i >= pending);
+      });
+      brandEl.classList.toggle("visible", pending > 0);
+      heartEl?.classList.toggle("visible", nameProgress >= 1);
       // Scroll hint fades fully out the moment scrolling starts (the 0.3s CSS
       // transition on .scroll-hint animates it away). Once fading it also stops
       // catching clicks so it never blocks the project content behind it.
