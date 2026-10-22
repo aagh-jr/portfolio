@@ -73,12 +73,13 @@
     .sidebar {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       position: fixed;
       top: 32px;
       left: 32px;
       bottom: 32px;
       width: var(--sidebar-width);
-      padding: 0;
+      padding: 72px 0; /* equal top/bottom so the list centres on the viewport */
       background: transparent;
       border: none;
       border-radius: 0;
@@ -92,7 +93,7 @@
     .sidebar.is-closing { transform: translateX(calc(-100% - 48px)); }
     .page { transition: opacity 420ms cubic-bezier(0.2, 0, 0, 1); }
     body.is-leaving .page { opacity: 0; }
-    .sidebar-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--muted); border-bottom: none; margin-bottom: 80px; transition: color var(--dur) var(--ease); }
+    .sidebar-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--muted); border-bottom: none; position: absolute; top: 36px; left: 0; transition: color var(--dur) var(--ease); }
     .sidebar-back:hover { color: var(--ink); border-bottom: none; }
     .sidebar-back svg { width: 12px; height: 12px; }
     .sidebar-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
@@ -356,6 +357,10 @@
       .comp-grid { grid-template-columns: 1fr; }
       .interviewee-grid { grid-template-columns: 1fr; }
       .concept-grid { grid-template-columns: 1fr 1fr; }
+    }
+    /* Phones: clear the site header's second row of pills */
+    @media (max-width: 640px) {
+      .page { padding-top: 128px; }
     }
 
     

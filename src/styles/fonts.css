@@ -14,6 +14,15 @@
 @import "@fontsource/open-sans/700.css";
 @import "@fontsource/open-sans/800.css";
 
+/* Geist Mono — the site header's pills and the home page's "See my work". */
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
+
+/* Hanken Grotesk — SkinSavior product UI (evidence table in the case study). */
+@import "@fontsource/hanken-grotesk/400.css";
+@import "@fontsource/hanken-grotesk/600.css";
+@import "@fontsource/hanken-grotesk/700.css";
+
 /* Space Grotesk (self-hosted variable font, weights 300–700) — nav links and
    brand wordmark in the shared site header. */
 @font-face {
@@ -33,4 +42,31 @@
   src:
     url("/fonts/LastikFreeFont-Free.woff2") format("woff2"),
     url("/fonts/LastikFreeFont-Free.woff") format("woff");
+}
+
+/* bianzhidai Pearl (self-hosted, single weight) — the "Abel Angel" wordmark
+   and display headings on the home page. */
+@font-face {
+  font-family: "Bianzhidai Pearl";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/bianzhidai_noBG-Pearl.otf") format("opentype");
+}
+
+/* SF Compact Rounded — home page body text. Apple's font licence doesn't
+   allow web embedding, so this only resolves where it's installed locally;
+   everyone else falls back through ui-rounded (SF Pro Rounded on Apple
+   platforms) to the system sans. */
+@font-face {
+  font-family: "SF Compact Rounded";
+  font-style: normal;
+  font-weight: 400;
+  src: local("SF Compact Rounded Regular"), local("SFCompactRounded-Regular");
+}
+@font-face {
+  font-family: "SF Compact Rounded";
+  font-style: normal;
+  font-weight: 500;
+  src: local("SF Compact Rounded Medium"), local("SFCompactRounded-Medium");
 }

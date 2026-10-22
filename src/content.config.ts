@@ -12,9 +12,14 @@ const projects = defineCollection({
     title: z.string(),
     tagline: z.string(),
     tags: z.array(z.string()),
+    /** My role on the project, shown under the cover on the home page. */
+    role: z.string(),
     /** Sort order on the listing (ascending). */
     order: z.number().default(0),
     status: z.enum(["live", "coming-soon"]).default("live"),
+    /** Where it sits on the home page: a case study card in Work, or the
+     *  Lab's wide first box (a gallery rather than a case study). */
+    section: z.enum(["work", "lab"]).default("work"),
     /** Where the tile links (case study route or external URL). */
     href: z.string().optional(),
     /** Tile artwork: a photo-pile, a single image, or a solid cover. */

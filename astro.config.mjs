@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -8,7 +9,19 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://aagh.site',
   output: 'static',
-  integrations: [sitemap()],
+  // About and Lab are sections of the home page now; keep the old URLs working.
+  redirects: {
+    '/about': '/#about',
+    '/lab': '/#lab',
+  },
+  integrations: [
+    react(),
+    // Scratch and draft pages stay out of search: /book-test (3D book
+    // viewer) and /projects/cabrillo-design (design-first case study draft).
+    sitemap({
+      filter: (page) => !page.includes('/book-test') && !page.includes('/cabrillo-design'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

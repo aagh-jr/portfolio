@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import SiteHeader from "../components/SiteHeader.astro";
+import ThemeInit from "../components/ThemeInit.astro";
 import "../styles/global.css";
 
 export interface Props {
@@ -12,8 +13,6 @@ export interface Props {
   canonical?: string;
   /** Extra class(es) applied to <body> (e.g. per-page zoom). */
   bodyClass?: string;
-  /** Home passes false so its scroll-fade reveals the brand wordmark. */
-  navBrandVisible?: boolean;
 }
 
 const {
@@ -23,7 +22,6 @@ const {
   image = "/uploads/abel-portrait.jpg",
   canonical,
   bodyClass,
-  navBrandVisible = true,
 } = Astro.props;
 
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
@@ -70,11 +68,12 @@ const ogImage = new URL(image, Astro.site);
       }
     </script>
 
+    <ThemeInit />
     <ClientRouter />
     <slot name="head" />
   </head>
   <body class={bodyClass}>
-    <SiteHeader brandVisible={navBrandVisible} />
+    <SiteHeader />
     <slot />
     <script>
       import { setupReveals } from "../scripts/reveal";

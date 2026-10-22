@@ -3,10 +3,10 @@
 
 /* ============================================================
    Design tokens — matched 1:1 to the original static site
-   bg #FFFAFA · ink #1c1c18 · muted #71717a
+   bg #FFFFFF · ink #1c1c18 · muted #71717a
    ============================================================ */
 @theme {
-  --color-bg: #FFFAFA;
+  --color-bg: #FFFFFF;
   --color-ink: #1c1c18;
   --color-muted: #71717a;
   --color-hairline: rgba(28, 28, 24, 0.08);

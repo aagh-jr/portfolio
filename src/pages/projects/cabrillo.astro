@@ -1,15 +1,63 @@
 ---
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import Book from "../../components/book/Book";
+import EcoWebCards from "../../components/book/EcoWebCards";
+import {
+  FLOWER_HUNT_BOOKLET,
+  OPEN_TOWER_BOOKLET,
+  QUARTER_LETTER_ASPECT,
+  WHALE_BOOKLET,
+} from "../../components/book/pages";
+import "../../styles/book-embed.css";
 import styles from "../../cases/cabrillo-styles.css?raw";
 import body from "../../cases/cabrillo-body.html?raw";
+
+// The interactive 3D viewers mount where the exported markup leaves a
+// placeholder comment.
+const [beforeWhale, rest] = body.split("<!--WHALE_BOOK-->");
+const [beforeFlowerHunt, rest2] = rest.split("<!--FLOWER_HUNT_BOOK-->");
+const [beforeOpenTower, rest3] = rest2.split("<!--OPEN_TOWER_BOOK-->");
+const [beforeEcoWeb, afterEcoWeb] = rest3.split("<!--ECO_WEB_CARDS-->");
 ---
 
 <CaseStudyLayout
   title="Cabrillo National Monument | Case Study"
-  description="Cabrillo National Monument — two terms designing, running, measuring and documenting public engagement programs in the park's Interpretation program."
+  description="Cabrillo National Monument — educational print and visitor experience design: activity booklets, trail guides, card games and event materials for the National Park Service."
   canonical="/projects/cabrillo"
   image="/screenshots/cabrillo/wb-1-cover.png"
   styles={styles}
 >
-  <Fragment set:html={body} />
+  <Fragment set:html={beforeWhale} />
+  <div class="book-embed">
+    <Book
+      client:only="react"
+      pages={WHALE_BOOKLET}
+      title="Gray Whale Watching Activity Book"
+      height="var(--book-stage, min(85vh, 900px))"
+    />
+  </div>
+  <Fragment set:html={beforeFlowerHunt} />
+  <div class="book-embed">
+    <Book
+      client:only="react"
+      pages={FLOWER_HUNT_BOOKLET}
+      aspect={QUARTER_LETTER_ASPECT}
+      title="Junior Botanist Flower Hunt"
+      height="calc(var(--book-stage, min(85vh, 900px)) * 0.83)"
+    />
+  </div>
+  <Fragment set:html={beforeOpenTower} />
+  <div class="book-embed">
+    <Book
+      client:only="react"
+      pages={OPEN_TOWER_BOOKLET}
+      title="Open Tower Day Activity Book"
+      height="var(--book-stage, min(85vh, 900px))"
+    />
+  </div>
+  <Fragment set:html={beforeEcoWeb} />
+  <div class="book-embed">
+    <EcoWebCards client:only="react" />
+  </div>
+  <Fragment set:html={afterEcoWeb} />
 </CaseStudyLayout>

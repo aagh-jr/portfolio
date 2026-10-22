@@ -1,659 +1,879 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import AboutSection from "../components/AboutSection.astro";
+import LabBooklets from "../components/book/LabBooklets";
 
-const introText =
-  "I research humans and use design to make them fall in love with tech. Exploring the intersection of cognitive science and digital experiences.";
-
-const projects = (await getCollection("projects")).sort(
+const all = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+const projects = all.filter((p) => p.data.section === "work");
+// The NPS gallery fills the Lab's wide first box.
+const labFeature = all.find((p) => p.data.section === "lab");
 ---
 
 <BaseLayout
   title="Abel Angel — Portfolio"
-  bodyClass="zoom-home"
-  navBrandVisible={false}
+  bodyClass="page-home no-links no-blocks"
 >
-  <main id="home" data-load-stagger>
-    <!-- Nav + brand wordmark now live in the shared SiteHeader (via
-         BaseLayout). The home scroll-fade below still reveals the wordmark by
-         toggling `.visible` on #brandMark / #brandHeart. -->
-
-    <!-- ── Layer 1 (bottom): the intro message. Fixed in place; the grid
-         slides up over it and it fades out as it's covered. ── -->
-    <div class="hero" id="introFade">
-      <h1 class="hero-title" data-load-item>
-        <span>Hey! I'm </span><span>Abel Angel</span>
-      </h1>
-      <div class="hero-sub" data-load-item>
-        <span class="intro-line">{introText}</span>
+  <link rel="stylesheet" href="/paper/paper.css" slot="head" />
+  <main id="home">
+    <!-- Hero: the letter, printed on a sheet of paper you can drag, peel and
+         punch (public/paper/, ported from the paper editor in
+         ~/Developer/parchment). It scrolls away with the page (see
+         scrollPaper). #slot is an invisible copy of the letter that
+         CSS lays out; the sheet in #stage is built to match it. -->
+    <section class="hero" aria-label="Introduction">
+      <div class="hero-page">
+        <div class="hero-main"><div id="slot" aria-hidden="true"></div></div>
+        <a class="see-more" href="#work">See my work ↓</a>
       </div>
-    </div>
+    </section>
 
-    <!-- Scroll hint: "Projects" label above a downward arrow (with tail),
-         centred at the bottom of the first screen. Clicking it jumps up to the
-         first project in the list. Fades out as you scroll. -->
-    <button class="scroll-hint" id="scrollHint" type="button" aria-label="Jump to projects">
-      <span class="scroll-hint-label">Projects</span>
-      <svg width="22" height="24" viewBox="0 0 22 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M11 6 V 15 M6 10 l5 5 5-5"></path>
-      </svg>
-    </button>
+    <!-- Everything below the hero, in nav order (Work, Lab, About, Resume),
+         slides up over it as one opaque sheet. -->
+    <div class="below">
+    <section class="work" id="work" aria-label="Work">
 
-    <!-- Reserves the first-screen height so the showcase starts peeking at
-         the bottom of the viewport. -->
-    <div class="hero-spacer"></div>
-
-    <!-- ── Project rows: text left (30%) / photo right (70%). Opaque, in
-         normal flow, so it slides up and covers the message like a sheet of
-         paper. ── -->
-    <section class="showcase">
-      {
-        projects.map((p) => {
-          const soon = p.data.status === "coming-soon";
-          const Tag = soon ? "div" : "a";
-          const props = soon ? {} : { href: p.data.href };
-          return (
-            <Tag class:list={["show-row", soon && "show-row--soon"]} {...props}>
-              <div class="show-text">
-                <div class="show-title">{p.data.title}</div>
-                <div class="show-desc">{p.data.tagline}</div>
-                <div class="show-tags">
-                  {soon && <span class="show-tag show-tag--soon">Coming Soon</span>}
-                  {p.data.tags.map((t) => (
-                    <span class="show-tag">{t}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div class="show-media">
-                <div class="show-cover">
-                  {p.data.variant === "cover" ? (
-                    <div
-                      class="show-frame show-frame--cover"
-                      style={`background:${p.data.coverBg};`}
-                    >
-                      <span
-                        class="show-frame-label"
-                        style={`color:${p.data.coverFg};`}
-                      >
+      <div class="work-list">
+        {
+          projects.map((p) => {
+            const soon = p.data.status === "coming-soon";
+            const Tag = soon ? "div" : "a";
+            const props = soon ? {} : { href: p.data.href };
+            return (
+              <Tag
+                class:list={["project", soon && "project--soon"]}
+                {...props}
+              >
+                <div class="cover" data-summary={p.data.tagline}>
+                  <div
+                    class:list={["screen", p.data.variant === "cover" && "screen--cover"]}
+                    style={p.data.coverBg ? `background:${p.data.coverBg};` : undefined}
+                  >
+                    {p.data.variant === "cover" ? (
+                      <span class="screen-label" style={`color:${p.data.coverFg};`}>
                         {p.data.coverLabel}
                       </span>
-                    </div>
-                  ) : (
-                    <div
-                      class="show-frame"
-                      style={
-                        p.data.coverBg ? `background:${p.data.coverBg};` : undefined
-                      }
-                    >
-                      <div
-                        class:list={[
-                          "show-photo",
-                          `show-photo--${p.data.coverFit}`,
-                        ]}
-                        style={`background-image:url(${p.data.coverImage});`}
+                    ) : (
+                      <img
+                        class:list={["screen-img", `screen-img--${p.data.coverFit}`]}
+                        src={p.data.coverImage}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
                       />
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Tag>
-          );
-        })
-      }
+
+                <div class="details">
+                  <div class="details-main">
+                    <h3 class="project-title">
+                      {p.data.title}
+                      {!soon && <span class="project-arrow" aria-hidden="true">↗</span>}
+                    </h3>
+                    <p class="project-type">{soon ? "Coming soon" : p.data.tags.join(", ")}</p>
+                  </div>
+                  <p class="project-desc">{p.data.tagline}</p>
+                </div>
+              </Tag>
+            );
+          })
+        }
+      </div>
+      <!-- The pointer over a case study's cover: a square holding its summary
+           (see .case-cursor and initCaseCursor below). -->
+      <div class="case-cursor" aria-hidden="true"></div>
     </section>
+
+    <section class="stack" id="lab" aria-label="Lab">
+      <!-- Boxes for the smaller, non-case-study work. Each carries its Figma
+           frame twice, in px of the 1400-wide layout: where it lands
+           (--x/--y/--w/--h, "Lab fully opened") and where it starts
+           (--x0/--y0/--w0/--h0, "Lab"). See .lab-grid and initLab below.
+           The wide first one links to the NPS gallery (labFeature); the rest
+           are still empty. -->
+      <div class="lab-grid">
+        {
+          [
+            [0, 0, 1400, 411, 0, 0, 352, 411],
+            [0, 431, 352, 427, -20, 626, 352, 427],
+            [370, 432, 300, 214, 370, 432, 300, 214],
+            [690, 431, 710, 411, 1176, 646, 224, 196],
+            [375, 678, 295, 288, 380, 936, 295, 288],
+            [715, 866, 352, 427, 752, 1224, 352, 427],
+          ].map(([x, y, w, h, x0, y0, w0, h0], i) => {
+            const style = `--i:${i};--x:${x};--y:${y};--w:${w};--h:${h};--x0:${x0};--y0:${y0};--w0:${w0};--h0:${h0};`;
+            const f = i === 0 && labFeature?.data;
+            return f ? (
+              <a
+                class="lab-box lab-box--feature"
+                href={f.href}
+                data-summary={f.tagline}
+                style={style}
+              >
+                <LabBooklets client:only="react" />
+              </a>
+            ) : (
+              <div class="lab-box" style={style} aria-hidden="true" />
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="stack" id="about" aria-label="About">
+      <AboutSection />
+    </section>
+
+    <section class="stack" id="resume" aria-label="Resume">
+      <!-- Placeholder: a blank page until the resume is ready -->
+      <div class="resume-doc" role="img" aria-label="Resume coming soon"></div>
+    </section>
+    </div>
   </main>
+
+  <!-- The paper's layers: color blocks on the table, the sheet, and punched-out bits -->
+  <div id="blocks" aria-hidden="true"></div>
+  <div id="stage"></div>
+  <div id="chads"></div>
+
+  <!-- The letter printed onto the sheet (main.js puts it there) -->
+  <template id="letter">
+    <article class="note">
+      <time class="date"></time>
+      <p class="greeting">Hello World,</p>
+      <p class="body">I’m a <span class="em" data-block="1">product builder</span> who designs around people’s mental models.
+        <span class="thesis">Anyone can ship fast now, but fewer people stop to ask whether the thing should exist.</span></p>
+      <p class="signoff">Sincerely,</p>
+      <span class="sig"><svg class="signature" data-block="3" viewBox="0 0 73 9" shape-rendering="crispEdges" fill="#1C1C18" aria-hidden="true"><path d="M3 0h1v1h-1zM14 0h1v1h-1zM28 0h1v1h-1zM36 0h1v1h-1zM72 0h1v1h-1zM3 1h1v1h-1zM13 1h1v1h-1zM27 1h1v1h-1zM36 1h1v1h-1zM71 1h1v1h-1zM2 2h1v1h-1zM4 2h1v1h-1zM12 2h3v1h-3zM19 2h3v1h-3zM26 2h1v1h-1zM35 2h1v1h-1zM37 2h1v1h-1zM42 2h2v1h-2zM45 2h2v1h-2zM54 2h3v1h-3zM59 2h2v1h-2zM63 2h3v1h-3zM70 2h1v1h-1zM2 3h1v1h-1zM4 3h1v1h-1zM11 3h1v1h-1zM15 3h1v1h-1zM18 3h2v1h-2zM22 3h1v1h-1zM25 3h1v1h-1zM35 3h1v1h-1zM37 3h1v1h-1zM41 3h1v1h-1zM44 3h1v1h-1zM47 3h1v1h-1zM53 3h1v1h-1zM57 3h2v1h-2zM62 3h2v1h-2zM66 3h1v1h-1zM69 3h1v1h-1zM1 4h5v1h-5zM10 4h1v1h-1zM15 4h1v1h-1zM17 4h1v1h-1zM20 4h2v1h-2zM24 4h1v1h-1zM34 4h5v1h-5zM43 4h1v1h-1zM47 4h1v1h-1zM52 4h1v1h-1zM57 4h1v1h-1zM61 4h1v1h-1zM64 4h2v1h-2zM68 4h1v1h-1zM1 5h1v1h-1zM5 5h1v1h-1zM9 5h2v1h-2zM14 5h1v1h-1zM17 5h1v1h-1zM24 5h1v1h-1zM27 5h1v1h-1zM34 5h1v1h-1zM38 5h1v1h-1zM42 5h1v1h-1zM46 5h1v1h-1zM49 5h1v1h-1zM52 5h1v1h-1zM56 5h1v1h-1zM61 5h1v1h-1zM68 5h1v1h-1zM71 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h3v1h-3zM18 6h4v1h-4zM25 6h2v1h-2zM33 6h1v1h-1zM39 6h1v1h-1zM41 6h1v1h-1zM47 6h2v1h-2zM53 6h3v1h-3zM62 6h4v1h-4zM69 6h2v1h-2zM50 7h1v1h-1zM54 7h1v1h-1zM51 8h3v1h-3z"/></svg><span class="sig-text">Abel Angel</span></span>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/abel-a-gonzalez"><span class="dither">LinkedIn ↗</span></a>
+        <a href="https://github.com/aagh-jr"><span class="dither">GitHub ↗</span></a>
+        <a href="mailto:abel.aagh@gmail.com"><span class="dither">Email ↗</span></a>
+        <a href="/resume.pdf"><span class="dither">Resume ↗</span></a>
+      </div>
+    </article>
+  </template>
+
+  <!-- Light from the top left (as the eye expects: lit from below, a
+       hollow reads as raised), for the letter's words pressed into the
+       paper: the glyphs become a soft hollow (blurred alpha, negative
+       height), lit, and foiled in gunmetal: the metal's tone follows the same
+       light (near black on the shaded walls, pale where it catches the light),
+       with a glint on top from a small light that follows the pointer (see
+       the gold glint script below). Over it go the light and shade on
+       the hollow's walls, in cool near black, and the shadow the top-left rim
+       casts on the metal inside. Flat paper lights to sin(45°) ≈ 0.707:
+       brighter than that is highlight, darker shade. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="paper-emboss" x="-10%" y="-40%" width="120%" height="180%" color-interpolation-filters="sRGB">
+      <feComponentTransfer in="SourceAlpha" result="solid">
+        <feFuncA type="linear" slope="4" />
+      </feComponentTransfer>
+      <feGaussianBlur in="solid" stdDeviation="0.75" result="bump" />
+      <feDiffuseLighting in="bump" surfaceScale="-1.6" diffuseConstant="1" lighting-color="#fff" result="lit">
+        <feDistantLight azimuth="225" elevation="45" />
+      </feDiffuseLighting>
+      <feColorMatrix in="lit" type="matrix"
+        values="0.55 0 0 0 -0.1  0.55 0 0 0 -0.08  0.58 0 0 0 -0.065  0 0 0 0 1" />
+      <feComposite in2="SourceAlpha" operator="in" result="gold" />
+      <feSpecularLighting in="bump" surfaceScale="-1.6" specularConstant="1.3" specularExponent="28" lighting-color="#ffffff">
+        <fePointLight class="gold-glint" x="-999" y="0" z="45" />
+      </feSpecularLighting>
+      <feComposite in2="SourceAlpha" operator="in" result="gloss" />
+      <feColorMatrix in="lit" type="matrix" result="hi"
+        values="0 0 0 0 1  0 0 0 0 0.99  0 0 0 0 0.97  2.6 0 0 0 -1.838" />
+      <feColorMatrix in="lit" type="matrix" result="lo"
+        values="0 0 0 0 0.1  0 0 0 0 0.11  0 0 0 0 0.13  -1.5 0 0 0 1.061" />
+      <feOffset in="solid" dx="0.6" dy="1" />
+      <feGaussianBlur stdDeviation="0.45" result="shifted" />
+      <feComposite in="solid" in2="shifted" operator="out" result="castShape" />
+      <feFlood flood-color="rgb(15 18 24)" flood-opacity="0.5" />
+      <feComposite in2="castShape" operator="in" result="cast" />
+      <feMerge>
+        <feMergeNode in="gold" />
+        <feMergeNode in="gloss" />
+        <feMergeNode in="cast" />
+        <feMergeNode in="lo" />
+        <feMergeNode in="hi" />
+      </feMerge>
+    </filter>
+    <!-- The same, finer, for the letter's thinner text strokes -->
+    <filter id="paper-emboss-text" x="-10%" y="-40%" width="120%" height="180%" color-interpolation-filters="sRGB">
+      <feComponentTransfer in="SourceAlpha" result="solid">
+        <feFuncA type="linear" slope="4" />
+      </feComponentTransfer>
+      <feGaussianBlur in="solid" stdDeviation="0.4" result="bump" />
+      <feDiffuseLighting in="bump" surfaceScale="-1.0" diffuseConstant="1" lighting-color="#fff" result="lit">
+        <feDistantLight azimuth="225" elevation="45" />
+      </feDiffuseLighting>
+      <feColorMatrix in="lit" type="matrix"
+        values="0.55 0 0 0 -0.1  0.55 0 0 0 -0.08  0.58 0 0 0 -0.065  0 0 0 0 1" />
+      <feComposite in2="SourceAlpha" operator="in" result="gold" />
+      <feSpecularLighting in="bump" surfaceScale="-1.0" specularConstant="1.3" specularExponent="28" lighting-color="#ffffff">
+        <fePointLight class="gold-glint" x="-999" y="0" z="45" />
+      </feSpecularLighting>
+      <feComposite in2="SourceAlpha" operator="in" result="gloss" />
+      <feColorMatrix in="lit" type="matrix" result="hi"
+        values="0 0 0 0 1  0 0 0 0 0.99  0 0 0 0 0.97  2.4 0 0 0 -1.697" />
+      <feColorMatrix in="lit" type="matrix" result="lo"
+        values="0 0 0 0 0.1  0 0 0 0 0.11  0 0 0 0 0.13  -1.1 0 0 0 0.778" />
+      <feOffset in="solid" dx="0.6" dy="1" />
+      <feGaussianBlur stdDeviation="0.35" result="shifted" />
+      <feComposite in="solid" in2="shifted" operator="out" result="castShape" />
+      <feFlood flood-color="rgb(15 18 24)" flood-opacity="0.45" />
+      <feComposite in2="castShape" operator="in" result="cast" />
+      <feMerge>
+        <feMergeNode in="gold" />
+        <feMergeNode in="gloss" />
+        <feMergeNode in="cast" />
+        <feMergeNode in="lo" />
+        <feMergeNode in="hi" />
+      </feMerge>
+    </filter>
+  </svg>
+
+  <!-- Light mode presses the letter's marked words and signature into the
+       paper (data-mark="in"); dark mode punches them out (no mark). Set on the
+       template before the paper starts, and again on every copy when the
+       theme flips, then the paper is nudged into rebuilding: its layout
+       check only rebuilds (and re-cuts) when the letter's box changes, so the
+       slot grows a pixel taller for a moment. -->
+  <script is:inline>
+    (() => {
+      const tpl = document.getElementById("letter");
+      let light;
+      const mark = () => {
+        const now = document.documentElement.dataset.theme !== "dark";
+        if (now === light) return false;
+        light = now;
+        const roots = [tpl.content, ...document.querySelectorAll("#slot, #stage .note")];
+        for (const root of roots)
+          for (const el of root.querySelectorAll("[data-block]")) {
+            if (light) el.setAttribute("data-mark", "in");
+            else el.removeAttribute("data-mark");
+          }
+        return true;
+      };
+      mark();
+      new MutationObserver(() => {
+        if (!mark()) return;
+        const slot = document.getElementById("slot");
+        slot.style.height = slot.getBoundingClientRect().height + 1 + "px";
+        setTimeout(() => (slot.style.height = ""), 250);
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    })();
+  </script>
+
+  <!-- The gold glint: the point light in each emboss filter sits over its
+       pressed word, at the pointer's x (in the word's own px, which is the
+       filter's user space), so the shine slides across the gold as the
+       pointer passes. Touch screens get one sweep when the sheet lands;
+       reduced motion holds it over the middle. -->
+  <script is:inline>
+    (() => {
+      const lights = [
+        ["#paper-emboss-text", '#stage .sheet .note span[data-mark="in"]'],
+        ["#paper-emboss", '#stage .sheet .note svg[data-mark="in"]'],
+      ].map(([f, el]) => ({ light: document.querySelector(`${f} .gold-glint`), el }));
+      const still = matchMedia("(prefers-reduced-motion: reduce)");
+      // x: a screen x, or null to center the glint over each word
+      const place = (x) => {
+        for (const { light, el } of lights) {
+          const r = document.querySelector(el)?.getBoundingClientRect();
+          if (!r || !r.width) continue;
+          light.setAttribute("x", x == null ? r.width / 2 : x - r.left);
+          light.setAttribute("y", r.height / 2);
+        }
+      };
+      let x = null, queued = false;
+      const update = () => { queued = false; place(still.matches ? null : x); };
+      const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+      addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") { x = e.clientX; queue(); } }, { passive: true });
+      addEventListener("scroll", queue, { passive: true });
+      addEventListener("resize", queue);
+      document.addEventListener("paper:landed", () => {
+        if (still.matches || matchMedia("(hover: hover)").matches) return queue();
+        const t0 = performance.now(), dur = 1400;
+        const step = (t) => {
+          const u = Math.min(1, (t - t0) / dur), e = u * u * (3 - 2 * u);
+          x = -100 + (innerWidth + 200) * e;
+          place(x);
+          if (u < 1) requestAnimationFrame(step);
+          else { x = null; place(null); }
+        };
+        requestAnimationFrame(step);
+      });
+    })();
+  </script>
+
+  <!-- The paper's settings for this page (no toolbar here), then the paper itself -->
+  <script is:inline>
+    // intro: dark mode plays "a", the words already punched out on the way
+    // up, so nothing falls out; light mode plays "b" (rise plain, punch on
+    // landing), where the words are pressed in and nothing is punched. fall:
+    // "cubes" crumbles punched letters into cubes gone in 600ms; "bend"
+    // drifts them down bending like paper; "leaf" drifts them down flat.
+    window.PAPER_CONFIG = {
+      border: "hills", keys: false, ignore: ".below", fall: "cubes",
+      intro: document.documentElement.dataset.theme === "dark" ? "a" : "b",
+    };
+    window.PAPER_SHADERS_DIST = "/paper/vendor/paper-shaders@0.0.82/";
+  </script>
+  <script is:inline src="/paper/paper-texture.js"></script>
+  <script is:inline src="/paper/paper-shader.js"></script>
+  <script is:inline src="/paper/main.js"></script>
 </BaseLayout>
 
 <style is:global>
-  /* Home + About share the original 1.2 zoom, applied via a body class. */
-  body.zoom-home {
-    zoom: 1.2;
+  body.page-home {
+    background: var(--paper);
+  }
+  /* The sheet (and its falling bits) stays on top of the page below it;
+     it scrolls away with the hero (see scrollPaper). */
+  body.page-home #stage,
+  body.page-home #chads {
+    z-index: 2;
+  }
+  /* Pressed in (light mode): the marked words and signature are drawn only
+     by #paper-emboss's gold foil, light and shade, so the ink color just has
+     to be opaque. The stroke closes the hairline seams between the signature's
+     pixel rows. Overrides paper.css's own flat pressed-in style. Not gated
+     on .effects-off like paper.css: intro "b" keeps effects off until the
+     sheet lands, and the pressed words should read embossed on the way up. */
+  body.page-home:not(.editing) .sheet .note [data-mark="in"] {
+    color: #000;
+    font-weight: 500; /* fuller strokes to raise; same advance in a mono */
+    text-shadow: none;
+    filter: url(#paper-emboss-text);
+  }
+  body.page-home:not(.editing) .sheet .note svg[data-mark="in"] {
+    filter: url(#paper-emboss);
+    fill: #000;
+    stroke: #000;
+    stroke-width: 0.12;
+  }
+  body.page-home:not(.editing) .flap .note [data-mark] {
+    filter: none;
+  }
+  /* Before the punch (dark mode), the words to be punched are printed like
+     the rest of the letter: in near-black they'd read as holes onto the dark
+     table before anything has been cut. */
+  body.page-home.effects-off .sheet .note [data-block]:not([data-mark]) {
+    color: var(--ink-muted);
+  }
+  body.page-home.effects-off .sheet .note svg[data-block]:not([data-mark]) {
+    fill: var(--ink-muted);
   }
 </style>
 
 <style>
-  /* Home body text is Open Sans; scoped to this page — the rest of the site
-     keeps Inter. Nav/brand (Space Grotesk) live in the shared SiteHeader. */
   #home {
-    font-family: "Open Sans", system-ui, -apple-system, sans-serif;
+    --ink: #1c1c18;
+    --muted: #71717a;
+    --faint: rgba(113, 113, 122, 0.5);
+    /* The page's side margins match the gap between the two columns */
+    --gutter: 40px;
+    --grid: calc(100% - 2 * var(--gutter));
+    font-family: "SF Compact Rounded", ui-rounded, system-ui, -apple-system, sans-serif;
   }
-  /* Headers/titles use Lastik — tighter tracking. Lastik Free is a single-
-     weight font, so font-weight can't make it heavier; a same-colour text
-     stroke thickens the glyphs to add visual weight. */
-  .hero-title,
-  .hero-sub,
-  .show-title {
-    font-family: "Lastik", system-ui, sans-serif;
-    letter-spacing: -0.02em;
-    -webkit-text-stroke: 0.4px currentColor;
-    paint-order: stroke fill;
+
+  /* Dark mode (the header's switch): the Work section on a dark table */
+  :global(:root[data-theme="dark"]) #home {
+    --ink: #ecebe6;
+    --muted: #a3a29a;
+    --faint: rgba(163, 162, 154, 0.6);
   }
-</style>
+  :global(:root[data-theme="dark"]) .cover {
+    border-color: #36352f;
+    background: #25241f;
+  }
 
-<style>
-  /* ═══ Three stacked layers ═══
-     The home screen behaves like two sheets of paper: the intro message
-     sits underneath, and the project grid slides up over it as you scroll
-     (which is why the message fades). The nav is a third layer that always
-     stays on top. z-index: header (30) > grid (20) > message (10). */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 
-  /* ── Layer 1: intro message (fixed underneath, fades on scroll) ── */
+  /* ── Hero ── */
+  /* Full screen: the letter centered, "See my work" at the bottom. The top
+     56px clear the header's pills (104px on phones, where they drop below
+     Contact). .hero-page stays fixed, untouched by scrolling, because the
+     paper measures #slot in it to place the sheet; what you see (the paper's
+     layers and "See my work") is shifted up with the scroll instead (see
+     scrollPaper below). The .hero section holds its place in the scroll. */
   .hero {
+    height: 100vh;
+    height: 100svh;
+  }
+  .hero-page {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 56px 16px 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .hero-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: clamp(12px, calc((100vh - 860px) / 2), 48px) 0;
+  }
+  .see-more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-bottom: 32px;
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 14px;
+    color: var(--ink-nav);
+    text-decoration: none;
+  }
+  .see-more:hover { color: var(--ink); }
+  /* Hidden until the paper lands, and once the page scrolls (see showSeeMore) */
+  .see-more {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0s 0.4s;
+  }
+  .is-landed:not(.is-scrolled) .see-more {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease 0.15s;
+  }
+  .see-more:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ── Below the hero ── */
+  /* Follows the hero up the page: opaque, and above the paper's layers
+     (which never react to presses here; see PAPER_CONFIG.ignore). */
+  .below {
+    position: relative;
+    z-index: 1;
+    background: var(--paper);
+  }
+
+  /* ── Work ── */
+  .work {
+    padding: 390px 0 160px;
+  }
+
+  /* ── Lab, About, Resume ── */
+  .stack {
+    padding: 0 0 160px;
+    scroll-margin-top: 88px;
+  }
+  .stack-note {
+    width: var(--grid);
+    margin: 0 auto;
+    font-size: 21px;
+    line-height: 30px;
+    color: var(--muted);
+  }
+  /* The Lab's boxes, placed as in Figma, scaled to the grid's width: x and
+     width are parts of 1400, y and height parts of 1293 (the layout's
+     height). Before it's seen, initLab arms the grid: the boxes sit
+     scattered and hidden. Once it scrolls in, they fade in and slide and
+     grow into place, all within 600ms. */
+  .lab-grid {
+    position: relative;
+    width: var(--grid);
+    margin: 0 auto;
+    aspect-ratio: 1400 / 1293;
+  }
+  .lab-box {
+    --move: 600ms var(--ease-expo);
+    position: absolute;
+    left: calc(var(--x) / 1400 * 100%);
+    top: calc(var(--y) / 1293 * 100%);
+    width: calc(var(--w) / 1400 * 100%);
+    height: calc(var(--h) / 1293 * 100%);
+    box-sizing: border-box;
+    border-radius: clamp(20px, 3.4vw, 48px);
+    border: 1px solid #c4cdd2;
+    background: rgba(216, 224, 228, 0.8);
+    transition:
+      opacity 120ms ease,
+      left var(--move),
+      top var(--move),
+      width var(--move),
+      height var(--move);
+  }
+  .lab-grid.is-armed:not(.is-open) .lab-box {
+    opacity: 0;
+    left: calc(var(--x0) / 1400 * 100%);
+    top: calc(var(--y0) / 1293 * 100%);
+    width: calc(var(--w0) / 1400 * 100%);
+    height: calc(var(--h0) / 1293 * 100%);
+    transition: none;
+  }
+  /* A box with work in it: its three booklets side by side, one at each
+     end and one in the middle (LabBooklets). Each is a small 3D viewer
+     that opens and turns its pages while hovered; until its pages load it
+     shows a still of the closed book. */
+  .lab-box--feature {
+    display: flex;
+    align-items: stretch;
+    padding: 0 2%;
+    overflow: hidden;
+  }
+  .lab-box--feature :global(.lab-book) {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  /* A capture of the viewer's own canvas at rest, so it lines up with it. */
+  .lab-box--feature :global(.lab-book-poster) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 200ms ease;
+  }
+  .lab-box--feature:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 6px;
+  }
+  :global(:root[data-theme="dark"]) .lab-box {
+    border-color: #36352f;
+    background: #25241f;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lab-box { transition: none; }
+  }
+
+  .resume-doc {
+    width: min(612px, 100% - 48px);
+    aspect-ratio: 8.5 / 11;
+    margin: 0 auto;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow:
+      0 0 0 1px #e3e2db,
+      0 24px 48px -28px rgba(28, 28, 24, 0.35);
+  }
+
+  /* The case studies, one per row. */
+  .work-list {
+    width: var(--grid);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 96px var(--gutter);
+  }
+  .project {
+    display: block;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+  .project--soon { cursor: default; }
+
+  /* Grey cover with the project "screen" centred in it. */
+  .cover {
+    aspect-ratio: 759 / 356; /* 28% shorter than the 759 × 494 design */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 9.6px;
+    border: 1px solid #ccd4d8;
+    background: rgba(229, 235, 238, 0.75);
+  }
+  .screen {
+    position: relative;
+    width: 60.1%;
+    aspect-ratio: 456.2 / 304.2;
+    overflow: hidden;
+    border-radius: 7.2px;
+    border: 2px solid var(--ink);
+    background: #fffafa;
+    box-shadow: 0 16.8px 38.4px -21.6px rgba(28, 28, 24, 0.45);
+  }
+  .screen--cover {
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .screen-label {
+    font-size: 26px;
+    font-weight: 500;
+  }
+  .screen-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .screen-img--cover { object-fit: cover; }
+  .screen-img--contain {
+    inset: 12%;
+    width: 76%;
+    height: 76%;
+    object-fit: contain;
+  }
+  /* With a mouse, the summary moves into the pointer: over a cover the
+     arrow becomes a box holding it, wrapped to a fixed width and just tall
+     enough for its lines, which pops in and follows the mouse
+     (initCaseCursor). Below the cover it's then only for screen readers,
+     which saves the cards its lines. Touch keeps it in place. */
+  .case-cursor {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    /* Fills the visual viewport so the message can sit dead-centre. Divided by
-       the body's 1.2 zoom so the box matches the real viewport height. */
-    height: calc(100svh / 1.2);
-    max-width: 1280px;
-    margin: 0 auto;
-    /* Extra bottom padding biases the vertical centring up by ~one line. */
-    padding: 0 48px 80px;
+    z-index: 50;
+    width: 340px;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    pointer-events: none;
-    text-align: center;
-  }
-  .hero-title {
-    font-size: 38px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    margin: 0 auto 24px;
-    color: #000;
-    max-width: 620px;
-    -webkit-text-stroke: 0.3px currentColor;
-  }
-  .hero-sub {
-    font-size: 38px;
-    font-weight: 800;
-    color: #000;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    max-width: 720px;
-    margin: 0 auto;
-    -webkit-text-stroke: 0.3px currentColor;
-  }
-  .intro-line { display: block; }
-
-  /* Scroll hint — bottom-centre "Projects" label + down arrow with a gentle
-     bob; light grey, clickable, fades on scroll. */
-  .scroll-hint {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 25;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: #b5b5b0;
-    cursor: pointer;
-    padding: 6px 10px;
-    background: none;
-    border: 0;
-    transition: opacity 0.3s ease, color 0.2s ease;
-  }
-  .scroll-hint:hover {
-    color: #8f8f8a;
-  }
-  .scroll-hint-label {
-    font-family: "Space Grotesk", system-ui, sans-serif;
-    font-size: 13px;
+    padding: 9px 22px;
+    transform-origin: 0 0;
+    border-radius: 0 16px 16px 16px; /* square where the pointer is */
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 15px;
     font-weight: 500;
-    letter-spacing: 0.04em;
-    color: inherit;
+    line-height: 21px;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.6;
+    transition:
+      opacity 160ms ease,
+      scale 220ms var(--ease-expo);
+  }
+  .case-cursor.is-on {
+    opacity: 1;
+    scale: 1;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    [data-summary] { cursor: none; }
+    .project-desc {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case-cursor { transition: none; }
+  }
+  .project:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 6px;
+    border-radius: 10px;
   }
 
-  /* Reserves first-screen height so the grid peeks at the bottom initially.
-     Divided by the body's 1.2 zoom so the reserved box matches the visual
-     viewport (zoom scales svh lengths again on render). */
-  .hero-spacer {
-    height: calc((100svh - 110px) / 1.2);
-  }
-
-  /* ── Layer 2: project grid (slides up and covers the message) ── */
-  .grid-bleed {
-    position: relative;
-    z-index: 20;
-    width: 100%;
-    padding: 0 6px;
-    box-sizing: border-box;
-    /* Opaque so it fully occludes the message sliding underneath it. */
-    background: #fffafa;
-  }
-  .grid {
+  /* The title on the left and its type on the right, on one line and in
+     one voice; the summary below only shows on touch (see .case-cursor). */
+  .details {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3px;
-    background: #fffafa;
+    gap: 8px;
+    padding: 4px 0 0;
   }
-
-  .tile {
-    position: relative;
-    aspect-ratio: 3 / 2;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid #ccd4d8;
-    /* 25% translucent (75% opaque). */
-    background: rgba(229, 235, 238, 0.75);
-    color: inherit;
-    text-decoration: none;
-  }
-  .tile--soon { cursor: default; }
-
-  .tile-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-    /* Equal inset so the title sits the same distance from the top edge as
-       from the left edge (line-height:1 on the title removes the extra
-       leading above the text so the visual gaps match). */
-    padding: 16px 16px 0;
-  }
-  .tile-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1c1c18;
-    letter-spacing: -0.016em;
-    line-height: 1;
-  }
-  .tile-tags {
+  .details-main {
     display: flex;
     align-items: baseline;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 8px;
-    max-width: 60%;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .project-title,
+  .project-type {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .project-title { flex: none; }
+  /* Marks the title as a way into its own page. */
+  .project-arrow { margin-left: 0.2em; }
+  .project-type {
+    min-width: 0;
     text-align: right;
   }
-  .tag-list { font-size: 14px; color: #71717a; line-height: 1.4; }
-  .tag-soon {
-    font-size: 13px;
-    font-weight: 700;
-    color: #1c1c18;
-    white-space: nowrap;
+  .project-desc {
+    max-width: 460px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28.8px;
+    color: var(--muted);
   }
 
-  .tile-body {
-    position: relative;
-    flex: 1;
-    margin-top: 20px;
-  }
-
-  .frame {
-    position: absolute;
-    top: 0;
-    left: 32px;
-    width: 68%;
-    aspect-ratio: 3 / 2;
-    background: #fffafa;
-    border: 2px solid #1c1c18;
-    border-radius: 4px;
-    box-shadow: 0 12px 28px -14px rgba(28, 28, 24, 0.35);
-    overflow: hidden;
-  }
-  .frame--cover {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    box-shadow: none;
-  }
-  .frame-label {
-    font-size: 38px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-
-  .frame-photo {
-    position: absolute;
-    inset: 0;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .frame-photo--cover { background-size: cover; }
-  .frame-photo--contain {
-    inset: 14%;
-    background-size: contain;
-  }
-
-  .tile:not(.tile--soon):hover .frame {
-    transform: translateY(-4px);
-    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
-  }
-
-  /* ── Second style: horizontal rows — text (30%) left, photo (70%) right ── */
-  .showcase {
-    position: relative;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    padding: 96px 48px 120px;
-    /* Transparent so the (fading) message shows through as the rows slide up,
-       instead of an opaque sheet covering it. */
-    background: transparent;
-  }
-  .show-row {
-    display: flex;
-    /* Top-align the text so the title lines up with the top of the photo. */
-    align-items: flex-start;
-    gap: 40px;
-    /* Vertical breathing room split top/bottom so the grey divider lands
-       centred between two projects. */
-    padding-block: 63px;
-    color: inherit;
-    text-decoration: none;
-    /* Grey line above every project, including the first. */
-    border-top: 1px solid rgba(28, 28, 24, 0.14);
-  }
-  .show-row:last-child { padding-bottom: 0; }
-  .show-row--soon { cursor: default; }
-
-  .show-text {
-    flex: 0 0 30%;
-    max-width: 30%;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .show-title {
-    font-size: 38px;
-    font-weight: 700;
-    color: #1c1c18;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-  .show-desc { font-size: 15px; font-weight: 700; color: #71717a; line-height: 1.6; }
-  .show-tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .show-tag {
-    font-size: 12px;
-    color: #1c1c18;
-    background: transparent;
-    border: 1px solid rgba(28, 28, 24, 0.25);
-    padding: 4px 11px;
-    border-radius: 999px;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-  }
-  .show-tag--soon {
-    color: #fffafa;
-    background: #1c1c18;
-    border-color: #1c1c18;
-    font-weight: 600;
-  }
-
-  /* Fill the space left of the text column instead of a fixed 70% — a fixed
-     70% + the 40px gap sums past 100% (flex-shrink is 0), pushing the box past
-     the right padding. Growing keeps its right edge inside the padding so it
-     matches the left. */
-  .show-media { flex: 1 1 auto; min-width: 0; }
-  /* Grey box (same size as the photo used to be); the photo is shrunk to a
-     "screen" centred inside it — same idea as the grid tiles. */
-  .show-cover {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid #ccd4d8;
-    background: rgba(229, 235, 238, 0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  /* The shrunk screen sitting in the centre of the grey box. */
-  .show-frame {
-    position: relative;
-    width: 52%;
-    aspect-ratio: 3 / 2;
-    overflow: hidden;
-    border-radius: 6px;
-    background: #fffafa;
-    border: 2px solid #1c1c18;
-    box-shadow: 0 14px 32px -18px rgba(28, 28, 24, 0.45);
-    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
-  }
-  .show-frame--cover {
-    border: none;
-    box-shadow: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .show-row:not(.show-row--soon):hover .show-frame {
-    transform: translateY(-4px);
-  }
-  .show-frame-label {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .show-photo {
-    position: absolute;
-    inset: 0;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .show-photo--cover { background-size: cover; }
-  .show-photo--contain {
-    inset: 12%;
-    background-size: contain;
-  }
-
-  /* ── Mobile: drop the paper-slide effect. Everything flows normally in a
-     single column; no fixed layers, no fade. ── */
-  @media (max-width: 900px) {
-    .hero {
-      position: static;
-      height: auto;
-      justify-content: flex-start;
-      align-items: stretch;
-      text-align: left;
-      max-width: none;
-      padding: 24px 24px 40px;
-      pointer-events: auto;
-      opacity: 1 !important;
-    }
-    .hero-title, .hero-sub { max-width: none; }
-
-    .hero-spacer { display: none; }
-
-    .grid-bleed { position: static; padding: 0 24px; }
-    .grid { grid-template-columns: 1fr; }
-    .tile { aspect-ratio: 4 / 3; }
-
-    /* Showcase stacks: text above the photo, both full width. */
-    .showcase { padding: 56px 24px 72px; }
-    .show-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 16px;
-      padding-block: 34px;
-    }
-    .show-text, .show-media { flex: none; max-width: none; }
+  @media (max-width: 640px) {
+    #home { --gutter: 24px; }
+    .hero-page { padding-top: 104px; }
+    .see-more { margin-bottom: 56px; }
+    .work { padding-top: 320px; padding-bottom: 120px; }
+    .stack { padding-bottom: 120px; }
+    .work-list { grid-template-columns: 1fr; gap: 88px; }
+    .project-title { margin-top: 4px; }
   }
 </style>
 
 <script>
-  const FADE_DISTANCE = 260;
-  // The brand wordmark spells itself out over this fraction of a viewport
-  // height of scrolling, revealing LETTERS_PER_STEP random letters at a time.
-  const NAME_REVEAL_FRACTION = 0.9;
-  const LETTERS_PER_STEP = 2;
-
-  // Fisher–Yates shuffle — a fresh random letter order on every page load.
-  function shuffle<T>(items: T[]): T[] {
-    const a = items.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  function initHeroFade() {
-    const introEl = document.getElementById("introFade");
-    const brandEl = document.getElementById("brandMark");
-    const heartEl = document.getElementById("brandHeart");
-    const hintEl = document.getElementById("scrollHint");
-    if (!introEl || !brandEl) return;
-
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
-    const letters = shuffle(
-      Array.from(brandEl.querySelectorAll<HTMLElement>(".brand-letter")),
-    );
-    const steps = Math.ceil(letters.length / LETTERS_PER_STEP);
-
-    const update = () => {
-      // Mobile / reduced-motion: no slide-over effect — message stays put and
-      // fully visible, brand mark hidden.
-      if (reduced || isMobile()) {
-        introEl.style.opacity = "1";
-        introEl.style.pointerEvents = "auto";
-        brandEl.classList.remove("visible");
-        heartEl?.classList.remove("visible");
-        return;
-      }
-      const progress = Math.min(Math.max(window.scrollY / FADE_DISTANCE, 0), 1);
-      introEl.style.opacity = String(1 - progress);
-      // Selectable while fully visible at the top; becomes click-through once
-      // it starts fading so the (invisible) fixed layer never blocks the
-      // project content behind it.
-      introEl.style.pointerEvents = progress > 0 ? "none" : "auto";
-
-      // Name reveal: scroll position maps to a step count. Each step turns the
-      // grey "next up" pair black and greys in the following pair of the
-      // shuffled order, until the last pair lands black. Scrolling back up
-      // plays it in reverse.
-      const nameProgress = Math.min(
-        Math.max(window.scrollY / (window.innerHeight * NAME_REVEAL_FRACTION), 0),
-        1,
-      );
-      const solid =
-        nameProgress > 0 ? Math.floor(nameProgress * steps) * LETTERS_PER_STEP : 0;
-      const pending =
-        nameProgress > 0 ? Math.min(solid + LETTERS_PER_STEP, letters.length) : 0;
-      letters.forEach((el, i) => {
-        el.classList.toggle("is-pending", i >= solid && i < pending);
-        el.classList.toggle("is-hidden", i >= pending);
-      });
-      brandEl.classList.toggle("visible", pending > 0);
-      heartEl?.classList.toggle("visible", nameProgress >= 1);
-      // Scroll hint fades fully out the moment scrolling starts (the 0.3s CSS
-      // transition on .scroll-hint animates it away). Once fading it also stops
-      // catching clicks so it never blocks the project content behind it.
-      if (hintEl) {
-        hintEl.style.opacity = progress > 0 ? "0" : "1";
-        hintEl.style.pointerEvents = progress > 0 ? "none" : "auto";
-      }
-    };
-
-    // Clicking the hint jumps up to the first project in the list, aligning it
-    // just below the fixed header.
-    if (hintEl && !hintEl.dataset.wired) {
-      hintEl.dataset.wired = "true";
-      hintEl.addEventListener("click", () => {
-        const firstRow = document.querySelector(".showcase .show-row");
-        if (!firstRow) return;
-        const HEADER_OFFSET = 96;
-        const top =
-          firstRow.getBoundingClientRect().top +
-          window.scrollY -
-          HEADER_OFFSET;
-        window.scrollTo({ top, behavior: "smooth" });
-      });
-    }
-
-    // Re-running on SPA nav: drop previous listeners before re-adding so they
-    // don't stack up across navigations.
-    if (window.__heroFadeHandler) {
-      window.removeEventListener("scroll", window.__heroFadeHandler);
-      window.removeEventListener("resize", window.__heroFadeHandler);
-    }
-    window.__heroFadeHandler = update;
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
-  }
-
-  // ── Return-to-project scroll restore ──
-  // When a project card is opened, remember its href. Coming back to the home
-  // page (e.g. via a case study's "Back" link) then lands the visitor on that
-  // same project instead of at the top.
+  import { scrollToFirstProject } from "../scripts/workScroll";
+  // ── Where the home page opens ──
+  // At the top, on the paper, unless the visitor came from a case study's
+  // "Back" link (it stores that project; see scripts/casestudy.ts), which
+  // lands on the same project card, or from a nav pill on another page
+  // (/#work etc.), which lands on that section.
   const RETURN_KEY = "homeScrollTo";
-
-  function wireProjectReturn() {
-    const showcase = document.querySelector<HTMLElement>(".showcase");
-    if (!showcase || showcase.dataset.returnWired) return;
-    showcase.dataset.returnWired = "true";
-    showcase.addEventListener("click", (e) => {
-      const row = (e.target as HTMLElement).closest<HTMLAnchorElement>("a.show-row");
-      const href = row?.getAttribute("href");
-      if (href) sessionStorage.setItem(RETURN_KEY, href);
-    });
-  }
+  const HEADER_OFFSET = 88;
 
   function scrollToProject(target: string) {
-    const row = document.querySelector<HTMLElement>(
-      `.showcase a.show-row[href="${target}"]`,
+    const card = document.querySelector<HTMLElement>(
+      `.work-list a.project[href="${target}"], .lab-grid a[href="${target}"]`,
     );
-    if (!row) return false;
-    const HEADER_OFFSET = 96;
-    const top =
-      row.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+    if (!card) return;
+    const top = card.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
     // Jump (not smooth) so it feels like you never left that spot.
     window.scrollTo({ top, behavior: "auto" });
-    // Sync the intro fade / brand mark to the restored scroll position.
-    window.__heroFadeHandler?.();
-    return true;
   }
 
-  function restoreProjectScroll() {
-    // `astro:page-load` fires on every page, but this only applies to the home
-    // showcase. Bail out *without* consuming the stored target when the
-    // showcase isn't present — otherwise navigating into a case study would eat
-    // the value before we ever return home.
-    if (!document.querySelector(".showcase")) return;
-    const target = sessionStorage.getItem(RETURN_KEY);
-    if (!target) return;
+  function placeScroll() {
+    const project = sessionStorage.getItem(RETURN_KEY);
     sessionStorage.removeItem(RETURN_KEY);
-    // The View Transitions router resets scroll to the top around the swap —
-    // re-assert our scroll on the next few frames so it lands (and stays) on
-    // the opened project.
+    const section = location.hash && document.getElementById(location.hash.slice(1));
+    // The section's been reached, so drop it from the URL: a reload then
+    // starts on the paper again.
+    if (location.hash) history.replaceState(history.state, "", location.pathname);
+
+    const place = () => {
+      if (project) scrollToProject(project);
+      else if (section?.id === "work") scrollToFirstProject("auto");
+      else if (section) section.scrollIntoView({ behavior: "auto" });
+      else window.scrollTo({ top: 0, behavior: "auto" });
+    };
+    // Re-assert for a few frames: the browser's own scroll restoration and
+    // the paper's layout can still move the page right after load.
     let frames = 5;
     const assert = () => {
-      scrollToProject(target);
+      place();
       if (--frames > 0) requestAnimationFrame(assert);
     };
     assert();
   }
 
+  // ── The paper scrolls with the page ──
+  // The hero and the paper's layers are fixed, full-screen layers, so they're
+  // moved up by however far the page has scrolled: the letter scrolls away
+  // like the rest of the page. The paper's own pointer handlers hit-test in
+  // screen coordinates as if it never moved, so once the page has scrolled,
+  // presses outside the page content and header are kept from reaching it.
+  const SCROLLED = 8; // px down before "See my work" fades out
+  function scrollPaper() {
+    const home = document.getElementById("home")!;
+    const layers = [".hero-page", "#blocks", "#stage", "#chads"]
+      .map((sel) => document.querySelector<HTMLElement>(sel))
+      .filter((el): el is HTMLElement => !!el);
+    const update = () => {
+      if (!home.isConnected) return;
+      const y = window.scrollY;
+      // Past a screen and a half it's long gone; no need to keep moving it.
+      const off = Math.min(Math.max(0, y), window.innerHeight * 1.5);
+      layers.forEach((el) => (el.style.transform = off ? `translateY(${-off}px)` : ""));
+      home.classList.toggle("is-scrolled", y > SCROLLED);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    // Capture on window runs before the paper's (bubbling) window listeners.
+    const block = (e: PointerEvent) => {
+      if (window.scrollY <= 0 || (e.target as Element).closest?.(".below, .site-header")) return;
+      e.stopPropagation();
+    };
+    for (const type of ["pointerdown", "pointermove", "pointerup", "pointercancel"]) {
+      window.addEventListener(type, block as EventListener, { capture: true });
+    }
+  }
+
+  // ── "See my work" waits for the paper ──
+  // It fades in once the letter has risen and landed (and its words are
+  // punched out), and fades out once the page scrolls. If the paper never
+  // reports in, it shows anyway.
+  function showSeeMore() {
+    const home = document.getElementById("home")!;
+    const show = () => home.classList.add("is-landed");
+    document.addEventListener("paper:landed", show, { once: true });
+    setTimeout(show, 4000);
+  }
+
+  // ── The Lab's boxes settle into place ──
+  // Arm the grid (boxes scattered and hidden, see .lab-grid), then open it
+  // as soon as any of it is on screen. The Lab pill re-arms it, so the boxes
+  // play again when the page scrolls to them. Without JS, or with reduced
+  // motion, the boxes simply sit in place.
+  function playLab() {
+    const grid = document.querySelector<HTMLElement>(".lab-grid");
+    if (!grid || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    grid.classList.remove("is-open");
+    grid.classList.add("is-armed");
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      grid.classList.add("is-open");
+    });
+    io.observe(grid);
+  }
+
+  function initLab() {
+    playLab();
+    if (window.__labPillWired) return;
+    window.__labPillWired = true;
+    document.addEventListener("click", (e) => {
+      if ((e.target as Element).closest?.('.site-nav a[href="/#lab"]')) playLab();
+    });
+  }
+
+  // ── Case study covers: the pointer becomes the summary ──
+  // Over a case study's cover or the Lab's NPS box (anything with a
+  // data-summary), a mouse's pointer turns into .case-cursor, its top left
+  // corner on the pointer (so every summary starts at the same spot),
+  // filled with that summary. It leaves with the pointer.
+  function initCaseCursor() {
+    const square = document.querySelector<HTMLElement>(".case-cursor");
+    if (!square) return;
+    const follow = (e: PointerEvent) => {
+      square.style.translate = `${e.clientX}px ${e.clientY}px`;
+    };
+    document.querySelectorAll<HTMLElement>("#home [data-summary]").forEach((cover) => {
+      cover.addEventListener("pointerenter", (e) => {
+        if (e.pointerType !== "mouse") return;
+        square.textContent = cover.dataset.summary ?? "";
+        follow(e);
+        square.classList.add("is-on");
+      });
+      cover.addEventListener("pointermove", follow);
+      cover.addEventListener("pointerleave", () => square.classList.remove("is-on"));
+    });
+  }
+
   function initHome() {
-    initHeroFade();
-    wireProjectReturn();
-    restoreProjectScroll();
+    const home = document.getElementById("home");
+    if (!home || home.dataset.placed) return;
+    home.dataset.placed = "true";
+    scrollPaper();
+    showSeeMore();
+    placeScroll();
+    initLab();
+    initCaseCursor();
   }
 
   initHome();

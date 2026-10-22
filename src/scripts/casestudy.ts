@@ -4,16 +4,74 @@
  * torn down before each swap so nothing leaks between pages.
  */
 let scrollHandler: (() => void) | null = null;
+let evidenceCleanup: (() => void) | null = null;
 
 function teardown() {
   if (scrollHandler) {
     window.removeEventListener("scroll", scrollHandler);
     scrollHandler = null;
   }
+  evidenceCleanup?.();
+  evidenceCleanup = null;
+}
+
+// SkinSavior's evidence-by-claim motion: one 5.67s CSS timeline, restarted
+// every cycle while the figure is on screen. Unplayed = the finished table.
+const EVIDENCE_LOOP_MS = 5666.667;
+const EVIDENCE_TYPE_MS = 1666.667;
+
+function setupEvidenceMotion() {
+  const fig = document.querySelector<HTMLElement>(".ss-evidence");
+  if (!fig || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  // Split each summary into per-character spans (screen readers get the
+  // original text once, via a visually hidden copy).
+  fig.querySelectorAll<HTMLElement>(".ss-ev-summary").forEach((p) => {
+    if (p.dataset.split) return;
+    const text = p.textContent ?? "";
+    p.dataset.split = "1";
+    p.style.setProperty("--step", `${EVIDENCE_TYPE_MS / text.length}ms`);
+    const visual = document.createElement("span");
+    visual.setAttribute("aria-hidden", "true");
+    Array.from(text).forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.className = "ss-ev-ch";
+      s.style.setProperty("--i", String(i));
+      s.textContent = ch;
+      visual.append(s);
+    });
+    const sr = document.createElement("span");
+    sr.className = "ss-sr";
+    sr.textContent = text;
+    p.replaceChildren(sr, visual);
+  });
+
+  let timer: number | undefined;
+  const restart = () => {
+    fig.classList.remove("is-playing");
+    void fig.offsetWidth; // reflow so the animations start over
+    fig.classList.add("is-playing");
+  };
+  const io = new IntersectionObserver(([entry]) => {
+    window.clearInterval(timer);
+    if (entry.isIntersecting) {
+      restart();
+      timer = window.setInterval(restart, EVIDENCE_LOOP_MS);
+    } else {
+      fig.classList.remove("is-playing");
+    }
+  });
+  io.observe(fig);
+
+  evidenceCleanup = () => {
+    window.clearInterval(timer);
+    io.disconnect();
+  };
 }
 
 function init() {
   teardown();
+  setupEvidenceMotion();
 
   // Ensure the gameplay demo video autoplays. The muted *attribute* in the
   // injected markup doesn't reliably set the muted *property* after a View
@@ -24,41 +82,6 @@ function init() {
     video.muted = true;
     video.play().catch(() => {});
   }
-
-  // Booklet flipbooks (Cabrillo): the original interactive viewer was exported
-  // as static HTML with no page-turn logic. Re-wire a lightweight one — each
-  // `.flipbook` carries its page list in `data-pages`; prev/next + clicking
-  // the stage's right/left half turns the page.
-  document.querySelectorAll<HTMLElement>(".flipbook").forEach((fb) => {
-    if (fb.dataset.wired) return;
-    fb.dataset.wired = "1";
-    const pages = (fb.dataset.pages || "").split(",").filter(Boolean);
-    if (!pages.length) return;
-    const img = fb.querySelector<HTMLImageElement>(".flip-img");
-    const prev = fb.querySelector<HTMLButtonElement>(".flip-prev");
-    const next = fb.querySelector<HTMLButtonElement>(".flip-next");
-    const stage = fb.querySelector<HTMLElement>(".flip-stage");
-    const counter = fb.querySelector<HTMLElement>(".flip-counter");
-    if (!img || !prev || !next || !stage || !counter) return;
-    let i = 0;
-    const render = () => {
-      img.src = pages[i];
-      counter.textContent = `${i + 1} / ${pages.length}`;
-      for (const [btn, off] of [[prev, i === 0], [next, i === pages.length - 1]] as const) {
-        btn.disabled = off;
-        btn.style.opacity = off ? "0.3" : "1";
-        btn.style.pointerEvents = off ? "none" : "auto";
-      }
-    };
-    const go = (d: number) => { i = Math.max(0, Math.min(pages.length - 1, i + d)); render(); };
-    prev.addEventListener("click", () => go(-1));
-    next.addEventListener("click", () => go(1));
-    stage.addEventListener("click", (e) => {
-      const r = stage.getBoundingClientRect();
-      go((e.clientX - r.left) / r.width > 0.5 ? 1 : -1);
-    });
-    render();
-  });
 
   document.querySelectorAll<HTMLButtonElement>(".feature-toggle").forEach((button) => {
     if (button.dataset.wired) return;
@@ -113,7 +136,19 @@ function init() {
   scrollHandler = onScroll;
 }
 
+// "Back" to the home page returns to this project's card in Work (or its box
+// in the Lab)
+// (the home page reads and clears the key). Other ways home start on the paper.
+function rememberBack(e: Event) {
+  if (!(e.target as Element).closest?.(".sidebar-back, .ss-back")) return;
+  sessionStorage.setItem("homeScrollTo", location.pathname.replace(/\/$/, ""));
+}
+
 export function setupCaseStudy() {
+  if (!window.__caseBackWired) {
+    window.__caseBackWired = true;
+    document.addEventListener("click", rememberBack);
+  }
   document.addEventListener("astro:page-load", init);
   document.addEventListener("astro:before-swap", teardown);
 }
