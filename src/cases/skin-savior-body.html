@@ -1,0 +1,435 @@
+<main class="page ss">
+  <header class="ss-hero" id="hero">
+    <a class="ss-back" href="/">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      All work
+    </a>
+
+    <p class="ss-label">Case study: Health &amp; wellness</p>
+    <h1 class="ss-title">SkinSavior</h1>
+    <p class="ss-thesis">Designing an evidence-first skincare product people can trust.</p>
+    <p class="ss-hero-lede">SkinSavior is a cross-platform skincare product that helps people understand whether a product’s claims are actually supported by evidence—not just whether its ingredients are considered safe.</p>
+
+    <dl class="ss-meta">
+      <div><dt>Role</dt><dd>Co-creator leading product strategy, product design, research, and product build</dd></div>
+      <div><dt>Team</dt><dd>Two people</dd></div>
+      <div><dt>Status</dt><dd>Working web and mobile prototype; pre-launch</dd></div>
+      <div><dt>Timeline</dt><dd>June 2026 – Present</dd></div>
+      <div><dt>Links</dt><dd><a class="ss-arrow-link" href="#demo">Live demo</a></dd></div>
+    </dl>
+
+    <div class="ss-tools" aria-label="Tools used on SkinSavior">
+      <span class="ss-tools-label">Tools</span>
+      <ul class="ss-tools-list">
+        <li><img src="/tools/figma.svg" alt="" />Figma</li>
+        <li><img src="/tools/github.svg" alt="" />GitHub</li>
+        <li><img src="/tools/user-interviews.png" alt="" />User Interviews</li>
+        <li><img src="/tools/openai.svg" alt="" />Codex</li>
+        <li><img src="/tools/claude-code.svg" alt="" />Claude Code</li>
+        <li><img src="/tools/supabase.svg" alt="" />Supabase</li>
+        <li><img src="/tools/vercel.svg" alt="" />Vercel</li>
+      </ul>
+    </div>
+
+    <figure class="ss-figure ss-figure--hero">
+      <div class="ss-ph" role="img" aria-label="Placeholder: SkinSavior product screens on web and mobile"><span class="ss-ph-tag">Image</span><span class="ss-ph-text">Hero product screens on web and mobile</span></div>
+    </figure>
+  </header>
+
+  <div class="ss-body case-layout">
+    <nav id="sidebar" class="ss-toc sidebar" aria-label="Case study contents">
+      <p class="ss-toc-label">Contents</p>
+      <ol class="sidebar-toc" id="sidebarTocList">
+        <li><a href="#opportunity" data-target="opportunity" data-current="false">The opportunity</a></li>
+        <li><a href="#bet" data-target="bet" data-current="false">The product bet</a></li>
+        <li><a href="#discovery" data-target="discovery" data-current="false">Discovery</a></li>
+        <li><a href="#design" data-target="design" data-current="false">Product &amp; experience design</a></li>
+        <li><a href="#build" data-target="build" data-current="false">Building &amp; shipping</a></li>
+        <li><a href="#learning" data-target="learning" data-current="false">Learning &amp; next steps</a></li>
+      </ol>
+    </nav>
+
+    <article class="ss-article">
+
+      <!-- 01 · Opportunity -->
+      <section class="ss-section" data-reveal id="opportunity" aria-labelledby="opportunity-h">
+        <h2 class="ss-section-label" id="opportunity-h">The opportunity</h2>
+        <p class="ss-lede">Skincare shoppers are surrounded by claims: “clinically proven,” “brightening,” “reduces fine lines,” and “pore minimizing.” But in the moment of deciding what to buy, most people have no clear way to tell whether a product can actually deliver on those claims.</p>
+        <div class="ss-prose">
+          <p>Existing skincare tools mostly focus on ingredient safety. They can help answer, “Could this ingredient be harmful?” But that does not answer the more common buying question:</p>
+        </div>
+        <blockquote class="ss-statement"><p>Will this product do what it says it will?</p></blockquote>
+        <div class="ss-prose">
+          <p>The problem is also shaped by an important constraint. Claims around acne, eczema, and rosacea can cross into regulated medical territory. SkinSavior needed to make evidence clearer without implying diagnosis or treatment.</p>
+          <p>The challenge was to make scientific evidence useful for people who do not want to become skincare experts.</p>
+        </div>
+        <figure class="ss-figure">
+          <div class="ss-ph" role="img" aria-label="Placeholder: skincare product claims compared across competing products"><span class="ss-ph-tag">Image</span><span class="ss-ph-text">Skincare product claims or competitive-product comparison</span></div>
+        </figure>
+      </section>
+
+      <!-- 02 · Product bet -->
+      <section class="ss-section" data-reveal id="bet" aria-labelledby="bet-h">
+        <h2 class="ss-section-label" id="bet-h">The product bet</h2>
+        <div class="ss-prose">
+          <p>We found a crowded category. Products like Yuka, EWG Skin Deep, INCIDecoder, SkinSort and Paula’s Choice already offer variations of safety scores, ingredient explanations, routines, recommendations and community features.</p>
+          <p>Rather than replicate those features first, we made a narrower product bet:</p>
+        </div>
+        <blockquote class="ss-statement"><p>SkinSavior would grade the certainty of evidence behind each specific product claim.</p></blockquote>
+        <div class="ss-prose">
+          <p>This created a clear point of difference and gave us a disciplined build order. We chose to build the evidence-grading experience first, then defer familiar but less differentiated features such as routine tracking, compatibility scoring and dupe finding.</p>
+          <p>Those features may matter later, but they would have made the first version feel like another skincare utility rather than a product with a distinct reason to exist.</p>
+        </div>
+
+        <figure class="ss-figure ss-positioning" aria-labelledby="positioning-cap">
+          <div class="ss-pos-grid">
+            <div class="ss-pos-col">
+              <p class="ss-label">Existing tools answer</p>
+              <p class="ss-pos-q">“Could this ingredient be harmful?”</p>
+              <ul class="ss-pos-list">
+                <li>Yuka</li><li>EWG Skin Deep</li><li>INCIDecoder</li><li>SkinSort</li><li>Paula’s Choice</li>
+              </ul>
+            </div>
+            <div class="ss-pos-col ss-pos-col--accent">
+              <p class="ss-label">SkinSavior answers</p>
+              <p class="ss-pos-q">“Is this specific claim supported by evidence?”</p>
+              <ul class="ss-pos-list">
+                <li>SkinSavior</li>
+              </ul>
+            </div>
+          </div>
+          <figcaption id="positioning-cap">Positioning: safety scoring is well covered; per-claim evidence is not.</figcaption>
+        </figure>
+      </section>
+
+      <!-- 03 · Discovery -->
+      <section class="ss-section" data-reveal id="discovery" aria-labelledby="discovery-h">
+        <h2 class="ss-section-label" id="discovery-h">Discovery</h2>
+
+        <div class="ss-entry">
+          <p class="ss-label">Competitive landscape</p>
+          <h3 class="ss-entry-title">Safety is covered. Evidence is not.</h3>
+          <div class="ss-prose">
+            <p>Our competitive analysis showed that ingredient safety and feature parity are well-covered. The gap was not another score. It was a way to evaluate whether a specific claim is well-supported.</p>
+          </div>
+          <div class="ss-table-wrap" role="region" aria-labelledby="comp-cap" tabindex="0">
+            <table class="ss-table">
+              <caption id="comp-cap">What each tool scores, and whether it evaluates individual claims</caption>
+              <thead><tr><th scope="col">Tool</th><th scope="col">What it scores</th><th scope="col">Per-claim evidence</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Yuka</th><td>Ingredient safety, single score</td><td><span class="ss-mark ss-mark--no">No</span></td></tr>
+                <tr><th scope="row">EWG Skin Deep</th><td>Hazard rating per ingredient</td><td><span class="ss-mark ss-mark--no">No</span></td></tr>
+                <tr><th scope="row">INCIDecoder</th><td>Ingredient function and flags</td><td><span class="ss-mark ss-mark--no">No</span></td></tr>
+                <tr><th scope="row">SkinSort</th><td>Match score, routines, dupes, community</td><td><span class="ss-mark ss-mark--no">No</span></td></tr>
+                <tr><th scope="row">Paula’s Choice</th><td>Ingredient ratings by editorial review</td><td><span class="ss-mark ss-mark--no">No</span></td></tr>
+                <tr class="is-us"><th scope="row">SkinSavior</th><td>Evidence certainty per claim</td><td><span class="ss-mark ss-mark--yes">Yes</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 class="ss-subhead">A second gap: analysis without context</h4>
+          <div class="ss-prose">
+            <p>While reviewing these tools, we also noticed features breaking in ways that had nothing to do with missing data. In 1 case, a TikTok creator scanned a topical flea treatment for dogs and told her followers it was unsafe. The app’s own description noted the ingredient was common in veterinary practice, with a caveat that most likely meant it shouldn’t be ingested by people. She misread the result, but the app set her up to, because it judged the ingredient on its own instead of the product for what it was. In another case, a skincare analysis app evaluated hair care the same way it evaluated face products, telling users whether a shampoo would break them out and where it fit in their skincare routine.</p>
+            <p>In both cases the analysis wasn’t wrong, it just didn’t know what kind of product it was looking at. SkinSavior only covers skincare today, so this hasn’t affected us yet. But it shaped a rule we plan to build in before expanding into new categories or letting users add products from outside the catalog: evaluate the product’s category and intended use first, then grade the ingredients against that context.</p>
+          </div>
+        </div>
+
+        <div class="ss-entry">
+          <p class="ss-label">Early user interview</p>
+          <h3 class="ss-entry-title">Directional signal before expensive decisions</h3>
+          <div class="ss-prose">
+            <p>We conducted an early semi-structured interview with a skincare enthusiast to pressure-test our assumptions. This was directional research, not a representative sample, but it produced several useful insights to validate in future interviews.</p>
+            <p>We learned that:</p>
+          </div>
+          <ol class="ss-findings">
+            <li>Even people who research skincare products do not naturally think in ingredients.</li>
+            <li>People make decisions based on desired outcomes, product purpose, texture, affordability, and whether they can realistically repurchase a product.</li>
+            <li>Trust is already fragile; shoppers recognize the influence of marketing, sponsored reviews, and vague claims.</li>
+            <li>A future dupe finder should prioritize purpose, product type, and texture—not just ingredient similarity.</li>
+            <li>A skincare diary was less compelling than we initially assumed.</li>
+          </ol>
+          <div class="ss-prose">
+            <p>These findings reinforced the evidence-first direction and changed parts of the roadmap before they became expensive to build.</p>
+          </div>
+          <figure class="ss-figure">
+            <div class="ss-ph" role="img" aria-label="Placeholder: affinity map of early research insights"><span class="ss-ph-tag">Image</span><span class="ss-ph-text">Research insights or affinity map</span></div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 04 · Design -->
+      <section class="ss-section" data-reveal id="design" aria-labelledby="design-h">
+        <h2 class="ss-section-label" id="design-h">Product and experience design</h2>
+        <p class="ss-lede">The central design challenge was turning evidence quality into something that feels understandable and useful at the moment someone is evaluating a product.</p>
+
+        <div class="ss-entry">
+          <p class="ss-label">Decision 01: Evidence model</p>
+          <h3 class="ss-entry-title">Per-claim evidence instead of one ingredient score</h3>
+          <div class="ss-prose">
+            <p>The first concept used a single evidence score for each ingredient. We rejected it because the same ingredient can have strong evidence for one outcome and weak evidence for another.</p>
+            <p>The final approach evaluates claims separately. A product’s brightening claim and pore-minimizing claim can receive different evidence grades, helping users understand what is supported and what is uncertain.</p>
+          </div>
+          <figure class="ss-evidence" aria-label="SkinSavior evidence table: each product claim gets its own evidence grade, supporting ingredients, and summary">
+            <img class="ss-ev-bg" src="/screenshots/skin-savior/evidence-bg.png" alt="" />
+            <div class="ss-ev-layout">
+              <div class="ss-ev-table" role="table" aria-label="Evidence by claim">
+                <div class="ss-ev-head" role="row">
+                  <span class="ss-ev-c1" role="columnheader">Claim</span>
+                  <span class="ss-ev-c2" role="columnheader">Evidence strength</span>
+                  <span class="ss-ev-c3" role="columnheader">Supporting ingredients</span>
+                  <span class="ss-ev-c4" role="columnheader">Summary</span>
+                </div>
+                <div class="ss-ev-body" role="rowgroup">
+                  <div class="ss-ev-row" role="row">
+                    <div class="ss-ev-claim ss-ev-c1 ss-ev-fade" role="cell">
+                      <span class="ss-ev-badge" aria-hidden="true">E</span>
+                      <span>Evens tone</span>
+                    </div>
+                    <div class="ss-ev-strength ss-ev-c2 ss-ev-fade" role="cell">
+                      <span class="ss-ev-bars" aria-hidden="true"><i style="--h:14px"></i><i style="--h:20px"></i><i style="--h:26px"></i><i style="--h:32px"></i></span>
+                      <span>Strong evidence</span>
+                    </div>
+                    <div class="ss-ev-ingredients ss-ev-c3" role="cell">
+                      <span class="ss-ev-bubble" style="--n:0">Niacinamide</span>
+                      <span class="ss-ev-bubble" style="--n:1">Vitamin C</span>
+                      <span class="ss-ev-bubble" style="--n:2">Retinol</span>
+                      <span class="ss-ev-bubble" style="--n:3">Zinc PCA <span class="ss-ev-qual">| Moderate evidence</span></span>
+                    </div>
+                    <p class="ss-ev-summary ss-ev-c4" role="cell">Multiple randomized human trials have measured niacinamide's impact on skin pigmentation and the appearance of dark patches. These studies observed changes in how pigment is transferred to skin cells. While the evidence is strong, most trials involved small groups of participants, which limits how broadly these findings can be applied to all skin types.</p>
+                  </div>
+                  <div class="ss-ev-row" role="row">
+                    <div class="ss-ev-claim ss-ev-c1 ss-ev-fade" role="cell">
+                      <img src="/screenshots/skin-savior/icon-minimizing-pores.svg" width="48" height="48" alt="" />
+                      <span>Minimizes pores</span>
+                    </div>
+                    <div class="ss-ev-strength ss-ev-c2" role="cell">
+                      <span class="ss-ev-bars ss-ev-fade" aria-hidden="true"><i style="--h:14px"></i><i style="--h:20px"></i><i style="--h:26px"></i><i style="--h:32px"></i></span>
+                      <span>Strong evidence</span>
+                    </div>
+                    <div class="ss-ev-ingredients ss-ev-c3" role="cell">
+                      <span class="ss-ev-bubble" style="--n:0">Niacinamide</span>
+                      <span class="ss-ev-bubble" style="--n:1">Salicylic acid</span>
+                      <span class="ss-ev-bubble" style="--n:2">Zinc PCA <span class="ss-ev-qual">| Moderate evidence</span></span>
+                    </div>
+                    <p class="ss-ev-summary ss-ev-c4" role="cell">Clinical studies suggest that niacinamide can improve the appearance of pore size by strengthening the skin barrier and reducing inflammation. While the effect is visible, the evidence is strongest when niacinamide is used consistently over several weeks.</p>
+                  </div>
+                  <div class="ss-ev-row" role="row">
+                    <div class="ss-ev-claim ss-ev-c1 ss-ev-fade" role="cell">
+                      <img src="/screenshots/skin-savior/icon-supports-collagen.svg" width="48" height="48" alt="" />
+                      <span>Supports collagen</span>
+                    </div>
+                    <div class="ss-ev-strength ss-ev-c2" role="cell">
+                      <span class="ss-ev-bars ss-ev-fade" aria-hidden="true"><i style="--h:14px"></i><i style="--h:20px"></i><i style="--h:26px"></i><i style="--h:32px"></i></span>
+                      <span>Strong evidence</span>
+                    </div>
+                    <div class="ss-ev-ingredients ss-ev-c3" role="cell">
+                      <span class="ss-ev-bubble" style="--n:0">Niacinamide</span>
+                      <span class="ss-ev-bubble" style="--n:1">Peptides</span>
+                      <span class="ss-ev-bubble" style="--n:2">Vitamin C</span>
+                    </div>
+                    <p class="ss-ev-summary ss-ev-c4" role="cell">Some studies suggest that niacinamide may help improve skin elasticity and support the appearance of firmer skin. The evidence is promising, but more research is needed to confirm how consistently these benefits translate across different skin types and ages.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="ss-ev-ombre" aria-hidden="true"></span>
+          </figure>
+        </div>
+
+        <div class="ss-entry">
+          <p class="ss-label">Decision 02: Explanation</p>
+          <h3 class="ss-entry-title">Making trust visible</h3>
+          <div class="ss-prose">
+            <p>A grade alone is not enough. The experience needs to explain what it means, show the reasoning in plain language, and give users a path to understand the supporting research without overwhelming them.</p>
+            <p>The product experience moves from:</p>
+          </div>
+          <ol class="ss-flow" aria-label="Path from product claim to underlying research">
+            <li><span class="ss-flow-n">1</span>Product claim<span class="ss-flow-link" aria-hidden="true"></span></li>
+            <li><span class="ss-flow-n">2</span>Evidence grade<span class="ss-flow-link" aria-hidden="true"></span></li>
+            <li><span class="ss-flow-n">3</span>Plain-language explanation<span class="ss-flow-link" aria-hidden="true"></span></li>
+            <li><span class="ss-flow-n">4</span>Underlying research</li>
+          </ol>
+          <div class="ss-figure-pair">
+            <figure class="ss-figure">
+              <div class="ss-ph ss-ph--tall" role="img" aria-label="Placeholder: product page showing an evidence grade and its explanation"><span class="ss-ph-tag">Screen</span><span class="ss-ph-text">Product page with evidence grade and explanation</span></div>
+            </figure>
+            <figure class="ss-figure">
+              <div class="ss-ph ss-ph--tall" role="img" aria-label="Placeholder: research and source detail view"><span class="ss-ph-tag">Screen</span><span class="ss-ph-text">Research / source detail view</span></div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="ss-entry">
+          <p class="ss-label">Decision 03: Personalization</p>
+          <h3 class="ss-entry-title">Designing a profile around needs, not a single skin-type label</h3>
+          <div class="ss-prose">
+            <p>Instead of forcing users into a single category such as oily, dry, or combination, the quiz profiles independent needs across oiliness, pigmentation, aging, and sensitivity. It also includes phototype and safety-related questions.</p>
+            <p>This gives SkinSavior enough context to personalize the experience without requiring users to know what ingredients they need.</p>
+          </div>
+          <div class="ss-figure-pair">
+            <figure class="ss-figure">
+              <div class="ss-ph ss-ph--tall" role="img" aria-label="Placeholder: skin quiz flow"><span class="ss-ph-tag">Flow</span><span class="ss-ph-text">Quiz flow</span></div>
+            </figure>
+            <figure class="ss-figure">
+              <div class="ss-ph ss-ph--tall" role="img" aria-label="Placeholder: completed skin profile view"><span class="ss-ph-tag">Screen</span><span class="ss-ph-text">Completed skin-profile view</span></div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="ss-entry">
+          <p class="ss-label">Decision 04: Platforms</p>
+          <h3 class="ss-entry-title">Designing consistently across web and mobile</h3>
+          <div class="ss-prose">
+            <p>The product uses a shared design language across web and mobile while adapting hierarchy, navigation, and interaction patterns for each context.</p>
+          </div>
+          <figure class="ss-figure">
+            <div class="ss-ph" role="img" aria-label="Placeholder: web and mobile screens side by side"><span class="ss-ph-tag">Screens</span><span class="ss-ph-text">Web and mobile screens side by side</span></div>
+          </figure>
+          <figure class="ss-figure">
+            <div class="ss-ph ss-ph--short" role="img" aria-label="Placeholder: component and design-system examples"><span class="ss-ph-tag">System</span><span class="ss-ph-text">Component or design-system examples</span></div>
+          </figure>
+        </div>
+
+        <aside class="ss-callout" aria-labelledby="design-workflow-h">
+          <p class="ss-label">Process: Tools</p>
+          <h3 class="ss-callout-title" id="design-workflow-h">Design workflow</h3>
+          <div class="ss-prose">
+            <p>I used Figma to map flows, explore the hierarchy of the evidence experience, prototype key product surfaces, and keep patterns consistent across web and mobile. Figma AI sped up early exploration where it was useful, but the final design decisions came from the product strategy, research findings, trust requirements, and the constraints of communicating scientific evidence clearly.</p>
+          </div>
+          <figure class="ss-figure">
+            <div class="ss-ph ss-ph--short" role="img" aria-label="Placeholder: Figma flow, component system, or iteration board"><span class="ss-ph-tag">Figma</span><span class="ss-ph-text">Flow, component system, or iteration board</span></div>
+          </figure>
+        </aside>
+      </section>
+
+      <!-- 05 · Build -->
+      <section class="ss-section" data-reveal id="build" aria-labelledby="build-h">
+        <h2 class="ss-section-label" id="build-h">Building and shipping the product</h2>
+        <p class="ss-lede">To make the product’s trust promise real, the evidence-grade system could not rely on an AI model to decide what was true.</p>
+
+        <div class="ss-entry">
+          <p class="ss-label">Architecture: Grading pipeline</p>
+          <h3 class="ss-entry-title">The product uses a three-stage pipeline</h3>
+          <ol class="ss-pipeline" aria-label="Three-stage research and grading pipeline">
+            <li>
+              <p class="ss-pipe-head"><span class="ss-pipe-n">Stage 1</span><span class="ss-pipe-kind">Extract</span></p>
+              <p>Research and study information is extracted into structured fields.</p>
+            </li>
+            <li class="is-core">
+              <p class="ss-pipe-head"><span class="ss-pipe-n">Stage 2</span><span class="ss-pipe-kind">Grade: deterministic rules</span></p>
+              <p>Deterministic rules based on evidence frameworks calculate the certainty level.</p>
+            </li>
+            <li>
+              <p class="ss-pipe-head"><span class="ss-pipe-n">Stage 3</span><span class="ss-pipe-kind">Translate: AI, read-only</span></p>
+              <p>AI translates the completed result into plain language without changing the grade.</p>
+            </li>
+          </ol>
+          <div class="ss-prose">
+            <p>This approach keeps the most important output—the evidence grade—consistent, explainable, and separate from generative copy.</p>
+          </div>
+        </div>
+
+        <aside class="ss-callout" aria-labelledby="ai-building-h">
+          <p class="ss-label">Process: Tools</p>
+          <h3 class="ss-callout-title" id="ai-building-h">AI-assisted product building</h3>
+          <div class="ss-prose">
+            <p>I used Claude Code and Codex to accelerate implementation across the shared web and mobile codebase, prototype product flows, and move quickly through technical tasks. I also used connected tools and integrations where they improved research, design-to-code handoff, or product verification.</p>
+            <p>The tools accelerated execution. I remained responsible for the product requirements, architecture choices, claims policy, quality checks, and final decisions.</p>
+          </div>
+          <p class="ss-label ss-toolrows-label" id="workflow-tools-h">Tools in the workflow</p>
+          <dl class="ss-toolrows" aria-labelledby="workflow-tools-h">
+            <div><dt>Figma and Figma AI</dt><dd>Flows, interface exploration, and design patterns</dd></div>
+            <div><dt>Claude Code and Codex</dt><dd>AI-assisted implementation and prototyping</dd></div>
+            <div><dt>GitHub</dt><dd>Version control and collaboration</dd></div>
+            <div><dt>Supabase</dt><dd>Authentication, database, and user data</dd></div>
+            <div><dt>Vercel</dt><dd>Deployment and live product testing</dd></div>
+            <div><dt>Connected tools (MCP)</dt><dd>Research, handoff, and verification where applicable</dd></div>
+          </dl>
+          <figure class="ss-figure">
+            <div class="ss-ph ss-ph--short" role="img" aria-label="Placeholder: AI-assisted product-building workflow or development environment"><span class="ss-ph-tag">Workflow</span><span class="ss-ph-text">AI-assisted building workflow or development environment</span></div>
+          </figure>
+        </aside>
+
+        <div class="ss-entry">
+          <p class="ss-label">Shipped: Prototype scope</p>
+          <h3 class="ss-entry-title">What is live today</h3>
+          <ul class="ss-live">
+            <li>A skin quiz and saved profile</li>
+            <li>Per-claim evidence explanations with ingredient breakdowns and safety flags</li>
+            <li>Product, ingredient, routine, and community browsing</li>
+            <li>Global search</li>
+            <li>Add-a-product-by-URL flow</li>
+            <li>A catalog pipeline with product and ingredient data</li>
+            <li>Web and mobile experiences built from a shared foundation</li>
+          </ul>
+          <figure class="ss-figure">
+            <div class="ss-ph" role="img" aria-label="Placeholder: overview of the live product features"><span class="ss-ph-tag">Overview</span><span class="ss-ph-text">Product feature overview</span></div>
+          </figure>
+          <div class="ss-figure-pair">
+            <figure class="ss-figure">
+              <div class="ss-ph ss-ph--tall" role="img" aria-label="Placeholder: add a product by URL flow"><span class="ss-ph-tag">Flow</span><span class="ss-ph-text">Add-by-URL flow</span></div>
+            </figure>
+            <figure class="ss-figure">
+              <div class="ss-ph ss-ph--tall" role="img" aria-label="Placeholder: search and browse screens"><span class="ss-ph-tag">Screens</span><span class="ss-ph-text">Search and browse screens</span></div>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 · Learning -->
+      <section class="ss-section" data-reveal id="learning" aria-labelledby="learning-h">
+        <h2 class="ss-section-label" id="learning-h">Learning and next steps</h2>
+
+        <div class="ss-notes">
+          <div class="ss-note">
+            <h3>Research earlier</h3>
+            <p>Even one early conversation changed the roadmap. It would have been better to test assumptions sooner, before scoping features such as a skincare diary.</p>
+          </div>
+          <div class="ss-note">
+            <h3>Build trust into the system and the interface</h3>
+            <p>Trust was not only an evidence-framework problem. It affected the grading logic, content language, information hierarchy, and visibility of sources.</p>
+          </div>
+          <div class="ss-note">
+            <h3>Product restraint is a design decision</h3>
+            <p>The most valuable decision was not adding more features. It was choosing not to build the expected parity features before the product’s evidence-first value was clear.</p>
+          </div>
+        </div>
+
+        <div class="ss-entry">
+          <h3 class="ss-entry-title">Next steps</h3>
+          <div class="ss-prose">
+            <p>The product is currently being validated as a web experience. The next phase focuses on proving that the evidence-first experience is useful before expanding its scope.</p>
+          </div>
+
+          <h4 class="ss-subhead">Validate the core experience</h4>
+          <div class="ss-prose">
+            <p>Test whether people can:</p>
+          </div>
+          <ul class="ss-checks">
+            <li>Understand what each evidence grade means</li>
+            <li>Feel more confident comparing products</li>
+            <li>Distinguish evidence quality from ingredient safety</li>
+            <li>Find the explanation useful without feeling overwhelmed</li>
+            <li>See enough value in the core product before parity features are introduced</li>
+          </ul>
+
+          <h4 class="ss-subhead" id="expand-h">Expand the product experience</h4>
+          <div class="ss-prose">
+            <p>Once the core experience is validated, the next product opportunities are:</p>
+          </div>
+          <dl class="ss-toolrows ss-next-rows" aria-labelledby="expand-h">
+            <div><dt>Mobile</dt><dd>Adapt the validated web experience into a mobile product, prioritizing the moments when people research or compare products while shopping.</dd></div>
+            <div><dt>Community</dt><dd>Explore a social layer where users can share routines, discuss product experiences, and add context around how products work for different needs.</dd></div>
+            <div><dt>Category expansion</dt><dd>Extend the evidence-grading model beyond facial skincare, beginning with <strong>body care</strong> and <strong>hair care</strong>.</dd></div>
+          </dl>
+
+          <figure class="ss-figure">
+            <div class="ss-ph ss-ph--short" role="img" aria-label="Placeholder: Now / Next / Later roadmap — validate web experience, expand to mobile and community, broaden categories"><span class="ss-ph-tag">Roadmap</span><span class="ss-ph-text">Now / Next / Later: validate web experience, expand to mobile and community, broaden categories</span></div>
+          </figure>
+        </div>
+      </section>
+
+      <span id="demo" aria-hidden="true"></span>
+    </article>
+  </div>
+</main>

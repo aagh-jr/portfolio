@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import SiteHeader from "../components/SiteHeader.astro";
+import ThemeInit from "../components/ThemeInit.astro";
 import "../styles/fonts.css";
 
 export interface Props {
@@ -69,9 +71,12 @@ const ogImage = new URL(image, Astro.site);
     <!-- Case-study styles, injected verbatim -->
     <style is:inline set:html={styles}></style>
 
+    <ThemeInit />
     <ClientRouter />
+    <slot name="head" />
   </head>
   <body>
+    <SiteHeader />
     <slot />
     <script>
       import { setupReveals } from "../scripts/reveal";

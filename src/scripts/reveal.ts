@@ -7,8 +7,14 @@ declare global {
     __spaNav?: boolean;
     /** Guards one-time wiring of the home hero scroll-fade. */
     __heroFadeWired?: boolean;
+    /** Guards one-time wiring of the Lab pill replaying the Lab's boxes. */
+    __labPillWired?: boolean;
     /** Current scroll/resize handler, so home can replace it across SPA navs. */
     __heroFadeHandler?: () => void;
+    /** Guards one-time wiring of the site header (theme switch, router guard). */
+    __siteHeaderWired?: boolean;
+    /** Guards one-time wiring of the case studies' Back-link listener. */
+    __caseBackWired?: boolean;
   }
 }
 
@@ -27,18 +33,17 @@ function initScrollReveals() {
   els.forEach((el) => {
     const delay = parseFloat(el.dataset.revealDelay || "0");
     const y = parseFloat(el.dataset.revealY || "24");
-    gsap.fromTo(
+    const tween = gsap.fromTo(
       el,
       { opacity: 0, y },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        delay,
-        ease: "expo.out",
-        scrollTrigger: { trigger: el, start: "top 88%", once: true },
-      },
+      { opacity: 1, y: 0, duration: 0.7, delay, ease: "expo.out", paused: true },
     );
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 88%",
+      once: true,
+      onEnter: () => tween.play(),
+    });
   });
 }
 

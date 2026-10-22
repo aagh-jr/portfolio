@@ -1,324 +1,332 @@
 ---
-// Shared top nav + brand wordmark, rendered on every BaseLayout page.
-// Home passes brandVisible={false} so its scroll-fade script reveals the
-// wordmark instead; every other page shows it immediately.
-export interface Props {
-  brandVisible?: boolean;
-}
-const { brandVisible = true } = Astro.props;
+// Shared top nav, rendered on every page (BaseLayout and CaseStudyLayout).
+// Top left, the name (home). Centered pills (Work, Lab, About, Resume), each a
+// section of the home page, the current one dark: on home it follows the
+// scroll, and none is lit on the hero; on a case study it's Work (Lab for the
+// NPS gallery). Top right,
+// Contact and a light/dark button. Ported from the paper hero
+// (~/Developer/parchment). The theme itself is set before first paint by
+// ThemeInit.astro in each layout's <head>.
+import { getCollection } from "astro:content";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isHome = path === "/";
+const brandName = "Abel Angel";
+// A project page lights the pill of the section its card sits in.
+const project = (await getCollection("projects")).find((p) => p.data.href === path);
+const inLab = project?.data.section === "lab";
 
 const navLinks = [
-  { label: "About", href: "/about" },
-  { label: "Contact", action: "contact" as const },
+  { label: "Work", section: "work", current: path.startsWith("/projects") && !inLab },
+  { label: "Lab", section: "lab", current: inLab },
+  { label: "About", section: "about", current: false },
+  { label: "Resume", section: "resume", current: false },
 ];
 ---
 
 <header class="site-header">
+  <!-- One span per letter so the home page can spell the name out as you
+       scroll off the hero. Elsewhere it's simply all there. -->
   <a
+    class:list={["brand", !isHome && "visible"]}
+    id="siteBrand"
     href="/"
-    class:list={["brand-mark", brandVisible && "visible"]}
-    id="brandMark"
-    aria-hidden={brandVisible ? undefined : "true"}
+    aria-label={brandName}
   >
-    Abel Angel
+    {brandName.split("").map((ch) =>
+      ch === " " ? " " : <span class="brand-letter" aria-hidden="true">{ch}</span>,
+    )}
   </a>
-  <nav class="top-nav">
+  <nav class="site-nav" aria-label="Main">
     {
-      navLinks.map((n) =>
-        n.action === "contact" ? (
-          <button class="nav-link nav-link--btn" type="button" data-contact-open>
-            {n.label}
-          </button>
-        ) : (
-          <a
-            href={n.href}
-            class="nav-link"
-            target={n.external ? "_blank" : undefined}
-            rel={n.external ? "noreferrer" : undefined}
-          >
-            {n.label}
-          </a>
-        ),
-      )
+      navLinks.map((n) => (
+        <a
+          class="pill"
+          href={`/#${n.section}`}
+          data-section={n.section}
+          aria-current={n.current ? "page" : undefined}
+        >
+          {n.label}
+        </a>
+      ))
     }
   </nav>
+  <div class="site-corner">
+    <a class="pill" href="mailto:abel.aagh@gmail.com">Contact</a>
+    <button id="siteThemeBtn" class="theme-btn" type="button" aria-label="Switch to dark mode">
+      <svg class="sun" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" /><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3.05 3.05l1.13 1.13M11.82 11.82l1.13 1.13M3.05 12.95l1.13-1.13M11.82 4.18l1.13-1.13" /></svg>
+      <svg class="moon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.6 5.6 0 1 0 7.1 7.1z" /></svg>
+    </button>
+  </div>
 </header>
 
-<!-- Brand heart kept in its own fixed layer so it never inherits the header's
-     pointer/blend rules; mirrors the header's centring so it lines up. -->
-<div class="brand-heart-layer" aria-hidden="true">
-  <span class:list={["brand-heart", brandVisible && "visible"]} id="brandHeart">♥</span>
-</div>
-
-<!-- ── Contact pop-up: a centred grey card over the current page ── -->
-<div class="contact-modal" id="contactModal" hidden>
-  <div class="contact-backdrop" data-contact-close></div>
-  <div class="contact-card" role="dialog" aria-modal="true" aria-label="Contact Abel Angel">
-    <button class="contact-x" type="button" data-contact-close aria-label="Close">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 6l12 12M18 6L6 18"></path>
-      </svg>
-    </button>
-
-    <div class="contact-apps">
-      <a class="contact-app" href="mailto:abel.aagh@gmail.com" aria-label="Email Abel">
-        <span class="contact-app-icon contact-app-icon--mail">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path>
-          </svg>
-        </span>
-        <span class="contact-app-label">Email</span>
-      </a>
-
-      <a class="contact-app" href="https://www.linkedin.com/in/abel-a-gonzalez" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-        <span class="contact-app-icon contact-app-icon--linkedin">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path>
-            <rect x="2" y="9" width="4" height="12"></rect>
-            <circle cx="4" cy="4" r="2"></circle>
-          </svg>
-        </span>
-        <span class="contact-app-label">LinkedIn</span>
-      </a>
-    </div>
-  </div>
-</div>
-
 <style>
-  /* Nav links + brand wordmark use Space Grotesk (matches the home design). */
-  .nav-link,
-  .brand-mark {
-    font-family: "Space Grotesk", system-ui, sans-serif;
-  }
-
-  /* ── Fixed top strip: click-through so cards scroll beneath it; the nav and
-     brand re-enable their own clicks. ── */
+  /* ── Fixed top strip, click-through so content scrolls beneath it; the
+     pills and the theme button re-enable their own clicks. Tokens live on
+     the header so no page's own --ink etc. is touched. ── */
   .site-header {
+    --hdr-bg: #f5f5f2;
+    --hdr-rule: #e3e2db;
+    --hdr-ink: #1c1c18;
+    --hdr-nav: #55554e;
+    --hdr-current: #3f3f3a;
+    --hdr-on: #fafaf8;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    max-width: 1280px;
-    margin: 0 auto;
-    min-height: 132px;
-    padding: 0 48px;
-    box-sizing: border-box;
-    z-index: 30;
+    height: 80px;
+    z-index: 50; /* above the case studies' sidebars (40), which start under it */
     pointer-events: none;
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 14px;
   }
-  .top-nav {
+  :global(:root[data-theme="dark"]) .site-header {
+    --hdr-bg: #25241f;
+    --hdr-rule: #36352f;
+    --hdr-ink: #ecebe6;
+    --hdr-nav: #b5b4ac;
+    --hdr-current: #ecebe6;
+    --hdr-on: #141412;
+  }
+  .site-nav {
     position: absolute;
-    top: 12px;
-    right: 48px;
+    top: 24px;
+    left: 0;
+    right: 0;
     display: flex;
-    align-items: center;
-    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .site-corner {
+    position: absolute;
+    top: 24px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+  }
+  .pill,
+  .theme-btn {
     pointer-events: auto;
   }
-  .nav-link {
-    font-size: 14.5px;
-    font-weight: 400;
-    -webkit-text-stroke: 0.35px currentColor;
-    paint-order: stroke fill;
-    color: #71717a;
-    letter-spacing: -0.016em;
-    transition: opacity 0.15s;
-    text-decoration: none;
-  }
-  /* The Contact trigger is a <button> styled to match the anchor links. */
-  .nav-link--btn {
-    background: none;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    line-height: inherit;
-  }
-  .nav-link:hover { opacity: 0.6; }
 
-  /* Brand wordmark: hidden until scrolled on home (via brandVisible=false),
-     always shown elsewhere. */
-  .brand-mark {
+  /* The name, on the pills' row. Hidden on the home hero until scrolling
+     spells it out (see the script below). */
+  .brand {
     position: absolute;
-    top: 12px;
-    left: 72px;
-    font-size: 17px;
-    font-weight: 800;
-    letter-spacing: -0.016em;
-    color: #1c1c18;
+    top: 24px;
+    left: 20px;
+    line-height: 32px;
+    font-family: "Bianzhidai Pearl", system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    white-space: pre;
+    color: var(--hdr-ink);
     text-decoration: none;
+    border-bottom: none;
     opacity: 0;
-    pointer-events: none;
     transition: opacity 0.4s ease;
   }
-  .brand-mark.visible {
+  .brand.visible {
     opacity: 1;
     pointer-events: auto;
   }
-
-  .brand-heart-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 48px;
-    box-sizing: border-box;
-    z-index: 31;
-    pointer-events: none;
+  .brand:focus-visible {
+    outline: 2px solid var(--hdr-ink);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
-  .brand-heart {
-    position: absolute;
-    top: 12px;
-    left: 48px;
-    font-size: 17px;
-    line-height: 1.2;
-    color: #a9cde9;
+  /* Letters still to land are hidden; the next pair shows grey first */
+  .brand-letter {
+    transition: opacity 0.25s ease, color 0.25s ease;
+  }
+  .brand-letter.is-pending {
+    color: #b5b5b0;
+  }
+  .brand-letter.is-hidden {
     opacity: 0;
-    transition: opacity 0.4s ease;
   }
-  .brand-heart.visible { opacity: 1; }
-
-  /* ── Contact modal ── */
-  .contact-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .contact-modal[hidden] { display: none; }
-  .contact-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(20, 20, 18, 0.28);
-    backdrop-filter: blur(2px);
-  }
-  .contact-card {
-    position: relative;
-    width: 320px;
-    max-width: calc(100vw - 48px);
-    aspect-ratio: 1 / 1;
-    background: #e5ebee;
-    border: 1px solid #ccd4d8;
-    border-radius: 24px;
-    box-shadow: 0 30px 60px -20px rgba(20, 20, 18, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    box-sizing: border-box;
-    animation: contactPop 0.28s cubic-bezier(0.2, 0, 0, 1);
-  }
-  @keyframes contactPop {
-    from { opacity: 0; transform: scale(0.92) translateY(8px); }
-    to { opacity: 1; transform: none; }
-  }
-  .contact-x {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 32px;
-    height: 32px;
-    border: 0;
-    background: transparent;
-    color: #71717a;
-    cursor: pointer;
+  /* One pill per link; the current page's pill is dark */
+  .pill {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    transition: color 0.15s, background 0.15s;
-  }
-  .contact-x:hover { color: #1c1c18; background: rgba(28, 28, 24, 0.08); }
-
-  .contact-apps { display: flex; gap: 32px; }
-  .contact-app {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 8px;
+    background: var(--hdr-bg);
+    box-shadow: inset 0 0 0 1px var(--hdr-rule);
+    color: var(--hdr-nav);
     text-decoration: none;
+    border-bottom: none; /* case-study CSS underlines links via border */
+    transition: background 0.2s ease, color 0.2s ease;
   }
-  .contact-app-icon {
-    width: 74px;
-    height: 74px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    box-shadow: 0 8px 18px -8px rgba(20, 20, 18, 0.5);
-    transition: transform 0.18s ease;
+  .pill:hover {
+    color: var(--hdr-ink);
   }
-  .contact-app:hover .contact-app-icon { transform: translateY(-3px); }
-  .contact-app-icon--mail { background: #1c1c18; }
-  .contact-app-icon--linkedin { background: #0a66c2; }
-  .contact-app-label {
-    font-family: "Space Grotesk", system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: #3f3f46;
+  .pill[aria-current] {
+    background: var(--hdr-current);
+    box-shadow: none;
+    color: var(--hdr-on);
+  }
+  .pill:focus-visible,
+  .theme-btn:focus-visible {
+    outline: 2px solid var(--hdr-ink);
+    outline-offset: 2px;
+  }
+  /* A square button showing the current mode: sun in light, moon in dark */
+  .theme-btn {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: var(--hdr-bg);
+    box-shadow: inset 0 0 0 1px var(--hdr-rule);
+    color: var(--hdr-nav);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .theme-btn:hover {
+    color: var(--hdr-ink);
+  }
+  .theme-btn svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .theme-btn .moon {
+    display: none;
+  }
+  :global(:root[data-theme="dark"]) .theme-btn .sun {
+    display: none;
+  }
+  :global(:root[data-theme="dark"]) .theme-btn .moon {
+    display: block;
   }
 
-  /* ── Mobile: header flows normally at the top of the page ── */
-  @media (max-width: 900px) {
+  /* Phones: the pills drop below Contact and the theme button */
+  @media (max-width: 640px) {
     .site-header {
-      position: static;
-      min-height: 0;
-      padding: 32px 24px 0;
+      height: 112px;
     }
-    .top-nav {
-      position: static;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      gap: 16px 24px;
+    .site-nav {
+      top: 72px;
     }
-    .nav-link { font-size: 18px; }
-    .brand-mark { display: none; }
-    .brand-heart-layer { display: none; }
   }
 </style>
 
 <script>
-  // Contact pop-up wiring. Uses event delegation on `document` so it keeps
-  // working across Astro View Transition navigations (the modal markup is
-  // re-rendered per page, but these listeners persist). Guarded so it only
-  // wires once.
-  function wireContact() {
-    if ((window as any).__contactWired) return;
-    (window as any).__contactWired = true;
-
-    const getModal = () => document.getElementById("contactModal");
-    const open = () => {
-      const m = getModal();
-      if (!m) return;
-      m.hidden = false;
-      document.body.style.overflow = "hidden";
-    };
-    const close = () => {
-      const m = getModal();
-      if (!m || m.hidden) return;
-      m.hidden = true;
-      document.body.style.overflow = "";
-    };
-
-    document.addEventListener("click", (e) => {
-      const t = e.target as HTMLElement;
-      if (t.closest("[data-contact-open]")) {
-        e.preventDefault();
-        open();
-      } else if (t.closest("[data-contact-close]")) {
-        close();
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") close();
-    });
-    // Never leave the modal (or a locked scroll) open across a navigation.
-    document.addEventListener("astro:before-swap", close);
+  import { scrollToFirstProject } from "../scripts/workScroll";
+  // Light / dark: flips <html data-theme> and remembers it. Delegated, so it
+  // keeps working after the View Transitions router swaps the header.
+  function showTheme() {
+    const dark = document.documentElement.dataset.theme === "dark";
+    document
+      .getElementById("siteThemeBtn")
+      ?.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
   }
 
-  wireContact();
+  if (!window.__siteHeaderWired) {
+    window.__siteHeaderWired = true;
+    document.addEventListener("click", (e) => {
+      if (!(e.target as Element).closest?.("#siteThemeBtn")) return;
+      const t = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = t;
+      try {
+        localStorage.setItem("theme", t);
+      } catch {}
+      showTheme();
+    });
+    document.addEventListener("astro:page-load", showTheme);
+    document.addEventListener("astro:page-load", initHomeHeader);
+
+    // The home page's paper runs plain scripts with window-wide listeners and
+    // an animation loop, so it can't be swapped in or out by the router: any
+    // navigation to or from home is a full page load instead.
+    document.addEventListener("astro:before-preparation", (e) => {
+      const { from, to } = e as Event & { from: URL; to: URL };
+      if (from.pathname === "/" || to.pathname === "/") e.preventDefault();
+    });
+  }
+  showTheme();
+
+  // ── Home only: the name spells itself out and the pills follow the scroll ──
+  // The name lands over this fraction of a viewport of scrolling off the hero,
+  // LETTERS_PER_STEP random letters at a time (grey first, then ink), and
+  // plays back in reverse on the way up.
+  const NAME_REVEAL_FRACTION = 0.9;
+  const LETTERS_PER_STEP = 2;
+  // A section is current once its top passes this far down the viewport.
+  const SPY_LINE = 0.4;
+
+  // Fisher–Yates shuffle: a fresh letter order on every page load.
+  function shuffle<T>(items: T[]): T[] {
+    const a = items.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function initHomeHeader() {
+    const brand = document.getElementById("siteBrand");
+    if (!brand || location.pathname !== "/") return;
+
+    const letters = shuffle(Array.from(brand.querySelectorAll<HTMLElement>(".brand-letter")));
+    const steps = Math.ceil(letters.length / LETTERS_PER_STEP);
+    const pills = Array.from(document.querySelectorAll<HTMLElement>(".site-nav .pill"));
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const update = () => {
+      const progress = reduced
+        ? window.scrollY > 0 ? 1 : 0
+        : Math.min(Math.max(window.scrollY / (window.innerHeight * NAME_REVEAL_FRACTION), 0), 1);
+      const solid = progress > 0 ? Math.floor(progress * steps) * LETTERS_PER_STEP : 0;
+      const pending = progress > 0 ? Math.min(solid + LETTERS_PER_STEP, letters.length) : 0;
+      letters.forEach((el, i) => {
+        el.classList.toggle("is-pending", i >= solid && i < pending);
+        el.classList.toggle("is-hidden", i >= pending);
+      });
+      brand.classList.toggle("visible", pending > 0);
+
+      // The last section whose top has passed the spy line is current; on the
+      // hero, none. At the very bottom, the last section wins.
+      const line = window.innerHeight * SPY_LINE;
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      let current: string | undefined;
+      pills.forEach((p) => {
+        const sec = document.getElementById(p.dataset.section!);
+        if (sec && (sec.getBoundingClientRect().top <= line || atBottom)) current = p.dataset.section;
+      });
+      pills.forEach((p) => {
+        if (p.dataset.section === current) p.setAttribute("aria-current", "location");
+        else p.removeAttribute("aria-current");
+      });
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    // Already home: a pill just scrolls to its section, leaving the URL bare
+    // so a reload starts on the paper again.
+    pills.forEach((p) =>
+      p.addEventListener("click", (e) => {
+        const sec = document.getElementById(p.dataset.section!);
+        if (!sec) return;
+        e.preventDefault();
+        const behavior = reduced ? "auto" : "smooth";
+        if (p.dataset.section === "work") scrollToFirstProject(behavior);
+        else sec.scrollIntoView({ behavior });
+      }),
+    );
+  }
 </script>

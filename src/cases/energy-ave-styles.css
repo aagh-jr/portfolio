@@ -2,6 +2,7 @@
     :root {
       --bg: #FFFAFA;
       --ink: #1c1c18;
+      --prose: #2b2b24; /* soft ink for long-form reading — matches Skin Savior */
       --muted: #71717a;
       --hairline: rgba(28, 28, 24, 0.08);
       --hairline-strong: rgba(28, 28, 24, 0.14);
@@ -16,17 +17,34 @@
       --font-body: 'Inter', system-ui, -apple-system, sans-serif;
       --font-display: 'Inter', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-      --fs-body: 17px;
-      --fs-small: 14px;
-      --fs-label: 11px;
-      --fs-h2: 19px;
-      --fs-h3: 16px;
-      --fs-display: 56px;
-      --lh-body: 1.62;
 
-      --gap-section: 110px;
-      --gap-block: 28px;
-      --col-width: 820px;
+      /* ── Type scale — perfect fourth (1.333), base 16px. Matches the
+         home page's global.css scale so case studies and the rest of the
+         site share one system. --fs-body is intentionally larger than the
+         site's 16px base: this is long-form reading, not UI chrome. ── */
+      --fs-hero: 67px;    /* --text-4xl · hero headline only */
+      --fs-impact: 50px;  /* --text-3xl · big-number impact callouts */
+      --fs-display: 38px; /* --text-2xl · section titles */
+      --fs-h3: 28px;      /* --text-xl · subsection titles, pull quotes */
+      --fs-body: 21px;    /* --text-lg · reading copy */
+      --fs-small: 16px;   /* --text-base · UI chrome, TL;DR values, captions */
+      --fs-label: 12px;   /* --text-sm · mono eyebrows, field labels */
+      --lh-body: 1.65;
+
+      /* ── Spacing rhythm ── */
+      --space-micro: 8px;
+      --space-tight: 16px;
+      --space-block: 32px;
+      --space-group: 64px;
+      --gap-section: 96px;
+      --gap-major: 128px;
+      --gap-block: 32px;
+
+      /* ── Measures ── */
+      --measure-prose: 68ch;
+      --measure-tldr: 620px;
+      --measure-breakout: min(1200px, 92vw);
+      --col-width: 760px;
       --sidebar-width: 220px;
       --pad-x: 56px;
 
@@ -55,12 +73,13 @@
     .sidebar {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       position: fixed;
       top: 32px;
       left: 32px;
       bottom: 32px;
       width: var(--sidebar-width);
-      padding: 0;
+      padding: 72px 0; /* equal top/bottom so the list centres on the viewport */
       background: transparent;
       border: none;
       border-radius: 0;
@@ -74,7 +93,7 @@
     .sidebar.is-closing { transform: translateX(calc(-100% - 48px)); }
     .page { transition: opacity 420ms cubic-bezier(0.2, 0, 0, 1); }
     body.is-leaving .page { opacity: 0; }
-    .sidebar-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--muted); border-bottom: none; margin-bottom: 80px; transition: color var(--dur) var(--ease); }
+    .sidebar-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--muted); border-bottom: none; position: absolute; top: 36px; left: 0; transition: color var(--dur) var(--ease); }
     .sidebar-back:hover { color: var(--ink); border-bottom: none; }
     .sidebar-back svg { width: 12px; height: 12px; }
     .sidebar-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
@@ -86,31 +105,42 @@
     .sidebar-toc a[data-current="true"] { color: var(--ink); font-weight: 500; }
     .meta-row .meta-label { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
     .meta-row .meta-value { font-size: var(--fs-small); line-height: 1.5; color: var(--ink); }
-    .meta-link { display: inline-flex; align-items: center; gap: 6px; border-bottom: none; color: #000; font-weight: 500; }
+    .meta-link { display: inline-flex; align-items: center; gap: 6px; border-bottom: none; color: #000; font-weight: 500; white-space: nowrap; }
     .meta-link::after { content: "↗"; font-size: 0.9em; opacity: 0.6; }
     .meta-links { display: flex; flex-direction: column; gap: 4px; }
     .meta-strip {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr) 1.6fr;
       gap: 14px 24px;
       padding: 0;
       margin-bottom: 0;
     }
 
     .article { width: 100%; }
-    .article > * + * { margin-top: var(--gap-block); }
+    .article > * + * { margin-top: var(--space-group); }
+
+    /* ── TL;DR card — role/timeline/team/contribution/outcome, above the fold ── */
+    .tldr-card { border: 1px solid var(--hairline-strong); border-radius: 18px; padding: 36px 40px; background: #fff; }
+    .tldr-card .meta-strip { margin-bottom: 0; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+    .tldr-outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 32px; margin-top: 28px; }
+    .tldr-field .meta-label { margin-bottom: 6px; }
+    .tldr-value { font-size: var(--fs-small); line-height: 1.55; color: var(--ink); margin: 0; }
+
+    .lede .section-eyebrow { margin-bottom: 14px; }
+    .lede p { font-size: 19px; line-height: 1.75; color: var(--prose); margin: 0; }
+    .section-eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
     .hero { margin-bottom: 36px; }
     .hero-tags { display: flex; flex-wrap: wrap; gap: 18px; margin: 16px 0 20px; }
     .hero-tags .tag { border: none; background: none; padding: 0; font-size: 13px; }
-    .hero-title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 1.02; letter-spacing: -0.025em; margin-bottom: 28px; text-wrap: balance; color: #000; }
+    .hero-title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-hero); line-height: 1.02; letter-spacing: -0.03em; margin-bottom: 28px; text-wrap: balance; color: #000; }
     .hero-dek { font-size: 21px; line-height: 1.45; color: var(--ink); max-width: 580px; text-wrap: pretty; }
 
     section.s { scroll-margin-top: 96px; }
     section.s + section.s { margin-top: var(--gap-section); }
-    h2.section-title { font-family: var(--font-body); font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.016em; margin-bottom: 8px; }
+    h2.section-title { font-family: var(--font-body); font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.016em; margin-bottom: 8px; }
     .section-sub { font-size: 16px; color: var(--muted); margin-bottom: 28px; max-width: 520px; line-height: 1.55; }
-    h3.subsection { font-family: var(--font-body); font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.016em; margin-top: 32px; margin-bottom: 12px; }
+    h3.subsection { font-family: var(--font-body); font-weight: 800; font-size: 18px; line-height: 1.25; letter-spacing: -0.012em; margin-top: 32px; margin-bottom: 12px; }
     p { text-wrap: pretty; }
     p + p { margin-top: 16px; }
 
@@ -125,14 +155,14 @@
     .ui-card-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 
     /* ── Pull quote ── */
-    .pullquote { border-left: 2px solid var(--ink); padding: 6px 0 6px 22px; margin: 36px 0 36px 4px; font-family: var(--font-display); font-style: normal; font-size: 24px; line-height: 1.4; letter-spacing: -0.005em; font-weight: 700; color: #000; text-wrap: pretty; }
-    .pullquote--plain { border-left: 0; padding: 0; margin: 24px 0; }
+    .pullquote { border-left: 2px solid var(--ink); padding: 6px 0 6px 22px; margin: 36px 0 36px 4px; font-family: var(--font-display); font-style: normal; font-size: 20px; line-height: 1.4; letter-spacing: -0.005em; font-weight: 600; color: #000; text-wrap: pretty; }
+    .pullquote--plain { border-left: 0; padding: 0; margin: 24px 0; font-size: 20px; font-weight: 500; line-height: 1.5; }
     .pullquote-cite { display: block; margin-top: 14px; font-family: var(--font-body); font-style: normal; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
 
     /* ── Stat grid ── */
     .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 28px 0; margin: 32px 0; }
     .stat { display: flex; flex-direction: column; gap: 6px; }
-    .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.03em; color: #000; font-variant-numeric: tabular-nums; }
+    .stat-num { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-impact); line-height: 1; letter-spacing: -0.03em; color: #000; font-variant-numeric: tabular-nums; }
     .stat-cap { font-size: 14px; line-height: 1.4; color: var(--muted); max-width: 200px; }
     .stat-sub { font-size: 12px; color: var(--accent); font-weight: 500; }
 
@@ -291,7 +321,7 @@
 
     /* ── Insights ── */
     .insight { padding: 20px 22px; border: 1px solid var(--hairline); border-radius: 12px; background: #fff; margin-bottom: 14px; }
-    .insight h4 { font-family: var(--font-body); font-size: 40px; font-weight: 800; margin-bottom: 10px; line-height: 1; letter-spacing: -0.016em; color: #000; }
+    .insight h4 { font-family: var(--font-body); font-size: 18px; font-weight: 800; margin-bottom: 10px; line-height: 1.25; letter-spacing: -0.012em; color: #000; }
     .insight p { font-size: 15px; line-height: 1.7; color: #555; margin: 0; }
     .insight .i-num { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
 
@@ -319,12 +349,18 @@
     @media (max-width: 900px) {
       :root { --pad-x: 28px; }
       .meta-strip { grid-template-columns: 1fr 1fr; }
-      .hero-title { font-size: 40px; }
+      .tldr-card { padding: 28px 24px; }
+      .tldr-outcomes { grid-template-columns: 1fr; }
+      .hero-title { font-size: var(--fs-display); }
       .stat-grid, .affinity-grid, .change-list, .keyfix-list, .outcomes { grid-template-columns: 1fr; }
       .gallery-2 { grid-template-columns: 1fr; }
       .comp-grid { grid-template-columns: 1fr; }
       .interviewee-grid { grid-template-columns: 1fr; }
       .concept-grid { grid-template-columns: 1fr 1fr; }
+    }
+    /* Phones: clear the site header's second row of pills */
+    @media (max-width: 640px) {
+      .page { padding-top: 128px; }
     }
 
     

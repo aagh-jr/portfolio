@@ -1,0 +1,117 @@
+/* Tailwind for the 3D book viewers embedded in case studies. Case-study
+   pages carry their own hand-written CSS, so this skips preflight and only
+   generates the utilities the book components use. The explicit layer
+   order keeps the resets below under the utilities. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "../components/book";
+
+/* Break out of the narrow text column: up to 1120px, centered on the
+   column whether the parent is a block or a centered flex column. With the
+   fixed sidebar on screen (> 1180px), stay clear of its 32px + 220px on the
+   left; below that it's hidden, so only keep a gutter. */
+.book-embed {
+  --embed-width: max(100%, min(1120px, 100vw - 560px));
+  width: var(--embed-width);
+  margin-left: calc((100% - var(--embed-width)) / 2);
+  margin-right: calc((100% - var(--embed-width)) / 2);
+}
+@media (max-width: 1180px) {
+  .book-embed {
+    --embed-width: max(100%, min(1120px, 100vw - 32px));
+  }
+}
+
+/* Section header beside a viewer: title and how-to on the left, 3D on the
+   right. The row is narrower than the column and centered in it. Stacks
+   once the columns would get too narrow. */
+.cs-split {
+  --embed-width: min(100%, 780px);
+  width: var(--embed-width);
+  margin: 0 auto 44px;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 40px;
+  align-items: start;
+}
+.cs-split-text {
+  position: sticky;
+  top: 96px;
+}
+.cs-split-caption {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+}
+/* The book viewers read their stage height from --book-stage, sized in
+   cqw so it tracks the column's width rather than the viewport. The viewer
+   runs --embed-bleed past the column's right edge: that enlarges the book
+   and moves its center right, evening out the space on either side. */
+.cs-split .book-embed {
+  --embed-bleed: 128px;
+  width: calc(100% + var(--embed-bleed));
+  margin: 0 calc(-1 * var(--embed-bleed)) 0 0;
+  container-type: inline-size;
+  --book-stage: min(85vh, 72cqw);
+}
+@media (max-width: 1180px) {
+  .cs-split {
+    --embed-width: 100%;
+  }
+  /* The split fills the column here, so bleed only into its 48px padding. */
+  .cs-split .book-embed {
+    --embed-bleed: 40px;
+  }
+}
+@media (max-width: 860px) {
+  .cs-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .cs-split .book-embed {
+    --embed-bleed: 0px;
+    --book-stage: min(85vh, 120cqw);
+  }
+  .cs-split-text {
+    position: relative;
+    top: 0;
+  }
+}
+
+/* Print gallery: two sheets per row on wide screens, one on narrow. */
+.handout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 80px 32px;
+}
+
+/* Undo the case study's blanket `section` padding. Unlayered, because the
+   case-study CSS it fights is unlayered too. */
+.book-embed section {
+  padding: 0;
+}
+
+/* Stand-ins for the preflight resets the viewers rely on. */
+@layer base {
+  .book-embed button {
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.875rem;
+    border: 0 solid;
+    padding: 0;
+    cursor: pointer;
+  }
+  .book-embed button:disabled {
+    cursor: not-allowed;
+  }
+  .book-embed h3 {
+    margin: 0;
+  }
+  .book-embed ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}

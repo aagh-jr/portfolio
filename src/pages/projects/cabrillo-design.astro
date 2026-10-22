@@ -1,0 +1,78 @@
+---
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import Book from "../../components/book/Book";
+import EcoWebCards from "../../components/book/EcoWebCards";
+import Paper from "../../components/book/Paper";
+import { HANDOUTS } from "../../components/book/handouts";
+import {
+  FLOWER_HUNT_BOOKLET,
+  OPEN_TOWER_BOOKLET,
+  QUARTER_LETTER_ASPECT,
+  WHALE_BOOKLET,
+} from "../../components/book/pages";
+import "../../styles/book-embed.css";
+import styles from "../../cases/cabrillo-design-styles.css?raw";
+import body from "../../cases/cabrillo-design-body.html?raw";
+
+// Design-first draft of the Cabrillo case study, forked from cabrillo.astro.
+// Unlinked, noindex and out of the sitemap until it replaces the original.
+//
+// The interactive 3D viewers mount where the exported markup leaves a
+// placeholder comment.
+const [beforeWhale, rest] = body.split("<!--WHALE_BOOK-->");
+const [beforeEcoWeb, rest2] = rest.split("<!--ECO_WEB_CARDS-->");
+const [beforeFlowerHunt, rest3] = rest2.split("<!--FLOWER_HUNT_BOOK-->");
+const [beforeOpenTower, rest4] = rest3.split("<!--OPEN_TOWER_BOOK-->");
+const [beforeHandouts, afterHandouts] = rest4.split("<!--HANDOUTS-->");
+---
+
+<CaseStudyLayout
+  title="Cabrillo National Monument (Design) | Case Study"
+  description="Cabrillo National Monument — two terms designing, running, measuring and documenting public engagement programs in the park's Interpretation program."
+  canonical="/projects/cabrillo-design"
+  image="/screenshots/cabrillo/wb-1-cover.png"
+  styles={styles}
+>
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <Fragment set:html={beforeWhale} />
+  <div class="book-embed">
+    <Book
+      client:only="react"
+      pages={WHALE_BOOKLET}
+      title="Gray Whale Watching Activity Book"
+      height="min(85vh, 900px)"
+    />
+  </div>
+  <Fragment set:html={beforeEcoWeb} />
+  <div class="book-embed">
+    <EcoWebCards client:only="react" />
+  </div>
+  <Fragment set:html={beforeFlowerHunt} />
+  <div class="book-embed">
+    <Book
+      client:only="react"
+      pages={FLOWER_HUNT_BOOKLET}
+      aspect={QUARTER_LETTER_ASPECT}
+      title="Junior Botanist Flower Hunt"
+      height="min(85vh, 900px)"
+    />
+  </div>
+  <Fragment set:html={beforeOpenTower} />
+  <div class="book-embed">
+    <Book
+      client:only="react"
+      pages={OPEN_TOWER_BOOKLET}
+      title="Open Tower Day Activity Book"
+      height="min(85vh, 900px)"
+    />
+  </div>
+  <Fragment set:html={beforeHandouts} />
+  <div class="book-embed handout-grid">
+    {
+      HANDOUTS.map((h) => (
+        <Paper client:only="react" front={h.front} back={h.back} aspect={h.aspect} title={h.title} />
+      ))
+    }
+  </div>
+  <Fragment set:html={afterHandouts} />
+</CaseStudyLayout>

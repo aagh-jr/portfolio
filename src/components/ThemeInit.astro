@@ -1,0 +1,18 @@
+<!-- Light or dark, set on <html> before first paint: the last choice made with
+     the header's switch, else light. (To follow the system setting instead,
+     fall back to matchMedia("(prefers-color-scheme: dark)").) Set again after each View
+     Transitions swap, which replaces <html>'s attributes with the new page's. -->
+<script is:inline>
+  (() => {
+    const apply = () => {
+      let t;
+      try {
+        t = localStorage.getItem("theme");
+      } catch {}
+      document.documentElement.dataset.theme =
+        t || "light";
+    };
+    apply();
+    document.addEventListener("astro:after-swap", apply);
+  })();
+</script>

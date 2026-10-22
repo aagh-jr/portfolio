@@ -1,0 +1,51 @@
+---
+// Scratch page for the 3D book component. Not linked anywhere, excluded
+// from the sitemap (astro.config.mjs), and marked noindex below.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Book from "../components/book/Book";
+import EcoWebCards from "../components/book/EcoWebCards";
+import Paper from "../components/book/Paper";
+import { HANDOUTS } from "../components/book/handouts";
+import {
+  FLOWER_HUNT_BOOKLET,
+  OPEN_TOWER_BOOKLET,
+  QUARTER_LETTER_ASPECT,
+  WHALE_BOOKLET,
+} from "../components/book/pages";
+---
+
+<BaseLayout title="Book test" description="3D booklet viewer test page.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <main class="mx-auto max-w-5xl px-4 pt-28 pb-16">
+    <p class="mb-10 text-center text-sm opacity-60">
+      Click the left or right side to turn, drag to rotate. Arrow keys turn
+      whichever book you last hovered.
+    </p>
+    <div class="flex flex-col gap-24">
+      <Book client:only="react" pages={WHALE_BOOKLET} title="Gray Whale Watching Activity Book" />
+      <Book client:only="react" pages={OPEN_TOWER_BOOKLET} title="Open Tower Day Activity Book" />
+      <Book
+        client:only="react"
+        pages={FLOWER_HUNT_BOOKLET}
+        aspect={QUARTER_LETTER_ASPECT}
+        title="Junior Botanist Flower Hunt"
+      />
+    </div>
+
+    <h2 class="mt-32 mb-12 text-center text-lg font-medium">Handouts</h2>
+    <p class="-mt-8 mb-12 text-center text-sm opacity-60">
+      Click a sheet to turn it over, drag to rotate.
+    </p>
+    <div class="grid gap-x-8 gap-y-20 md:grid-cols-2">
+      {HANDOUTS.map((h) => (
+        <Paper client:only="react" front={h.front} back={h.back} aspect={h.aspect} title={h.title} />
+      ))}
+    </div>
+
+    <h2 class="mt-32 mb-12 text-center text-lg font-medium">Eco Web Cards</h2>
+    <p class="-mt-8 mb-12 text-center text-sm opacity-60">
+      Species cards flip to the NPS back. Pick any card below to view it up top.
+    </p>
+    <EcoWebCards client:only="react" />
+  </main>
+</BaseLayout>

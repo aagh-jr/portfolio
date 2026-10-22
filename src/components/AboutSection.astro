@@ -1,0 +1,178 @@
+---
+// The About article: portrait, greeting, bio and contact icons. Lives on the
+// home page as the #about section (the old /about page redirects there).
+const aboutText =
+  "I'm a Cognitive Science 🧠 graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction. I research how people think, how interfaces respond and where the two fall out of sync.\n\nI grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate.\n\nOutside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or breaking a sweat and your local pilates studio 🤸🏽.";
+
+const EMOJI = /(🇲🇽|🌉|🤸🏽|🧠)/u;
+const parts = aboutText.split(EMOJI);
+---
+
+<article class="about-article">
+  <img
+    src="/uploads/abel-portrait.jpg"
+    alt="Abel Angel"
+    class="about-portrait"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div class="hero-title">
+    <span>Hey! I'm </span><span>Abel Angel</span>
+  </div>
+
+  <div class="hero-sub">
+    <span class="about-line" id="aboutLine">
+      {
+        parts.map((p) =>
+          EMOJI.test(p) ? <span class="emoji">{p}</span> : p,
+        )
+      }
+    </span>
+  </div>
+
+  <div class="about-icons">
+    <a href="mailto:abel.aagh@gmail.com" aria-label="Email" class="icon-link">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path>
+      </svg>
+    </a>
+    <a href="https://www.linkedin.com/in/abel-a-gonzalez" target="_blank" rel="noreferrer" aria-label="LinkedIn" class="icon-link">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path>
+        <rect x="2" y="9" width="4" height="12"></rect>
+        <circle cx="4" cy="4" r="2"></circle>
+      </svg>
+    </a>
+    <a href="https://github.com/aagh-jr" target="_blank" rel="noreferrer" aria-label="GitHub" class="icon-link">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  @keyframes slideRight {
+    from { transform: translateX(0); }
+    to   { transform: translateX(101%); }
+  }
+
+  /* Drawn at 404px and scaled up 1.2x, as the old /about page was. */
+  .about-article {
+    zoom: 1.2;
+    max-width: 404px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .about-portrait {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+  }
+  .hero-title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.016em;
+    line-height: 1;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .about-line { display: block; position: relative; white-space: pre-wrap; }
+  .about-line .emoji {
+    font-size: 1.3em;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 1;
+  }
+  .about-line :global(.reveal-mask) { position: absolute; background: var(--paper); }
+
+  .about-icons { display: flex; align-items: center; gap: 30px; margin-top: 24px; }
+  .icon-link { color: var(--muted); display: inline-flex; transition: color 0.15s; }
+  .icon-link:hover { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .about-article { zoom: 1; }
+  }
+</style>
+
+<script>
+  // The bio wipes in line by line the first time it scrolls into view: each
+  // line gets a paper-colored mask, held still until the bio is on screen.
+  function maskAbout() {
+    const span = document.getElementById("aboutLine");
+    if (!span || span.dataset.revealed) return;
+    span.dataset.revealed = "true";
+
+    const range = document.createRange();
+    range.selectNodeContents(span);
+    const rects = Array.from(range.getClientRects());
+    const parent = span.getBoundingClientRect();
+    const lh = parseFloat(getComputedStyle(span).lineHeight) || 30;
+    const lines: { top: number; left: number; right: number; height: number }[] = [];
+    rects.forEach((r) => {
+      const top = r.top - parent.top;
+      const hit = lines.find((l) => Math.abs(l.top - top) < lh / 2);
+      if (hit) {
+        hit.left = Math.min(hit.left, r.left - parent.left);
+        hit.right = Math.max(hit.right, r.right - parent.left);
+        hit.height = Math.max(hit.height, r.height);
+      } else {
+        lines.push({
+          top,
+          left: r.left - parent.left,
+          right: r.right - parent.left,
+          height: r.height,
+        });
+      }
+    });
+    if (!lines.length) return;
+
+    // getClientRects is in zoomed (screen) pixels; the masks are positioned
+    // inside the zoomed article, so divide the zoom back out.
+    const z = parent.width / span.offsetWidth || 1;
+    const stagger = lines.length > 1 ? 0.35 / (lines.length - 1) : 0;
+    lines.forEach((l, i) => {
+      const mask = document.createElement("span");
+      mask.className = "reveal-mask";
+      mask.style.top = l.top / z + "px";
+      mask.style.left = l.left / z + "px";
+      mask.style.width = (l.right - l.left) / z + 2 + "px";
+      mask.style.height = l.height / z + "px";
+      mask.style.animation = `slideRight 0.12s ease ${(i * stagger).toFixed(3)}s forwards paused`;
+      span.appendChild(mask);
+    });
+  }
+
+  async function wireAbout() {
+    const span = document.getElementById("aboutLine");
+    if (!span || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    await document.fonts.ready;
+    maskAbout();
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        span.querySelectorAll<HTMLElement>(".reveal-mask").forEach((m) => {
+          m.style.animationPlayState = "running";
+        });
+      },
+      { rootMargin: "0px 0px -15% 0px" },
+    );
+    io.observe(span);
+  }
+
+  wireAbout();
+</script>
