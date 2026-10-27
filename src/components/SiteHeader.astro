@@ -385,6 +385,13 @@ const navLinks = [
         else sec.scrollIntoView({ behavior });
       }),
     );
+    // And the name just scrolls back up to the letter, rather than reloading
+    // the page (a modified click still opens it in a new tab).
+    brand.addEventListener("click", (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    });
   }
 
 </script>
