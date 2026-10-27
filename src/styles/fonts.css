@@ -54,6 +54,15 @@
   src: url("/fonts/bianzhidai_noBG-Pearl.otf") format("opentype");
 }
 
+/* Paper Mono (self-hosted variable font, weights 100–800, OFL). */
+@font-face {
+  font-family: "Paper Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/PaperMono-VariableFont_wght.woff2") format("woff2");
+}
+
 /* SF Compact Rounded — home page body text. Apple's font licence doesn't
    allow web embedding, so this only resolves where it's installed locally;
    everyone else falls back through ui-rounded (SF Pro Rounded on Apple

@@ -16,10 +16,15 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    // Scratch and draft pages stay out of search: /book-test (3D book
-    // viewer) and /projects/cabrillo-design (design-first case study draft).
+    // Scratch and draft pages stay out of search: /book-test,
+    // /zine-test and /board-test (3D viewers) and /projects/cabrillo-design (design-first
+    // case study draft).
     sitemap({
-      filter: (page) => !page.includes('/book-test') && !page.includes('/cabrillo-design'),
+      filter: (page) =>
+        !page.includes('/book-test') &&
+        !page.includes('/zine-test') &&
+        !page.includes('/board-test') &&
+        !page.includes('/cabrillo-design'),
     }),
   ],
   vite: {

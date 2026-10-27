@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AboutSection from "../components/AboutSection.astro";
 import LabBooklets from "../components/book/LabBooklets";
+import AboutPiles from "../components/AboutPiles.astro";
 
 const all = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -123,8 +123,10 @@ const labFeature = all.find((p) => p.data.section === "lab");
       </div>
     </section>
 
-    <section class="stack" id="about" aria-label="About">
-      <AboutSection />
+    <!-- Placeholder About: two piles of cards, peeled off as the page
+         scrolls (see AboutPiles) -->
+    <section class="about" id="about" aria-label="About">
+      <AboutPiles />
     </section>
 
     <section class="stack" id="resume" aria-label="Resume">
@@ -402,8 +404,7 @@ const labFeature = all.find((p) => p.data.section === "lab");
 
   /* ── Hero ── */
   /* Full screen: the letter centered, "See my work" at the bottom. The top
-     56px clear the header's pills (104px on phones, where they drop below
-     Contact). .hero-page stays fixed, untouched by scrolling, because the
+     56px clear the header's one row of pills. .hero-page stays fixed, untouched by scrolling, because the
      paper measures #slot in it to place the sheet; what you see (the paper's
      layers and "See my work") is shifted up with the scroll instead (see
      scrollPaper below). The .hero section holds its place in the scroll. */
@@ -473,6 +474,11 @@ const labFeature = all.find((p) => p.data.section === "lab");
   .stack {
     padding: 0 0 160px;
     scroll-margin-top: 88px;
+  }
+  /* The piles pin to the top of the screen, so the About pill lands
+     right at the section's top. */
+  .about {
+    padding-bottom: 160px;
   }
   .stack-note {
     width: var(--grid);
@@ -717,7 +723,6 @@ const labFeature = all.find((p) => p.data.section === "lab");
 
   @media (max-width: 640px) {
     #home { --gutter: 24px; }
-    .hero-page { padding-top: 104px; }
     .see-more { margin-bottom: 56px; }
     .work { padding-top: 320px; padding-bottom: 120px; }
     .stack { padding-bottom: 120px; }

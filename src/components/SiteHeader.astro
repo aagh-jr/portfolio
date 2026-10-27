@@ -33,9 +33,14 @@ const navLinks = [
     href="/"
     aria-label={brandName}
   >
-    {brandName.split("").map((ch) =>
-      ch === " " ? " " : <span class="brand-letter" aria-hidden="true">{ch}</span>,
-    )}
+    {brandName.split(" ").map((word, w) => (
+      <span class="brand-word">
+        {w > 0 && " "}
+        {word.split("").map((ch) => (
+          <span class="brand-letter" aria-hidden="true">{ch}</span>
+        ))}
+      </span>
+    ))}
   </a>
   <nav class="site-nav" aria-label="Main">
     {
@@ -91,7 +96,7 @@ const navLinks = [
   }
   .site-nav {
     position: absolute;
-    top: 24px;
+    top: 12px;
     left: 0;
     right: 0;
     display: flex;
@@ -101,7 +106,7 @@ const navLinks = [
   }
   .site-corner {
     position: absolute;
-    top: 24px;
+    top: 12px;
     right: 20px;
     display: flex;
     gap: 8px;
@@ -115,7 +120,7 @@ const navLinks = [
      spells it out (see the script below). */
   .brand {
     position: absolute;
-    top: 24px;
+    top: 12px;
     left: 20px;
     line-height: 32px;
     font-family: "Bianzhidai Pearl", system-ui, sans-serif;
@@ -210,13 +215,65 @@ const navLinks = [
     display: block;
   }
 
-  /* Phones: the pills drop below Contact and the theme button */
-  @media (max-width: 640px) {
+  /* Narrower screens keep everything on one row: the name gives way a
+     word at a time, then the pills shrink. Breakpoints are from the
+     measured widths: pills 287px, Contact and the theme button 127px, the
+     name 160px ("Abel" alone 64px), with 16px clear between them. */
+  /* Too narrow for all of the name beside the centered pills: just "Abel" */
+  @media (max-width: 679px) {
+    .brand-word + .brand-word {
+      display: none;
+    }
+  }
+  /* Too narrow to center the pills on the page: one flex row, the pills
+     centered in the room between the name and the corner */
+  @media (max-width: 613px) {
     .site-header {
-      height: 112px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-sizing: border-box;
+      padding: 12px 20px 0;
+    }
+    .brand,
+    .site-nav,
+    .site-corner {
+      position: static;
     }
     .site-nav {
-      top: 72px;
+      flex: 1;
+      flex-wrap: nowrap;
+    }
+  }
+  /* No room for "Abel" either */
+  @media (max-width: 549px) {
+    .brand {
+      display: none;
+    }
+  }
+  /* Phones: smaller, tighter pills */
+  @media (max-width: 461px) {
+    .site-header {
+      font-size: 13px;
+      gap: 8px;
+      padding-inline: 12px;
+    }
+    .site-nav,
+    .site-corner {
+      gap: 6px;
+    }
+    .pill {
+      padding: 0 8px;
+    }
+  }
+  /* The smallest phones */
+  @media (max-width: 359px) {
+    .site-nav,
+    .site-corner {
+      gap: 4px;
+    }
+    .pill {
+      padding: 0 6px;
     }
   }
 </style>
@@ -329,4 +386,5 @@ const navLinks = [
       }),
     );
   }
+
 </script>
