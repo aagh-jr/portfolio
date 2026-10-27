@@ -298,7 +298,7 @@ export interface BookProps {
 }
 
 
-function spreadLabel(turned: number, sheetCount: number, pageCount: number) {
+export function spreadLabel(turned: number, sheetCount: number, pageCount: number) {
   if (turned === 0) return `Front cover, page 1 of ${pageCount}`;
   if (turned === sheetCount) return `Back cover, page ${pageCount} of ${pageCount}`;
   return `Pages ${turned * 2}–${turned * 2 + 1} of ${pageCount}`;

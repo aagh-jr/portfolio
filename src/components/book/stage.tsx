@@ -36,6 +36,18 @@ export function usePrefersReducedMotion() {
   return reduced;
 }
 
+/** The site's light or dark theme (<html data-theme>, set by the header's switch), live. */
+export function useSiteTheme() {
+  const read = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+  const [theme, setTheme] = useState<"light" | "dark">(read);
+  useEffect(() => {
+    const mo = new MutationObserver(() => setTheme(read()));
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
+  }, []);
+  return theme;
+}
+
 /**
  * True while the element is on or near the screen. Viewers mount their
  * canvas only then: browsers cap live WebGL contexts (~16), and a page of

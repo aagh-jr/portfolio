@@ -90,7 +90,9 @@ const parts = aboutText.split(EMOJI);
     color: var(--muted);
     line-height: 1.35;
   }
-  .about-line { display: block; position: relative; white-space: pre-wrap; }
+  /* overflow-x: clip keeps the masks from widening the page as they slide
+     off the right; it leaves the emoji free to overhang top and bottom. */
+  .about-line { display: block; position: relative; white-space: pre-wrap; overflow-x: clip; }
   .about-line .emoji {
     font-size: 1.3em;
     vertical-align: middle;
@@ -152,6 +154,8 @@ const parts = aboutText.split(EMOJI);
       mask.style.width = (l.right - l.left) / z + 2 + "px";
       mask.style.height = l.height / z + "px";
       mask.style.animation = `slideRight 0.12s ease ${(i * stagger).toFixed(3)}s forwards paused`;
+      // Once it has slid off its line it has nothing left to do.
+      mask.addEventListener("animationend", () => mask.remove());
       span.appendChild(mask);
     });
   }

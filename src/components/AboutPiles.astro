@@ -1,0 +1,358 @@
+---
+// The About section, for now: two piles of cards side by side, photos on the
+// left and note cards (the letter's paper, its hills border and all) on the
+// right. Scrolling in, the cards drop onto their piles, bottom first; once the
+// section pins, each layer peels off both piles at once, the photos out to
+// the left, the notes out to the right, until both are gone and the page moves
+// on. Without JS, or with reduced motion, the cards simply sit in two columns.
+// Placeholder content until the real About is ready.
+
+const photos = [
+  { src: "/uploads/abel-portrait.jpg", caption: "Hey, that's me" },
+  { tone: "#c9b79c", caption: "San Jose, CA" },
+  { tone: "#9fb0b8", caption: "UC San Diego" },
+  { tone: "#b9a38f", caption: "Thrift finds" },
+  { tone: "#a7ad95", caption: "Shot on film" },
+];
+
+const notes = [
+  { title: "Hey! I'm Abel Angel.", text: "Keep scrolling, a few notes about me are underneath." },
+  { text: "I'm a Cognitive Science 🧠 graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction." },
+  { text: "I research how people think, how interfaces respond and where the two fall out of sync." },
+  { text: "I grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate." },
+  { text: "Outside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or breaking a sweat at your local pilates studio 🤸🏽.", links: true },
+];
+
+// A slight, fixed tilt and nudge for each layer, so the piles look tossed.
+const tilt = [
+  [-2.5, -6, 4],
+  [3, 8, -6],
+  [-4, -10, 8],
+  [2, 6, 10],
+  [-1.5, -4, -8],
+];
+const pose = (i: number, side: number) => {
+  const [r, x, y] = tilt[i % tilt.length];
+  return `--r:${r * side}deg;--dx:${x * side}px;--dy:${y}px;--z:${photos.length - i};`;
+};
+---
+
+<div class="piles" style={`--n:${photos.length};`}>
+  <div class="piles-stage">
+    <div class="pile pile--photos" data-side="-1">
+      {
+        photos.map((p, i) => (
+          <figure class="card photo" style={pose(i, -1)}>
+            {p.src ? (
+              <img src={p.src} alt="Abel Angel" loading="lazy" decoding="async" />
+            ) : (
+              <div class="photo-blank" style={`--tone:${p.tone};`} role="img" aria-label={`Photo placeholder: ${p.caption}`} />
+            )}
+            <figcaption>{p.caption}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+    <div class="pile pile--notes" data-side="1">
+      {
+        notes.map((n, i) => (
+          <div class="card note-card" style={pose(i, 1)}>
+            <div class="note-paper">
+              {n.title && <p class="note-title">{n.title}</p>}
+              <p class="note-text">{n.text}</p>
+              {n.links && (
+                <p class="note-links">
+                  <a href="mailto:abel.aagh@gmail.com">Email</a>
+                  <a href="https://www.linkedin.com/in/abel-a-gonzalez" target="_blank" rel="noreferrer">LinkedIn</a>
+                  <a href="https://github.com/aagh-jr" target="_blank" rel="noreferrer">GitHub</a>
+                </p>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Without JS (or with reduced motion): two plain columns of cards ── */
+  .piles-stage {
+    width: var(--grid);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gutter);
+    padding: 88px 0 0;
+  }
+  .pile {
+    container-type: inline-size;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 48px;
+  }
+  .card {
+    margin: 0;
+    rotate: var(--r);
+  }
+
+  /* ── Piled (initPiles): the section is a tall runway, the stage pinned to
+     the screen while it scrolls by; every card sits in the same cell. ── */
+  .piles.is-piled {
+    height: calc(100svh + var(--n) * 60svh);
+  }
+  .is-piled .piles-stage {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100svh;
+    box-sizing: border-box;
+    padding: 88px var(--gutter) 48px;
+    grid-template-columns: 1fr 1fr;
+    overflow: clip;
+  }
+  .is-piled .pile {
+    align-content: center;
+    align-items: center;
+  }
+  /* Every note as tall as the longest, so none sticks out of the pile */
+  .is-piled .pile--notes {
+    align-items: stretch;
+  }
+  .is-piled .note-card {
+    display: flex;
+  }
+  .is-piled .note-paper {
+    flex: 1;
+  }
+  .is-piled .card {
+    grid-area: 1 / 1;
+    z-index: var(--z);
+    rotate: none;
+    will-change: transform;
+    /* Placed by initPiles; this is where each rests on its pile */
+    transform: translate(var(--dx), var(--dy)) rotate(var(--r));
+  }
+
+  /* ── Photos: printed on a white border, like a snapshot ── */
+  .photo {
+    --lift: 0;
+    width: min(100%, 380px, (100svh - 220px) * 0.78);
+    box-sizing: border-box;
+    padding: 4.5% 4.5% 0;
+    background: #fbfaf6;
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 1px rgb(28 28 24 / 0.06),
+      0 calc(2px + 22px * var(--lift)) calc(4px + 36px * var(--lift)) rgb(28 28 24 / calc(0.14 + 0.12 * var(--lift)));
+  }
+  .photo img,
+  .photo-blank {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .photo-blank {
+    background:
+      radial-gradient(120% 90% at 30% 20%, rgb(255 255 255 / 0.35), transparent 60%),
+      linear-gradient(160deg, var(--tone), color-mix(in srgb, var(--tone) 70%, #1c1c18));
+  }
+  .photo figcaption {
+    padding: 0.9em 0 1.1em;
+    font-family: var(--letter-font);
+    letter-spacing: var(--letter-track);
+    font-size: clamp(11px, 4cqi, 15px);
+    color: #5e5d56;
+  }
+
+  /* ── Notes: the letter's paper, cut with the same hills border ── */
+  .note-card {
+    --lift: 0;
+    width: min(100%, 560px, (100svh - 200px) * 1.4);
+    filter: drop-shadow(0 calc(1px + 16px * var(--lift)) calc(2px + 14px * var(--lift)) rgb(28 28 24 / calc(0.16 + 0.1 * var(--lift))));
+  }
+  .note-paper {
+    box-sizing: border-box;
+    min-height: calc(min(100cqi, 560px) * 0.75);
+    padding: clamp(18px, 8cqi, 40px) clamp(16px, 7.4cqi, 34px);
+    display: flex;
+    flex-direction: column;
+    background: var(--parchment, none) 0 0 / 384px, #e6e3db;
+    font-family: var(--letter-font);
+    letter-spacing: var(--letter-track);
+    font-size: clamp(12px, 3.9cqi, 20px);
+    line-height: 1.6;
+    color: #5e5d56;
+  }
+  .note-paper p { margin: 0; }
+  .note-title {
+    margin-bottom: 1em !important;
+    color: #1c1c18;
+  }
+  .note-links {
+    margin-top: auto !important;
+    padding-top: 1.2em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em 1.4em;
+  }
+  .note-links a {
+    color: #1c1c18;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .pile { gap: 28px; }
+  }
+</style>
+
+<script>
+  // ── The piles: drop in, pin, peel off layer by layer ──
+  // Entering (section top from the bottom of the screen to near the top),
+  // the cards drop onto their piles, bottom card first. Then the stage pins
+  // for the rest of the section's height, and its scroll is split into one
+  // step per layer, with a short rest before the first and after the last.
+  // In each step the top layer of both piles lifts and slides off its side.
+  const smooth = (t: number) => t * t * (3 - 2 * t);
+  const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
+
+  // The letter's hills border (public/paper/main.js, BORDERS.hills): round
+  // bumps all the way around, a round hill on each corner.
+  function hillsPath(W: number, H: number, width = 16, d = 6, steps = 8) {
+    const r = width / 2, e = Math.sqrt(r * r - (r - d) ** 2);
+    const sides = [
+      [{ x: r + e, y: d }, { x: W - r - e, y: d }, { x: 0, y: -1 }, { x: W - r, y: r }],
+      [{ x: W - d, y: r + e }, { x: W - d, y: H - r - e }, { x: 1, y: 0 }, { x: W - r, y: H - r }],
+      [{ x: W - r - e, y: H - d }, { x: r + e, y: H - d }, { x: 0, y: 1 }, { x: r, y: H - r }],
+      [{ x: d, y: H - r - e }, { x: d, y: r + e }, { x: -1, y: 0 }, { x: r, y: r }],
+    ];
+    const pts: string[] = [];
+    const add = (x: number, y: number) => pts.push(`${x.toFixed(1)} ${y.toFixed(1)}`);
+    sides.forEach(([A, B, n, C], j) => {
+      const L = Math.hypot(B.x - A.x, B.y - A.y), ux = (B.x - A.x) / L, uy = (B.y - A.y) / L;
+      const count = Math.max(1, Math.round(L / width)), w = L / count;
+      add(A.x, A.y);
+      for (let k = 0; k < count; k++)
+        for (let i = 1; i <= steps; i++) {
+          const t = (Math.PI * i) / steps;
+          const along = w * (k + (1 - Math.cos(t)) / 2), out = d * Math.sin(t);
+          add(A.x + ux * along + n.x * out, A.y + uy * along + n.y * out);
+        }
+      const next = sides[(j + 1) % 4][0];
+      const a0 = Math.atan2(B.y - C.y, B.x - C.x);
+      let a1 = Math.atan2(next.y - C.y, next.x - C.x);
+      while (a1 <= a0) a1 += Math.PI * 2;
+      for (let i = 1; i < steps * 2; i++) {
+        const a = a0 + ((a1 - a0) * i) / (steps * 2);
+        add(C.x + r * Math.cos(a), C.y + r * Math.sin(a));
+      }
+    });
+    return `path('M${pts.join("L")}Z')`;
+  }
+
+  function cutNotes(root: HTMLElement) {
+    const papers = root.querySelectorAll<HTMLElement>(".note-paper");
+    const cut = () =>
+      papers.forEach((p) => (p.style.clipPath = hillsPath(p.offsetWidth, p.offsetHeight)));
+    cut();
+    new ResizeObserver(cut).observe(root);
+  }
+
+  // The letter's parchment (public/paper/paper-texture.js), drawn once, off
+  // the critical path; the notes show their plain paper color until then.
+  function texture(root: HTMLElement) {
+    const draw = (window as any).drawParchment;
+    if (!draw) return;
+    const run = () => root.style.setProperty("--parchment", `url(${draw(384).toDataURL()})`);
+    "requestIdleCallback" in window ? requestIdleCallback(run, { timeout: 1500 }) : setTimeout(run, 300);
+  }
+
+  function initPiles() {
+    const root = document.querySelector<HTMLElement>(".piles");
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = "true";
+    texture(root);
+    cutNotes(root);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    root.classList.add("is-piled");
+
+    const piles = [...root.querySelectorAll<HTMLElement>(".pile")].map((pile) => ({
+      pile,
+      side: Number(pile.dataset.side),
+      // Each card with its resting tilt and nudge (from its --r, --dx, --dy)
+      cards: [...pile.querySelectorAll<HTMLElement>(".card")].map((el) => {
+        const st = getComputedStyle(el);
+        const num = (k: string) => parseFloat(st.getPropertyValue(k)) || 0;
+        return { el, r0: num("--r"), dx: num("--dx"), dy: num("--dy") };
+      }),
+      away: 0, // px to slide a card fully off screen
+    }));
+    const n = piles[0].cards.length;
+
+    const measure = () => {
+      for (const p of piles) {
+        const box = p.pile.getBoundingClientRect();
+        const mid = box.left + box.width / 2;
+        const half = Math.max(...p.cards.map((c) => c.el.offsetWidth)) / 2;
+        // Past the screen's edge, plus room for the tilt
+        p.away = (p.side < 0 ? mid : innerWidth - mid) + half * 1.4 + 40;
+      }
+    };
+
+    const update = () => {
+      if (!root.isConnected) return;
+      const box = root.getBoundingClientRect();
+      const vh = innerHeight;
+      const enter = clamp01((vh - box.top) / (vh * 0.85));
+      const run = Math.max(1, box.height - vh);
+      const peel = clamp01(-box.top / run) * (n + 0.8) - 0.4;
+
+      for (const { side, cards, away } of piles) {
+        cards.forEach(({ el, r0, dx, dy }, i) => {
+          const s = el.style;
+
+          // Dropping onto the pile: bottom card (i = n - 1) first
+          const landRaw = clamp01((enter - (n - 1 - i) * 0.1) / 0.45);
+          const land = smooth(landRaw);
+          // Peeling off: lift, then slide out, speeding up
+          const raw = clamp01(peel - i);
+          const lift = smooth(clamp01(raw / 0.3));
+          const go = clamp01((raw - 0.12) / 0.88) ** 2;
+
+          const x = dx + side * away * go;
+          const y = dy - 70 * (1 - land) - 14 * lift + 30 * go;
+          const rot = r0 + side * (3 * lift + 16 * go) + side * 6 * (1 - land);
+          const scale = 1 + 0.08 * (1 - land) + 0.03 * lift;
+          s.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`;
+          // Opaque early in the drop, so cards never show through each other
+          s.opacity = String(clamp01(landRaw * 4));
+          s.setProperty("--lift", String(Math.max(lift, 1 - land)));
+          s.visibility = raw >= 1 ? "hidden" : "";
+        });
+      }
+    };
+
+    let queued = false;
+    const queue = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        update();
+      });
+    };
+    measure();
+    update();
+    addEventListener("scroll", queue, { passive: true });
+    addEventListener("resize", () => {
+      measure();
+      queue();
+    });
+  }
+
+  initPiles();
+  document.addEventListener("astro:page-load", initPiles);
+</script>
