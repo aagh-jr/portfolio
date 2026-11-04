@@ -1,0 +1,236 @@
+/* Binu's chat quiz at the app's own sizes (ChatQuizView, ChatBubbles,
+   ChatChoices, QuizProgress; Tailwind values written out in px). Scoped
+   under .cq; the palette tokens come from binu.css. */
+.cq {
+  /* ---- frames ---- */
+  & .cq-win { position: absolute; }
+  &.cq--row .cq-win { top: 48px; left: 48px; width: 1344px; height: 820px; }
+  &.cq--tile .cq-win { top: 24px; left: 24px; width: 432px; height: 380px; }
+  /* A transcript pinned to its foot ends where the stage does */
+  &.cq--tile.cq--foot .cq-win .cq-body { flex: none; height: 196px; }
+  &.cq--foot .cq-thread { padding-bottom: 20px; }
+  /* Tiles crop the page: what runs on past the foot fades out there */
+  &.cq--tile .cq-thread { padding-top: 0; }
+  &.cq--tile:not(.cq--foot) .cq-win .cq-scroll { mask-image: linear-gradient(to bottom, #000 calc(100% - 128px), transparent calc(100% - 82px)); }
+  & .cq-phone { position: absolute; top: 16px; left: 16px; }
+
+  & .cq-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+    color: var(--b-ink);
+  }
+
+  /* ---- header: wordmark | progress (below xl) | empty ---- */
+  & .cq-head {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    flex: none;
+    height: 72px;
+    padding: 0 max(32px, calc((100% - 1080px) / 2 + 32px));
+    border-bottom: 1px solid var(--b-line);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+  }
+  & .cq-page:not([data-layout='xl']) .cq-head { height: 64px; padding: 0 16px; }
+  & .cq-wordmark {
+    justify-self: start;
+    font-family: var(--b-serif);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--b-ink);
+  }
+
+  & .cq-body { position: relative; flex: 1; min-height: 0; display: grid; }
+  & .cq-page[data-layout='xl'] .cq-body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+    column-gap: 96px;
+    padding: 0 32px;
+  }
+  & .cq-page:not([data-layout='xl']) .cq-body { grid-template-columns: minmax(0, 1fr); padding: 0 16px; }
+
+  /* ---- the section stepper, in the left margin (xl) ---- */
+  & .cq-aside { justify-self: end; margin-right: 64px; padding-top: 48px; }
+  & .cq-stepper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  & .cq-stepper-rule {
+    position: absolute;
+    left: 9px;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: var(--b-line);
+  }
+  & .cq-stepper li { position: relative; display: flex; align-items: center; gap: 12px; }
+  & .cq-step-dot {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: inset 0 0 0 2px rgba(91, 100, 114, 0.4);
+    color: #fff;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  & .cq-step-dot svg,
+  & .cq-step-pip {
+    grid-area: 1 / 1;
+    opacity: 0;
+    scale: 0.5;
+    transition: opacity 0.2s ease, scale 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  & .cq-step-pip { width: 7px; height: 7px; border-radius: 50%; background: var(--b-brand); }
+  & li[data-state='active'] .cq-step-dot { box-shadow: inset 0 0 0 2px var(--b-brand); }
+  & li[data-state='active'] .cq-step-pip { opacity: 1; scale: 1; transition-delay: 0.15s; }
+  & li[data-state='done'] .cq-step-dot { background: var(--b-brand); box-shadow: inset 0 0 0 2px var(--b-brand); }
+  & li[data-state='done'] svg { opacity: 1; scale: 1; }
+  & .cq-step-label { font-size: 14px; line-height: 1.3; color: var(--b-muted); white-space: nowrap; transition: color 0.3s ease; }
+  & li[data-state='active'] .cq-step-label { color: var(--b-ink); font-weight: 600; }
+
+  /* ---- the header progress (below xl) ---- */
+  & .cq-progress { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  & .cq-progress-label { display: grid; justify-items: center; font-size: 14px; font-weight: 600; color: var(--b-ink); white-space: nowrap; }
+  & .cq-progress-label > span {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.2s ease, transform 0.3s ease;
+  }
+  & .cq-progress-label > span[data-on] { opacity: 1; transform: none; transition-delay: 0.12s; }
+  & .cq-progress-track { display: flex; align-items: center; gap: 6px; }
+  & .cq-seg {
+    display: block;
+    width: 6px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--b-line);
+    transition: width 0.45s cubic-bezier(0.45, 0, 0.1, 1), background 0.3s ease;
+  }
+  & .cq-seg > span {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--b-brand);
+    opacity: 0;
+    transition: width 0.5s ease-out, opacity 0.2s ease;
+  }
+  & .cq-seg[data-state='done'] { background: var(--b-brand); }
+  & .cq-seg[data-state='active'] { width: 48px; }
+  & .cq-seg[data-state='active'] > span { opacity: 1; }
+
+  /* ---- the thread ---- */
+  & .cq-fade { transition: opacity 0.3s ease; }
+  & .cq-fade[data-off] { opacity: 0; }
+  & .cq-scroll { position: relative; min-height: 0; overflow: hidden; }
+  /* The avatar hangs 60px into the margin: give the clip room for it */
+  & .cq-page[data-layout='xl'] .cq-scroll { grid-column: 2; margin-left: -60px; padding-left: 60px; }
+  & .cq-scroll[data-anchor='foot'] { display: flex; flex-direction: column; justify-content: flex-end; }
+  & .cq-thread {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0 48px;
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.45, 0, 0.1, 1);
+  }
+  & .cq-page[data-layout='xl'] .cq-thread { padding-top: 16px; }
+  & .cq-turn-wrap .cq-turn { padding-top: 32px; }
+  & .cq-turn { display: flex; flex-direction: column; gap: 16px; }
+  & .cq-swap { display: block; }
+
+  /* The scientist hangs left of the text, like a contact photo, on the turn
+     he is saying now; on xl the avatar column sits in the page margin */
+  & .cq-guide { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 12px; align-items: start; }
+  & .cq-page[data-layout='xl'] .cq-guide { column-gap: 16px; margin-left: -60px; }
+  & .cq-avatar-slot { margin-top: -8px; opacity: 0; transition: opacity 0.2s ease; }
+  & .cq-avatar-slot[data-on] { opacity: 1; }
+  & .cq-avatar { position: relative; display: block; width: 44px; height: 44px; background: #fff; }
+  & .cq-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+  & .cq-avatar img[data-hidden] { visibility: hidden; }
+
+  & .cq-lines { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  & .cq-lines > .ss-collapse { transition: margin-top 0.45s cubic-bezier(0.45, 0, 0.1, 1); }
+  & .cq-lines > .ss-collapse:not([data-open]) { margin-top: -16px; }
+  & .cq-untyped { visibility: hidden; }
+
+  /* heading (the live question), say (a lead-in), muted (answered) */
+  & .cq-line { display: block; max-width: 560px; font-size: 19px; font-weight: 600; line-height: 1.375; color: var(--b-ink); }
+  & .cq-page[data-layout='xl'] .cq-line { font-size: 21px; }
+  & .cq-line[data-past] { font-size: 15px; font-weight: 400; color: var(--b-muted); }
+  & .cq-page[data-layout='xl'] .cq-line[data-past] { font-size: 15px; }
+  & .cq-sub { margin-top: -10px; font-size: 14px; line-height: 1.625; color: var(--b-muted); }
+
+  /* Answer buttons: the site's frosted glass, a hairline on white */
+  & .cq-choices {
+    display: grid;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(10px);
+    will-change: transform;
+    transition: opacity 0.3s ease 0.08s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+  }
+  & .cq-choices[data-on] { opacity: 1; transform: none; }
+  & .cq-choices[data-compact] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* grid-cols-2 below sm (640px): every md tile and the phone */
+  & .cq-page:not([data-layout='xl']) .cq-choices[data-compact] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  & .cq-choices[data-compact] .cq-choice { justify-content: center; text-align: center; }
+  & .cq-choice {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 14px 20px;
+    border: 1px solid var(--b-line);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.375;
+    color: var(--b-ink);
+    will-change: transform;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, translate 0.18s ease;
+  }
+  & .cq-choice { justify-content: space-between; gap: 12px; }
+  & .cq-box { flex: none; width: 20px; height: 20px; border: 2px solid var(--b-line); border-radius: 5px; }
+  & .cq-choice[data-hover] { border-color: rgba(47, 111, 237, 0.5); background: rgba(255, 255, 255, 0.7); translate: 0 -1px; }
+  & .cq-choice[data-active] {
+    border-color: var(--b-brand);
+    background: rgba(234, 241, 254, 0.7);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.7), 0 0 0 4px rgba(47, 111, 237, 0.1);
+    translate: 0 0;
+  }
+
+  /* Your reply: a soft pill on the right, its tail corner pointed */
+  & .cq-reply-row { display: flex; justify-content: flex-end; }
+  & .cq-reply {
+    max-width: 85%;
+    padding: 12px 20px;
+    border-radius: 22px 22px 4px 22px;
+    background: var(--b-surface);
+    font-size: 15px;
+    line-height: 1.375;
+    color: var(--b-ink);
+  }
+}
+
+/* The phone runs off the stage foot; a transcript pinned to its foot ends
+   where the stage does */
+.cq .cq-phone .cq-body { flex: none; height: var(--cq-phone-body, 600px); }
+.cq.cq--tile .cq-phone { --cq-phone-body: 290px; }

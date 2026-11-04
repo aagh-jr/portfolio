@@ -13,8 +13,7 @@ import { ClaimRowsStill } from "../../components/previews/ClaimRowsStill";
 import { ClaimTile } from "../../components/previews/ProductClaim";
 import { ExplanationTile } from "../../components/previews/PlainExplanation";
 import { ResearchTile } from "../../components/previews/UnderlyingResearch";
-import { QuizCard, QuizFlow } from "../../components/previews/SkinQuiz";
-import { NeedsTile, ProfileSavedTile } from "../../components/previews/SkinNeeds";
+import { QuizPage, QuizTile, QuizNeedsTile, QuizSectionTile, QuizSavedTile } from "../../components/previews/web/ChatQuiz";
 import { AddLinkTile, AddResultsTile } from "../../components/previews/AddByUrl";
 import { SearchLoadingTile, SearchEmptyTile } from "../../components/previews/SearchStates";
 import styles from "../../cases/binu-styles.css?raw";
@@ -307,23 +306,27 @@ const workflow: Step[] = [
           </div>
           <p class="cs-body cs-grow">Instead of forcing people into a category like oily, dry or combination, the quiz profiles independent needs, plus phototype and safety-related questions. That gives Binu enough context to personalize without people needing to know which ingredients they need. I also cut the quiz from 12 questions to 7 after finding several that asked for overlapping information.</p>
         </div>
+        <figure class="cs-preview-figure">
+          <div role="img" aria-label="The skin quiz as a chat on desktop: the section stepper ticks Your skin and moves to Sun and safety, and the guide asks the first sun question"><QuizPage client:visible /></div>
+          <figcaption>The quiz is a conversation: one question per turn, progress by section</figcaption>
+        </figure>
         <div class="cs-row">
           <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Skin quiz question about breakouts; the answer Now and then is tapped"><QuizCard client:visible /></div>
-            <figcaption>Skin quiz</figcaption>
+            <div class="cs-preview" role="img" aria-label="Quiz question about breakouts; Now and then is tapped and lands as a reply, then the dark spots question is asked"><QuizTile client:visible /></div>
+            <figcaption>One question at a time</figcaption>
           </figure>
           <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Skin needs profiled one quiz question at a time instead of as a single skin type"><NeedsTile client:visible /></div>
+            <div class="cs-preview" role="img" aria-label="Skin needs profiled one quiz question at a time: skin type, breakouts, dark spots and fine lines each get their own answer"><QuizNeedsTile client:visible /></div>
             <figcaption>Profiled as independent needs</figcaption>
           </figure>
         </div>
         <div class="cs-row">
           <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Quiz flow: an age range is picked, the progress bar steps forward, and two routine steps are ticked on the next question"><QuizFlow client:visible /></div>
-            <figcaption>Quiz flow</figcaption>
+            <div class="cs-preview" role="img" aria-label="Prefer not to say is answered to the pregnancy question, and the progress moves on to Your routine"><QuizSectionTile client:visible /></div>
+            <figcaption>&ldquo;Prefer not to say&rdquo; is always an answer</figcaption>
           </figure>
           <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Completed skin profile, saved"><ProfileSavedTile client:visible /></div>
+            <div class="cs-preview" role="img" aria-label="Completed skin profile: every section is done and the guide says the routine has been started"><QuizSavedTile client:visible /></div>
             <figcaption>Completed skin profile</figcaption>
           </figure>
         </div>

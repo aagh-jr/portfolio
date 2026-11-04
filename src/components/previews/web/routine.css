@@ -1,0 +1,398 @@
+.rt {
+  /* Panel over product: the routine page inset top and left, off the
+     bottom; the clash check straddles its right edge over the header and
+     the first rows' trailing controls, never over the steps the story uses */
+  & .rt-win {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    width: 560px;
+    height: 640px;
+    box-shadow: var(--ss-shadow-hero);
+  }
+
+  & .rt-page {
+    height: 100%;
+    background: var(--b-surface);
+  }
+
+  & .b-nav { padding-left: 20px; }
+
+  & .rt-main { padding: 16px 20px 0; }
+
+  & .rt-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  & .rt-title {
+    font-size: 25px;
+    line-height: 1.2;
+  }
+  & .rt-done {
+    flex: none;
+    padding: 6px 12px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--b-brand);
+    background: var(--b-brand-soft);
+    box-shadow: inset 0 0 0 1px rgba(47, 111, 237, 0.35);
+  }
+  & .rt-sub {
+    margin-top: 4px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--b-muted);
+  }
+
+  & .rt-section {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  & .rt-section-title {
+    font-size: 19px;
+    line-height: 1.2;
+  }
+  & .rt-section-count {
+    font-size: 12.5px;
+    color: var(--b-muted);
+  }
+
+  /* Each row sits at its slot by a transform and glides between slots; the
+     list's height moves with them, carrying what's below */
+  & .rt-list {
+    position: relative;
+    margin-top: 10px;
+    transition: height 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  & .rt-slot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    will-change: transform;
+    opacity: 0;
+    transition:
+      transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.22s linear;
+  }
+  & .rt-slot[data-present] {
+    opacity: 1;
+    /* Arrives as its room opens, not before */
+    transition:
+      transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s linear 0.12s;
+  }
+  & .rt-slot[data-lifted] {
+    z-index: 2;
+    transition: none;
+  }
+
+  & .rt-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 64px;
+    padding: 0 8px 0 9px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--b-line);
+    transition: box-shadow 0.25s ease, scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  & .rt-slot[data-lifted] .rt-row {
+    scale: 1.02;
+    box-shadow: inset 0 0 0 1px var(--b-line), var(--ss-shadow-lift);
+  }
+
+  & .rt-thumb { width: 48px; height: 48px; }
+
+  & .rt-row-text {
+    display: grid;
+    flex: 1;
+    gap: 5px;
+    min-width: 0;
+  }
+  & .rt-name {
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .rt-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  & .rt-brand {
+    margin-right: 4px;
+    line-height: 1.3;
+    color: var(--b-brand);
+  }
+  & .rt-select {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    padding: 0 5px 0 8px;
+    border-radius: 7px;
+    font-size: 11.5px;
+    color: var(--b-ink);
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--b-line);
+  }
+  & .rt-select svg { color: var(--b-muted); }
+
+  & .rt-actions {
+    display: flex;
+    flex: none;
+    gap: 2px;
+  }
+  & .rt-icon {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    color: var(--b-muted);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  & .rt-remove[data-hover] {
+    color: var(--b-danger);
+    background: var(--b-danger-soft);
+  }
+
+  /* Under the list: the add button, which gives way to the catalog search */
+  & .rt-below { padding-top: 8px; }
+
+  /* Wide: the routine column stops a full gutter (24px) short of the clash
+     check, so the satellite only ever covers the page's right margin */
+  & .ss-stage[data-layout='wide'] .rt-list,
+  & .ss-stage[data-layout='wide'] .rt-below { width: 336px; }
+  & .rt-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--b-brand);
+    background: rgba(234, 241, 254, 0.5);
+    /* Dashed, drawn once at full size */
+    outline: 1px dashed #b9c9e6;
+    outline-offset: -1px;
+    transition: background 0.15s ease;
+  }
+  & .rt-add[data-hover] { background: var(--b-brand-soft); }
+
+  & .rt-picker {
+    overflow: hidden;
+    padding: 4px 14px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--b-line);
+  }
+  & .rt-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+  }
+  & .rt-search-icon,
+  & .rt-close {
+    flex: none;
+    color: var(--b-muted);
+  }
+  & .rt-input {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 13.5px;
+    white-space: nowrap;
+  }
+  & .rt-q { color: var(--b-ink); }
+  & .rt-placeholder { min-width: 0; color: #8a93a0; overflow: hidden; text-overflow: ellipsis; }
+  & .rt-caret {
+    flex: none;
+    width: 1.5px;
+    height: 17px;
+    margin-left: 1px;
+    background: var(--b-ink);
+    opacity: 0;
+  }
+  & .rt-caret[data-on] { opacity: 1; }
+  & .rt-placeholder + .rt-caret { order: -1; margin: 0 1px 0 0; }
+
+  & .rt-hit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-top: 1px solid var(--b-line);
+  }
+  & .rt-hit-thumb { width: 44px; height: 44px; }
+  & .rt-hit-name {
+    overflow: hidden;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--b-ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  & .rt-add-btn {
+    flex: none;
+    padding: 6px 13px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--b-brand);
+    transition: background 0.15s ease, scale 0.12s ease;
+  }
+  & .rt-add-btn[data-hover] { background: #2862d6; }
+  & .rt-add-btn[data-pressed] { scale: 0.96; }
+
+  /* The clash check: a satellite on the routine page's right edge */
+  & .rt-check {
+    position: absolute;
+    top: 100px;
+    left: 412px;
+    width: 276px;
+    padding: 16px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(18, 24, 31, 0.06), var(--ss-shadow-satellite);
+  }
+  & .rt-check-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  & .rt-check-title {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+  & .rt-verdict {
+    display: inline-flex;
+    flex: none;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--b-success);
+    background: var(--b-success-soft);
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  & .rt-check[data-clash] .rt-verdict {
+    color: var(--b-danger);
+    background: var(--b-danger-soft);
+  }
+
+  & .rt-morph {
+    position: relative;
+    margin-top: 12px;
+    transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  & .rt-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.12s linear;
+  }
+  & .rt-layer[data-on] {
+    opacity: 1;
+    transition: opacity 0.3s linear 0.12s;
+  }
+  & .rt-layer p { margin: 0; }
+
+  & .rt-ok {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--b-muted);
+  }
+
+  & .rt-finding-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+  }
+  & .rt-tag {
+    flex: none;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--b-danger);
+    background: var(--b-danger-soft);
+  }
+  & .rt-tier {
+    font-size: 11px;
+    line-height: 1.3;
+    color: var(--b-muted);
+    white-space: nowrap;
+  }
+  & .rt-finding-title {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+  & .rt-finding-body {
+    margin-top: 5px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ss-text);
+  }
+  & .rt-finding-do {
+    margin-top: 7px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--b-ink);
+  }
+  & .rt-finding-do b { font-weight: 600; }
+  & .rt-because {
+    margin-top: 7px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--b-muted);
+  }
+
+  /* Compact: the page is scrolled to the night list; the clash check sits
+     over the page's empty foot, pinned to the stage's bottom gutter, and
+     grows upward when it has a finding */
+  & .ss-stage[data-layout='compact'] .rt-win {
+    top: 16px;
+    left: 16px;
+    width: 326px;
+    height: 760px;
+  }
+  & .ss-stage[data-layout='compact'] .rt-main { padding: 14px 14px 0; }
+  & .ss-stage[data-layout='compact'] .rt-section { margin-top: 0; }
+  & .ss-stage[data-layout='compact'] .rt-row { height: 62px; gap: 10px; }
+  & .ss-stage[data-layout='compact'] .rt-thumb { width: 44px; height: 44px; }
+  & .ss-stage[data-layout='compact'] .rt-name { font-size: 14px; }
+  & .ss-stage[data-layout='compact'] .rt-check {
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    width: 326px;
+    z-index: 3;
+  }
+}
