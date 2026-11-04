@@ -5,10 +5,18 @@ import DataTable from "../../components/case/DataTable.astro";
 import Pill from "../../components/case/Pill.astro";
 import Placeholder from "../../components/case/Placeholder.astro";
 import PullQuote from "../../components/case/PullQuote.astro";
-import ScreenMock from "../../components/case/ScreenMock.astro";
 import SectionLabel from "../../components/case/SectionLabel.astro";
 import WorkflowCarousel, { type Step } from "../../components/case/WorkflowCarousel.astro";
 import { GradeTile } from "../../components/previews/EvidenceGrade";
+import { EvidenceHero } from "../../components/previews/EvidenceHero";
+import { ClaimRowsStill } from "../../components/previews/ClaimRowsStill";
+import { ClaimTile } from "../../components/previews/ProductClaim";
+import { ExplanationTile } from "../../components/previews/PlainExplanation";
+import { ResearchTile } from "../../components/previews/UnderlyingResearch";
+import { QuizCard, QuizFlow } from "../../components/previews/SkinQuiz";
+import { NeedsTile, ProfileSavedTile } from "../../components/previews/SkinNeeds";
+import { AddLinkTile, AddResultsTile } from "../../components/previews/AddByUrl";
+import { SearchLoadingTile, SearchEmptyTile } from "../../components/previews/SearchStates";
 import styles from "../../cases/binu-styles.css?raw";
 
 // Binu case study, rebuilt from the design canvas export. Unlinked, noindex
@@ -102,43 +110,8 @@ const workflow: Step[] = [
       </dl>
 
       <figure class="cs-hero-figure">
-        <div class="cs-hero-stage">
-          <div class="cs-ev-card">
-            <div class="cs-ev-head">
-              <div class="cs-ev-pair">
-                <span class="cs-ev-kind">Serum</span>
-                <span class="cs-ev-name">[Product name]</span>
-              </div>
-              <span class="cs-ev-count">3 claims graded</span>
-            </div>
-            <ul class="cs-ev-claims">
-              <li>
-                <div class="cs-ev-pair">
-                  <span class="cs-ev-claim">Evens tone</span>
-                  <span class="cs-ev-ingredients">Niacinamide, Vitamin C</span>
-                </div>
-                <Pill variant="grade" grade="strong">Strong evidence</Pill>
-              </li>
-              <li>
-                <div class="cs-ev-pair">
-                  <span class="cs-ev-claim">Minimizes pores</span>
-                  <span class="cs-ev-ingredients">Niacinamide, Zinc PCA</span>
-                </div>
-                <Pill variant="grade" grade="moderate">Moderate evidence</Pill>
-              </li>
-              <li>
-                <div class="cs-ev-pair">
-                  <span class="cs-ev-claim">Supports collagen</span>
-                  <span class="cs-ev-ingredients">Niacinamide, Peptides</span>
-                </div>
-                <Pill variant="grade" grade="limited">Limited evidence</Pill>
-              </li>
-            </ul>
-            <p class="cs-ev-summary">Multiple randomized human trials have measured niacinamide's effect on skin pigmentation. Most involved small groups, which limits how broadly the findings apply.</p>
-            <a class="cs-ev-link" href="#">See the research →</a>
-          </div>
-        </div>
-        <figcaption class="cs-caption">Illustrative mock of the per-claim evidence card. [Replace with a screenshot of the live card and verify each grade matches its summary.]</figcaption>
+        <div role="img" aria-label="Evidence by claim: Controls oil has strong evidence, Antioxidant moderate, Supports barrier very limited"><EvidenceHero client:visible /></div>
+        <figcaption class="cs-caption">The per-claim evidence card, rebuilt from the product's own components and sample data.</figcaption>
       </figure>
     </section>
 
@@ -290,7 +263,10 @@ const workflow: Step[] = [
         </div>
         <div class="cs-row">
           <Placeholder caption="[1 line: what the sketch explored]">[Image: paper sketch]</Placeholder>
-          <Placeholder caption="[1 line: why it won]">[Image: final, 1 row per claim]</Placeholder>
+          <figure class="cs-preview-figure">
+            <div class="cs-preview" role="img" aria-label="Binu's evidence table: one row per claim, Controls oil with strong evidence, Antioxidant with moderate evidence, Supports barrier with very limited evidence, each with its supporting ingredients"><ClaimRowsStill client:visible /></div>
+            <figcaption>[1 line: why it won]</figcaption>
+          </figure>
         </div>
       </div>
 
@@ -303,10 +279,10 @@ const workflow: Step[] = [
           <p class="cs-body cs-grow">A grade alone isn't enough. The experience explains what the grade means, shows the reasoning in plain language and gives people a path to the underlying research without overwhelming them.</p>
         </div>
         <div class="cs-row">
-          <Placeholder basis={320} minHeight={280}><p class="cs-ph-title">Product claim</p></Placeholder>
+          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Product page for a niacinamide serum: the brand's marketed benefits appear as two claim pills"><ClaimTile client:visible /></div>
           <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Evidence grade: the claim Minimizes pores fills three of four evidence bars, Moderate evidence"><GradeTile client:visible /></div>
-          <Placeholder basis={320} minHeight={280}><p class="cs-ph-title">Plain-language explanation</p></Placeholder>
-          <Placeholder basis={320} minHeight={280}><p class="cs-ph-title">Underlying research</p></Placeholder>
+          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="An evidence card opens its Why this rating section, explaining a moderate grade in plain language"><ExplanationTile client:visible /></div>
+          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Binu pulls up the research behind a claim, then lists the studies with their type and journal"><ResearchTile client:visible /></div>
         </div>
       </div>
 
@@ -332,26 +308,24 @@ const workflow: Step[] = [
           <p class="cs-body cs-grow">Instead of forcing people into a category like oily, dry or combination, the quiz profiles independent needs, plus phototype and safety-related questions. That gives Binu enough context to personalize without people needing to know which ingredients they need. I also cut the quiz from 12 questions to 7 after finding several that asked for overlapping information.</p>
         </div>
         <div class="cs-row">
-          <Card basis={320} minHeight={422} label="Skin quiz" />
-          <Card tone="pink" basis={320} minHeight={260} label="Profiled as independent needs" />
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Skin quiz question about breakouts; the answer Now and then is tapped"><QuizCard client:visible /></div>
+            <figcaption>Skin quiz</figcaption>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Skin needs profiled one quiz question at a time instead of as a single skin type"><NeedsTile client:visible /></div>
+            <figcaption>Profiled as independent needs</figcaption>
+          </figure>
         </div>
         <div class="cs-row">
-          <ScreenMock basis={320} minHeight={423} label="[Screen: quiz flow]">
-            <div class="cs-skel" style="--h: 6px; --w: 40%; --c: var(--cs-pastel-blue)"></div>
-            <div class="cs-skel cs-mt-8" style="--h: 16px; --w: 70%"></div>
-            <div class="cs-skel-tiles cs-mt-8"><div></div><div></div></div>
-            <div class="cs-skel-tiles"><div></div><div></div></div>
-          </ScreenMock>
-          <ScreenMock basis={320} label="[Screen: completed skin profile]">
-            <div class="cs-skel" style="--h: 16px; --w: 50%"></div>
-            <div class="cs-skel-lines">
-              <div class="cs-skel" style="--w: 85%; --c: var(--cs-pastel-pink)"></div>
-              <div class="cs-skel" style="--w: 50%; --c: var(--cs-pastel-blue)"></div>
-              <div class="cs-skel" style="--w: 70%; --c: var(--cs-pastel-green)"></div>
-              <div class="cs-skel" style="--w: 35%; --c: var(--cs-pastel-pink)"></div>
-            </div>
-            <div class="cs-skel-block"></div>
-          </ScreenMock>
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Quiz flow: an age range is picked, the progress bar steps forward, and two routine steps are ticked on the next question"><QuizFlow client:visible /></div>
+            <figcaption>Quiz flow</figcaption>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Completed skin profile, saved"><ProfileSavedTile client:visible /></div>
+            <figcaption>Completed skin profile</figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -486,10 +460,22 @@ const workflow: Step[] = [
         </div>
       </div>
       <div class="cs-row">
-        <Placeholder basis={320}>[Image: add-by-URL flow]</Placeholder>
-        <Placeholder basis={320}>[Image: add-by-URL flow]</Placeholder>
-        <Placeholder basis={320}>[Image: search with empty, loading and weak-evidence states]</Placeholder>
-        <Placeholder basis={320}>[Image: search with empty, loading and weak-evidence states]</Placeholder>
+        <figure class="cs-preview-figure" style="--basis: 363px">
+          <div class="cs-preview" role="img" aria-label="A product link is pasted into Binu's add-a-product field"><AddLinkTile client:visible /></div>
+          <figcaption>Add a product by pasting its link</figcaption>
+        </figure>
+        <figure class="cs-preview-figure" style="--basis: 363px">
+          <div class="cs-preview" role="img" aria-label="Results of adding products by link: each one is created or already known"><AddResultsTile client:visible /></div>
+          <figcaption>Each link is added or matched to a product Binu already knows</figcaption>
+        </figure>
+        <figure class="cs-preview-figure" style="--basis: 363px">
+          <div class="cs-preview" role="img" aria-label="Global search for serum: results load in under the search bar"><SearchLoadingTile client:visible /></div>
+          <figcaption>Search results load in as you type</figcaption>
+        </figure>
+        <figure class="cs-preview-figure" style="--basis: 363px">
+          <div class="cs-preview" role="img" aria-label="Global search with no matching results"><SearchEmptyTile client:visible /></div>
+          <figcaption>Search, no results</figcaption>
+        </figure>
       </div>
 
       <div class="cs-split">

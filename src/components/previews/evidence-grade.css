@@ -2,6 +2,18 @@
    skinsavior apps/web/src/app/globals.css ("Clinical" palette) and
    components/products/EvidenceByClaim.tsx (Tailwind classes → px). */
 
+/* The letter badge's font-mono: the product's --font-mono is Space Grotesk
+   (apps/web/src/app/layout.tsx), which the portfolio doesn't install. This is
+   the product's own next/font latin subset (variable, OFL), shared with
+   claim-rows-still.css. Without it GradeTile/GradeHero fell back to Courier. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/previews/binu/space-grotesk-latin.woff2') format('woff2');
+}
+
 .eg-host {
   width: 100%;
   height: 100%;

@@ -109,6 +109,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; }
 /* A product preview tile (a Stageshow stage) in place of a placeholder.
    Basis 363 = a Placeholder's 320 basis + 2x20 padding + 2x1.5 border. */
 .cs-preview { height: 322px; min-width: 0; }
+.cs-preview-figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.cs-preview-figure figcaption { font-size: 13px; color: var(--cs-muted); }
 
 /* A wrapping row of tiles; each child sets its own basis with --basis */
 .cs-row { display: flex; flex-wrap: wrap; gap: 16px; }

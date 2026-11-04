@@ -9,7 +9,7 @@
   font-weight: 200 800;
   font-display: swap;
   /* the product's own Newsreader (next/font, latin subset) */
-  src: url('/previews/binu/needs-newsreader-latin.woff2') format('woff2');
+  src: url('/previews/binu/newsreader-latin.woff2') format('woff2');
 }
 
 .sn-host {
