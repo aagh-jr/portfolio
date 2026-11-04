@@ -1,0 +1,290 @@
+/* Binu skin-profile previews. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette),
+   components/quiz/QuestionView.tsx (choice button), components/quiz/DoneView.tsx
+   and app/quiz/page.tsx (header, progress bar). Tailwind classes → px. */
+
+@font-face {
+  font-family: 'SN Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  /* the product's own Newsreader (next/font, latin subset) */
+  src: url('/previews/binu/needs-newsreader-latin.woff2') format('woff2');
+}
+
+.sn-host {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.sn-host[data-ready] {
+  opacity: 1;
+}
+
+.sn {
+  --sn-ground: #eaf1fe; /* --secondary / --accent: Binu's accent bg, as EvidenceGrade */
+  --sn-white: #ffffff; /* --background / --warm-white */
+  --sn-border: #dee3e9; /* --border / --soft-tan */
+  --sn-ink: #12181f; /* --ink */
+  --sn-muted: #5b6472; /* --muted-foreground / --faint */
+  --sn-primary: #2f6fed; /* --primary (--clay) */
+  --sn-primary-5: #f5f8fe; /* bg-primary/5 over white */
+  --sn-secondary: #eaf1fe; /* --secondary: progress track */
+  --sn-sage: #159a6b; /* --sage */
+  --sn-sage-bg: #e7f6ef; /* --sage-bg */
+  --sn-serif: 'SN Newsreader', 'Newsreader', ui-serif, Georgia, serif;
+  --sn-arrive: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.sn .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--sn-ground);
+  border-radius: 20px;
+  color: var(--sn-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.sn ul,
+.sn p,
+.sn h1 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Independent needs: QuestionView's choices, one per question ── */
+
+.sn--needs .sn-panel {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 24px;
+  bottom: -32px;
+  box-sizing: border-box;
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--sn-white);
+  border: 1px solid var(--sn-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.sn--needs .sn-panel[data-narrow] {
+  left: 16px;
+  right: 16px;
+  top: 16px;
+  padding: 18px 20px 0;
+}
+
+.sn .sn-need {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sn .sn-need[hidden] {
+  display: none;
+}
+
+/* The question's own title from the quiz, small, above its answer */
+.sn .sn-question {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--sn-muted);
+}
+
+/* QuestionView button: rounded-xl border px-5 py-4, gap-3 */
+.sn .sn-choice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--sn-border);
+  border-radius: 16px;
+  background: var(--sn-white);
+  transition: border-color 220ms ease, background-color 220ms ease, box-shadow 300ms ease;
+}
+.sn .sn-panel[data-narrow] .sn-choice {
+  padding: 14px 16px;
+}
+.sn .sn-choice[data-active] {
+  border-color: var(--sn-primary);
+  background: var(--sn-primary-5);
+  box-shadow: 0 4px 14px -6px rgba(154, 74, 47, 0.35);
+}
+.sn .sn-choice-label {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22.5px;
+  color: var(--sn-ink);
+}
+
+/* h-6 w-6 rounded-full border-2; active: border-primary bg-primary, "✓" */
+.sn .sn-check {
+  flex: none;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--sn-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  transition: border-color 220ms ease, background-color 220ms ease;
+  will-change: transform;
+}
+.sn .sn-choice[data-active] .sn-check {
+  border-color: var(--sn-primary);
+  background: var(--sn-primary);
+}
+.sn .sn-check-mark {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 200ms ease, transform 320ms var(--sn-arrive);
+  will-change: transform;
+}
+.sn .sn-choice[data-active] .sn-check-mark {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Completed profile: the quiz page at its "done" phase ── */
+
+.sn--saved .sn-page {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 32px;
+  bottom: -32px;
+  box-sizing: border-box;
+  padding-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  background: var(--sn-white);
+  border: 1px solid var(--sn-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.sn--saved .sn-page[data-narrow] {
+  left: 20px;
+  right: 20px;
+  top: 20px;
+}
+/* Phone column: the product's own 390px layout (px-6, one-line heading,
+   three-line copy, as the Pages/Quiz Done story renders at 390), shown smaller */
+.sn--saved .sn-page[data-squeeze] {
+  left: 16px;
+  right: 16px;
+  top: 16px;
+  zoom: 0.84;
+}
+
+/* Pages/Quiz "Done" story: h-1 bg-primary across the top, filled */
+.sn .sn-progress {
+  flex: none;
+  height: 4px;
+  background: var(--sn-secondary);
+}
+.sn .sn-progress-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--sn-primary);
+}
+
+.sn .sn-done {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  text-align: center;
+}
+
+/* mx-auto h-16 w-16 rounded-full bg-sage-bg text-2xl text-sage */
+.sn .sn-done-check {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--sn-sage-bg);
+  color: var(--sn-sage);
+  font-size: 24px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 260ms ease, transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  will-change: transform;
+}
+
+/* mt-6 font-serif text-3xl font-medium tracking-tight text-ink */
+.sn .sn-done-title {
+  margin-top: 24px;
+  font-family: var(--sn-serif);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 36px;
+  letter-spacing: -0.75px;
+  color: var(--sn-ink);
+  text-wrap: balance;
+}
+
+/* mt-3 text-[15px] text-muted-foreground */
+.sn .sn-done-copy {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 22.5px;
+  color: var(--sn-muted);
+  text-wrap: pretty;
+}
+
+.sn .sn-done-title,
+.sn .sn-done-copy {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms ease, transform 620ms var(--sn-arrive);
+  will-change: transform;
+}
+.sn .sn-done-copy {
+  transition-delay: 140ms;
+}
+
+.sn .sn-page[data-done] .sn-done-check,
+.sn .sn-page[data-done] .sn-done-title,
+.sn .sn-page[data-done] .sn-done-copy {
+  opacity: 1;
+  transform: none;
+}
+
+/* Filler for the question that runs off the tile's foot */
+.sn .sn-question-bar {
+  display: block;
+  width: 38%;
+  height: 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+  background: var(--sn-border);
+}
+.sn .sn-choice-bar {
+  display: block;
+  width: 62%;
+  height: 10px;
+  margin: 6px 0;
+  border-radius: 5px;
+  background: #eef1f4;
+}
+/* the filler always runs well past the foot, never a sliver */
+.sn .sn-need[data-filler] .sn-choice {
+  min-height: 140px;
+  align-items: flex-start;
+}

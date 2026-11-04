@@ -24,7 +24,9 @@ export default defineConfig({
         !page.includes('/book-test') &&
         !page.includes('/zine-test') &&
         !page.includes('/board-test') &&
-        !page.includes('/cabrillo-design'),
+        !page.includes('/cabrillo-design') &&
+        !page.includes('/projects/binu') &&
+        !page.includes('/previews-test'),
     }),
   ],
   vite: {

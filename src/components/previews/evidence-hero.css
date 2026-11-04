@@ -1,0 +1,44 @@
+/* Hero variant of the Evidence by claim table. Row, chip, bar and table
+   styles come from evidence-grade.css (.eg, .eg--two); this only sets the
+   hero's own frame: the radius of the hero slot it replaces, and the table
+   pinned to the top at its natural height, its foot running off the stage
+   (the stage height is measured from the table in EvidenceHero.tsx). */
+
+/* The letter badge's font-mono: the product's --font-mono is Space Grotesk
+   (apps/web/src/app/layout.tsx), which the portfolio doesn't install. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/previews/binu/space-grotesk-latin-700.woff2') format('woff2');
+}
+
+.eg--hero .ss-stage {
+  border-radius: 24px;
+}
+
+.eg--hero .eg-table {
+  left: 40px;
+  right: 40px;
+  top: 40px;
+  bottom: auto;
+}
+
+/* Room under the last row, so the crop lands in padding, never in copy */
+.eg--hero .eg-row:last-child {
+  padding-bottom: 64px;
+}
+
+/* Phone column: the product's own stacked cards, as in the Mobile story */
+.eg--hero .eg-table[data-compact] {
+  left: 16px;
+  right: 16px;
+  top: 16px;
+}
+
+/* Hidden until the column is measured, so a phone never sees the server's
+   desktop table flash before the stacked cards */
+.eg-host:not([data-measured]) > .eg--hero {
+  visibility: hidden;
+}

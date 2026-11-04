@@ -1,0 +1,230 @@
+/* Binu "Why this rating" preview. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette, base h3 =
+   serif 500, -0.01em), components/research/EvidenceClaimCard.tsx,
+   EvidenceMeter.tsx and components/ui/{accordion,badge}.tsx (Tailwind → px). */
+
+/* Newsreader, the product's --font-serif (next/font latin subset, copied
+   from the app's build output). */
+@font-face {
+  font-family: 'PE Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/previews/binu/newsreader-latin.woff2') format('woff2');
+}
+
+.pe-host {
+  width: 100%;
+  height: 100%;
+}
+
+.pe {
+  --pe-ground: #eaf1fe; /* --secondary / --accent */
+  --pe-card: #ffffff; /* --card */
+  --pe-border: #dee3e9; /* --border = --soft-tan */
+  --pe-ink: #12181f; /* --ink / --foreground */
+  --pe-muted: #5b6472; /* --muted-foreground */
+  --pe-sage: #159a6b; /* --sage */
+  --pe-link: #2f6fed; /* --link */
+  --pe-serif: 'PE Newsreader', 'Newsreader', ui-serif, Georgia, serif;
+  --pe-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.pe .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--pe-ground);
+  border-radius: 20px;
+  color: var(--pe-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pe h3,
+.pe ul,
+.pe p {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The scrolling list, soft at both edges so whatever has scrolled past
+   dissolves into the ground instead of being sliced. */
+.pe .pe-view {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 36px), transparent calc(100% - 8px));
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 36px), transparent calc(100% - 8px));
+}
+.pe .pe-list {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 24px;
+  display: grid;
+  gap: 16px; /* EvidenceExplainer: grid gap-4 */
+  transition: transform 900ms var(--pe-ease);
+  will-change: transform;
+}
+.pe .pe-view[data-narrow] .pe-list {
+  left: 20px;
+  right: 20px;
+}
+
+/* ── EvidenceClaimCard: rounded-2xl border bg-card p-5 ── */
+.pe .pe-card {
+  position: relative; /* offset parent for the scroll measurement */
+  background: var(--pe-card);
+  border: 1px solid var(--pe-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+/* Badge variant=outline: rounded-md border px-2.5 py-0.5, 11px medium */
+.pe .pe-badge {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 2px 10px;
+  border: 1px solid var(--pe-border);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px; /* 16.5 in the product; even so the 16px icon sits on whole pixels */
+  color: var(--pe-muted);
+}
+.pe .pe-badge-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+/* h3 font-serif text-lg leading-snug */
+.pe .pe-claim {
+  font-family: var(--pe-serif);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.375;
+  letter-spacing: -0.01em;
+  color: var(--pe-ink);
+}
+
+/* EvidenceMeter, mt-3 */
+.pe .pe-meter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.pe .pe-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+}
+.pe .pe-bar {
+  width: 6px;
+  border-radius: 8px;
+  background: var(--pe-border);
+}
+.pe .pe-bar:nth-child(1) { height: 8px; }
+.pe .pe-bar:nth-child(2) { height: 12px; }
+.pe .pe-bar:nth-child(3) { height: 16px; }
+.pe .pe-bar:nth-child(4) { height: 20px; }
+.pe .pe-bar[data-lit] {
+  background: var(--pe-sage);
+}
+.pe .pe-meter-label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--pe-ink);
+}
+
+/* Accordion mt-2; items border-b border-border, last border-0 */
+.pe .pe-accordion {
+  margin-top: 8px;
+}
+.pe .pe-item--why {
+  border-bottom: 1px solid var(--pe-border);
+}
+
+/* AccordionTrigger: py-4, 13px semibold muted; the Radix header is an h3,
+   so the label inherits the serif */
+.pe .pe-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  font-family: var(--pe-serif);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 19.5px;
+  letter-spacing: -0.01em;
+  color: var(--pe-muted);
+}
+.pe .pe-chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--pe-muted);
+  transition: transform 200ms ease;
+}
+.pe .pe-trigger[data-open] .pe-chevron {
+  transform: rotate(180deg);
+}
+
+/* AccordionContent: height opens from 0, text keeps its size */
+.pe .pe-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 450ms var(--pe-ease);
+}
+.pe .pe-panel[data-open] {
+  grid-template-rows: 1fr;
+}
+.pe .pe-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.pe .pe-content {
+  padding-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.625;
+  color: var(--pe-ink);
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+.pe .pe-panel[data-open] .pe-content {
+  opacity: 1;
+  transition-delay: 60ms;
+}
+.pe .pe-explainer {
+  margin-bottom: 12px;
+}
+.pe .pe-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pe .pe-reason {
+  display: flex;
+  gap: 8px;
+}
+.pe .pe-reason-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin-top: 2px;
+}
+.pe .pe-reason-icon[data-dir='up'] { color: var(--pe-sage); }
+.pe .pe-reason-icon[data-dir='down'] { color: var(--pe-link); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pe .pe-list,
+  .pe .pe-panel,
+  .pe .pe-content,
+  .pe .pe-chevron {
+    transition: none;
+  }
+}

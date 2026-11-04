@@ -1,0 +1,38 @@
+---
+// Scratch page for the "Final, 1 row per claim" still, in the half-width
+// slot it replaces in the Binu case study (D01, next to the paper sketch).
+import { ClaimRowsStill } from "../components/previews/ClaimRowsStill";
+import "@fontsource/geist/400.css";
+import "@fontsource/geist/500.css";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Previews rows</title>
+    <style>
+      body { margin: 0; background: #fff; font-family: Geist, system-ui, sans-serif; color: #16181a; }
+      main { max-width: 976px; margin: 0 auto; padding: 48px 20px 96px; display: flex; flex-direction: column; gap: 48px; }
+      h2 { font-size: 15px; font-weight: 500; color: #5e6368; margin: 0 0 12px; }
+      .row { display: flex; flex-wrap: wrap; gap: 16px; }
+      .row > * { flex: 1 1 var(--basis, 260px); height: 322px; min-width: 0; }
+      .unit { border: 1.5px dashed #c9cbc6; border-radius: 20px; background: #f8f8f6; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h2>Final, 1 row per claim (half width)</h2>
+        <div class="row">
+          <div class="unit"></div>
+          <div class="cs-preview" style="--basis: 260px" role="img" aria-label="Binu's evidence table: one row per claim, Controls oil with strong evidence, Antioxidant with moderate evidence, Supports barrier with very limited evidence, each with its supporting ingredients"><ClaimRowsStill client:visible /></div>
+        </div>
+      </section>
+      <section>
+        <h2>At 396 (the slot at a 1024 viewport)</h2>
+        <div style="width: 396px; height: 322px"><ClaimRowsStill client:visible /></div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+---
+// Scratch page for the Binu hero preview, at the width of the case study's
+// text column (976 at 1440, 350 at 390).
+import { EvidenceHero } from "../components/previews/EvidenceHero";
+import "@fontsource/geist/400.css";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Previews hero test</title>
+    <style>
+      body { margin: 0; background: #fff; font-family: Geist, system-ui, sans-serif; color: #16181a; }
+      main { max-width: 1120px; box-sizing: border-box; margin: 0 auto; padding: 48px 72px 96px; }
+      @media (max-width: 679px) { main { padding: 40px 20px 80px; } }
+      figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+      figcaption { font-size: 13px; color: #5e6368; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <figure>
+        <div role="img" aria-label="Evidence by claim: Controls oil has strong evidence, Antioxidant moderate, Supports barrier very limited"><EvidenceHero client:visible /></div>
+        <figcaption>Evidence by claim, from the product.</figcaption>
+      </figure>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+---
+// Scratch page for the "Plain-language explanation" preview (1x1), shown on
+// the unit grid it will sit in, beside the Evidence grade tile.
+import { ExplanationTile } from "../components/previews/PlainExplanation";
+import { GradeTile } from "../components/previews/EvidenceGrade";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Previews: explanation</title>
+    <style>
+      body { margin: 0; background: #fff; font-family: system-ui, sans-serif; color: #16181a; }
+      main { max-width: 976px; margin: 0 auto; padding: 48px 20px 96px; display: flex; flex-direction: column; gap: 48px; }
+      h2 { font-size: 15px; font-weight: 500; color: #5e6368; margin: 0 0 12px; }
+      .units { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 322px; gap: 16px; }
+      .row { display: flex; flex-wrap: wrap; gap: 16px; }
+      .row > * { flex: 1 1 var(--basis, 260px); height: 322px; min-width: 0; }
+      .ph { border: 1.5px dashed #c9cbc6; border-radius: 20px; background: #f8f8f6; }
+      @media (max-width: 679px) {
+        .units { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; }
+        .units > * { min-height: 322px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h2>Plain-language explanation, 1×1</h2>
+        <div class="units">
+          <div><GradeTile client:visible /></div>
+          <div><ExplanationTile client:visible /></div>
+        </div>
+      </section>
+      <section>
+        <h2>As the D02 row lays it out</h2>
+        <div class="row">
+          <div class="ph" style="--basis: 320px"></div>
+          <div style="--basis: 363px"><GradeTile client:visible /></div>
+          <div style="--basis: 320px"><ExplanationTile client:visible /></div>
+          <div class="ph" style="--basis: 320px"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

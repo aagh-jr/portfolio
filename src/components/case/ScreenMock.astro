@@ -1,0 +1,62 @@
+---
+// A wireframe screen in a browser frame, labelled underneath. Slot in the
+// skeleton shapes. Sits in a .cs-row (basis from `basis`).
+export interface Props {
+  label: string;
+  basis?: number;
+  minHeight?: number;
+}
+const { label, basis, minHeight } = Astro.props;
+const vars = [basis && `--basis: ${basis}px`, minHeight && `min-height: ${minHeight}px`]
+  .filter(Boolean)
+  .join("; ");
+---
+
+<div class="screen" style={vars || undefined}>
+  <div class="bar" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="body">
+    <slot />
+    <span class="label">{label}</span>
+  </div>
+</div>
+
+<style>
+  .screen {
+    border: 1px solid var(--cs-frame);
+    border-radius: 20px;
+    min-height: 260px;
+    background: var(--cs-surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .bar {
+    height: 36px;
+    flex: 0 0 auto;
+    background: var(--cs-sunken);
+    border-bottom: 1px solid var(--cs-rule);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+  }
+  .bar span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cs-frame);
+  }
+  .body {
+    flex: 1 1 auto;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .label {
+    margin-top: auto;
+    font-size: 14px;
+    color: var(--cs-muted);
+    text-align: center;
+  }
+</style>

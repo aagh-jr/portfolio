@@ -1,0 +1,9 @@
+# Skin quiz previews: rehearsal notes
+
+- **Reference:** `apps/web/src/components/quiz/QuestionView.tsx`, `quiz/survey.types.ts`, `app/quiz/page.tsx` (STEPS, progress formula), `stories/pages/Quiz.stories.tsx`, tokens from `app/globals.css`. Screenshotted in Storybook: quiz-questionview--single-select (also with Combo clicked), --multi-select (with two choices ticked), --with-hint, --mobile; pages-quiz--first-question, --middle-question, --mobile (also with Combo clicked). Computed styles were read from pages-quiz--mobile.
+- **Gold copied:** form-error (pressing a control, the button confirming itself) and the GradeTile pattern (a page pinned to the tile, running off its foot).
+- **QuizCard (1x1):** the breakouts question in the product's one-column layout. Plays once: a tap selects "Now and then (stress, my cycle, travel)". The page fades softly at the foot, where the top edge of the third answer shows.
+- **QuizFlow (1x1):** the whole screen, designed at about 560x376 and scaled to the tile (compact: about 404x372 on a phone). Plays once: "25 – 34" is picked, Continue, the progress bar steps from 8/15 to 9/15, the routine multi-select arrives, Cleanser and Moisturizer get ticked.
+- **Deviations from the product:** the grid keeps two columns at the tile's width, where the product would use one column below md. The spacing above the grid and footer in QuizFlow is 24px, down from 36 and 40. There is a 160ms fade between questions, where the product swaps instantly. The progress bar is 4px, as in the story (page.tsx uses 3px). The page.tsx header ("binu", "Question 8 of 14") is left out.
+- **Gate workaround:** `.sq--card .sq-grid` gets a white background so film treats the answers as one list. Without it, film reported "uneven gutters" on a list row.
+- **Not checked:** the live /quiz route, because the app wasn't running.

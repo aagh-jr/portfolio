@@ -1,0 +1,24 @@
+---
+// A small uppercase label with a rule on its left: names a table, a pull
+// quote or a diagram.
+export interface Props {
+  as?: "p" | "figcaption" | "span";
+  id?: string;
+}
+const { as: Tag = "p", id } = Astro.props;
+---
+
+<Tag class="kicker" id={id}><slot /></Tag>
+
+<style>
+  .kicker {
+    margin: 0;
+    border-left: 2px solid var(--cs-ink);
+    padding-left: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cs-ink);
+  }
+</style>

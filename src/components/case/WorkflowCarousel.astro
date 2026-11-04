@@ -1,0 +1,264 @@
+---
+import Kicker from "./Kicker.astro";
+
+// A row of step cards joined by arrows that scrolls sideways and snaps to
+// each card. The row takes focus, so arrow keys scroll it. Notes under the
+// row go in the slot.
+export interface Step {
+  title: string;
+  /** Grey aside after the title, e.g. "(optional)". */
+  note?: string;
+  body: string;
+  /** Tool names, each shown under an icon box. */
+  tools: string[];
+}
+export interface Props {
+  label: string;
+  ariaLabel: string;
+  steps: Step[];
+}
+const { label, ariaLabel, steps } = Astro.props;
+
+// Logo for each tool name, from public/tools (Claude Design is its paint
+// palette mark). Unknown names keep an empty box.
+const toolIcons: Record<string, string> = {
+  Codex: "/tools/codex.svg",
+  "Claude Code": "/tools/claude-code-crab.svg",
+  Claude: "/tools/claude-mark.svg",
+  "Claude Design": "/tools/claude-design.svg",
+  Figma: "/tools/figma.svg",
+  GitHub: "/tools/github.svg",
+  Vercel: "/tools/vercel.svg",
+};
+---
+
+<div class="workflow">
+  <Kicker>{label}</Kicker>
+  <div class="rail">
+    <div class="track" role="region" aria-label={ariaLabel} tabindex="0">
+      {
+        steps.map((step, i) => (
+          <>
+            {i > 0 && <span class="arrow" aria-hidden="true">→</span>}
+            <div class="step">
+              <div class="tools">
+                {step.tools.map((tool) => (
+                  <div class="tool">
+                    <div class:list={["icon", { empty: !toolIcons[tool] }]} aria-hidden="true">
+                      {toolIcons[tool] && <img src={toolIcons[tool]} alt="" width="24" height="24" draggable="false" />}
+                    </div>
+                    <span>{tool}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="text">
+                <p class="title">
+                  {step.title}
+                  {step.note && <> <span class="note">{step.note}</span></>}
+                </p>
+                <p class="body">{step.body}</p>
+              </div>
+            </div>
+          </>
+        ))
+      }
+    </div>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .workflow,
+  .rail {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  /* The text column's width, for the track's bleed (cqi below). */
+  .rail {
+    container-type: inline-size;
+  }
+  .track {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    /* Full bleed: the row runs to both edges of the window while the first
+       card still lines up with the text column. The page is centred, so
+       half the viewport minus half the column reaches the window edge.
+       cqi (not %) so scroll-padding measures the column too, not the
+       track itself. */
+    --bleed: calc(50vw - 50cqi);
+    margin-inline: calc(-1 * var(--bleed));
+    padding-inline: var(--bleed);
+    scroll-padding-inline: var(--bleed);
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+  .track.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+  }
+  .track:focus-visible {
+    outline: 2px solid var(--cs-link);
+    outline-offset: 4px;
+    border-radius: 20px;
+  }
+  .step {
+    flex: 0 0 220px;
+    scroll-snap-align: start;
+    min-height: 320px;
+    box-sizing: border-box;
+    background: var(--cs-sunken);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .arrow {
+    flex: 0 0 auto;
+    align-self: center;
+    color: var(--cs-blue-ink);
+    font-size: 20px;
+  }
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 56px;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--cs-muted);
+    text-align: center;
+  }
+  .icon {
+    width: 44px;
+    height: 44px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background: var(--cs-surface);
+    border: 1px solid var(--cs-rule);
+    display: grid;
+    place-items: center;
+  }
+  .icon.empty {
+    border-style: dashed;
+    border-color: var(--cs-dash);
+  }
+  .icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .title {
+    font-family: var(--cs-font-display);
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .note {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cs-muted);
+  }
+  .body {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--cs-soft);
+  }
+</style>
+
+<script>
+  // Hold and drag to scroll with a mouse. Touch and trackpads already
+  // scroll natively. Snapping is paused while dragging, then the row
+  // glides to the nearest card on release.
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  for (const track of document.querySelectorAll<HTMLElement>(".workflow .track")) {
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+
+    const nearestCard = () => {
+      const pad = parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0;
+      const base = track.getBoundingClientRect().left + pad;
+      let best = track.scrollLeft;
+      let bestDist = Infinity;
+      for (const step of track.querySelectorAll<HTMLElement>(".step")) {
+        const target = track.scrollLeft + step.getBoundingClientRect().left - base;
+        const dist = Math.abs(target - track.scrollLeft);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = target;
+        }
+      }
+      return best;
+    };
+
+    const release = () => {
+      track.scrollTo({ left: nearestCard(), behavior: reduceMotion.matches ? "auto" : "smooth" });
+      // Turn snapping back on once the glide has settled.
+      let done = false;
+      const restore = () => {
+        if (done) return;
+        done = true;
+        track.classList.remove("dragging");
+      };
+      track.addEventListener("scrollend", restore, { once: true });
+      setTimeout(restore, 600);
+    };
+
+    track.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      startX = e.clientX;
+      startScroll = track.scrollLeft;
+      moved = false;
+      track.classList.add("dragging");
+      track.setPointerCapture(e.pointerId);
+    });
+
+    track.addEventListener("pointermove", (e) => {
+      if (!track.hasPointerCapture(e.pointerId)) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 3) moved = true;
+      track.scrollLeft = startScroll - dx;
+    });
+
+    const end = (e: PointerEvent) => {
+      if (!track.hasPointerCapture(e.pointerId)) return;
+      track.releasePointerCapture(e.pointerId);
+      if (moved) release();
+      else track.classList.remove("dragging");
+    };
+    track.addEventListener("pointerup", end);
+    track.addEventListener("pointercancel", end);
+
+    // A drag shouldn't count as a click on anything inside the cards.
+    track.addEventListener("click", (e) => {
+      if (moved) {
+        e.preventDefault();
+        e.stopPropagation();
+        moved = false;
+      }
+    }, true);
+  }
+</script>

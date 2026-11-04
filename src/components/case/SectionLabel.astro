@@ -1,0 +1,27 @@
+---
+// The small grey label that opens a part of a case study ("Discovery",
+// "Design"…). It keeps a fixed distance to whatever follows, whatever gap its
+// parent uses: the parent publishes its gap as --gap (see .cs-stack and
+// .cs-split in the page styles) and the label makes up the rest.
+export interface Props {
+  /** Distance from the label to the next block, in px. */
+  space?: number;
+}
+const { space = 88 } = Astro.props;
+---
+
+<h2 class="section-label" style={`--label-space: ${space}px`}><slot /></h2>
+
+<style>
+  .section-label {
+    flex: 1 1 100%;
+    margin: 0 0 calc(var(--label-space) - var(--gap, 0px) - 24px);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--cs-rule);
+    font-family: var(--cs-font-display);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--cs-muted);
+  }
+</style>

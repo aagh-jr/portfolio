@@ -1,0 +1,548 @@
+---
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import Card from "../../components/case/Card.astro";
+import DataTable from "../../components/case/DataTable.astro";
+import Pill from "../../components/case/Pill.astro";
+import Placeholder from "../../components/case/Placeholder.astro";
+import PullQuote from "../../components/case/PullQuote.astro";
+import ScreenMock from "../../components/case/ScreenMock.astro";
+import SectionLabel from "../../components/case/SectionLabel.astro";
+import WorkflowCarousel, { type Step } from "../../components/case/WorkflowCarousel.astro";
+import { GradeTile } from "../../components/previews/EvidenceGrade";
+import styles from "../../cases/binu-styles.css?raw";
+
+// Binu case study, rebuilt from the design canvas export. Unlinked, noindex
+// and out of the sitemap while its [bracketed] placeholders and dashed image
+// boxes wait for real copy and images.
+
+const workflow: Step[] = [
+  {
+    title: "0. Prototype",
+    note: "(optional)",
+    body: "If a new feature is interaction heavy or uses a lot of motion, I may make a low-fidelity prototype first with Codex or Claude Design.",
+    tools: ["Codex", "Claude Design"],
+  },
+  {
+    title: "1. Design",
+    body: "Redesign the page or start from scratch in Figma, using my design system components.",
+    tools: ["Figma"],
+  },
+  {
+    title: "2. Spec",
+    body: "Turn the design into a prompt with the requirements, edge cases and claims-policy rules.",
+    tools: ["Claude"],
+  },
+  {
+    title: "3. Build",
+    body: "Claude Code or Codex implements it in the shared web and mobile codebase.",
+    tools: ["Claude Code", "Codex"],
+  },
+  {
+    title: "4. Review",
+    body: "Check the result against the Figma design and claims policy, and test it in the running app.",
+    tools: ["Figma", "GitHub"],
+  },
+  {
+    title: "5. Ship",
+    body: "I review and merge every pull request, then Vercel deploys it.",
+    tools: ["GitHub", "Vercel"],
+  },
+];
+---
+
+<CaseStudyLayout
+  title="Binu | Product Design Case Study"
+  description="Binu — designing an evidence-first skincare product people can trust."
+  canonical="/projects/binu"
+  styles={styles}
+>
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+
+  <div class="cs-layout">
+  <nav class="cs-rail" aria-label="Back">
+    <a class="cs-back" href="/">← All work</a>
+  </nav>
+  <main class="cs-main">
+    <!-- HERO -->
+    <section class="cs-stack cs-gap-40">
+      <div class="cs-stack cs-gap-20">
+        <div class="cs-tags"><Pill>Binu</Pill></div>
+        <h1 class="cs-title">Designing an evidence-first skincare product people can trust</h1>
+        <div class="cs-intro">
+          <p class="cs-lede">Binu grades how well the research supports each claim a skincare product makes, then explains that grade in plain language.</p>
+          <a class="cs-button" href="#">Live Product ↗</a>
+        </div>
+      </div>
+
+      <dl class="cs-meta">
+        <div class="cs-meta-role">
+          <dt>Role</dt>
+          <dd>Co-founder.<br />I lead product strategy, design, user research and building.</dd>
+        </div>
+        <div class="cs-meta-topics">
+          <dt>Topics</dt>
+          <dd class="cs-topic-list">
+            <Pill>AI Product Design</Pill>
+            <Pill>Design Engineering</Pill>
+            <Pill>B2C</Pill>
+          </dd>
+        </div>
+        <div style="--basis: 120px">
+          <dt>Team</dt>
+          <dd>2 people</dd>
+        </div>
+        <div style="--basis: 160px">
+          <dt>Status</dt>
+          <dd>Web and mobile prototype; pre-launch</dd>
+        </div>
+        <div style="--basis: 140px">
+          <dt>Timeline</dt>
+          <dd>June 2026 to present</dd>
+        </div>
+      </dl>
+
+      <figure class="cs-hero-figure">
+        <div class="cs-hero-stage">
+          <div class="cs-ev-card">
+            <div class="cs-ev-head">
+              <div class="cs-ev-pair">
+                <span class="cs-ev-kind">Serum</span>
+                <span class="cs-ev-name">[Product name]</span>
+              </div>
+              <span class="cs-ev-count">3 claims graded</span>
+            </div>
+            <ul class="cs-ev-claims">
+              <li>
+                <div class="cs-ev-pair">
+                  <span class="cs-ev-claim">Evens tone</span>
+                  <span class="cs-ev-ingredients">Niacinamide, Vitamin C</span>
+                </div>
+                <Pill variant="grade" grade="strong">Strong evidence</Pill>
+              </li>
+              <li>
+                <div class="cs-ev-pair">
+                  <span class="cs-ev-claim">Minimizes pores</span>
+                  <span class="cs-ev-ingredients">Niacinamide, Zinc PCA</span>
+                </div>
+                <Pill variant="grade" grade="moderate">Moderate evidence</Pill>
+              </li>
+              <li>
+                <div class="cs-ev-pair">
+                  <span class="cs-ev-claim">Supports collagen</span>
+                  <span class="cs-ev-ingredients">Niacinamide, Peptides</span>
+                </div>
+                <Pill variant="grade" grade="limited">Limited evidence</Pill>
+              </li>
+            </ul>
+            <p class="cs-ev-summary">Multiple randomized human trials have measured niacinamide's effect on skin pigmentation. Most involved small groups, which limits how broadly the findings apply.</p>
+            <a class="cs-ev-link" href="#">See the research →</a>
+          </div>
+        </div>
+        <figcaption class="cs-caption">Illustrative mock of the per-claim evidence card. [Replace with a screenshot of the live card and verify each grade matches its summary.]</figcaption>
+      </figure>
+    </section>
+
+    <!-- TL;DR -->
+    <section class="cs-stack cs-gap-32">
+      <h2 class="cs-h2">TLDR</h2>
+      <div class="cs-row cs-row--one">
+        <Card gap={40} minHeight={220} label="Problem">
+          <p class="cs-tldr-text">Shoppers see claims like "clinically proven" with no way to tell if a product can deliver, so trust goes to sponsored and creator content.</p>
+        </Card>
+        <Card tone="blue" gap={40} minHeight={220} label="Solution">
+          <p class="cs-tldr-text">Instead of another safety score, grade how well research supports each specific claim, then explain it in plain language.</p>
+        </Card>
+        <Card gap={40} minHeight={220} label="My role">
+          <p class="cs-tldr-text">Product strategy, design, research and the build, on a team of 2.</p>
+        </Card>
+        <Card tone="green" gap={40} minHeight={220} label="Where it stands">
+          <p class="cs-tldr-text">A working prototype. Next step: testing whether people actually understand the grades.</p>
+        </Card>
+      </div>
+    </section>
+
+    <!-- OPPORTUNITY -->
+    <section class="cs-split cs-section cs-opportunity">
+      <SectionLabel>The opportunity</SectionLabel>
+      <div class="cs-col">
+        <h2 class="cs-h2">Shoppers can't check skincare claims on their own, so they borrow trust from social media.</h2>
+      </div>
+      <div class="cs-col cs-prose cs-prose--loose">
+        <p>Most people can't interpret or validate a skincare claim on their own, so they turn to other places to feel confident a product will deliver. Social media is the most common one, because you can see other people's reviews. The problem is that TikTok Shop listings, UGC and paid partnerships make up most of that content, so shoppers are often left taking a creator's word for it. In my opinion that's a shaky thing to base a purchase on, since many of those creators are paid to promote what they're reviewing.</p>
+        <p>Existing skincare tools mostly focus on ingredient safety. They can help answer "Could this ingredient be harmful?" But that doesn't answer the more common buying question.</p>
+      </div>
+      <PullQuote>The buying question: I know this product is safe, but will it do what it claims too?</PullQuote>
+      <Placeholder class="cs-packaging" minHeight={280} pad={24} loose>[Image: skincare claims on real packaging, e.g. "clinically proven", "pore minimizing"]</Placeholder>
+      <div class="cs-col cs-prose cs-prose--loose">
+        <p>The problem is also shaped by a constraint. Claims around acne, eczema and rosacea can cross into regulated medical territory, so Binu had to make evidence clearer without implying diagnosis or treatment.</p>
+      </div>
+    </section>
+
+    <!-- DISCOVERY -->
+    <section class="cs-stack cs-gap-48 cs-section">
+      <SectionLabel>Discovery</SectionLabel>
+      <div class="cs-split">
+        <div class="cs-col">
+          <h3 class="cs-finding">Safety is covered. Evidence is not. Just because a product is safe dosen't mean it will do its job.</h3>
+        </div>
+        <div class="cs-col cs-prose">
+          <p>Yuka, EWG Skin Deep, INCIDecoder, SkinSort and Paula's Choice already offer safety scores, ingredient explanations, routines and community features. None of them evaluate whether a specific claim is well supported.</p>
+        </div>
+      </div>
+
+      <DataTable id="tools" caption="What each tool scores, and whether it evaluates individual claims">
+        <thead>
+          <tr>
+            <th scope="col">Tool</th>
+            <th scope="col">What it scores</th>
+            <th scope="col">Per-claim evidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Yuka</td><td>Ingredient safety, single score</td><td>No</td></tr>
+          <tr><td>EWG Skin Deep</td><td>Hazard rating per ingredient</td><td>No</td></tr>
+          <tr><td>INCIDecoder</td><td>Ingredient function and flags</td><td>No</td></tr>
+          <tr><td>SkinSort</td><td>Match score, routines, dupes, community</td><td>No</td></tr>
+          <tr><td>Paula's Choice</td><td>Ingredient ratings by editorial review</td><td>No</td></tr>
+          <tr class="is-ours">
+            <td>Binu</td>
+            <td>Evidence certainty per claim</td>
+            <td>
+              <span class="cs-yes"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"></path></svg>Yes</span>
+            </td>
+          </tr>
+        </tbody>
+      </DataTable>
+
+      <div class="cs-split">
+        <div class="cs-col">
+          <h3 class="cs-finding">Other apps grade every product with 1 framework instead of judging it by its category.</h3>
+        </div>
+        <div class="cs-col cs-prose">
+          <p>A few years ago a poorly exicuted study claimed benzal peroxied could degrade into benzine. While the study and claims where refuted and seen as alarmist, it didint stop the research from seeping into Yuka, where now millions of people would interpett their acne products and carsinogetic. Another app evaluated shampoo the same way it evaluated face products.</p>
+          <p>Binu only covers skincare today, but this shaped a rule we plan to build before expanding: evaluate the product's category and intended use first, then grade its ingredients against that context.</p>
+          <div class="cs-row">
+            <Placeholder basis={220} minHeight={200}>[Image: annotated screenshot of the flea treatment misread]</Placeholder>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-split">
+        <div class="cs-col">
+          <h3 class="cs-finding">Early user interviews showed people either over-research or buy on vibes.</h3>
+        </div>
+        <div class="cs-col cs-prose">
+          <p>We ran 2 semi-structured interviews, starting with a skincare enthusiast who researches every product before adding it to her routine. This was directional research, so I treat the findings as patterns to validate. Each one changed or reinforced something specific.</p>
+        </div>
+      </div>
+
+      <PullQuote>Interview insight: Even people who research skincare don't naturally think in ingredients.</PullQuote>
+
+      <DataTable id="interviews" divided>
+        <thead>
+          <tr>
+            <th scope="col">What we heard</th>
+            <th scope="col">What it changed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Even people who research skincare don't naturally think in ingredients.</td><td>Reinforced leading with claims and outcomes, with ingredients underneath as supporting detail.</td></tr>
+          <tr><td>Decisions come from desired outcomes, product purpose, texture, affordability and whether they can realistically repurchase.</td><td>A future dupe finder should match on purpose, product type and texture, not just ingredient overlap.</td></tr>
+          <tr><td>Trust is already fragile; shoppers recognize the influence of marketing, sponsored reviews and vague claims.</td><td>Sources had to be visible, and the grade had to stay separate from anything that reads like marketing copy.</td></tr>
+          <tr><td>A skincare diary was less compelling than we assumed.</td><td>Deprioritized the diary before it was built.</td></tr>
+        </tbody>
+      </DataTable>
+    </section>
+
+    <!-- PRODUCT BET -->
+    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy cs-bet">
+      <div class="cs-split">
+        <div class="cs-col">
+          <h2 class="cs-h2 cs-h2--lg">The product bet</h2>
+        </div>
+        <div class="cs-col cs-prose cs-prose--loose">
+          <p>This gave us a clear point of difference and a disciplined build order. We built the evidence-grading experience first and deferred familiar but less differentiated features. Building those first would have made Binu feel like another skincare utility instead of a product with its own reason to exist.</p>
+        </div>
+      </div>
+      <PullQuote>Binu would grade the quality of evidence behind each specific product claim and ingredients.</PullQuote>
+    </section>
+
+    <!-- DESIGN DECISIONS -->
+    <section class="cs-stack cs-gap-72 cs-section">
+      <SectionLabel space={72}>Design</SectionLabel>
+      <div class="cs-split">
+        <div class="cs-col">
+          <h2 class="cs-h2">Design decisions</h2>
+        </div>
+        <p class="cs-body cs-grow">The central design challenge was turning evidence quality into something people understand and can use at the moment they're evaluating a product.</p>
+      </div>
+
+      <!-- D01 -->
+      <div class="cs-stack cs-gap-24">
+        <div class="cs-split cs-split--tight">
+          <div class="cs-col">
+            <h3 class="cs-h3">Per-claim evidence instead of 1 ingredient score</h3>
+          </div>
+          <div class="cs-col cs-prose">
+            <p>The first concept gave each ingredient a single evidence score. We rejected it because the same ingredient can have strong evidence for one outcome and weak evidence for another. Niacinamide is well studied for evening skin tone but less so for firmness.</p>
+            <p>The final approach grades each claim separately, so people can see what's supported and what's uncertain. I explored several layouts for the evidence display before landing on 1 row per claim.</p>
+          </div>
+        </div>
+        <div class="cs-row">
+          <Placeholder caption="[1 line: what the sketch explored]">[Image: paper sketch]</Placeholder>
+          <Placeholder caption="[1 line: why it won]">[Image: final, 1 row per claim]</Placeholder>
+        </div>
+      </div>
+
+      <!-- D02 -->
+      <div class="cs-stack cs-gap-24">
+        <div class="cs-split cs-split--tight">
+          <div class="cs-col">
+            <h3 class="cs-h3">Making trust visible</h3>
+          </div>
+          <p class="cs-body cs-grow">A grade alone isn't enough. The experience explains what the grade means, shows the reasoning in plain language and gives people a path to the underlying research without overwhelming them.</p>
+        </div>
+        <div class="cs-row">
+          <Placeholder basis={320} minHeight={280}><p class="cs-ph-title">Product claim</p></Placeholder>
+          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Evidence grade: the claim Minimizes pores fills three of four evidence bars, Moderate evidence"><GradeTile client:visible /></div>
+          <Placeholder basis={320} minHeight={280}><p class="cs-ph-title">Plain-language explanation</p></Placeholder>
+          <Placeholder basis={320} minHeight={280}><p class="cs-ph-title">Underlying research</p></Placeholder>
+        </div>
+      </div>
+
+      <!-- D03 -->
+      <div class="cs-stack cs-gap-24">
+        <div class="cs-split cs-split--tight">
+          <div class="cs-col">
+            <h3 class="cs-h3">Writing within medical claims rules</h3>
+          </div>
+          <div class="cs-col cs-prose">
+            <p>Acne, eczema and rosacea are disease classifications, so any language that implies treating them counts as a drug claim no matter how it's phrased. The grades and explanations had to describe evidence without telling someone a product would treat a condition.</p>
+            <p>We wrote a claims-language policy based on FDA and FTC guidance that sets what grade labels, explanations and quiz questions are allowed to say.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- D04 -->
+      <div class="cs-stack cs-gap-24">
+        <div class="cs-split cs-split--tight">
+          <div class="cs-col">
+            <h3 class="cs-h3">A profile built around needs, not a single skin type</h3>
+          </div>
+          <p class="cs-body cs-grow">Instead of forcing people into a category like oily, dry or combination, the quiz profiles independent needs, plus phototype and safety-related questions. That gives Binu enough context to personalize without people needing to know which ingredients they need. I also cut the quiz from 12 questions to 7 after finding several that asked for overlapping information.</p>
+        </div>
+        <div class="cs-row">
+          <Card basis={320} minHeight={422} label="Skin quiz" />
+          <Card tone="pink" basis={320} minHeight={260} label="Profiled as independent needs" />
+        </div>
+        <div class="cs-row">
+          <ScreenMock basis={320} minHeight={423} label="[Screen: quiz flow]">
+            <div class="cs-skel" style="--h: 6px; --w: 40%; --c: var(--cs-pastel-blue)"></div>
+            <div class="cs-skel cs-mt-8" style="--h: 16px; --w: 70%"></div>
+            <div class="cs-skel-tiles cs-mt-8"><div></div><div></div></div>
+            <div class="cs-skel-tiles"><div></div><div></div></div>
+          </ScreenMock>
+          <ScreenMock basis={320} label="[Screen: completed skin profile]">
+            <div class="cs-skel" style="--h: 16px; --w: 50%"></div>
+            <div class="cs-skel-lines">
+              <div class="cs-skel" style="--w: 85%; --c: var(--cs-pastel-pink)"></div>
+              <div class="cs-skel" style="--w: 50%; --c: var(--cs-pastel-blue)"></div>
+              <div class="cs-skel" style="--w: 70%; --c: var(--cs-pastel-green)"></div>
+              <div class="cs-skel" style="--w: 35%; --c: var(--cs-pastel-pink)"></div>
+            </div>
+            <div class="cs-skel-block"></div>
+          </ScreenMock>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL DESIGN AND SYSTEM -->
+    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy">
+      <div class="cs-split">
+        <div class="cs-col">
+          <h2 class="cs-h2 cs-h2--lg">Design System and UI</h2>
+        </div>
+        <div class="cs-col cs-prose">
+          <p>I built a design system in Figma across 2 files: 1 for foundations, components and patterns, and 1 for user flows and final pages that match the live site.</p>
+        </div>
+      </div>
+      <div class="cs-row">
+        <Card basis={360} gap={20} label="Brand colors">
+          <div class="cs-swatches">
+            <div style="--swatch: var(--cs-pastel-blue)">Pastel blue</div>
+            <div style="--swatch: var(--cs-pastel-green)">Pastel green</div>
+            <div style="--swatch: var(--cs-pastel-pink)">Pastel pink</div>
+          </div>
+        </Card>
+        <Card basis={360} gap={20} label="Evidence grade colors">
+          <div class="cs-swatches">
+            <div style="--swatch: var(--cs-strong)">Strong</div>
+            <div style="--swatch: var(--cs-moderate)">Moderate</div>
+            <div style="--swatch: var(--cs-limited)">Limited</div>
+          </div>
+        </Card>
+      </div>
+      <p class="cs-note">Soft pastels carry the brand. Saturated colors are reserved for evidence grades, so nothing decorative can be mistaken for a grade. [Swap in your real hex values.]</p>
+    </section>
+
+    <!-- DESIGN WORKFLOW -->
+    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy">
+      <div class="cs-split">
+        <div class="cs-col">
+          <h2 class="cs-h2 cs-h2--lg">Design workflow</h2>
+        </div>
+        <div class="cs-col cs-prose">
+          <p>Early on I designed pages directly through AI coding tools, sketching components and layouts on paper and feeding those images to Claude Code. As the app grew, that got too slow; small visual changes meant long back-and-forth in code.</p>
+          <p>So I used the Figma MCP to bring the live codebase into Figma and built the design system there. Now I work design-first: I redesign a page in Figma, then bring it back into code.</p>
+        </div>
+      </div>
+      <div class="cs-row">
+        <Placeholder minHeight={220} caption="1. Sketch">[Image: paper sketch of a component]</Placeholder>
+        <Placeholder minHeight={220} caption="2. Design system in Figma">[Image: same component in Figma]</Placeholder>
+        <Placeholder minHeight={220} caption="3. Back in code">[Image: live in the product]</Placeholder>
+      </div>
+      <div class="cs-row">
+        <Placeholder basis={320} minHeight={220} caption="[1 line: why the search bar changed]">[Image or GIF: search bar before and after the liquid glass redesign]</Placeholder>
+        <Placeholder basis={320} minHeight={220} caption="Foundations: color, type, contrast and dark mode">[Image: foundations page with contrast and dark mode]</Placeholder>
+      </div>
+    </section>
+
+    <!-- BUILDING AND IMPLEMENTATION -->
+    <section class="cs-stack cs-gap-40 cs-section">
+      <SectionLabel space={72}>Building and implementation</SectionLabel>
+      <div class="cs-split">
+        <div class="cs-col">
+          <h2 class="cs-h2 cs-h2--lg">How it's built</h2>
+        </div>
+        <p class="cs-body cs-grow">To make the trust promise real, the evidence grade couldn't depend on an AI model deciding what's true. So the grade comes from fixed rules, and AI only translates the finished result.</p>
+      </div>
+      <PullQuote bare>The evidence grade couldn't depend on an AI model deciding what's true. We need a rules based aproch.</PullQuote>
+      <div class="cs-pipeline">
+        <div>
+          <p class="cs-step-name">Extract</p>
+          <p class="cs-step-body">Study information is pulled into structured fields.</p>
+        </div>
+        <div>
+          <p class="cs-step-name">Grade</p>
+          <p class="cs-step-body">Fixed rules based on GRADE and Oxford CEBM, 2 established evidence frameworks, calculate the certainty level.</p>
+          <div class="cs-step-foot"><Pill variant="solid">No AI</Pill></div>
+        </div>
+        <div>
+          <p class="cs-step-name">Translate</p>
+          <p class="cs-step-body">AI turns the finished result into plain language without changing the grade.</p>
+        </div>
+      </div>
+
+      <div class="cs-split">
+        <div class="cs-col">
+          <h3 class="cs-finding cs-finding--narrow">Each feature uses a model match to how offten it runed and how much reasoning it needs.</h3>
+        </div>
+      </div>
+      <div class="cs-grid">
+        <Card size="lg" gap={20}>
+          <Pill>Runs constantly</Pill>
+          <p class="cs-card-title">Plain-language explainer</p>
+          <p class="cs-card-body">A fast, low-cost model (<b>Gemini 3.1 Flash-Lite</b>).</p>
+        </Card>
+        <Card size="lg" gap={20}>
+          <Pill>Runs less often, needs more reasoning</Pill>
+          <p class="cs-card-title">Add-a-product-by-URL</p>
+          <p class="cs-card-body">A stronger model with a web lookup (Claude Opus 4.8).</p>
+        </Card>
+      </div>
+
+      <div class="cs-split">
+        <div class="cs-col">
+          <h3 class="cs-finding">How I used AI to build it</h3>
+        </div>
+        <div class="cs-col cs-prose">
+          <p>I used Claude Code and Codex to implement the shared web and mobile codebase. I was responsible for the product requirements, architecture choices, claims policy, quality checks and final decisions, and I reviewed and merged every change.</p>
+          <p class="cs-todo">[Add 1 specific moment where the AI got something wrong and how you caught or overrode it]</p>
+        </div>
+      </div>
+
+      <WorkflowCarousel label="My building workflow" ariaLabel="Building workflow steps" steps={workflow}>
+        <p class="cs-small">Scroll for all 6 steps →</p>
+        <p class="cs-small">↺ If the result doesn't match the design or breaks a claims rule, it goes back to step 1 or 2 instead of being patched in code.</p>
+      </WorkflowCarousel>
+    </section>
+
+    <!-- LIVE + VALIDATION -->
+    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy">
+      <div class="cs-split">
+        <div class="cs-col">
+          <h2 class="cs-h2 cs-h2--lg">What's live today</h2>
+        </div>
+        <div class="cs-col">
+          <ul class="cs-feature-list">
+            <Pill variant="feature" as="li">Skin quiz and saved profile</Pill>
+            <Pill variant="feature" as="li">Per-claim evidence explanations</Pill>
+            <Pill variant="feature" as="li">Ingredient breakdowns and safety flags</Pill>
+            <Pill variant="feature" as="li">Product, ingredient, routine and community browsing</Pill>
+            <Pill variant="feature" as="li">Global search</Pill>
+            <Pill variant="feature" as="li">Add a product by URL</Pill>
+            <Pill variant="feature" as="li">Web and mobile from a shared foundation</Pill>
+          </ul>
+        </div>
+      </div>
+      <div class="cs-row">
+        <Placeholder basis={320}>[Image: add-by-URL flow]</Placeholder>
+        <Placeholder basis={320}>[Image: add-by-URL flow]</Placeholder>
+        <Placeholder basis={320}>[Image: search with empty, loading and weak-evidence states]</Placeholder>
+        <Placeholder basis={320}>[Image: search with empty, loading and weak-evidence states]</Placeholder>
+      </div>
+
+      <div class="cs-split">
+        <div class="cs-col">
+          <h3 class="cs-finding">Validation plan</h3>
+        </div>
+        <div class="cs-col cs-prose cs-prose--loose">
+          <p>Binu is pre-launch, so there are no usage metrics yet. The next step is a comprehension test with 5 people on the live demo.<br /><br />If people confuse evidence grades with safety ratings, that's the signal to rework how grades are labeled before adding any new features. After launch, analytics will track whether people open the explanations and research, not just the grade.</p>
+        </div>
+      </div>
+      <div class="cs-stack">
+        <span class="cs-lead-label">The test checks whether people can:</span>
+        <div class="cs-grid cs-grid--tight">
+          <Card size="sm" gap={28}>
+            <span class="cs-check-num">1</span>
+            <p class="cs-check-text">Explain what an evidence grade means in their own words</p>
+          </Card>
+          <Card size="sm" gap={28}>
+            <span class="cs-check-num">2</span>
+            <p class="cs-check-text">Tell evidence quality apart from ingredient safety</p>
+          </Card>
+          <Card size="sm" gap={28}>
+            <span class="cs-check-num">3</span>
+            <p class="cs-check-text">Compare 2 products and say which claims are better supported</p>
+          </Card>
+          <Card size="sm" gap={28}>
+            <span class="cs-check-num">4</span>
+            <p class="cs-check-text">Get value from the explanation without feeling overwhelmed</p>
+          </Card>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEARNINGS -->
+    <section class="cs-stack cs-gap-40 cs-section">
+      <SectionLabel>Learnings</SectionLabel>
+      <div class="cs-row">
+        <Card basis={300}>
+          <h3 class="cs-learning-title">Research earlier</h3>
+          <p class="cs-learning-body">Even 2 early conversations changed the roadmap. Testing assumptions sooner would have caught things like the skincare diary before we scoped them.</p>
+        </Card>
+        <Card basis={300}>
+          <h3 class="cs-learning-title">Trust lives in the system and the interface</h3>
+          <p class="cs-learning-body">Trust affected the grading logic, the content language, the information hierarchy and how visible the sources are.</p>
+        </Card>
+        <Card basis={300}>
+          <h3 class="cs-learning-title">Product restraint is a design decision</h3>
+          <p class="cs-learning-body">The most valuable choice was not building the expected parity features before the evidence-first value was clear.</p>
+        </Card>
+      </div>
+    </section>
+
+    <a class="cs-button cs-next" href="/projects/energy-ave">Next case study: Energy Avenue <span aria-hidden="true">→</span></a>
+  </main>
+  </div>
+</CaseStudyLayout>

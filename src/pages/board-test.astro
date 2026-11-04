@@ -1,0 +1,11 @@
+---
+// Playground for the metal memo board. Not linked anywhere, excluded from
+// the sitemap (astro.config.mjs), and marked noindex below.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BoardPlayground from "../components/board/BoardPlayground";
+---
+
+<BaseLayout title="Board test" description="Full-screen 3D metal memo board test page.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <BoardPlayground client:only="react" />
+</BaseLayout>

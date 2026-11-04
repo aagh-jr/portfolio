@@ -1,0 +1,70 @@
+---
+// Rounded chips. tag: blue topic tag · grade: evidence grade with its dot ·
+// feature: a shipped feature · solid: a dark-blue badge ("No AI").
+export interface Props {
+  variant?: "tag" | "grade" | "feature" | "solid";
+  grade?: "strong" | "moderate" | "limited";
+  as?: "span" | "li";
+}
+const { variant = "tag", grade = "strong", as: Tag = "span" } = Astro.props;
+---
+
+<Tag class:list={["chip", variant, variant === "grade" && grade]}>
+  {variant === "grade" && <span class="dot" aria-hidden="true" />}
+  <slot />
+</Tag>
+
+<style>
+  .chip {
+    border-radius: 999px;
+  }
+  .tag {
+    align-self: flex-start;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--cs-blue-ink);
+    background: var(--cs-blue-tag);
+    padding: 6px 12px;
+  }
+  .grade {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 10px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--dot);
+  }
+  .strong {
+    color: var(--cs-strong-ink);
+    background: var(--cs-strong-bg);
+    --dot: var(--cs-strong);
+  }
+  .moderate {
+    color: var(--cs-moderate-ink);
+    background: var(--cs-moderate-bg);
+    --dot: var(--cs-moderate);
+  }
+  .limited {
+    color: var(--cs-limited-ink);
+    background: var(--cs-limited-bg);
+    --dot: var(--cs-limited);
+  }
+  .feature {
+    background: var(--cs-green);
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+  .solid {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+    background: var(--cs-blue-ink);
+    padding: 4px 10px;
+  }
+</style>

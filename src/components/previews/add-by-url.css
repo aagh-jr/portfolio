@@ -1,0 +1,291 @@
+/* Binu "Add a product by link" previews. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette) and
+   apps/web/src/app/add/page.tsx (Tailwind classes → px). */
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/previews/binu/newsreader-latin.woff2') format('woff2');
+}
+
+.ab-host {
+  width: 100%;
+  height: 100%;
+}
+
+.ab {
+  --ab-ground: #eaf1fe; /* --secondary / --accent */
+  --ab-card: #ffffff; /* --card, --background */
+  --ab-border: #dee3e9; /* --border */
+  --ab-ink: #12181f; /* --ink */
+  --ab-muted: #5b6472; /* --muted-foreground */
+  --ab-primary: #2f6fed; /* --primary (--clay) */
+  --ab-link: #2f6fed; /* --link */
+  --ab-arrive: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ab .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--ab-ground);
+  border-radius: 20px;
+  color: var(--ab-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ab ul,
+.ab p,
+.ab h1 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The page (bg-background), pinned to the tile and running off its foot */
+.ab .ab-page {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 24px;
+  bottom: -24px;
+  padding: 24px;
+  background: var(--ab-card);
+  border: 1px solid var(--ab-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ab .ab-page[data-narrow] {
+  left: -1px;
+  right: -1px;
+  top: 16px;
+  padding: 20px 16px;
+  border-radius: 12px 12px 0 0;
+}
+
+/* ── The form ── */
+
+/* mb-2 text-[13px] text-muted-foreground */
+.ab .ab-crumb {
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ab-muted);
+}
+/* font-serif text-4xl font-medium tracking-tight text-ink */
+.ab .ab-title {
+  font-family: 'Newsreader', ui-serif, Georgia, serif;
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--ab-ink);
+}
+/* mt-8 */
+.ab .ab-form {
+  margin-top: 32px;
+}
+/* w-full rounded-xl border border-border bg-card p-4 text-sm text-ink,
+   focus:border-primary/60. rows={4} in the product; three show here. */
+.ab .ab-field {
+  position: relative;
+  box-sizing: border-box;
+  height: 94px;
+  padding: 16px;
+  border: 1px solid var(--ab-border);
+  border-radius: 16px;
+  background: var(--ab-card);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ab-ink);
+  overflow: hidden;
+  transition: border-color 150ms ease;
+}
+.ab .ab-field[data-focused] {
+  border-color: rgb(47 111 237 / 0.6);
+}
+.ab .ab-value {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.ab .ab-placeholder {
+  display: block;
+  color: var(--ab-muted);
+  overflow-wrap: anywhere;
+}
+.ab .ab-caret {
+  display: inline-block;
+  width: 1px;
+  height: 17px;
+  margin: 0 -1px -3px 0;
+  background: var(--ab-ink);
+  animation: ab-blink 1s steps(1) infinite;
+}
+@keyframes ab-blink {
+  50% { opacity: 0; }
+}
+
+/* mt-4 flex items-center gap-3 */
+.ab .ab-actions {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* rounded-full bg-primary px-6 py-3 text-sm font-semibold
+   text-primary-foreground disabled:opacity-50 */
+.ab .ab-button {
+  will-change: transform;
+  flex: none;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background: var(--ab-primary);
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 200ms ease;
+}
+.ab .ab-button[data-disabled] {
+  opacity: 0.5;
+}
+.ab .ab-button[data-pressed] {
+  opacity: 0.9;
+}
+
+/* ScientistAvatar: 48px, rounded-full border border-border bg-white,
+   frames at 82%, pixelated, mouth swapping every 350ms while talking */
+.ab .ab-scientist {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 1px solid var(--ab-border);
+  background: #fff;
+}
+.ab .ab-frame {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.ab .ab-frame--open {
+  position: absolute;
+  visibility: hidden;
+}
+.ab .ab-scientist[data-talking] .ab-frame--closed {
+  animation: ab-mouth 700ms steps(1) infinite;
+}
+.ab .ab-scientist[data-talking] .ab-frame--open {
+  animation: ab-mouth 700ms steps(1) infinite reverse;
+}
+@keyframes ab-mouth {
+  0% { visibility: visible; }
+  50% { visibility: hidden; }
+}
+
+/* text-sm text-muted-foreground, shown while running */
+.ab .ab-working {
+  will-change: transform;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ab-muted);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 300ms ease, transform 500ms var(--ab-arrive);
+}
+.ab .ab-working[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── The results ── */
+
+/* flex flex-col gap-px overflow-hidden rounded-xl border border-border bg-border */
+.ab .ab-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--ab-border);
+  border-radius: 16px;
+  background: var(--ab-border);
+}
+/* flex items-center justify-between gap-4 bg-card px-4 py-3.5 */
+.ab .ab-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--ab-card);
+  font-size: 14px;
+  line-height: 20px;
+}
+/* min-w-0 flex-1 truncate text-sm text-muted-foreground */
+.ab .ab-url {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ab-muted);
+}
+/* A row's three labels share one cell, so the link column keeps its width
+   (in the product it reflows as the label changes) */
+.ab .ab-status {
+  display: grid;
+  flex: none;
+  justify-items: end;
+  white-space: nowrap;
+}
+.ab .ab-label {
+  grid-area: 1 / 1;
+  will-change: transform;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 200ms ease, transform 320ms var(--ab-arrive);
+}
+.ab .ab-label[data-on] {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+.ab .ab-label[data-state='pending'] {
+  color: var(--ab-muted);
+}
+.ab .ab-label[data-state='working'] {
+  color: var(--ab-link);
+}
+.ab .ab-label[data-state='created'],
+.ab .ab-label[data-state='existing'] {
+  color: var(--ab-link);
+  font-weight: 600;
+}
+
+/* mt-6 text-xs text-muted-foreground */
+.ab .ab-note {
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ab-muted);
+}
+.ab .ab-note strong {
+  font-weight: 700;
+}
+/* Caret in the empty, focused field sits over the placeholder's first character */
+.ab .ab-placeholder .ab-caret {
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  margin: 0;
+}

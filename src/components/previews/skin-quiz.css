@@ -1,0 +1,274 @@
+/* Binu skin quiz previews. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette) and
+   components/quiz/QuestionView.tsx (Tailwind classes -> px, checked against
+   the computed styles of the Quiz/QuestionView and Pages/Quiz stories). */
+
+@font-face {
+  font-family: 'Binu Newsreader';
+  /* The product's own next/font Newsreader file (latin, variable 200-800) */
+  src: url('/previews/binu/newsreader-latin.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+.sq-host {
+  width: 100%;
+  height: 100%;
+}
+/* Hidden until the slot is measured, so the first paint isn't the 480px guess */
+.sq-host:not([data-measured]) {
+  visibility: hidden;
+}
+
+.sq {
+  --sq-ground: #eaf1fe; /* --secondary: the tile ground, as GradeTile */
+  --sq-white: #ffffff; /* --background / --warm-white */
+  --sq-border: #dee3e9; /* --border */
+  --sq-ink: #12181f; /* --ink */
+  --sq-muted: #5b6472; /* --muted-foreground */
+  --sq-primary: #2f6fed; /* --primary (--clay) */
+  --sq-track: #eaf1fe; /* --secondary: progress track */
+  --sq-serif: 'Binu Newsreader', 'Newsreader', ui-serif, Georgia, serif;
+}
+
+.sq .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--sq-ground);
+  border-radius: 20px;
+  color: var(--sq-ink);
+  font-family: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sq h1,
+.sq p {
+  margin: 0;
+}
+
+/* ── Progress: page.tsx h-[3px] bg-secondary / bg-primary, transition-all
+   duration-300 ease-out; the Pages/Quiz story draws it h-1 (4px) ── */
+
+.sq .sq-progress {
+  height: 4px;
+  background: var(--sq-track);
+  flex: none;
+}
+.sq .sq-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--sq-primary);
+  transition: width 300ms ease-out;
+}
+
+/* ── QuestionView ── */
+
+.sq .sq-title {
+  font-family: var(--sq-serif);
+  font-size: 30px; /* text-3xl (md:text-[40px] is past the tile's width) */
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.025em; /* tracking-tight */
+  color: var(--sq-ink);
+}
+.sq .sq-sub {
+  margin-top: 12px; /* mt-3 */
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--sq-muted);
+}
+.sq .sq-grid {
+  margin-top: 36px; /* mt-9 */
+  display: grid;
+  gap: 12px; /* gap-3 */
+}
+
+.sq .sq-choice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px; /* px-5 py-4 */
+  border: 1px solid var(--sq-border);
+  border-radius: 16px; /* rounded-xl, --radius 0.75rem + 4px */
+  background: var(--sq-white);
+  text-align: left;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); /* transition-all */
+}
+.sq .sq-choice[data-active] {
+  border-color: var(--sq-primary);
+  background: color-mix(in srgb, var(--sq-primary) 5%, var(--sq-white)); /* bg-primary/5 */
+  box-shadow: 0 4px 14px -6px rgba(154, 74, 47, 0.35); /* the product's own shadow */
+}
+.sq .sq-choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.sq .sq-choice-label {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--sq-ink);
+}
+.sq .sq-choice-hint {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sq-muted);
+}
+.sq .sq-check {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border: 2px solid var(--sq-border);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  color: #fff;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sq .sq-choice[data-active] .sq-check {
+  border-color: var(--sq-primary);
+  background: var(--sq-primary);
+}
+
+.sq .sq-footer {
+  margin-top: 40px; /* mt-10 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sq .sq-back {
+  padding: 8px 16px; /* px-4 py-2 */
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--sq-muted);
+}
+.sq .sq-back[data-disabled] {
+  opacity: 0.4;
+}
+.sq .sq-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px; /* px-7 py-3.5 */
+  border-radius: 16px;
+  background: var(--sq-primary);
+  color: #fff;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sq .sq-continue[data-disabled] {
+  opacity: 0.4;
+}
+
+/* ── QuizCard: the page (white), pinned to the tile and off its foot, the
+   same 32px side inset as GradeTile and ClaimTile, a little higher so the
+   third answer's label sits whole above the tile's foot ── */
+
+.sq--card .sq-page {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 32px;
+  bottom: -32px;
+  background: var(--sq-white);
+  border: 1px solid var(--sq-border);
+  border-radius: 8px;
+  overflow: hidden;
+  /* The page softens out at the tile's foot (it runs 32px past it), where
+     the third answer's top edge shows, so the list reads as going on */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 52px), transparent calc(100% - 28px));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 52px), transparent calc(100% - 28px));
+}
+.sq--card .sq-main {
+  padding: 24px;
+}
+.sq--card .sq-grid {
+  margin-top: 36px; /* mt-9 */
+  background: var(--sq-white); /* same as the page; makes the answers read as one list to film's checks */
+}
+.sq--card .sq-page[data-narrow] {
+  left: 16px;
+  right: 16px;
+  top: 20px;
+}
+.sq--card .sq-page[data-narrow] .sq-main {
+  padding: 20px;
+}
+.sq--card .sq-page[data-narrow] .sq-grid {
+  margin-top: 32px;
+}
+
+/* ── QuizFlow: the whole screen, as the Pages/Quiz story frames it: the
+   progress bar across the top, the question in a centered 640px column ── */
+
+.sq--flow .ss-stage {
+  background: var(--sq-white);
+}
+/* The screen is white like the case-study page: a hairline gives it an edge */
+.sq--flow .sq-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--sq-border);
+  border-radius: 20px;
+  pointer-events: none;
+}
+.sq--flow .sq-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sq--flow .sq-main {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 24px 0;
+  transition: opacity 250ms ease, transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.sq--flow .sq-main[data-fading] {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 140ms ease, transform 0ms linear 140ms;
+}
+/* md:grid-cols-2, kept at the tile's width so the screen reads whole */
+.sq--flow .sq-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 24px; /* mt-9 in the product, tightened to fit the tile */
+}
+.sq--flow .sq-footer {
+  margin-top: 24px; /* mt-10 in the product, tightened to fit the tile */
+}
+.sq--flow .sq-screen[data-scroll] .sq-main {
+  /* The multi-select runs past the screen's foot: it fades out there over
+     its last row instead of being sliced */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 52px), transparent calc(100% - 20px));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 52px), transparent calc(100% - 20px));
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.sq--flow .sq-screen[data-compact] .sq-main {
+  padding: 20px 20px 0;
+}
+/* Phone column: the age grid's footer keeps a full gutter above the foot,
+   and the routine grid gets back the product's own mt-9, so its third row
+   runs well past the foot instead of leaving a sliver */
+.sq--flow .sq-screen[data-compact] .sq-footer {
+  margin-top: 16px;
+}
+.sq--flow .sq-screen[data-compact][data-scroll] .sq-grid {
+  margin-top: 36px;
+}

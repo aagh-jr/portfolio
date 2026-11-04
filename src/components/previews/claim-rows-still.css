@@ -1,0 +1,198 @@
+/* "Final, 1 row per claim" still. Values from skinsavior
+   apps/web/src/app/globals.css and components/products/EvidenceByClaim.tsx
+   (Tailwind classes to px). Ground matches the other Binu previews. */
+
+@font-face {
+  font-family: 'Binu Space Grotesk';
+  font-weight: 300 700;
+  font-display: swap;
+  /* The product's own next/font latin subset of Space Grotesk (OFL) */
+  src: url('/previews/binu/space-grotesk-latin.woff2') format('woff2');
+}
+
+.crs-host {
+  width: 100%;
+  height: 100%;
+}
+/* The still settles all motion inside the stage, so the tile itself waits
+   for its fonts and fades in from outside it. */
+.crs-host {
+  opacity: 0;
+}
+.crs-host[data-ready] {
+  animation: crs-in 400ms ease both;
+}
+@keyframes crs-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crs-host[data-ready] { animation: none; opacity: 1; }
+}
+
+.crs {
+  --crs-ground: #eaf1fe; /* --secondary / --accent */
+  --crs-white: #ffffff;
+  --crs-cream: #f5f7fa; /* --cream */
+  --crs-tan: #dee3e9; /* --soft-tan */
+  --crs-ink: #12181f; /* --ink */
+  --crs-faint: #5b6472; /* --faint */
+  --crs-sage: #159a6b; /* --sage */
+  --crs-sage-bg: #e7f6ef; /* --sage-bg */
+  --crs-clay-glow: #fdf3e4; /* --clay-glow */
+}
+
+.crs .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--crs-ground);
+  border-radius: 20px;
+  color: var(--crs-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.crs ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The two layers of the md table: a cream card carrying the header, the
+   white ruled card inside it. Runs off the right; fades at the foot. */
+.crs .crs-table {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  right: -40px;
+  bottom: -80px;
+  background: var(--crs-cream);
+  border: 1px solid var(--crs-tan);
+  border-radius: 8px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--crs-fade-a), transparent var(--crs-fade-b));
+  mask-image: linear-gradient(to bottom, #000 var(--crs-fade-a), transparent var(--crs-fade-b));
+}
+
+.crs .crs-head,
+.crs .crs-row {
+  display: grid;
+  grid-template-columns: 96px 160px 220px;
+  gap: 32px;
+  align-items: start;
+}
+.crs .crs-head {
+  padding: 12px 16px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.48px;
+  text-transform: uppercase;
+  color: var(--crs-faint);
+}
+.crs .crs-head span:nth-child(-n + 2) {
+  text-align: center;
+}
+
+.crs .crs-card {
+  margin: 0 -1px -1px;
+  background: var(--crs-white);
+  border: 1px solid var(--crs-tan);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.crs .crs-row {
+  padding: 16px;
+  border-bottom: 1px solid var(--crs-tan);
+}
+
+.crs .crs-claim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.crs .crs-badge {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--crs-ink);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Binu Space Grotesk', 'Space Grotesk', ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 700;
+}
+.crs .crs-claim-label {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.crs .crs-strength {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.crs .crs-bars {
+  height: 32px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+.crs .crs-bar {
+  width: 15px;
+  border-radius: 3px;
+  background: var(--crs-tan);
+}
+.crs .crs-bar:nth-child(1) { height: 14px; }
+.crs .crs-bar:nth-child(2) { height: 20px; }
+.crs .crs-bar:nth-child(3) { height: 26px; }
+.crs .crs-bar:nth-child(4) { height: 32px; }
+.crs .crs-bar[data-lit] { background: var(--crs-sage); }
+
+.crs .crs-grade {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.crs .crs-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+}
+.crs .crs-chip {
+  height: 32px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.crs .crs-chip[data-certainty='strong'],
+.crs .crs-chip[data-certainty='moderate'] { background: var(--crs-sage-bg); }
+.crs .crs-chip[data-certainty='limited'] { background: var(--crs-clay-glow); }
+.crs .crs-chip[data-certainty='very_limited'] { background: var(--crs-cream); }
+.crs .crs-chip-own { color: var(--crs-faint); }
+
+/* Compact: a tighter crop, Claim and Evidence strength only */
+.crs .crs-table[data-compact] {
+  left: 20px;
+  top: 20px;
+}
