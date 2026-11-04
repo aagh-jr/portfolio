@@ -38,3 +38,10 @@ Each finished agent's report (with the exact snippet to paste into binu.astro an
 6. Film the whole binu page at 1440 and 390, fix, summarize for the user.
 
 User's skip list (they supply these): packaging photo, competitor screenshots, Figma screenshots, search bar before/after, foundations page.
+
+## Update (after the first push): all A agents finished
+- A4 DONE, accepted: `UnderlyingResearch.tsx` → `ResearchTile`. It uses ProductResearch; StudyTypeIcon was left out because those icons only appear in IngredientCardView. Ask the user if they want the icons.
+- A6 DONE, accepted: `SkinQuiz.tsx` → `QuizCard`, `QuizFlow`. FLAG: the case-study copy says the quiz went "12 → 7 questions", but app/quiz/page.tsx has 14. The user must fix either the copy or the product.
+- A7 fix DONE: NeedsTile now uses the real quiz question titles. Which answer each question shows is mapped from the fixture (illustrative).
+- Each agent's binu.astro snippet and aria-label are in its `*.REHEARSAL.md` or summarized above. All agents report that the gate shows a hydration mismatch from the kit and a favicon 404.
+- Next: C1, then wiring, then whole-page filming (see Remaining steps).
