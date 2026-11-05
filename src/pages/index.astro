@@ -113,7 +113,7 @@ const labFeature = all.find((p) => p.data.section === "lab");
                 data-summary={f.tagline}
                 style={style}
               >
-                <LabBooklets client:only="react" />
+                <LabBooklets client:visible={{ rootMargin: "600px" }} />
               </a>
             ) : (
               <div class="lab-box" style={style} aria-hidden="true" />
