@@ -21,7 +21,10 @@ const {
   styles,
 } = Astro.props;
 
-const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
+// Pages build to folder/index.html, served (and listed in the sitemap)
+// with a trailing slash, so canonical URLs end in one too.
+const canonicalPath = (canonical ?? Astro.url.pathname).replace(/\/?$/, "/");
+const canonicalURL = new URL(canonicalPath, Astro.site);
 const ogImage = new URL(image, Astro.site);
 ---
 
