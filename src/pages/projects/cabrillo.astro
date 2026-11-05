@@ -1,7 +1,7 @@
 ---
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
-import Book from "../../components/book/Book";
-import EcoWebCards from "../../components/book/EcoWebCards";
+import Book from "../../components/book/LazyBook";
+import EcoWebCards from "../../components/book/LazyEcoWebCards";
 import {
   FLOWER_HUNT_BOOKLET,
   OPEN_TOWER_BOOKLET,
@@ -12,7 +12,7 @@ import "../../styles/book-embed.css";
 import styles from "../../cases/cabrillo-styles.css?raw";
 import body from "../../cases/cabrillo-body.html?raw";
 
-// The interactive 3D viewers mount where the exported markup leaves a
+// The interactive 3D viewers (lazy-loaded once they near the screen) mount where the exported markup leaves a
 // placeholder comment.
 const [beforeWhale, rest] = body.split("<!--WHALE_BOOK-->");
 const [beforeFlowerHunt, rest2] = rest.split("<!--FLOWER_HUNT_BOOK-->");
@@ -30,7 +30,7 @@ const [beforeEcoWeb, afterEcoWeb] = rest3.split("<!--ECO_WEB_CARDS-->");
   <Fragment set:html={beforeWhale} />
   <div class="book-embed">
     <Book
-      client:only="react"
+      client:visible={{ rootMargin: "1000px" }}
       pages={WHALE_BOOKLET}
       title="Gray Whale Watching Activity Book"
       height="var(--book-stage, min(85vh, 900px))"
@@ -39,7 +39,7 @@ const [beforeEcoWeb, afterEcoWeb] = rest3.split("<!--ECO_WEB_CARDS-->");
   <Fragment set:html={beforeFlowerHunt} />
   <div class="book-embed">
     <Book
-      client:only="react"
+      client:visible={{ rootMargin: "1000px" }}
       pages={FLOWER_HUNT_BOOKLET}
       aspect={QUARTER_LETTER_ASPECT}
       title="Junior Botanist Flower Hunt"
@@ -49,7 +49,7 @@ const [beforeEcoWeb, afterEcoWeb] = rest3.split("<!--ECO_WEB_CARDS-->");
   <Fragment set:html={beforeOpenTower} />
   <div class="book-embed">
     <Book
-      client:only="react"
+      client:visible={{ rootMargin: "1000px" }}
       pages={OPEN_TOWER_BOOKLET}
       title="Open Tower Day Activity Book"
       height="var(--book-stage, min(85vh, 900px))"
@@ -57,7 +57,7 @@ const [beforeEcoWeb, afterEcoWeb] = rest3.split("<!--ECO_WEB_CARDS-->");
   </div>
   <Fragment set:html={beforeEcoWeb} />
   <div class="book-embed">
-    <EcoWebCards client:only="react" />
+    <EcoWebCards client:visible={{ rootMargin: "1000px" }} />
   </div>
   <Fragment set:html={afterEcoWeb} />
 </CaseStudyLayout>
