@@ -112,11 +112,11 @@
     back.inert = true;
     p.flap.prepend(back);
   }
-  const ROT_ICON = `<svg width="22" height="22" viewBox="0 0 22 22">
+  const ROT_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
     <path class="halo" d="M5 15A10 10 0 0 1 15 5M2.5 12.5L5 15l2.5-2.5M12.5 2.5L15 5l-2.5 2.5"/>
     <path class="ink" d="M5 15A10 10 0 0 1 15 5M2.5 12.5L5 15l2.5-2.5M12.5 2.5L15 5l-2.5 2.5"/></svg>`;
 
-  const SURFACE = '<svg class="ink"></svg><div class="sheen"></div><svg class="rims"></svg>';
+  const SURFACE = '<svg class="ink" aria-hidden="true"></svg><div class="sheen"></div><svg class="rims" aria-hidden="true"></svg>';
   const STRIP_SHADOW = '<div class="layer shadow holed sts"></div>';
 
   let variant = 'plain';
@@ -136,12 +136,12 @@
     el.innerHTML = `
       <div class="shadow-wrap sw"><div class="layer shadow holed ss"></div>${STRIP_SHADOW}${STRIP_SHADOW}</div>
       <div class="layer clipw"><div class="layer tex holed sheet">${SURFACE}</div></div>
-      <svg class="thick tmain"></svg>
+      <svg class="thick tmain" aria-hidden="true"></svg>
       <div class="layer tex holed strip">${SURFACE}</div>
       <div class="layer tex holed strip">${SURFACE}</div>
       <div class="shadow-wrap fsw"><div class="layer shadow holed fs"></div></div>
-      <div class="layer clipw flapw"><div class="layer tex holed flap"><svg class="ink"></svg><div class="flapShade"></div><svg class="rims"></svg></div></div>
-      <svg class="thick tflap"></svg>
+      <div class="layer clipw flapw"><div class="layer tex holed flap"><svg class="ink" aria-hidden="true"></svg><div class="flapShade"></div><svg class="rims" aria-hidden="true"></svg></div></div>
+      <svg class="thick tflap" aria-hidden="true"></svg>
       ${[0, 1, 2, 3].map(k => `<div class="rot" style="left:${k === 1 || k === 2 ? W : 0}px;top:${k >= 2 ? H : 0}px;transform:rotate(${k * 90}deg)">${ROT_ICON}</div>`).join('')}`;
     stage.appendChild(el);
     const q = s => el.querySelector(s);
