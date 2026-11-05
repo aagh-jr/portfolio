@@ -119,6 +119,9 @@ const labFeature = all.find((p) => p.data.section === "lab");
                 data-summary={f.tagline}
                 style={style}
               >
+                {/* Names the link's destination; the posters' alt text
+                    follows it. */}
+                <span class="sr-only">{f.title}</span>
                 <LabBooklets client:visible={{ rootMargin: "600px" }} />
               </a>
             ) : (
