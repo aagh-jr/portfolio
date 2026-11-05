@@ -567,7 +567,11 @@ export function Stage<S extends object>({
   const showCursor = cursor && (!script || !still || cursor.still)
 
   return (
-    <div ref={fitRef} className={`ss-fit${className ? ` ${className}` : ''}`} style={{ maxWidth: grows ? undefined : width, height: designH * scale }}>
+    // The stage is a picture of a product, not the product: its faux UI
+    // (landmarks, headings, labels) stays out of the accessibility tree, and
+    // the host page describes it (the case study wraps each one in
+    // role="img" with an aria-label).
+    <div ref={fitRef} className={`ss-fit${className ? ` ${className}` : ''}`} aria-hidden="true" style={{ maxWidth: grows ? undefined : width, height: designH * scale }}>
       <div
         ref={rootRef}
         className="ss-stage"
