@@ -1,5 +1,5 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { gsap as Gsap } from "gsap";
+import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
 
 declare global {
   interface Window {
@@ -18,7 +18,22 @@ declare global {
   }
 }
 
-gsap.registerPlugin(ScrollTrigger);
+/* GSAP is only fetched by pages that have something to reveal (the case
+   studies; the home page has none), so it stays off the home page's
+   critical path. Loaded once, then reused across View Transitions. */
+let gsap: typeof Gsap;
+let ScrollTrigger: typeof ScrollTriggerType | undefined;
+let loading: Promise<void> | undefined;
+function loadGsap() {
+  loading ??= Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([g, st]) => {
+    g.gsap.registerPlugin(st.ScrollTrigger);
+    gsap = g.gsap;
+    ScrollTrigger = st.ScrollTrigger;
+  });
+  return loading;
+}
+
+const REVEAL_TARGETS = "[data-reveal]:not(.ss-stage *), [data-load-stagger] [data-load-item]";
 
 const prefersReduced = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -40,7 +55,7 @@ function initScrollReveals() {
       { opacity: 0, y },
       { opacity: 1, y: 0, duration: 0.7, delay, ease: "expo.out", paused: true },
     );
-    ScrollTrigger.create({
+    ScrollTrigger!.create({
       trigger: el,
       start: "top 88%",
       once: true,
@@ -81,14 +96,17 @@ function showLoadStagger(animate: boolean) {
 }
 
 /** Run all reveal animations for the current page. */
-export function runReveals() {
+export async function runReveals() {
   // Reduced motion: the CSS guard already keeps everything visible.
   if (prefersReduced()) return;
+  if (!document.querySelector(REVEAL_TARGETS)) return;
   // The staggered load animation only plays on the initial document load;
   // subsequent SPA navigations are clean View Transition cross-fades.
-  showLoadStagger(!window.__spaNav);
+  const animate = !window.__spaNav;
+  await loadGsap();
+  showLoadStagger(animate);
   initScrollReveals();
-  ScrollTrigger.refresh();
+  ScrollTrigger!.refresh();
 }
 
 /**
@@ -101,6 +119,6 @@ export function setupReveals() {
   document.addEventListener("astro:page-load", runReveals);
   document.addEventListener("astro:before-swap", () => {
     window.__spaNav = true;
-    ScrollTrigger.getAll().forEach((t) => t.kill());
+    ScrollTrigger?.getAll().forEach((t) => t.kill());
   });
 }
