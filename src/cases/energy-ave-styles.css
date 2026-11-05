@@ -321,7 +321,7 @@
 
     /* ── Insights ── */
     .insight { padding: 20px 22px; border: 1px solid var(--hairline); border-radius: 12px; background: #fff; margin-bottom: 14px; }
-    .insight h4 { font-family: var(--font-body); font-size: 18px; font-weight: 800; margin-bottom: 10px; line-height: 1.25; letter-spacing: -0.012em; color: #000; }
+    .insight h3 { font-family: var(--font-body); font-size: 18px; font-weight: 800; margin-bottom: 10px; line-height: 1.25; letter-spacing: -0.012em; color: #000; }
     .insight p { font-size: 15px; line-height: 1.7; color: #555; margin: 0; }
     .insight .i-num { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
 
