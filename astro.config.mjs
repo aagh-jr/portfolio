@@ -36,6 +36,11 @@ export default defineConfig({
       // .woff fallbacks (never used by woff2-capable browsers) inside the
       // render-blocking stylesheet; keep fonts as separate files instead.
       assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined),
+      // The one chunk over Vite's 500 kB default is three.js + React Three
+      // Fiber (~900 kB, ~240 kB gzipped). It can't be split meaningfully and
+      // is only lazy-loaded where a 3D viewer nears the screen, so the
+      // warning is expected; this still flags anything bigger.
+      chunkSizeWarningLimit: 1000,
     },
   },
 });
