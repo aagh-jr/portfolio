@@ -24,6 +24,9 @@ const labFeature = all.find((p) => p.data.section === "lab");
          scrollPaper). #slot is an invisible copy of the letter that
          CSS lays out; the sheet in #stage is built to match it. -->
     <section class="hero" aria-label="Introduction">
+      <!-- The page's one h1, for screen readers and search; the name is
+           drawn by the header's wordmark and the letter's signature. -->
+      <h1 class="sr-only">Abel Angel</h1>
       <div class="hero-page">
         <div class="hero-main"><div id="slot" aria-hidden="true"></div></div>
         <a class="see-more" href="#work">See my work ↓</a>
@@ -33,8 +36,10 @@ const labFeature = all.find((p) => p.data.section === "lab");
     <!-- Everything below the hero, in nav order (Work, Lab, About, Resume),
          slides up over it as one opaque sheet. -->
     <div class="below">
-    <section class="work" id="work" aria-label="Work">
-
+    <section class="work" id="work" aria-labelledby="work-title">
+      <!-- Section headings, unseen like before (the nav pills name them on
+           screen), give the h3 titles below a parent level. -->
+      <h2 class="sr-only" id="work-title">Work</h2>
       <div class="work-list">
         {
           projects.map((p) => {
@@ -87,7 +92,8 @@ const labFeature = all.find((p) => p.data.section === "lab");
       <div class="case-cursor" aria-hidden="true"></div>
     </section>
 
-    <section class="stack" id="lab" aria-label="Lab">
+    <section class="stack" id="lab" aria-labelledby="lab-title">
+      <h2 class="sr-only" id="lab-title">Lab</h2>
       <!-- Boxes for the smaller, non-case-study work. Each carries its Figma
            frame twice, in px of the 1400-wide layout: where it lands
            (--x/--y/--w/--h, "Lab fully opened") and where it starts
@@ -125,11 +131,13 @@ const labFeature = all.find((p) => p.data.section === "lab");
 
     <!-- About: two piles of cards, peeled off as the page
          scrolls (see AboutPiles) -->
-    <section class="about" id="about" aria-label="About">
+    <section class="about" id="about" aria-labelledby="about-title">
+      <h2 class="sr-only" id="about-title">About</h2>
       <AboutPiles />
     </section>
 
-    <section class="stack" id="resume" aria-label="Resume">
+    <section class="stack" id="resume" aria-labelledby="resume-title">
+      <h2 class="sr-only" id="resume-title">Resume</h2>
       <!-- Placeholder: a blank page until the resume is ready -->
       <div class="resume-doc" role="img" aria-label="Resume coming soon"></div>
     </section>
