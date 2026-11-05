@@ -226,6 +226,12 @@ const pose = (i: number, side: number) => {
 
   /* Narrow screens: one column, each photo above its note, no piling */
   @media (max-width: 760px) {
+    /* The tilted notes' hill borders reach a few px past the screen's
+       edges, which let the whole page scroll sideways on phones. Clip
+       (not hidden) so nothing becomes a scroll container. */
+    .piles {
+      overflow-x: clip;
+    }
     .piles-stage {
       grid-template-columns: 1fr;
       justify-items: center;
