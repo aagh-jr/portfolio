@@ -1,5 +1,5 @@
 ---
-title: SkinSavior
+title: Binu
 tagline: "A skincare experience designed to make everyday decisions clearer and more personal."
 role: "Co-creator: product strategy, design, research & build"
 tags:
@@ -8,8 +8,8 @@ tags:
   - Health & Wellness
 order: 0
 status: live
-href: /projects/skin-savior
+href: /projects/binu
 variant: image
-coverImage: /uploads/skinsavior-cover.svg
+coverImage: /uploads/binu-cover.jpg
 coverFit: cover
 ---
