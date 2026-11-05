@@ -403,6 +403,21 @@ const pose = (i: number, side: number) => {
       scrollTo({ top: scrollY + box.top + run * at, behavior: "smooth" });
     });
 
+    // Keyboard: a link on a card lower in the pile would take focus out of
+    // sight (the Experience note's Email, LinkedIn and GitHub sit under the
+    // other notes). Focusing into a card scrolls to where its layer is on top,
+    // the same spot a click lands on.
+    root.addEventListener("focusin", (e) => {
+      if (narrow.matches) return;
+      const card = (e.target as Element).closest<HTMLElement>(".card");
+      const i = card ? [...card.parentElement!.children].indexOf(card) : -1;
+      if (i < 0) return;
+      const box = root.getBoundingClientRect();
+      const run = Math.max(1, box.height - innerHeight);
+      const at = (i + 0.45) / (n + 0.8);
+      scrollTo({ top: scrollY + box.top + run * at, behavior: "auto" });
+    });
+
     setMode();
     narrow.addEventListener("change", setMode);
     addEventListener("scroll", queue, { passive: true });
