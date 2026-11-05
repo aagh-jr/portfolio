@@ -17,8 +17,10 @@ export default defineConfig({
   integrations: [
     react(),
     // Scratch and draft pages stay out of search: /book-test,
-    // /zine-test and /board-test (3D viewers) and /projects/cabrillo-design (design-first
-    // case study draft).
+    // /zine-test and /board-test (3D viewers), the /previews-* stageshow
+    // scratch pages (all noindex), /projects/cabrillo-design (design-first
+    // case study draft) and /projects/binu (noindex until its placeholders
+    // are filled).
     sitemap({
       filter: (page) =>
         !page.includes('/book-test') &&
@@ -26,7 +28,7 @@ export default defineConfig({
         !page.includes('/board-test') &&
         !page.includes('/cabrillo-design') &&
         !page.includes('/projects/binu') &&
-        !page.includes('/previews-test'),
+        !page.includes('/previews-'),
     }),
   ],
   vite: {
