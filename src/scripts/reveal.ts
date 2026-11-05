@@ -27,9 +27,11 @@ const prefersReduced = () =>
  * Scroll-triggered reveals: any element tagged `data-reveal` fades/slides up
  * as it enters the viewport. Optional `data-reveal-delay` (seconds) and
  * `data-reveal-y` (px, default 24) tune the motion.
+ * Skips anything inside a preview stage (.ss-stage): the stageshow kit uses
+ * its own `data-reveal` attribute (Collapse) and runs its own fades.
  */
 function initScrollReveals() {
-  const els = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+  const els = gsap.utils.toArray<HTMLElement>("[data-reveal]:not(.ss-stage *)");
   els.forEach((el) => {
     const delay = parseFloat(el.dataset.revealDelay || "0");
     const y = parseFloat(el.dataset.revealY || "24");

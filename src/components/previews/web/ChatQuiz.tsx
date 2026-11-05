@@ -1,3 +1,8 @@
+// PORTFOLIO PREVIEW: Binu chat quiz. Animated faux UI for the portfolio case
+// study, rebuilt from apps/web; not app code and never imported by it.
+// Exports: QuizPage (full width, 1440 × 757); QuizTile, QuizSectionTile, QuizNeedsTile, QuizSavedTile (480 × 322); QuizNeedsPhone, QuizSectionPhone (358 × 520).
+// Status: DONE, wired into the case study. Workspace guide: design/portfolio-previews/HANDOFF.md
+
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Stage } from '../../stageshow/kit/stage'
 import { Window } from '../../stageshow/kit/window'
@@ -372,7 +377,7 @@ type Spec = {
   script: (a: Act<S>) => Promise<void>
   anchor: 'reply' | 'foot'
   fractionOf: (live: number) => number
-  size: 'row' | 'tile'
+  size: 'row' | 'tile' | 'phone'
   rest: { wide: { x: number; y: number }; compact: { x: number; y: number } }
   cursor?: boolean
 }
@@ -380,13 +385,16 @@ type Spec = {
 function QuizStage({ spec, className }: { spec: Spec; className: string }) {
   const box = useRef<HTMLDivElement>(null)
   const row = spec.size === 'row'
-  const narrow = useNarrow(box, row ? 600 : 420)
+  // 'phone' is the phone design at any width (the full-page phone size).
+  const phone = spec.size === 'phone'
+  const below = phone ? Number.MAX_SAFE_INTEGER : row ? 600 : 420
+  const narrow = useNarrow(box, below)
   return (
     <div ref={box}>
       <Stage<S>
         width={row ? 1440 : 480}
         height={row ? 757 : 322}
-        compact={{ below: row ? 600 : 420, width: 358, height: row ? 520 : 330 }}
+        compact={{ below, width: 358, height: row || phone ? 520 : 330 }}
         initial={spec.initial}
         poster={spec.poster}
         script={spec.script}
@@ -582,4 +590,16 @@ const SAVED: Spec = {
 
 export function QuizSavedTile() {
   return <QuizStage spec={SAVED} className="cq--tile" />
+}
+
+// ── Phones: the same moments on the phone design, 358 × 520 ────────────────
+// QuizNeedsPhone: skin profiled one need at a time (the NEEDS beats).
+// QuizSectionPhone: "Prefer not to say", then on to "Your routine" (SECTION).
+
+export function QuizNeedsPhone() {
+  return <QuizStage spec={{ ...NEEDS, size: 'phone' }} className="cq--phone cq--foot" />
+}
+
+export function QuizSectionPhone() {
+  return <QuizStage spec={{ ...SECTION, size: 'phone' }} className="cq--phone" />
 }

@@ -1,3 +1,4 @@
+/* PORTFOLIO PREVIEW: styles for HomeSearchPage.tsx. Not app code. */
 /* Binu's signed-in home at the app's own sizes (app/home/page.tsx,
    HomeSearchView, SearchDropdown, HomeRoutineSummary, SiteNavView; Tailwind
    values written out in px). Scoped under .hs; palette tokens from binu.css. */
@@ -248,7 +249,7 @@
   & .hs-routine-links { display: flex; gap: 16px; font-size: 14px; line-height: 20px; font-weight: 600; }
   & .hs-link { color: var(--hs-link); }
   & .hs-muted-link { color: var(--hs-muted); }
-  & .hs-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  & .hs-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
   & .hs-col { padding: 16px; border: 1px solid var(--hs-line); border-radius: 20px; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); }
   & .hs-col-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; padding: 0 4px; }
   & .hs-col-title { font-size: 15px; line-height: 1.5; font-weight: 600; }
@@ -267,7 +268,7 @@
     & .hs-main { padding: 144px 24px 40px; }
     & .hs-h1 { font-size: 36px; text-wrap: balance; }
     & .hs-routine-title { font-size: 24px; }
-    & .hs-cols { grid-template-columns: 1fr; }
+    & .hs-cols { grid-template-columns: minmax(0, 1fr); }
   }
 }
 

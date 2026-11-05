@@ -1,3 +1,4 @@
+/* PORTFOLIO PREVIEW: styles for ChatQuiz.tsx. Not app code. */
 /* Binu's chat quiz at the app's own sizes (ChatQuizView, ChatBubbles,
    ChatChoices, QuizProgress; Tailwind values written out in px). Scoped
    under .cq; the palette tokens come from binu.css. */
@@ -234,3 +235,5 @@
    where the stage does */
 .cq .cq-phone .cq-body { flex: none; height: var(--cq-phone-body, 600px); }
 .cq.cq--tile .cq-phone { --cq-phone-body: 290px; }
+/* The phone exports clip at 520: the body ends at the stage foot, so a foot-pinned thread shows its newest turn */
+.cq.cq--phone .cq-phone { --cq-phone-body: 398px; }

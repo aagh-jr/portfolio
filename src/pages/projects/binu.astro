@@ -1,5 +1,6 @@
 ---
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import BeforeAfter from "../../components/case/BeforeAfter.astro";
 import Card from "../../components/case/Card.astro";
 import DataTable from "../../components/case/DataTable.astro";
 import Pill from "../../components/case/Pill.astro";
@@ -7,13 +8,13 @@ import Placeholder from "../../components/case/Placeholder.astro";
 import PullQuote from "../../components/case/PullQuote.astro";
 import SectionLabel from "../../components/case/SectionLabel.astro";
 import WorkflowCarousel, { type Step } from "../../components/case/WorkflowCarousel.astro";
-import { GradeTile } from "../../components/previews/EvidenceGrade";
 import { EvidenceHero } from "../../components/previews/EvidenceHero";
 import { ClaimRowsStill } from "../../components/previews/ClaimRowsStill";
-import { ClaimTile } from "../../components/previews/ProductClaim";
-import { ExplanationTile } from "../../components/previews/PlainExplanation";
-import { ResearchTile } from "../../components/previews/UnderlyingResearch";
-import { QuizPage, QuizTile, QuizNeedsTile, QuizSectionTile, QuizSavedTile } from "../../components/previews/web/ChatQuiz";
+import { QuizPage, QuizNeedsPhone, QuizSectionPhone } from "../../components/previews/web/ChatQuiz";
+import { ProductPage } from "../../components/previews/web/ProductPage";
+import { ForYouPage } from "../../components/previews/web/ForYouPage";
+import { HomeSearchPage } from "../../components/previews/web/HomeSearchPage";
+import { RoutinePage } from "../../components/previews/web/RoutinePage";
 import { AddLinkTile, AddResultsTile } from "../../components/previews/AddByUrl";
 import { SearchLoadingTile, SearchEmptyTile } from "../../components/previews/SearchStates";
 import styles from "../../cases/binu-styles.css?raw";
@@ -277,12 +278,14 @@ const workflow: Step[] = [
           </div>
           <p class="cs-body cs-grow">A grade alone isn't enough. The experience explains what the grade means, shows the reasoning in plain language and gives people a path to the underlying research without overwhelming them.</p>
         </div>
-        <div class="cs-row">
-          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Product page for a niacinamide serum: the brand's marketed benefits appear as two claim pills"><ClaimTile client:visible /></div>
-          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Evidence grade: the claim Minimizes pores fills three of four evidence bars, Moderate evidence"><GradeTile client:visible /></div>
-          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="An evidence card opens its Why this rating section, explaining a moderate grade in plain language"><ExplanationTile client:visible /></div>
-          <div class="cs-preview" style="--basis: 363px" role="img" aria-label="Binu pulls up the research behind a claim, then lists the studies with their type and journal"><ResearchTile client:visible /></div>
-        </div>
+        <figure class="cs-preview-figure">
+          <div role="img" aria-label="Product page for The Ordinary Niacinamide 10% + Zinc 1%: tapping Niacinamide in the ingredient list opens its card with its role, irritant rating, clashes, benefits, a plain-language description, what the research found, and the systematic review behind it"><ProductPage client:visible /></div>
+          <figcaption>Every ingredient opens to what it does, what the research found, and the paper behind it</figcaption>
+        </figure>
+        <figure class="cs-preview-figure">
+          <div role="img" aria-label="Routine page: a retinal serum is added to the routine, and the clash check flags one thing worth changing, a BHA liquid with the retinal serum, explains why, says what to do and names the ingredients responsible"><RoutinePage client:visible /></div>
+          <figcaption>Toxicity isn’t the only safety question: some ingredients irritate skin when they’re used together. The clash check flags those pairs from a list of documented interactions rather than an AI model, so the same routine always gets the same answer.</figcaption>
+        </figure>
       </div>
 
       <!-- D03 -->
@@ -312,24 +315,18 @@ const workflow: Step[] = [
         </figure>
         <div class="cs-row">
           <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Quiz question about breakouts; Now and then is tapped and lands as a reply, then the dark spots question is asked"><QuizTile client:visible /></div>
-            <figcaption>One question at a time</figcaption>
-          </figure>
-          <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Skin needs profiled one quiz question at a time: skin type, breakouts, dark spots and fine lines each get their own answer"><QuizNeedsTile client:visible /></div>
+            <div data-ss-fill role="img" aria-label="The quiz on a phone: skin is profiled one need at a time, skin type, breakouts, dark spots and fine lines each landing as their own answer"><QuizNeedsPhone client:visible /></div>
             <figcaption>Profiled as independent needs</figcaption>
           </figure>
-        </div>
-        <div class="cs-row">
           <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Prefer not to say is answered to the pregnancy question, and the progress moves on to Your routine"><QuizSectionTile client:visible /></div>
+            <div data-ss-fill role="img" aria-label="The quiz on a phone: Prefer not to say is answered to the pregnancy question, and the progress moves on to Your routine"><QuizSectionPhone client:visible /></div>
             <figcaption>&ldquo;Prefer not to say&rdquo; is always an answer</figcaption>
           </figure>
-          <figure class="cs-preview-figure" style="--basis: 363px">
-            <div class="cs-preview" role="img" aria-label="Completed skin profile: every section is done and the guide says the routine has been started"><QuizSavedTile client:visible /></div>
-            <figcaption>Completed skin profile</figcaption>
-          </figure>
         </div>
+        <figure class="cs-preview-figure">
+          <div role="img" aria-label="For You page with Serums selected: picks shown as bubbles sized by value, the Price view is on, and the top pick, The Ordinary Niacinamide 10% + Zinc 1%, is marked Great fit at $6.00 with a link to see why it suits you"><ForYouPage client:visible /></div>
+          <figcaption>The profile feeds For You: picks are described by fit, never a bare score, and each one explains why it suits you</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -378,10 +375,42 @@ const workflow: Step[] = [
         <Placeholder minHeight={220} caption="2. Design system in Figma">[Image: same component in Figma]</Placeholder>
         <Placeholder minHeight={220} caption="3. Back in code">[Image: live in the product]</Placeholder>
       </div>
-      <div class="cs-row">
-        <Placeholder basis={320} minHeight={220} caption="[1 line: why the search bar changed]">[Image or GIF: search bar before and after the liquid glass redesign]</Placeholder>
-        <Placeholder basis={320} minHeight={220} caption="Foundations: color, type, contrast and dark mode">[Image: foundations page with contrast and dark mode]</Placeholder>
-      </div>
+      <BeforeAfter
+        before="/previews/binu/product-before.jpg"
+        after="/previews/binu/product-after.jpg"
+        beforeAlt="Earlier SkinSavior product page for The Ordinary Niacinamide 10% + Zinc 1%: cream background, placeholder product image, price and a save button"
+        afterAlt="Current Binu product page for the same serum: real product photo, type, benefits, irritancy and conflict fields, add-to buttons and a buy link"
+        beforeLabel="Before the design system"
+        afterLabel="With the design system"
+        caption="Product page"
+      />
+      <BeforeAfter
+        before="/previews/binu/ingredients-before.jpg"
+        after="/previews/binu/ingredients-after.jpg"
+        beforeAlt="Earlier SkinSavior ingredients library: a grid of ingredient cards with function tags"
+        afterAlt="Current Binu ingredients page: a searchable list of every ingredient beside the selected ingredient's role, clashes, description and products that contain it"
+        beforeLabel="Before the design system"
+        afterLabel="With the design system"
+        caption="Ingredients"
+      />
+      <BeforeAfter
+        before="/previews/binu/quiz-before.jpg"
+        after="/previews/binu/quiz-after.jpg"
+        beforeAlt="Earlier SkinSavior quiz: a form with a progress bar asking what kind of skin you have, with four answer options"
+        afterAlt="Current Binu quiz: a chat with a section stepper; after you give your name, the guide asks what kind of skin you have, with the same four answers"
+        beforeLabel="Before the design system"
+        afterLabel="With the design system"
+        caption="Skin quiz"
+      />
+      <BeforeAfter
+        before="/previews/binu/search-before.jpg"
+        after="/previews/binu/search-after.jpg"
+        beforeAlt="Earlier SkinSavior product search for niacinamide: category chips above a grid of product cards"
+        afterAlt="Current Binu search results for niacinamide: a filter sidebar beside a grid of product cards"
+        beforeLabel="Before the design system"
+        afterLabel="With the design system"
+        caption="Search results"
+      />
     </section>
 
     <!-- BUILDING AND IMPLEMENTATION -->
@@ -412,7 +441,7 @@ const workflow: Step[] = [
 
       <div class="cs-split">
         <div class="cs-col">
-          <h3 class="cs-finding cs-finding--narrow">Each feature uses a model match to how offten it runed and how much reasoning it needs.</h3>
+          <h3 class="cs-finding">Each feature uses a model match to how offten it runed and how much reasoning it needs.</h3>
         </div>
       </div>
       <div class="cs-grid">
@@ -462,6 +491,10 @@ const workflow: Step[] = [
           </ul>
         </div>
       </div>
+      <figure class="cs-preview-figure">
+        <div role="img" aria-label="Signed-in home: Welcome back Maya, with the daily routine summarised under the search bar; typing niacinamide brings up matching serums from The Ordinary, Anua and Beauty of Joseon"><HomeSearchPage client:visible /></div>
+        <figcaption>Signed in, search sits on top of your routine</figcaption>
+      </figure>
       <div class="cs-row">
         <figure class="cs-preview-figure" style="--basis: 363px">
           <div class="cs-preview" role="img" aria-label="A product link is pasted into Binu's add-a-product field"><AddLinkTile client:visible /></div>

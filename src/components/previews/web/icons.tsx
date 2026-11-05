@@ -1,3 +1,4 @@
+// PORTFOLIO PREVIEW: icons shared by the previews. Not app code.
 // Lucide icons (ISC), inlined: lucide-react is not a portfolio dependency.
 // Generated from lucide-react 0.575.0; same props as lucide-react for the ones used.
 import { createElement, type SVGProps } from "react"

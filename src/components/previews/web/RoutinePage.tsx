@@ -1,3 +1,8 @@
+// PORTFOLIO PREVIEW: Binu routine page + clash check. Animated faux UI for the portfolio case
+// study, rebuilt from apps/web; not app code and never imported by it.
+// Exports: RoutinePage (full width, 1440 × 757); RoutineTile (480 × 322).
+// Status: DONE, not wired in. Workspace guide: design/portfolio-previews/HANDOFF.md
+
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Stage } from '../../stageshow/kit/stage'
 import { Window } from '../../stageshow/kit/window'
@@ -67,9 +72,9 @@ const ROW_ANCHORS: Anchors = {
   undo: { el: 'step-r', by: 104 },
 }
 const TILE_ANCHORS: Anchors = {
-  tStart: { el: 'hit', by: 0 },
-  tCheck: { el: 'finding', by: 22 },
-  tUndo: { el: 'step-r', by: 20 },
+  tStart: { el: 'picker', by: 24 },
+  tCheck: { el: 'check', by: 20 },
+  tUndo: { el: 'step-r', by: 24 },
 }
 
 // The page, scrolled by state so the poster can hold any position. Offsets
@@ -547,7 +552,7 @@ async function tileScript(a: Act<S>) {
 }
 
 const ROW_REST = { wide: { x: 1190, y: 560 }, compact: { x: 300, y: 470 } }
-const TILE_REST = { wide: { x: 410, y: 140 }, compact: { x: 300, y: 250 } }
+const TILE_REST = { wide: { x: 440, y: 298 }, compact: { x: 300, y: 300 } }
 
 export function RoutinePage() {
   return (
@@ -601,9 +606,9 @@ export function RoutineTile() {
               <Screen s={s} mode="mobile" anchors={TILE_ANCHORS} tile />
             </Phone>
           ) : (
-            <Window url="binu.app/routines/daily" urlShape="pill" className="rp-win">
+            <div className="rp-crop">
               <Screen s={s} mode="mobile" anchors={TILE_ANCHORS} tile />
-            </Window>
+            </div>
           )}
           <span data-target="rest" style={{ position: 'absolute', left: TILE_REST[layout].x, top: TILE_REST[layout].y }} />
           <span data-target="swipe" className="rp-swipe" />

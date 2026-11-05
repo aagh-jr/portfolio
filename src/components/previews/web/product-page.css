@@ -1,3 +1,4 @@
+/* PORTFOLIO PREVIEW: styles for ProductPage.tsx. Not app code. */
 /* Binu's product page (ProductPage.tsx). Sizes are the app's own Tailwind
    classes from skinsavior main; colors are app/globals.css. */
 
@@ -401,3 +402,6 @@
     & .pp-page[data-still] .pp-ingredients, &[data-still] .pp-ingredients { padding-top: 16px; }
   }
 }
+
+/* The tile's poster is its payoff: the card the press turned to niacinamide */
+.bwp-product .pp-page--tile[data-still] .pp-aside { display: none; }

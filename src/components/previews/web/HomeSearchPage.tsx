@@ -1,3 +1,8 @@
+// PORTFOLIO PREVIEW: Binu signed-in home + search. Animated faux UI for the portfolio case
+// study, rebuilt from apps/web; not app code and never imported by it.
+// Exports: HomeSearchPage (full width, 1440 × 757); HomeSearchTile (480 × 322).
+// Status: DONE, not wired in. Workspace guide: design/portfolio-previews/HANDOFF.md
+
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Stage } from '../../stageshow/kit/stage'
 import { Window } from '../../stageshow/kit/window'
@@ -269,7 +274,7 @@ function Routine() {
 function HomePage({ s, size }: { s: S; size: Size }) {
   return (
     <div className="hs-page" data-size={size} data-target="page">
-      <div className="hs-scroll" style={{ transform: `translateY(${-s.scroll}px)` }}>
+      <div className="hs-scroll" style={{ transform: `translateY(${size === 'xl' ? -s.scroll : 0}px)` }}>
         <div className="hs-main">
           <div className="hs-hero">
             <div className="hs-welcome">
@@ -385,14 +390,15 @@ function Shell({
   children: (s: S, layout: 'wide' | 'compact') => ReactNode
 }) {
   const box = useRef<HTMLDivElement>(null)
-  const narrow = useNarrow(box, 600)
+  const below = kind === 'tile' ? 420 : 600
+  const narrow = useNarrow(box, below)
   const poster: S = { focused: true, q: QUERY, sel: false, ready: true, hover: 'ordinary', scroll: scrollTo }
   return (
     <div ref={box}>
       <Stage<S>
         width={width}
         height={height}
-        compact={{ below: 600, width: 358, height: compactHeight }}
+        compact={{ below, width: 358, height: compactHeight }}
         initial={initial}
         poster={poster}
         script={pageScript(scrollTo)}

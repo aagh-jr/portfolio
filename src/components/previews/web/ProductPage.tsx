@@ -1,3 +1,8 @@
+// PORTFOLIO PREVIEW: Binu product page. Animated faux UI for the portfolio case
+// study, rebuilt from apps/web; not app code and never imported by it.
+// Exports: ProductPage (full width, 1440 × 757); ProductTile (480 × 322).
+// Status: DONE, not wired in. Workspace guide: design/portfolio-previews/HANDOFF.md
+
 import { useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Stage } from '../../stageshow/kit/stage'
 import { Window } from '../../stageshow/kit/window'
@@ -65,6 +70,9 @@ const CLAIMS = [
       'Randomized human trials involving 50 participants measured changes in sebum production and pore appearance after applying 2% niacinamide. While these studies observed changes in skin texture, most were funded by the industry, which can influence how results are reported. Consequently, the evidence supporting these findings is considered moderate.',
   },
 ]
+
+/** Image imports are strings in Vite and `{ src }` in Astro. */
+const src = (m: unknown) => (typeof m === 'string' ? m : (m as { src: string }).src)
 
 // ── Icons: the product's own artwork (apps/web/public/icons) ──────────────
 
@@ -183,7 +191,7 @@ function Identity() {
       <div className="pp-identity-grid">
         <div className="pp-left">
           <div className="pp-photo">
-            <img src={ordinaryNiac.src ?? (ordinaryNiac as unknown as string)} alt="" />
+            <img src={src(ordinaryNiac)} alt="" />
           </div>
           <p className="pp-caption">Add to</p>
           <div className="pp-tiles">

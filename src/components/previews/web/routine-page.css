@@ -1,3 +1,4 @@
+/* PORTFOLIO PREVIEW: styles for RoutinePage.tsx. Not app code. */
 /* The routine page, at the sizes apps/web renders it (Tailwind classes from
    app/routines/[id]/page.tsx, RoutineBuilder, RoutineCompatibility,
    SiteNavView and SiteFooter, converted to px). */
@@ -9,7 +10,11 @@
   &.bwp-routine--row .rp-phone { position: absolute; top: 16px; left: 16px; }
   /* Tile: a crop of the page itself, the window's bar and the sticky header
      above the stage's top edge */
-  &.bwp-routine--tile .rp-win { position: absolute; top: -38px; left: 20px; width: 440px; height: 420px; box-shadow: var(--ss-shadow-hero); }
+  /* Tile: a close-up of the page itself at 1:1 on the page's white, no
+     browser; what runs on past the foot fades out there */
+  &.bwp-routine--tile .ss-stage { background: #fff; }
+  &.bwp-routine--tile .rp-crop { position: absolute; inset: 0; }
+  &.bwp-routine--tile .rp-crop .rp-page { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 72px), transparent calc(100% - 8px)); mask-image: linear-gradient(to bottom, #000 calc(100% - 72px), transparent calc(100% - 8px)); }
   &.bwp-routine--tile .rp-phone { position: absolute; top: -57px; left: 16px; }
   & .rp-swipe { position: absolute; left: 60px; top: 160px; width: 240px; height: 300px; pointer-events: none; }
   &.bwp-routine--tile .rp-swipe { top: 40px; height: 240px; }
@@ -23,8 +28,22 @@
     font-family: var(--ss-font);
     -webkit-font-smoothing: antialiased;
   }
-  & .rp-phone .rp-page { position: absolute; inset: 0; }
+  /* Below the status bar, where the Phone's content box starts */
+  & .rp-phone .rp-page { position: absolute; inset: 62px 0 0; }
   & .rp-viewport { position: absolute; inset: 0; overflow: hidden; }
+  /* The header is clear, so scrolled text would read through it between the
+     pills; a still can't show it moving, so it fades out under the header */
+  &.bwp-routine--row .rp-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    height: 92px;
+    background: linear-gradient(#fff 64px, rgba(255, 255, 255, 0));
+    pointer-events: none;
+  }
   & .rp-doc { will-change: transform; }
   & .rp-doc[data-ease] { transition: transform 1s cubic-bezier(0.45, 0, 0.1, 1); }
   & .rp-navspace { height: 80px; }

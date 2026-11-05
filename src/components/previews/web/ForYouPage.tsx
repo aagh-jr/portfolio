@@ -1,3 +1,8 @@
+// PORTFOLIO PREVIEW: Binu For You page. Animated faux UI for the portfolio case
+// study, rebuilt from apps/web; not app code and never imported by it.
+// Exports: ForYouPage (full width, 1440 × 757); ForYouTile (480 × 322).
+// Status: DONE, not wired in. Workspace guide: design/portfolio-previews/HANDOFF.md
+
 import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { Stage } from '../../stageshow/kit/stage'
 import { Window } from '../../stageshow/kit/window'
@@ -369,22 +374,22 @@ function Page({ s, mode }: { s: S; mode: Mode }) {
 // ── stages ─────────────────────────────────────────────────────────────────
 
 /** Picks the phone design under 600px, for the touch cursor too. */
-function useNarrow(ref: React.RefObject<HTMLDivElement | null>) {
+function useNarrow(ref: React.RefObject<HTMLDivElement | null>, below: number) {
   const [narrow, setNarrow] = useState(false)
   useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
-    const check = () => setNarrow(el.getBoundingClientRect().width < 600)
+    const check = () => setNarrow(el.getBoundingClientRect().width < below)
     check()
     const ro = new ResizeObserver(check)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [ref])
+  }, [ref, below])
   return narrow
 }
 
 // How far each design scrolls to bring the picks up (page px)
-const PICKS_AT = { row: 180, rowPhone: 412, tile: 0 }
+const PICKS_AT = { row: 196, rowPhone: 398, tile: 0 }
 
 const rowInitial: S = { view: 'rec', sel: null, scroll: 0 }
 
@@ -485,14 +490,14 @@ const TILE: Spec = {
 
 function ForYouStage({ spec }: { spec: Spec }) {
   const box = useRef<HTMLDivElement>(null)
-  const narrow = useNarrow(box)
   const row = spec.size === 'row'
+  const narrow = useNarrow(box, row ? 600 : 420)
   return (
     <div ref={box}>
       <Stage<S>
         width={row ? 1440 : 480}
         height={row ? 757 : 322}
-        compact={{ below: 600, width: 358, height: row ? 520 : 330 }}
+        compact={{ below: row ? 600 : 420, width: 358, height: row ? 640 : 330 }}
         initial={spec.initial}
         poster={spec.poster}
         script={spec.script}
@@ -505,7 +510,7 @@ function ForYouStage({ spec }: { spec: Spec }) {
             {layout === 'compact' ? (
               <Phone width={326} className="fy-phone">
                 <div className="fy-zoom" data-tile={!row || undefined}>
-                  <Page s={row ? s : { ...s, scroll: PICKS_AT.rowPhone + 4 }} mode="phone" />
+                  <Page s={row ? (s.scroll === PICKS_AT.row ? { ...s, scroll: PICKS_AT.rowPhone } : s) : { ...s, scroll: PICKS_AT.rowPhone + 4 }} mode="phone" />
                 </div>
               </Phone>
             ) : row ? (

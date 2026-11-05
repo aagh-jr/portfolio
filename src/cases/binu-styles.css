@@ -111,6 +111,10 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; }
 .cs-preview { height: 322px; min-width: 0; }
 .cs-preview-figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .cs-preview-figure figcaption { font-size: 13px; color: var(--cs-muted); }
+/* A stage renders at its design size (1440 wide) until it hydrates on scroll
+   and scales to fit; clip it to its slot so it can't widen the page meanwhile.
+   The stage already clips its own contents, so nothing visible is lost. */
+.ss-fit { overflow: clip; }
 
 /* A wrapping row of tiles; each child sets its own basis with --basis */
 .cs-row { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -138,8 +142,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; }
 .cs-h2 { font-family: var(--cs-font-display); font-weight: 700; font-size: 30px; line-height: 1.1; }
 .cs-h2--lg { font-size: 36px; }
 .cs-h3 { font-family: var(--cs-font-display); font-weight: 700; font-size: 30px; line-height: 1.15; }
-/* The Geist headline that states a finding */
-.cs-finding { font-size: 30px; font-weight: 600; }
+/* The headline that states a finding: the same rounded display face as every other title */
+.cs-finding { font-family: var(--cs-font-display); font-size: 30px; font-weight: 700; line-height: 1.15; }
 .cs-prose { display: flex; flex-direction: column; gap: 16px; font-size: 17px; line-height: 1.65; color: var(--cs-prose); }
 .cs-prose--loose { gap: 20px; }
 .cs-ph-title { font-size: 18px; font-weight: 500; color: var(--cs-ink); text-align: start; }
@@ -281,7 +285,6 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; }
 .cs-step-name { font-size: 20px; font-weight: 500; }
 .cs-step-body { font-size: 15px; line-height: 1.55; color: var(--cs-soft); }
 .cs-pipeline .cs-step-foot { display: flex; justify-content: flex-end; }
-.cs-finding--narrow { max-width: 18em; }
 .cs-todo {
   font-size: 15px;
   line-height: 1.6;
