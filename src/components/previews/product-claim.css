@@ -1,0 +1,159 @@
+/* Binu "Product summary" preview. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette) and
+   components/products/ProductIdentityView.tsx (Tailwind classes -> px). */
+
+/* The product's serif (next/font Newsreader, latin, normal, 200-800),
+   copied from the product's build. Own family name so it can't collide. */
+@font-face {
+  font-family: 'Binu Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/previews/binu/newsreader-latin.woff2') format('woff2');
+}
+
+.pc-host {
+  width: 100%;
+  height: 100%;
+}
+
+.pc {
+  --pc-ground: #eaf1fe; /* --secondary / --accent: same tile ground as GradeTile */
+  --pc-white: #ffffff; /* --background */
+  --pc-tan: #dee3e9; /* --soft-tan, hairline */
+  --pc-ink: #12181f; /* --ink */
+  --pc-faint: #5b6472; /* --faint */
+  --pc-secondary: #eaf1fe; /* --secondary, BenefitPill fill */
+  --pc-arrive: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.pc .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--pc-ground);
+  border-radius: 20px;
+  color: var(--pc-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pc dl,
+.pc dd,
+.pc p {
+  margin: 0;
+}
+
+/* The product page (white), pinned to the tile, off the right and foot */
+.pc .pc-page {
+  position: absolute;
+  left: 32px;
+  top: 32px;
+  right: 32px;
+  bottom: -32px; /* same inset as GradeTile beside it */
+  box-sizing: border-box;
+  padding: 24px 28px 0;
+  overflow: hidden;
+  background: var(--pc-white);
+  border: 1px solid var(--pc-tan);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* product: gap-[30px]; tightened to fit the tile */
+}
+.pc .pc-page[data-narrow] {
+  left: 20px;
+  right: 20px;
+  top: 20px;
+  padding: 22px 20px 0;
+}
+
+/* text-[11px] font-medium uppercase text-faint, gap-2, "•" between */
+.pc .pc-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: var(--pc-faint);
+}
+
+/* font-serif text-[38px] font-medium leading-[1.1] */
+.pc .pc-name {
+  font-family: 'Binu Newsreader', 'Newsreader', ui-serif, Georgia, serif;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--pc-ink);
+}
+
+/* grid grid-cols-2 gap-x-6 gap-y-5 */
+.pc .pc-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: start;
+}
+.pc .pc-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+/* text-xs font-normal uppercase leading-4 tracking-[0.3px] text-faint */
+.pc .pc-field dt {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--pc-faint);
+}
+/* text-base leading-6 text-ink */
+.pc .pc-field dd {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--pc-ink);
+}
+
+/* BenefitPill: inline-flex h-[25px] rounded-[7px] border
+   border-[rgba(147,186,189,0.5)] bg-secondary px-3 text-xs leading-4 */
+.pc .pc-pills {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.pc .pc-pill {
+  display: inline-flex;
+  height: 25px;
+  box-sizing: border-box;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid rgba(147, 186, 189, 0.5);
+  border-radius: 7px;
+  background: var(--pc-secondary);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--pc-ink);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 360ms ease, transform 560ms var(--pc-arrive);
+  will-change: transform;
+}
+.pc .pc-pill[data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Filler for the row off the foot: a value-height bar in the hairline tone */
+.pc .pc-bar {
+  max-width: 100%;
+  display: block;
+  height: 10px;
+  margin: 7px 0;
+  border-radius: 5px;
+  background: var(--pc-tan);
+}

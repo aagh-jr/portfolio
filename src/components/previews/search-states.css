@@ -1,0 +1,316 @@
+/* Binu search states preview. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette),
+   components/home/HomeSearchView.tsx and SearchDropdown.tsx (Tailwind → px),
+   motion from packages/motion-tokens (spring.drop, stagger.dropdown). */
+
+.sst-host {
+  width: 100%;
+  height: 100%;
+}
+
+.sst {
+  --sst-ground: #f5f7fa; /* --cream / --muted: the page around the search */
+  --sst-white: #ffffff; /* --background */
+  --sst-cream: #f5f7fa; /* --cream: ProductThumb fallback */
+  --sst-border: #dee3e9; /* --border / --soft-tan */
+  --sst-ink: #12181f; /* --ink */
+  --sst-faint: #5b6472; /* --faint / --muted-foreground */
+  --sst-link: #2f6fed; /* --link */
+  --sst-secondary: #eaf1fe; /* --secondary */
+  --sst-send: rgba(167, 202, 237, 0.75); /* --send at 75% */
+  --sst-send-border: #b8c3cd; /* --send-border */
+  --sst-enter: cubic-bezier(0.2, 0, 0, 1); /* ease.enter */
+  /* spring.drop (stiffness 500, damping 22): a few px of overshoot, settles */
+  --sst-drop: cubic-bezier(0.3, 1.25, 0.45, 1);
+}
+
+.sst .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--sst-ground);
+  border-radius: 20px;
+  color: var(--sst-ink);
+  font-family: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sst ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sst .sst-scene {
+  padding: 24px 24px 0;
+}
+.sst .sst-scene[data-narrow] {
+  padding: 16px 16px 0;
+}
+
+/* Close-up for the empty tile: scale the whole scene, layout untouched. */
+.sst .sst-zoom {
+  width: calc(100% / var(--z, 1));
+  transform: scale(var(--z, 1));
+  transform-origin: 0 0;
+}
+.sst--empty .sst-scene {
+  padding: 34px 20px 0;
+}
+.sst--empty .sst-scene[data-narrow] {
+  padding: 52px 16px 0;
+}
+
+/* ── HomeSearchView ── */
+
+.sst .sst-search {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* gap-2.5 */
+}
+
+.sst .sst-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px; /* h-16 */
+  padding: 6px; /* p-1.5 */
+  box-sizing: border-box;
+  border: 1px solid var(--sst-border);
+  border-radius: 999px;
+  background: var(--sst-white);
+}
+
+.sst .sst-mode {
+  flex: none;
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid var(--sst-border);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sst .sst-mode img {
+  display: block;
+}
+
+.sst .sst-input {
+  flex: 1;
+  min-width: 0;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+.sst .sst-q {
+  color: var(--sst-ink);
+}
+.sst .sst-ph {
+  color: var(--sst-faint);
+  overflow: hidden;
+  text-overflow: clip;
+}
+.sst .sst-caret {
+  flex: none;
+  width: 1px;
+  height: 18px;
+  margin-left: 1px;
+  background: var(--sst-ink);
+  animation: sst-blink 1s steps(1) infinite;
+}
+.sst .sst-ph + .sst-caret {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin: -9px 0 0;
+}
+@keyframes sst-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.sst .sst-send {
+  flex: none;
+  width: 70px;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid var(--sst-send-border);
+  border-radius: 999px;
+  background: var(--sst-send);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sst .sst-send img {
+  display: block;
+  transform: rotate(90deg);
+}
+
+.sst .sst-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 7px;
+}
+.sst .sst-chip {
+  border: 1px solid var(--sst-border);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sst-faint);
+}
+.sst .sst-chip[data-active] {
+  color: var(--sst-ink);
+}
+
+/* ── SearchDropdown ── */
+
+.sst .sst-panel {
+  margin-top: 8px; /* mt-2 */
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid var(--sst-border);
+  border-radius: 16px; /* rounded-2xl */
+  background: var(--sst-white);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+  transition: height 380ms var(--sst-drop);
+}
+.sst .sst-panel:not([data-open]) {
+  visibility: hidden;
+  transition: height 150ms cubic-bezier(0.4, 0, 1, 1), visibility 0s 150ms;
+}
+
+.sst .sst-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px; /* px-5 py-3 */
+  border-bottom: 1px solid var(--sst-border);
+}
+.sst .sst-list > .sst-row:last-child {
+  border-bottom: 0;
+}
+
+/* Skeleton rows: animate-pulse on bg-secondary */
+.sst .sst-sk {
+  display: block;
+  background: var(--sst-secondary);
+  animation: sst-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.sst .sst-sk-thumb {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+}
+.sst .sst-sk-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sst .sst-sk-name {
+  width: 66.667%;
+  height: 12px;
+  border-radius: 4px;
+}
+.sst .sst-sk-meta {
+  width: 33.333%;
+  height: 10px;
+  border-radius: 4px;
+}
+@keyframes sst-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Results: rows fade in top to bottom (stagger.dropdown: 30ms) */
+.sst .sst-hit {
+  animation: sst-fade 250ms var(--sst-enter) both;
+  animation-delay: calc(80ms + var(--i) * 30ms);
+}
+@keyframes sst-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.sst .sst-thumb {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--sst-cream);
+  color: var(--sst-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sst .sst-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sst .sst-name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.54;
+  color: var(--sst-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sst .sst-meta {
+  font-size: 11px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sst-link);
+}
+.sst .sst-all {
+  display: block;
+  padding: 10px 20px;
+  background: var(--sst-secondary);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--sst-link);
+}
+
+.sst .sst-empty {
+  padding: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--sst-faint);
+}
+.sst .sst-empty strong {
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sst .sst-sk,
+  .sst .sst-caret {
+    animation: none;
+  }
+}
+
+/* Loading tile: the long panel runs off the tile's foot; fade the last
+   ~70px so the third result dissolves instead of being sliced. */
+.sst--loading .sst-panel[data-open] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(322px - 157px - 72px), transparent calc(322px - 157px));
+  mask-image: linear-gradient(to bottom, #000 calc(322px - 157px - 72px), transparent calc(322px - 157px));
+}
+.sst--loading .sst-scene[data-narrow] .sst-panel[data-open] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(322px - 176px - 28px), transparent calc(322px - 176px));
+  mask-image: linear-gradient(to bottom, #000 calc(322px - 176px - 28px), transparent calc(322px - 176px));
+}

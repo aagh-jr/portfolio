@@ -21,3 +21,9 @@ npm-debug.log*
 
 # disk images
 *.dmg
+
+# local scratch
+start-profile/
+*.mp4
+aboutclick.png
+start.png

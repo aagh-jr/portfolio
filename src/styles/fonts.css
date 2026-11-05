@@ -23,6 +23,17 @@
 @import "@fontsource/hanken-grotesk/600.css";
 @import "@fontsource/hanken-grotesk/700.css";
 
+/* Geist — body text on the Binu case study. */
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/600.css";
+
+/* Nunito — the Binu case study's rounded headings where ui-rounded
+   (SF Pro Rounded) isn't available. */
+@import "@fontsource/nunito/600.css";
+@import "@fontsource/nunito/700.css";
+@import "@fontsource/nunito/800.css";
+
 /* Space Grotesk (self-hosted variable font, weights 300–700) — nav links and
    brand wordmark in the shared site header. */
 @font-face {
@@ -79,3 +90,4 @@
   font-weight: 500;
   src: local("SF Compact Rounded Medium"), local("SFCompactRounded-Medium");
 }
+

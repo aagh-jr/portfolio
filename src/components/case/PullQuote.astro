@@ -1,0 +1,53 @@
+---
+import Kicker from "./Kicker.astro";
+
+// A big rounded quote across the full width, with an optional kicker above.
+export interface Props {
+  label?: string;
+  /** Grey aside after the label, on the same line. */
+  sub?: string;
+  /** No kicker: the quote sits flush under the text above it and leaves a
+   *  wider gap below. */
+  bare?: boolean;
+}
+const { label, sub, bare = false } = Astro.props;
+---
+
+<figure class:list={["pull-quote", { bare }]}>
+  {
+    label && (
+      <Kicker as="figcaption">
+        {label}
+        {sub && <>&nbsp;<span class="sub">{sub}</span></>}
+      </Kicker>
+    )
+  }
+  <blockquote><slot /></blockquote>
+</figure>
+
+<style>
+  .pull-quote {
+    flex: 1 1 100%;
+    width: 100%;
+    margin: 56px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .pull-quote.bare {
+    margin: 0 0 152px;
+  }
+  .sub {
+    font-size: 14px;
+    color: var(--cs-soft);
+  }
+  blockquote {
+    margin: 0;
+    font-family: var(--cs-font-display);
+    font-weight: 700;
+    font-size: clamp(30px, 7vw, 40px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--cs-ink);
+  }
+</style>

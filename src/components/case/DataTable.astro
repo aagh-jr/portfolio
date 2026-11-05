@@ -1,0 +1,91 @@
+---
+import Kicker from "./Kicker.astro";
+
+// A captioned table in a rounded frame. Narrow screens scroll the frame
+// sideways, never the page; the frame takes focus so the keyboard can too.
+// Slot in <thead> and <tbody>; mark our own row with class="is-ours".
+export interface Props {
+  id: string;
+  caption?: string;
+  /** Two-column "what we heard / what it changed": a rule between columns,
+   *  top-aligned cells. */
+  divided?: boolean;
+}
+const { id, caption, divided = false } = Astro.props;
+const captionId = `${id}-caption`;
+---
+
+<div class="data-table">
+  {caption && <Kicker id={captionId}>{caption}</Kicker>}
+  <div class="frame" role="region" aria-label={caption ? undefined : "Data table"} aria-labelledby={caption ? captionId : undefined} tabindex="0">
+    <table class:list={{ divided }}>
+      <slot />
+    </table>
+  </div>
+</div>
+
+<style>
+  .data-table {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .frame {
+    overflow-x: auto;
+    border-radius: 20px;
+    border: 1px solid var(--cs-rule);
+  }
+  .frame:focus-visible {
+    outline: 2px solid var(--cs-link);
+    outline-offset: 3px;
+  }
+  table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  table :global(thead tr) {
+    background: var(--cs-sunken);
+  }
+  table :global(th) {
+    text-align: left;
+    padding: 14px 20px;
+    font-weight: 500;
+    color: var(--cs-soft);
+  }
+  table :global(td) {
+    padding: 14px 20px;
+  }
+  table :global(tbody tr) {
+    border-top: 1px solid var(--cs-rule-soft);
+  }
+  table :global(td:nth-child(2)) {
+    color: var(--cs-soft);
+  }
+  table :global(td:nth-child(3)) {
+    color: var(--cs-muted);
+  }
+  table :global(tr.is-ours) {
+    background: var(--cs-green);
+  }
+  table :global(tr.is-ours td) {
+    font-weight: 600;
+    color: var(--cs-ink);
+  }
+  table :global(tr.is-ours td:nth-child(3)) {
+    color: var(--cs-strong-ink);
+  }
+  .divided {
+    line-height: 1.55;
+  }
+  .divided :global(td) {
+    vertical-align: top;
+  }
+  .divided :global(td:first-child) {
+    width: 50%;
+  }
+  .divided :global(:is(th, td) + :is(th, td)) {
+    border-left: 1px solid var(--cs-rule);
+  }
+</style>

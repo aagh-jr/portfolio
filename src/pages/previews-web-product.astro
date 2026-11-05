@@ -1,0 +1,39 @@
+---
+// Scratch page for the product page previews: the full-width row (976 wide
+// at 1440) and the 480 x 322 tile grid of the Binu case study.
+import { ProductPage, ProductTile } from "../components/previews/web/ProductPage";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Product page previews</title>
+    <style>
+      body { margin: 0; background: #fff; font-family: system-ui, sans-serif; color: #16181a; }
+      main { max-width: 976px; margin: 0 auto; padding: 48px 20px 96px; display: flex; flex-direction: column; gap: 48px; }
+      h2 { font-size: 15px; font-weight: 500; color: #5e6368; margin: 0 0 12px; }
+      .units { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 322px; gap: 16px; }
+      .unit { border: 1.5px dashed #c9cbc6; border-radius: 20px; background: #f8f8f6; }
+      @media (max-width: 679px) {
+        .units { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; }
+        .units > .unit { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h2>Product page, full row</h2>
+        <div class="row" id="row"><ProductPage client:visible /></div>
+      </section>
+      <section>
+        <h2>Ingredient split, 1×1</h2>
+        <div class="units">
+          <div id="tile"><ProductTile client:visible /></div>
+          <div class="unit"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

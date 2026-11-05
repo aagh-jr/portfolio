@@ -1,0 +1,407 @@
+/* PORTFOLIO PREVIEW: styles for ProductPage.tsx. Not app code. */
+/* Binu's product page (ProductPage.tsx). Sizes are the app's own Tailwind
+   classes from skinsavior main; colors are app/globals.css. */
+
+.bwp-product {
+  & .ss-stage {
+    --pp-ink: #12181f;
+    --pp-faint: #5b6472;
+    --pp-line: #dee3e9;
+    --pp-cream: #f5f7fa;
+    --pp-link: #2f6fed;
+    --pp-secondary: #eaf1fe;
+    --pp-sage: #159a6b;
+    --pp-sage-bg: #e7f6ef;
+    --pp-serif: 'Newsreader', ui-serif, Georgia, serif;
+    color: var(--pp-ink);
+    background: var(--ss-well);
+  }
+
+  /* Frames: a 48px gutter top and sides at 1440, off the bottom */
+  & .pp-win { position: absolute; background: #fff; box-shadow: var(--ss-shadow-hero); }
+  &.bwp-product--row .pp-win { top: 48px; left: 48px; width: 1344px; height: 760px; }
+  &.bwp-product--tile .pp-win { top: 24px; left: 24px; width: 432px; height: 340px; }
+  & .pp-phone { position: absolute; top: 16px; left: 16px; }
+
+  & .pp-scroll { position: absolute; inset: 0; }
+  & .ss-phone__content .pp-scroll { position: relative; inset: auto; height: 100%; }
+  /* A browser page doesn't fade at its edges; the sticky nav stays crisp */
+  & .pp-scroll > .ss-scroll[data-scrolled] { mask-image: none; }
+
+  & .pp-page {
+    position: relative;
+    background: #fff;
+    font-family: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--pp-ink);
+  }
+  & .pp-page p { margin: 0; }
+  & .pp-page dl, & .pp-page dd { margin: 0; }
+  & .pp-page ul { margin: 0; padding: 0; list-style: none; }
+
+  /* mx-auto max-w-[1440px] px-6 md:px-14 lg:px-[76px] */
+  & .pp-container { padding-left: 76px; padding-right: 76px; }
+
+  /* ── SiteNavView: sticky, transparent, glass pills ─────────────────── */
+  & .pp-glass {
+    border: 1px solid var(--pp-line);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+  }
+  & .pp-nav {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 80px;
+    padding: 0 32px;
+  }
+  & .pp-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 8px 20px;
+    border-color: rgba(108, 108, 108, 0.15);
+    border-radius: 20px;
+    height: 50px;
+    box-sizing: border-box;
+  }
+  & .pp-wordmark {
+    font-family: var(--pp-serif);
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--pp-ink);
+  }
+  & .pp-links { display: flex; gap: 24px; font-size: 14px; line-height: 20px; color: var(--pp-faint); white-space: nowrap; }
+  & .pp-nav-right { display: flex; align-items: center; gap: 12px; }
+  & .pp-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 330px;
+    height: 50px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--pp-faint);
+  }
+  & .pp-search svg { flex: none; }
+  & .pp-login {
+    display: inline-flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pp-ink);
+  }
+  & .pp-start {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 50px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: var(--pp-link);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* ── ProductIdentityView ───────────────────────────────────────────── */
+  & .pp-identity { padding-top: 20px; padding-bottom: 28px; }
+  & .pp-crumb { font-size: 11px; line-height: 16px; font-weight: 500; color: var(--pp-faint); }
+  & .pp-identity-grid {
+    display: grid;
+    grid-template-columns: 350px minmax(0, 1fr);
+    gap: 32px 64px;
+    align-items: start;
+    margin-top: 28px;
+  }
+  & .pp-left { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  & .pp-photo {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 2px solid rgba(222, 227, 233, 0.5);
+    border-radius: 36px;
+    background: #fff;
+  }
+  & .pp-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  & .pp-caption { font-size: 12px; line-height: 16px; letter-spacing: 0.3px; text-transform: uppercase; color: var(--pp-faint); }
+  & .pp-tiles { display: flex; flex-wrap: wrap; gap: 10px; }
+  & .pp-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 110px;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px solid var(--pp-line);
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pp-ink);
+  }
+  & .pp-tile svg { flex: none; display: block; }
+  & .pp-buy { display: flex; flex-direction: column; gap: 8px; }
+  & .pp-store {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc((100% - 24px) / 4);
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 1px solid var(--pp-line);
+    border-radius: 24px;
+    background: var(--pp-cream);
+  }
+  & .pp-fine { font-size: 11px; line-height: 16px; color: var(--pp-faint); }
+  & .pp-fine u { text-underline-offset: 2px; }
+
+  & .pp-right { display: flex; flex-direction: column; gap: 30px; min-width: 0; }
+  & .pp-brand { font-size: 11px; line-height: 16px; font-weight: 500; text-transform: uppercase; color: var(--pp-faint); }
+  & .pp-title {
+    font-family: var(--pp-serif);
+    font-size: 42px;
+    line-height: 1.1;
+    font-weight: 500;
+    color: var(--pp-ink);
+  }
+  & .pp-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 0; align-items: start; }
+  & .pp-fields > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  & .pp-fields dt { font-size: 12px; line-height: 16px; letter-spacing: 0.3px; text-transform: uppercase; color: var(--pp-faint); }
+  & .pp-fields dd { font-size: 16px; line-height: 24px; color: var(--pp-ink); }
+  & .pp-pills { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  & .pp-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 25px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    border: 1px solid rgba(147, 186, 189, 0.5);
+    border-radius: 7px;
+    background: var(--pp-secondary);
+    font-size: 12px;
+    line-height: 16px;
+  }
+  & .pp-sub { display: block; margin-top: 4px; font-size: 12px; line-height: 16px; color: var(--pp-faint); }
+  & .pp-link { color: var(--pp-link); text-decoration: underline; text-underline-offset: 2px; }
+  & .pp-desc { font-size: 18px; line-height: 1.6; }
+
+  /* ── EvidenceByClaim ───────────────────────────────────────────────── */
+  & .pp-evidence { padding-top: 40px; padding-bottom: 40px; }
+  & .pp-table {
+    margin: 24px;
+    overflow: hidden;
+    border: 1px solid var(--pp-line);
+    border-radius: 8px;
+    background: var(--pp-cream);
+  }
+  & .pp-cols { display: grid; grid-template-columns: 96px 160px 220px minmax(0, 1fr); gap: 32px; }
+  & .pp-thead {
+    padding: 12px 16px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.48px;
+    text-transform: uppercase;
+    color: var(--pp-faint);
+  }
+  & .pp-c { text-align: center; }
+  & .pp-page .pp-tbody {
+    overflow: hidden;
+    border: 1px solid var(--pp-line);
+    border-radius: 8px;
+    background: #fff;
+  }
+  & .pp-claim { align-items: start; padding: 16px; border-bottom: 1px solid var(--pp-line); }
+  & .pp-claim:last-child { border-bottom: 0; }
+  & .pp-claim-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    text-align: center;
+  }
+  & .pp-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--pp-ink);
+    color: #fff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  & .pp-claim-art { display: block; flex: none; }
+  & .pp-strength { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 80px; }
+  & .pp-bars { display: flex; align-items: flex-end; gap: 4px; height: 32px; }
+  & .pp-bars span { width: 15px; border-radius: 3px; background: var(--pp-line); }
+  & .pp-bars span[data-on] { background: var(--pp-sage); }
+  & .pp-grade { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+  & .pp-bubbles { display: flex; flex-wrap: wrap; gap: 4px; }
+  & .pp-bubble {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background: var(--pp-sage-bg);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  & .pp-summary { font-size: 14px; line-height: 20px; color: var(--pp-faint); }
+
+  /* ── ProductProfileSplit + IngredientCardView ──────────────────────── */
+  & .pp-ingredients { padding-top: 40px; padding-bottom: 80px; min-height: 1024px; box-sizing: border-box; }
+  & .pp-split { display: grid; grid-template-columns: 350px minmax(0, 1fr); gap: 48px; align-items: start; }
+  & .pp-aside { position: sticky; top: 112px; padding-top: 12px; }
+  & .pp-h2 { font-family: var(--pp-serif); font-size: 28px; line-height: 1.5; font-weight: 500; }
+  & .pp-page .pp-inci { margin-top: 20px; font-size: 18px; line-height: 27px; font-weight: 500; color: var(--pp-link); }
+  & .pp-inci-item {
+    border-radius: 2px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  }
+  & .pp-inci-item[data-hl] { color: var(--pp-ink); }
+  & .pp-inci-item[data-on] { color: var(--pp-ink); text-decoration-color: currentColor; }
+  & .pp-comma { font-weight: 500; color: var(--pp-link); }
+
+  & .pp-card { display: flex; flex-direction: column; min-width: 0; overflow-x: clip; border-radius: 12px; background: #fff; }
+  & .pp-card-top { display: flex; flex-direction: column; gap: 12px; padding: 12px 24px 20px; border-bottom: 1px solid var(--pp-line); }
+  & .pp-card-name {
+    margin: 0 -24px;
+    padding: 0 24px 8px;
+    border-bottom: 1px solid var(--pp-line);
+    font-family: var(--pp-serif);
+    font-size: 28px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.28px;
+  }
+  & .pp-rows { display: flex; flex-direction: column; gap: 12px; }
+  & .pp-row { display: flex; align-items: center; }
+  & .pp-row dt { flex: none; width: 100px; font-size: 14px; line-height: 20px; color: var(--pp-faint); }
+  & .pp-row dd { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+  & .pp-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border: 1px solid var(--pp-line);
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  & .pp-chip[data-tone='primary'] { background: var(--pp-secondary); color: var(--pp-link); }
+  & .pp-chip[data-tone='good'] { background: var(--pp-sage-bg); color: var(--pp-sage); }
+  & .pp-chip[data-tone='neutral'] { background: #f3f4f6; color: var(--pp-faint); }
+  & .pp-muted { color: var(--pp-faint); }
+  & .pp-row .pp-muted { display: block; font-size: 13px; line-height: 20px; white-space: nowrap; }
+  & .pp-benefits { display: flex; gap: 12px; }
+  & .pp-benefit { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--pp-faint); white-space: nowrap; }
+  & .pp-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--pp-secondary);
+    color: var(--pp-link);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  & .pp-lower { display: grid; }
+  & .pp-layer {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  & .pp-layer[data-on] { opacity: 1; transition: opacity 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0.15s; }
+  & .pp-sec { display: flex; flex-direction: column; gap: 12px; padding: 20px 24px 24px; }
+  & .pp-sec--rule { border-top: 1px solid var(--pp-line); }
+  & .pp-label { font-size: 12px; line-height: 16px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--pp-faint); }
+  & .pp-label--small { font-size: 11px; letter-spacing: 1.1px; }
+  & .pp-sec > .pp-body:not(.pp-muted) { padding: 16px 16px 16px 0; }
+  & .pp-sec:first-child > .pp-body { padding: 16px 16px 16px 0; }
+  & .pp-body { font-size: 14px; line-height: 1.5; }
+  & .pp-sec--rule > .pp-body { padding: 0; }
+  & .pp-desc-body { display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 16px 0; }
+  & .pp-desc-body > .pp-label { margin-top: 8px; }
+
+  & .pp-paper { display: flex; align-items: flex-start; gap: 16px; padding: 20px; border: 1px solid rgba(0, 0, 0, 0.5); border-radius: 12px; }
+  & .pp-study { display: flex; flex: none; align-items: center; justify-content: center; width: 56px; height: 56px; }
+  & .pp-study svg { display: block; }
+  & .pp-paper-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  & .pp-paper-title { font-size: 16px; line-height: 1.375; font-weight: 700; color: #111; }
+  & .pp-paper-meta { font-size: 12px; line-height: 16px; color: var(--pp-faint); }
+  & .pp-paper-chips { display: flex; gap: 8px; padding-top: 4px; }
+
+  /* The poster can't scroll: it is the page as it stands at the payoff */
+  & .pp-page[data-still] .pp-identity,
+  & .pp-page[data-still] .pp-evidence { display: none; }
+  & .pp-page[data-still] .pp-ingredients { padding-top: 0; }
+
+  /* ── The split as it stacks below lg (the tile, and the phone) ─────── */
+  & .pp-page[data-variant='stack'],
+  & .pp-page[data-variant='phone'] {
+    & .pp-container { padding-left: 24px; padding-right: 24px; }
+    & .pp-split { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    & .pp-aside { position: static; }
+    /* max-sm:flex-col: each card row's label sits over its value */
+    & .pp-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  }
+  & .pp-page--tile .pp-ingredients { padding-top: 8px; padding-bottom: 40px; min-height: 0; }
+  & .pp-page--tile[data-still] .pp-ingredients { padding-top: 8px; }
+
+  /* ── The phone: below md ───────────────────────────────────────────── */
+  & .pp-page[data-variant='phone'] {
+    & .pp-nav { padding: 0 16px; }
+    & .pp-nav-left { gap: 0; }
+    & .pp-identity-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    & .pp-title { font-size: 38px; }
+    & .pp-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; }
+    & .pp-evidence { padding-top: 40px; padding-bottom: 40px; }
+    & .pp-table { margin: 0; border: 0; background: none; border-radius: 0; }
+    & .pp-cols { display: flex; flex-direction: column; gap: 16px; }
+    & .pp-thead.pp-cols { display: none; }
+    /* 11px labels at the phone's scale fall under 9px: set at 13 */
+    & .pp-crumb, & .pp-brand, & .pp-fine { font-size: 13px; line-height: 18px; }
+    & .pp-bubble, & .pp-caption { font-size: 13px; }
+    & .pp-ingredients { padding-bottom: 480px; }
+    & .pp-claim-name { flex-direction: row; gap: 12px; text-align: left; }
+    & .pp-strength { flex-direction: row; justify-content: flex-start; gap: 12px; min-height: 0; }
+    & .pp-ingredients { padding-top: 40px; }
+    & .pp-page[data-still] .pp-ingredients, &[data-still] .pp-ingredients { padding-top: 16px; }
+  }
+}
+
+/* The tile's poster is its payoff: the card the press turned to niacinamide */
+.bwp-product .pp-page--tile[data-still] .pp-aside { display: none; }

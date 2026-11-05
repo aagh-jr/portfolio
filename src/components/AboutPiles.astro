@@ -5,22 +5,37 @@
 // section pins, each layer peels off both piles at once, the photos out to
 // the left, the notes out to the right, until both are gone and the page moves
 // on. Without JS, or with reduced motion, the cards simply sit in two columns.
-// Placeholder content until the real About is ready.
 
 const photos = [
   { src: "/uploads/abel-portrait.jpg", caption: "Hey, that's me" },
-  { tone: "#c9b79c", caption: "San Jose, CA" },
   { tone: "#9fb0b8", caption: "UC San Diego" },
-  { tone: "#b9a38f", caption: "Thrift finds" },
-  { tone: "#a7ad95", caption: "Shot on film" },
+  { tone: "#a7ad95", caption: "Cabrillo National Monument" },
 ];
 
 const notes = [
-  { title: "Hey! I'm Abel Angel.", text: "Keep scrolling, a few notes about me are underneath." },
-  { text: "I'm a Cognitive Science 🧠 graduate from UC San Diego, where I specialized in UX Design and Human-Computer Interaction." },
-  { text: "I research how people think, how interfaces respond and where the two fall out of sync." },
-  { text: "I grew up and reside in San Jose, CA, the capital of Silicon Valley. My Mexican 🇲🇽 and Bay Area 🌉 roots have molded a curious and confident mindset in me that strives to innovate." },
-  { text: "Outside of research you'll find me hunting for vintage finds at thrift stores, shooting on a camera or breaking a sweat at your local pilates studio 🤸🏽.", links: true },
+  {
+    title: "About Me",
+    paragraphs: [
+      "I’m a San Jose native and a first gen college graduate from UC San Diego. As a kid I was both a tech nerd and a crafty kid. I grew up in the golden age of YouTube, and my feed was filled with iJustine tech reviews alongside art, DIY and craft videos. To this day I credit those spaces with shaping who I am.",
+      "What I enjoy most is researching, designing and building for people who may not realize technology can solve their problems. SkinSavior is a good example. Plenty of skincare apps exist, but most people don’t realize they could get much more out of them, like actually understanding what’s in their products and how well the research backs it up. So I took ingredient research and packaged it in a way non-scientists can understand. People often don’t know they can get more out of the technology they already have, and someone has to find that gap and build for it. Whether a product is sold to a company or to a single person, someone ends up using it every day, and that person is who I design for. Most of the time they aren’t experts, so the part I enjoy most is taking something complex and making it make sense to them.",
+      "My goal is to make people as in love with tech as I was as a kid. Between my technical, design and product coursework, I understand how the things I build work, like how a RAG pipeline pulls in information or how to clean a dataset before analyzing it, and I use AI tools to help with the code. I’m now looking to support teams that build user-facing products, services and tools, whether in product management, user experience or the growing design engineering space.",
+    ],
+  },
+  {
+    title: "Academics",
+    paragraphs: [
+      "Since I was a creative kid, I fancied the idea of majoring in graphic design or fashion design. But I also excelled at the sciences in high school, and at 17 I interpreted that as passion. Between that and the academic pressure, I started college as a Biochemistry major, but I soon realized my passion was not with the atoms. My interest in the life sciences never fully left, though, and it still shows up in my work today.",
+      "While looking for a new path, I took The Design of Everyday Things, a class created by Don Norman, the same person who wrote the book by that name. It was eye-opening because it showed me that design was more than posters and fashion. After that first class I knew Design and Interaction was the route I wanted to go, so I continued at UCSD as a Cognitive Science major specializing in Design and Interaction. It’s interesting to see how life can bring you back to square one but make it feel like a new adventure when you go in with a new mindset.",
+    ],
+  },
+  {
+    title: "Experience",
+    paragraphs: [
+      "During college I interned with the National Park Service at Cabrillo National Monument as a Science Educator for 2 school-year terms, supporting the interpretive and volunteer ranger. I designed and ran seasonal pop-up programs to get visitors engaging with educational content and with park staff. I also designed the print and digital materials that went with each program, which made them more hands-on, along with flyers to promote them on social media. Every program I ran offered Spanish-language facilitation so Spanish-speaking families could take part fully, and I wrote SOPs so future staff could keep running the programs after I left.",
+      "A week after graduating, I started a contract role at Apple as a Research Coordinator supporting augmented reality research, where I moderated in-person usability sessions. Along the way I noticed some survey questions were confusing participants and some session steps were in an order that slowed data collection down. Working within the study protocol, I reworked the wording and resequenced the steps, which cut about 10 minutes of overtime per session and gave us clearer participant responses. I flagged what worked to my lead, who rolled the changes out to the other moderators. That contract has since come to an end.",
+    ],
+    links: true,
+  },
 ];
 
 // A slight, fixed tilt and nudge for each layer, so the piles look tossed.
@@ -33,7 +48,8 @@ const tilt = [
 ];
 const pose = (i: number, side: number) => {
   const [r, x, y] = tilt[i % tilt.length];
-  return `--r:${r * side}deg;--dx:${x * side}px;--dy:${y}px;--z:${photos.length - i};`;
+  // order interleaves photo and note when the piles stack on narrow screens
+  return `--r:${r * side}deg;--dx:${x * side}px;--dy:${y}px;--z:${photos.length - i};order:${i * 2 + (side > 0 ? 1 : 0)};`;
 };
 ---
 
@@ -58,8 +74,8 @@ const pose = (i: number, side: number) => {
         notes.map((n, i) => (
           <div class="card note-card" style={pose(i, 1)}>
             <div class="note-paper">
-              {n.title && <p class="note-title">{n.title}</p>}
-              <p class="note-text">{n.text}</p>
+              <h3 class="note-title">{n.title}</h3>
+              {n.paragraphs.map((t) => <p class="note-text">{t}</p>)}
               {n.links && (
                 <p class="note-links">
                   <a href="mailto:abel.aagh@gmail.com">Email</a>
@@ -81,7 +97,7 @@ const pose = (i: number, side: number) => {
     width: var(--grid);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 3fr;
     gap: var(--gutter);
     padding: 88px 0 0;
   }
@@ -109,7 +125,7 @@ const pose = (i: number, side: number) => {
     height: 100svh;
     box-sizing: border-box;
     padding: 88px var(--gutter) 48px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 3fr;
     overflow: clip;
   }
   .is-piled .pile {
@@ -128,6 +144,7 @@ const pose = (i: number, side: number) => {
   }
   .is-piled .card {
     grid-area: 1 / 1;
+    cursor: pointer;
     z-index: var(--z);
     rotate: none;
     will-change: transform;
@@ -170,25 +187,28 @@ const pose = (i: number, side: number) => {
   /* ── Notes: the letter's paper, cut with the same hills border ── */
   .note-card {
     --lift: 0;
-    width: min(100%, 560px, (100svh - 200px) * 1.4);
+    width: min(100%, 760px);
     filter: drop-shadow(0 calc(1px + 16px * var(--lift)) calc(2px + 14px * var(--lift)) rgb(28 28 24 / calc(0.16 + 0.1 * var(--lift))));
   }
   .note-paper {
     box-sizing: border-box;
-    min-height: calc(min(100cqi, 560px) * 0.75);
-    padding: clamp(18px, 8cqi, 40px) clamp(16px, 7.4cqi, 34px);
+    padding: clamp(18px, 5cqi, 40px) clamp(16px, 5cqi, 40px);
     display: flex;
     flex-direction: column;
     background: var(--parchment, none) 0 0 / 384px, #e6e3db;
     font-family: var(--letter-font);
     letter-spacing: var(--letter-track);
-    font-size: clamp(12px, 3.9cqi, 20px);
-    line-height: 1.6;
+    /* Long notes: sized to fit the card's width and the screen's height */
+    font-size: clamp(11px, min(1.9cqi, 1.6svh), 15px);
+    line-height: 1.55;
     color: #5e5d56;
   }
   .note-paper p { margin: 0; }
+  .note-text + .note-text { margin-top: 0.9em; }
   .note-title {
-    margin-bottom: 1em !important;
+    margin: 0 0 1em;
+    font: inherit;
+    font-size: 1.25em;
     color: #1c1c18;
   }
   .note-links {
@@ -204,8 +224,17 @@ const pose = (i: number, side: number) => {
     text-underline-offset: 3px;
   }
 
-  @media (max-width: 640px) {
-    .pile { gap: 28px; }
+  /* Narrow screens: one column, each photo above its note, no piling */
+  @media (max-width: 760px) {
+    .piles-stage {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 28px;
+    }
+    .pile { display: contents; }
+    .photo { width: min(72%, 300px); }
+    .note-card { width: 100%; margin-bottom: 20px; }
+    .note-paper { font-size: 13px; }
   }
 </style>
 
@@ -277,7 +306,8 @@ const pose = (i: number, side: number) => {
     texture(root);
     cutNotes(root);
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    root.classList.add("is-piled");
+    // Too narrow for the long notes to sit side by side: they stay stacked
+    const narrow = matchMedia("(max-width: 760px)");
 
     const piles = [...root.querySelectorAll<HTMLElement>(".pile")].map((pile) => ({
       pile,
@@ -286,7 +316,7 @@ const pose = (i: number, side: number) => {
       cards: [...pile.querySelectorAll<HTMLElement>(".card")].map((el) => {
         const st = getComputedStyle(el);
         const num = (k: string) => parseFloat(st.getPropertyValue(k)) || 0;
-        return { el, r0: num("--r"), dx: num("--dx"), dy: num("--dy") };
+        return { el, pose: el.getAttribute("style") ?? "", r0: num("--r"), dx: num("--dx"), dy: num("--dy") };
       }),
       away: 0, // px to slide a card fully off screen
     }));
@@ -303,7 +333,7 @@ const pose = (i: number, side: number) => {
     };
 
     const update = () => {
-      if (!root.isConnected) return;
+      if (!root.isConnected || narrow.matches) return;
       const box = root.getBoundingClientRect();
       const vh = innerHeight;
       const enter = clamp01((vh - box.top) / (vh * 0.85));
@@ -344,8 +374,31 @@ const pose = (i: number, side: number) => {
         update();
       });
     };
-    measure();
-    update();
+    const setMode = () => {
+      root.classList.toggle("is-piled", !narrow.matches);
+      if (narrow.matches)
+        for (const { cards } of piles)
+          for (const { el, pose } of cards) el.setAttribute("style", pose);
+      measure();
+      update();
+    };
+    // Clicking a card peels one layer, the same as scrolling down: scroll to
+    // where the top layer has just finished sliding off.
+    root.addEventListener("click", (e) => {
+      if (narrow.matches || (e.target as Element).closest("a")) return;
+      if (!(e.target as Element).closest(".card")) return;
+      if (String(getSelection() ?? "")) return; // selecting text, not peeling
+      const box = root.getBoundingClientRect();
+      const run = Math.max(1, box.height - innerHeight);
+      const peel = clamp01(-box.top / run) * (n + 0.8) - 0.4;
+      // A layer that's mostly off already counts as gone
+      const next = Math.min(n, Math.max(0, Math.floor(peel + 0.3)) + 1);
+      const at = (next + 0.45) / (n + 0.8);
+      scrollTo({ top: scrollY + box.top + run * at, behavior: "smooth" });
+    });
+
+    setMode();
+    narrow.addEventListener("change", setMode);
     addEventListener("scroll", queue, { passive: true });
     addEventListener("resize", () => {
       measure();

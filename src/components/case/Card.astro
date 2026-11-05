@@ -1,0 +1,69 @@
+---
+// A soft rounded tile. Sits in a .cs-row (wrapping, basis from `basis`) or a
+// .cs-grid.
+export interface Props {
+  tone?: "neutral" | "blue" | "green" | "pink";
+  /** sm: 20px radius, 24px padding · md: 24 / 28 · lg: 24 / 32 */
+  size?: "sm" | "md" | "lg";
+  /** Space between the card's children, in px. */
+  gap?: number;
+  /** Flex basis inside a .cs-row, in px. */
+  basis?: number;
+  minHeight?: number;
+  /** A small label in the tone's ink, first in the card. */
+  label?: string;
+}
+const { tone = "neutral", size = "md", gap = 16, basis, minHeight, label } = Astro.props;
+const vars = [
+  `--card-gap: ${gap}px`,
+  basis && `--basis: ${basis}px`,
+  minHeight && `min-height: ${minHeight}px`,
+]
+  .filter(Boolean)
+  .join("; ");
+---
+
+<div class:list={["card", tone, size]} style={vars}>
+  {label && <span class="label">{label}</span>}
+  <slot />
+</div>
+
+<style>
+  .card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    background: var(--cs-sunken);
+    --label-ink: var(--cs-soft);
+  }
+  .blue {
+    background: var(--cs-blue);
+    --label-ink: var(--cs-blue-ink);
+  }
+  .green {
+    background: var(--cs-green);
+    --label-ink: var(--cs-green-ink);
+  }
+  .pink {
+    background: var(--cs-pink);
+    --label-ink: var(--cs-pink-ink);
+  }
+  .sm {
+    border-radius: 20px;
+    padding: 24px;
+  }
+  .md {
+    border-radius: 24px;
+    padding: 28px;
+  }
+  .lg {
+    border-radius: 24px;
+    padding: 32px;
+  }
+  .label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--label-ink);
+  }
+</style>

@@ -1,0 +1,268 @@
+/* Binu "Underlying research" preview. Values copied from the product:
+   skinsavior apps/web/src/app/globals.css ("Clinical" palette, h3 = serif
+   500, -0.01em), components/research/ProductResearch.tsx (pill toggle) and
+   IngredientResearch.tsx (loading state, SkeletonCard, ResearchPaperList,
+   PaperCard), ScientistAvatar.tsx. Tailwind classes → px. */
+
+/* Newsreader, the product's --font-serif (next/font latin subset). */
+@font-face {
+  font-family: 'UR Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/previews/binu/newsreader-latin.woff2') format('woff2');
+}
+
+.ur-host {
+  width: 100%;
+  height: 100%;
+}
+/* Hidden until the tile has measured its slot, so the first frame is
+   already at the right width (no 480 → slot-width jump on hydrate). */
+.ur-host:not([data-ready]) {
+  visibility: hidden;
+}
+
+.ur {
+  --ur-ground: #eaf1fe; /* --secondary: accent bg */
+  --ur-card: #ffffff; /* --card */
+  --ur-tan: #dee3e9; /* --soft-tan = --border */
+  --ur-muted: #f5f7fa; /* --muted */
+  --ur-ink: #12181f; /* --ink */
+  --ur-faint: #5b6472; /* --faint = --muted-foreground */
+  --ur-link: #2f6fed; /* --link */
+  --ur-clay: #2f6fed; /* --clay: active pill */
+  --ur-sage: #159a6b; /* --sage */
+  --ur-sage-bg: #e7f6ef; /* --sage-bg */
+  --ur-clay-glow: #fdf3e4; /* --clay-glow */
+  --ur-arrive: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ur .ss-stage {
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+  background: var(--ur-ground);
+  border-radius: 20px;
+  color: var(--ur-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ur h3,
+.ur p {
+  margin: 0;
+}
+
+/* Section: pinned to the tile, running off its foot */
+.ur .ur-section {
+  position: absolute;
+  left: 32px; /* same side inset as the tiles beside it */
+  right: 32px;
+  top: 20px; /* tighter top so the first paper ends inside the tile */
+}
+.ur .ur-section[data-narrow] {
+  left: 20px;
+  right: 20px;
+  top: 20px;
+}
+
+/* ── Pill toggle: flex gap-2; rounded-full border px-4 py-2 text-[13px] font-medium ── */
+.ur .ur-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px; /* mt-5 */
+}
+.ur .ur-pill {
+  border: 1px solid #e6ddcf;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 19.5px;
+  color: #6b5f4f;
+  white-space: nowrap;
+}
+.ur .ur-pill[data-active] {
+  border-color: var(--ur-clay);
+  background: var(--ur-clay);
+  color: var(--ur-ink);
+}
+
+/* ── Loading line: mb-4 flex gap-3 text-sm text-muted-foreground; avatar 40 ── */
+.ur .ur-loading {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows 520ms cubic-bezier(0.45, 0, 0.2, 1) 120ms, opacity 160ms ease;
+}
+.ur .ur-loading[data-gone] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.ur .ur-loading-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.ur .ur-loading-row {
+  padding-bottom: 16px; /* mb-4 */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ur-faint);
+}
+.ur .ur-avatar {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 1px solid var(--ur-tan);
+  border-radius: 50%;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ur .ur-avatar img {
+  position: absolute;
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+/* ── The list: rounded-[12px] border border-soft-tan, divide-y ── */
+.ur .ur-list {
+  will-change: transform;
+  overflow: hidden;
+  border: 1px solid var(--ur-tan);
+  border-radius: 12px;
+  background: var(--ur-card);
+}
+
+/* Each slot holds the paper and its skeleton, each in a one-track grid
+   that folds open (0fr → 1fr) or shut, so the rows trade height. */
+.ur .ur-slot {
+  border-bottom: 1px solid var(--ur-tan);
+}
+.ur .ur-slot:last-child {
+  border-bottom: 0;
+}
+.ur .ur-cell {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 560ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+.ur .ur-cell--skel,
+.ur .ur-slot[data-loaded] .ur-cell--paper {
+  grid-template-rows: 1fr;
+}
+.ur .ur-slot[data-loaded] .ur-cell--skel {
+  grid-template-rows: 0fr;
+}
+.ur .ur-cell > * {
+  min-height: 0;
+  overflow: hidden;
+}
+/* The paper's lines arrive after the unfolding edge has passed each one,
+   so none is cut by it (edge timings measured at 480 wide). */
+.ur .ur-paper > * {
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+.ur .ur-meta { transition-delay: 140ms; }
+.ur .ur-title { transition-delay: 200ms; }
+.ur .ur-abstract { transition-delay: 320ms; }
+.ur .ur-link { transition-delay: 500ms; }
+.ur .ur-slot[data-loaded] .ur-paper > * {
+  opacity: 1;
+}
+.ur .ur-skel {
+  transition: opacity 300ms ease 160ms;
+}
+.ur .ur-slot[data-loaded] .ur-skel {
+  opacity: 0;
+}
+
+/* SkeletonCard: p-5; h-4 w-24 rounded-full; mt-3 h-5 w-3/4; mt-2 h-4 full; mt-1.5 h-4 w-5/6 */
+.ur .ur-skel > .ur-skel-a {
+  margin-top: 20px;
+}
+.ur .ur-skel > div {
+  margin-left: 20px;
+  margin-right: 20px;
+  background: var(--ur-muted);
+  border-radius: 4px;
+  animation: ur-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.ur .ur-skel-a { height: 16px; width: 96px; border-radius: 999px !important; }
+.ur .ur-skel-b { height: 20px; width: 75%; margin-top: 12px; }
+.ur .ur-skel-c { height: 16px; margin-top: 8px; }
+.ur .ur-skel-d { height: 16px; width: 83%; margin-top: 6px; margin-bottom: 20px; }
+@keyframes ur-pulse {
+  50% { opacity: 0.5; }
+}
+
+/* PaperCard: flex col items-start gap-2.5 bg-white px-6 py-[22px] */
+.ur .ur-paper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 22px 24px;
+}
+.ur .ur-section[data-narrow] .ur-paper {
+  padding: 20px;
+}
+.ur .ur-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px; /* gap-2.5 */
+  row-gap: 2px; /* when the journal wraps under the badge (this tile is
+                   narrower than the product's column), keep them one item */
+}
+.ur .ur-badge {
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.ur .ur-badge[data-tone='trial'] { background: var(--ur-sage-bg); color: var(--ur-sage); }
+.ur .ur-badge[data-tone='review'] { background: var(--ur-ground); color: var(--ur-link); }
+.ur .ur-badge[data-tone='other'] { background: var(--ur-clay-glow); color: #92400e; }
+.ur .ur-journal {
+  font-size: 13px;
+  line-height: 19.5px;
+  color: var(--ur-faint);
+}
+.ur .ur-title {
+  font-family: 'UR Newsreader', ui-serif, Georgia, serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.375;
+  letter-spacing: -0.01em;
+  color: var(--ur-ink);
+}
+.ur .ur-abstract {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ur-faint);
+}
+.ur .ur-link {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 19.5px;
+  color: var(--ur-link);
+}
+.ur .ur-arrow {
+  margin-left: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ur .ur-skel > div { animation: none; }
+}

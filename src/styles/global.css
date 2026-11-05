@@ -86,13 +86,13 @@ a {
 
 /* reveal-ready is added by a blocking head script BEFORE first paint,
    so tagged elements hide without a flash. No JS / no class = visible. */
-html.reveal-ready [data-reveal],
+html.reveal-ready [data-reveal]:not(.ss-stage *),
 html.reveal-ready [data-load-item] {
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.reveal-ready [data-reveal],
+  html.reveal-ready [data-reveal]:not(.ss-stage *),
   html.reveal-ready [data-load-item] {
     opacity: 1 !important;
     transform: none !important;

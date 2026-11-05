@@ -1,0 +1,60 @@
+---
+// A dashed box standing in for an image still to come. With a caption it
+// becomes a figure. Sits in a .cs-row (basis from `basis`).
+export interface Props {
+  minHeight?: number;
+  /** Inner padding, in px. */
+  pad?: number;
+  basis?: number;
+  caption?: string;
+  /** Roomier line height for long descriptions that wrap. */
+  loose?: boolean;
+  class?: string;
+}
+const { minHeight = 240, pad = 20, basis, caption, loose = false, class: className } = Astro.props;
+const boxVars = `min-height: ${minHeight}px; padding: ${pad}px`;
+const basisVar = basis ? `--basis: ${basis}px` : undefined;
+---
+
+{
+  caption ? (
+    <figure class:list={["ph-figure", className]} style={basisVar}>
+      <div class:list={["ph", { loose }]} style={boxVars}>
+        <slot />
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  ) : (
+    <div class:list={["ph", { loose }, className]} style={[boxVars, basisVar].filter(Boolean).join("; ")}>
+      <slot />
+    </div>
+  )
+}
+
+<style>
+  .ph-figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ph {
+    border: 1.5px dashed var(--cs-dash);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    color: var(--cs-muted);
+    background: var(--cs-ph-bg);
+    line-height: normal;
+  }
+  .loose {
+    line-height: 1.65;
+  }
+  figcaption {
+    font-size: 13px;
+    color: var(--cs-muted);
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+// Scratch page for the Product claim preview, on the unit grid it will sit in
+// (1 unit = the 480 x 322 tile in the Binu case study), beside GradeTile.
+import { ClaimTile } from "../components/previews/ProductClaim";
+import { GradeTile } from "../components/previews/EvidenceGrade";
+import "@fontsource/geist/500.css";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Previews claim</title>
+    <style>
+      body { margin: 0; background: #fff; font-family: Geist, system-ui, sans-serif; color: #16181a; }
+      main { max-width: 976px; margin: 0 auto; padding: 48px 20px 96px; display: flex; flex-direction: column; gap: 48px; }
+      h2 { font-size: 15px; font-weight: 500; color: #5e6368; margin: 0 0 12px; }
+      .units { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 322px; gap: 16px; }
+      .narrow { width: 350px; height: 322px; }
+      @media (max-width: 679px) {
+        .units { grid-template-columns: minmax(0, 1fr); }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h2>Product claim, 1×1, beside the grade</h2>
+        <div class="units">
+          <div><ClaimTile client:visible /></div>
+          <div><GradeTile client:visible /></div>
+        </div>
+      </section>
+      <section>
+        <h2>Product claim, 350px column</h2>
+        <div class="narrow"><ClaimTile client:visible /></div>
+      </section>
+    </main>
+  </body>
+</html>

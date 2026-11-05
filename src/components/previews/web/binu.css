@@ -1,0 +1,117 @@
+/* PORTFOLIO PREVIEW: Binu's shared palette, fonts and nav styles for every preview. Not app code. */
+/* Self-hosted so the first frame already has the real faces (a late web
+   font swap shifts every line of text) */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('./fonts/hanken.woff2') format('woff2');
+  font-weight: 400 600;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('./fonts/newsreader.woff2') format('woff2');
+  font-weight: 500;
+  font-display: block;
+}
+
+/* Binu's "Clinical" palette, from apps/web/src/app/globals.css. Shared by
+   every binu-* demo; each demo scopes its own rules under its own class. */
+.binu .ss-stage {
+  --b-ink: #12181f;
+  --b-muted: #5b6472;
+  --b-line: #dee3e9;
+  --b-surface: #f5f7fa;
+  --b-brand: #2f6fed;
+  --b-brand-soft: #eaf1fe;
+  --b-success: #159a6b;
+  --b-success-soft: #e7f6ef;
+  --b-danger: #dc2a2a;
+  --b-danger-soft: #fdeaea;
+  --b-send: #a7caed;
+  --b-accent-ink: #3a5a8a;
+  --b-serif: 'Newsreader', ui-serif, Georgia, serif;
+
+  --ss-font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --ss-accent: var(--b-brand);
+  --ss-accent-soft: var(--b-brand-soft);
+  --ss-text-strong: var(--b-ink);
+  --ss-text: #2b333d;
+  --ss-text-faint: var(--b-muted);
+  --ss-line: var(--b-line);
+  --ss-surface: #fff;
+  --ss-canvas: #fff;
+  --ss-well: #e9edf2;
+
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--ss-well);
+  font-family: var(--ss-font);
+}
+
+/* The site's top bar: plain wordmark, a few links */
+.binu .b-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 46px;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--b-line);
+  background: #fff;
+  font-size: 13px;
+  color: var(--b-muted);
+}
+.binu .b-wordmark {
+  font-family: var(--b-serif);
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--b-ink);
+  letter-spacing: -0.01em;
+  margin-right: 8px;
+}
+.binu .b-nav-avatar {
+  margin-left: auto;
+}
+
+.binu .b-serif {
+  font-family: var(--b-serif);
+  font-weight: 500;
+  color: var(--b-ink);
+  letter-spacing: -0.01em;
+}
+
+.binu .b-caps {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.binu .b-thumb {
+  flex: none;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--b-line);
+}
+.binu .b-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.binu .b-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.binu .b-pill[data-tone='brand'] { background: var(--b-brand-soft); color: var(--b-brand); }
+.binu .b-pill[data-tone='success'] { background: var(--b-success-soft); color: var(--b-success); }
+.binu .b-pill[data-tone='danger'] { background: var(--b-danger-soft); color: var(--b-danger); }
+.binu .b-pill[data-tone='quiet'] { background: var(--b-surface); color: var(--b-muted); box-shadow: inset 0 0 0 1px var(--b-line); }

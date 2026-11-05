@@ -1,0 +1,15 @@
+---
+// Playground for the About-section book. Not linked anywhere, excluded
+// from the sitemap (astro.config.mjs), and marked noindex below.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ZinePlayground from "../components/book/ZinePlayground";
+
+// Stand-in pages until the Figma exports are in. Pages 8–9 are the two
+// sides of one yellow leaf, like an insert.
+const YELLOW = { 8: "#f3e17a", 9: "#f3e17a" };
+---
+
+<BaseLayout title="Book test" description="Full-screen 3D book test page.">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <ZinePlayground client:only="react" title="About" pageCount={240} placeholderColors={YELLOW} />
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+// Scratch page for the chat-quiz previews: the full desktop page in the
+// case study's full-width slot (976 wide at 1440), then the 480 × 322 tiles.
+import { QuizPage, QuizTile, QuizSectionTile, QuizNeedsTile, QuizSavedTile } from "../components/previews/web/ChatQuiz";
+import "@fontsource/geist/400.css";
+import "@fontsource/geist/500.css";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Chat quiz previews</title>
+    <style>
+      body { margin: 0; background: #fff; font-family: Geist, system-ui, sans-serif; color: #16181a; }
+      main { max-width: 976px; margin: 0 auto; padding: 48px 20px 96px; display: flex; flex-direction: column; gap: 48px; }
+      h2 { font-size: 15px; font-weight: 500; color: #5e6368; margin: 0 0 12px; }
+      .units { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 322px; gap: 16px; }
+      @media (max-width: 679px) { .units { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section id="row">
+        <h2>Quiz, full page (desktop, 1440)</h2>
+        <div class="prev" id="quiz-page"><QuizPage client:visible /></div>
+      </section>
+      <section>
+        <h2>Quiz tiles, 1×1</h2>
+        <div class="units">
+          <div class="prev" id="quiz-tile"><QuizTile client:visible /></div>
+          <div class="prev" id="quiz-needs"><QuizNeedsTile client:visible /></div>
+          <div class="prev" id="quiz-section"><QuizSectionTile client:visible /></div>
+          <div class="prev" id="quiz-saved"><QuizSavedTile client:visible /></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
