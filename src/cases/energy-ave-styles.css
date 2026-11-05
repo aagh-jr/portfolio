@@ -358,9 +358,21 @@
       .interviewee-grid { grid-template-columns: 1fr; }
       .concept-grid { grid-template-columns: 1fr 1fr; }
     }
+    /* Inline grid columns in the body outrank the rules above, so the
+       grids that set their own columns get these hooks. */
+    @media (max-width: 900px) {
+      .stat-grid--2x2, .outcomes { grid-template-columns: minmax(0, 1fr) !important; }
+      /* One column: dividers between the stats, none beside them */
+      .stat-grid--2x2 > .stat { border-right: 0 !important; border-bottom: 1px solid var(--hairline-strong) !important; }
+      .stat-grid--2x2 > .stat:last-child { border-bottom: 0 !important; }
+    }
     /* Phones: clear the site header's second row of pills */
     @media (max-width: 640px) {
       .page { padding-top: 128px; }
+      .ea-cols { grid-template-columns: 1fr !important; }
+      .ea-methods { flex-wrap: wrap; gap: 24px !important; }
+      /* Ten 34px dots don't fit a phone: let them shrink, staying round */
+      .stat-grid--2x2 .stat > span > span { flex: 0 1 34px !important; height: auto !important; aspect-ratio: 1; }
     }
 
     
