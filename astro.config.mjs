@@ -31,5 +31,11 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Vite inlines small assets as base64. For fonts that put ~30 KB of
+      // .woff fallbacks (never used by woff2-capable browsers) inside the
+      // render-blocking stylesheet; keep fonts as separate files instead.
+      assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined),
+    },
   },
 });
