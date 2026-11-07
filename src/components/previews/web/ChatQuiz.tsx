@@ -409,7 +409,7 @@ function QuizStage({ spec, className }: { spec: Spec; className: string }) {
                 <Page turns={spec.turns} s={s} layout="phone" anchor={spec.anchor} fractionOf={spec.fractionOf} />
               </Phone>
             ) : (
-              <Window url="binu.app/quiz" urlShape="pill" className="cq-win">
+              <Window url="www.heybinu.com/quiz" urlShape="pill" className="cq-win">
                 <Page turns={spec.turns} s={s} layout={row ? 'xl' : 'md'} anchor={spec.anchor} fractionOf={spec.fractionOf} />
               </Window>
             )}

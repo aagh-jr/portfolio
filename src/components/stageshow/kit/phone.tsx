@@ -102,7 +102,7 @@ export interface PhoneProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
 }
 
-export function Phone({ width, frame: asked = 'pro', time = '9:41', island, status, dark, wallpaper, className, style, children, ...rest }: PhoneProps) {
+export function Phone({ width, frame: asked = 'pro', time = '11:11', island, status, dark, wallpaper, className, style, children, ...rest }: PhoneProps) {
   // The photo frame uses a caller-provided bezel. Without a configured image,
   // or if it fails to load, the phone draws the pro frame
   // instead of standing as an empty shell
@@ -198,7 +198,13 @@ export function Phone({ width, frame: asked = 'pro', time = '9:41', island, stat
           style={{
             width: pt(SCREEN.w),
             height: pt(SCREEN.h),
-            borderRadius: outline ? undefined : pt(SCREEN.r),
+            // Always round the corners (the window clips its overflow), so the
+            // screen stays inside the frame even where a browser drops the
+            // clip-path: Firefox (and Zen) sometimes skips it on scaled,
+            // animated phones and the square screen corners show. Where the
+            // clip-path applies, it trims this circle to the exact
+            // superellipse; the two differ by under a point.
+            borderRadius: pt(SCREEN.r),
             clipPath: outline ? `path('${outline}')` : undefined,
           }}
         >
@@ -261,7 +267,7 @@ export const WALLPAPER =
   'radial-gradient(120% 70% at 25% 0%, rgba(255, 255, 255, 0.3), transparent 65%), linear-gradient(172deg, #8ea9d6 0%, #9aa1d4 50%, #aca3cf 100%)'
 
 /** The iOS lock screen: date, large clock, notifications stacked at the bottom. Put it inside a Phone with `dark` and a `wallpaper`. */
-export function LockScreen({ date = 'Tuesday, October 21', time = '9:41', controls = true, stack = 'bottom', size = 'full', clock = true, className, children, ...rest }: LockScreenProps) {
+export function LockScreen({ date = 'Tuesday, October 21', time = '11:11', controls = true, stack = 'bottom', size = 'full', clock = true, className, children, ...rest }: LockScreenProps) {
   return (
     <div {...rest} className={`ss-lock${className ? ` ${className}` : ''}`} data-size={size} data-clock={clock ? undefined : 'off'}>
       {clock && <div className="ss-lock__date">{date}</div>}

@@ -574,7 +574,7 @@ export function RoutinePage() {
               <Screen s={s} mode="mobile" anchors={ROW_ANCHORS} />
             </Phone>
           ) : (
-            <Window url="binu.app/routines/daily" urlShape="pill" className="rp-win">
+            <Window url="www.heybinu.com/routines/daily" urlShape="pill" className="rp-win">
               <Screen s={s} mode="desktop" anchors={ROW_ANCHORS} />
             </Window>
           )}

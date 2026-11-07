@@ -514,7 +514,7 @@ function ForYouStage({ spec }: { spec: Spec }) {
                 </div>
               </Phone>
             ) : row ? (
-              <Window url="binu.app/for-you?category=serum" urlShape="pill" className="fy-win">
+              <Window url="www.heybinu.com/for-you?category=serum" urlShape="pill" className="fy-win">
                 <Page s={s} mode="desktop" />
               </Window>
             ) : (
