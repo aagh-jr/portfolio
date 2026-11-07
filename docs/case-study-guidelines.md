@@ -5,6 +5,22 @@ creating or editing one. The reference implementation is the Binu case study:
 `src/pages/projects/binu.astro` with `src/cases/binu-styles.css` and the
 components in `src/components/case/`.
 
+## Redesigning an existing one
+
+The older case studies (`energy-ave`, `cabrillo`, `cabrillo-design`,
+`skin-savior`) render a raw HTML body from `src/cases/<slug>-body.html` with
+their own stylesheet. To redesign one:
+
+1. Read its current body and styles and keep every fact, number, quote, image
+   and link. Rewrite structure and layout, not substance.
+2. Rebuild it as an Astro page on the Binu template (steps below), mapping the
+   existing content onto the outline. Leave out a section the project has no
+   material for, rather than padding it.
+3. Keep the same URL (`/projects/<slug>`), so the homepage card and any shared
+   links still work.
+4. Once the new page renders, remove the old `<slug>-body.html` and
+   `<slug>-styles.css` if nothing else imports them.
+
 ## Starting a new one
 
 1. Copy `src/pages/projects/binu.astro` to `src/pages/projects/<slug>.astro`
