@@ -7,17 +7,19 @@ import Kicker from "./Kicker.astro";
 export interface Props {
   id: string;
   caption?: string;
+  /** Screen-reader name for the table when there's no visible caption. */
+  label?: string;
   /** Two-column "what we heard / what it changed": a rule between columns,
    *  top-aligned cells. */
   divided?: boolean;
 }
-const { id, caption, divided = false } = Astro.props;
+const { id, caption, label, divided = false } = Astro.props;
 const captionId = `${id}-caption`;
 ---
 
 <div class="data-table">
   {caption && <Kicker id={captionId}>{caption}</Kicker>}
-  <div class="frame" role="region" aria-label={caption ? undefined : "Data table"} aria-labelledby={caption ? captionId : undefined} tabindex="0">
+  <div class="frame" role="region" aria-label={caption ? undefined : (label ?? "Data table")} aria-labelledby={caption ? captionId : undefined} tabindex="0">
     <table class:list={{ divided }}>
       <slot />
     </table>

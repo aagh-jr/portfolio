@@ -11,6 +11,7 @@ import WorkflowCarousel, { type Step } from "../../components/case/WorkflowCarou
 import { EvidenceHero } from "../../components/previews/EvidenceHero";
 import { ClaimRowsStill } from "../../components/previews/ClaimRowsStill";
 import { QuizPage, QuizNeedsPhone, QuizSectionPhone } from "../../components/previews/web/ChatQuiz";
+import { EmptyPhone } from "../../components/previews/web/EmptyPhone";
 import { ProductPage } from "../../components/previews/web/ProductPage";
 import { ForYouPage } from "../../components/previews/web/ForYouPage";
 import { HomeSearchPage } from "../../components/previews/web/HomeSearchPage";
@@ -95,15 +96,15 @@ const workflow: Step[] = [
             <Pill>B2C</Pill>
           </dd>
         </div>
-        <div style="--basis: 120px">
+        <div>
           <dt>Team</dt>
           <dd>2 people</dd>
         </div>
-        <div style="--basis: 160px">
+        <div>
           <dt>Status</dt>
           <dd>Web and mobile prototype; pre-launch</dd>
         </div>
-        <div style="--basis: 140px">
+        <div>
           <dt>Timeline</dt>
           <dd>June 2026 to present</dd>
         </div>
@@ -116,8 +117,8 @@ const workflow: Step[] = [
     </section>
 
     <!-- TL;DR -->
-    <section class="cs-stack cs-gap-32">
-      <h2 class="cs-h2">TLDR</h2>
+    <section class="cs-stack cs-section">
+      <SectionLabel>TLDR</SectionLabel>
       <div class="cs-row cs-row--one">
         <Card gap={40} minHeight={220} label="Problem">
           <p class="cs-tldr-text">Shoppers see claims like "clinically proven" with no way to tell if a product can deliver, so trust goes to sponsored and creator content.</p>
@@ -135,418 +136,436 @@ const workflow: Step[] = [
     </section>
 
     <!-- OPPORTUNITY -->
-    <section class="cs-split cs-section cs-opportunity">
+    <section class="cs-stack cs-section">
       <SectionLabel>The opportunity</SectionLabel>
-      <div class="cs-col">
-        <h2 class="cs-h2">Shoppers can't check skincare claims on their own, so they borrow trust from social media.</h2>
-      </div>
-      <div class="cs-col cs-prose cs-prose--loose">
-        <p>Most people can't interpret or validate a skincare claim on their own, so they turn to other places to feel confident a product will deliver. Social media is the most common one, because you can see other people's reviews. The problem is that TikTok Shop listings, UGC and paid partnerships make up most of that content, so shoppers are often left taking a creator's word for it. In my opinion that's a shaky thing to base a purchase on, since many of those creators are paid to promote what they're reviewing.</p>
-        <p>Existing skincare tools mostly focus on ingredient safety. They can help answer "Could this ingredient be harmful?" But that doesn't answer the more common buying question.</p>
-      </div>
-      <PullQuote>The buying question: I know this product is safe, but will it do what it claims too?</PullQuote>
-      <Placeholder class="cs-packaging" minHeight={280} pad={24} loose>[Image: skincare claims on real packaging, e.g. "clinically proven", "pore minimizing"]</Placeholder>
-      <div class="cs-col cs-prose cs-prose--loose">
-        <p>The problem is also shaped by a constraint. Claims around acne, eczema and rosacea can cross into regulated medical territory, so Binu had to make evidence clearer without implying diagnosis or treatment.</p>
+      <div class="cs-stack cs-gap-block">
+        <div class="cs-split">
+          <div class="cs-col">
+            <h2 class="cs-h2">Shoppers can't check skincare claims on their own, so they borrow trust from social media.</h2>
+          </div>
+          <div class="cs-col cs-prose cs-prose--loose">
+            <p>Most people can't interpret or validate a skincare claim on their own, so they turn to other places to feel confident a product will deliver. Social media is the most common one, because you can see other people's reviews. The problem is that TikTok Shop listings, UGC and paid partnerships make up most of that content, so shoppers are often left taking a creator's word for it. In my opinion that's a shaky thing to base a purchase on, since many of those creators are paid to promote what they're reviewing.</p>
+            <p>Existing skincare tools mostly focus on ingredient safety. They can help answer "Could this ingredient be harmful?" But that doesn't answer the more common buying question.</p>
+          </div>
+        </div>
+        <div class="cs-row cs-row--one">
+          <figure class="cs-preview-figure" style="--basis: 280px">
+            <div data-ss-fill role="img" aria-label="A YouTube video transcript in which a creator says there are massive flaws in a food-scoring app"><EmptyPhone client:visible src="/screenshots/binu/social-youtube-transcript.jpg" /></div>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 280px">
+            <div data-ss-fill role="img" aria-label="A TikTok from a dermatologist explaining why children don’t need anti-aging skincare"><EmptyPhone client:visible src="/screenshots/binu/social-tiktok-derm-sephora-kids.jpg" /></div>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 280px">
+            <div data-ss-fill role="img" aria-label="A TikTok from a dermatologist titled “Anti-aging creams for kids is bad”"><EmptyPhone client:visible src="/screenshots/binu/social-tiktok-derm-anti-aging.jpg" /></div>
+          </figure>
+        </div>
+        <PullQuote>The buying question: I know this product is safe, but will it do what it claims too?</PullQuote>
+        <div class="cs-split">
+          <Placeholder class="cs-packaging" minHeight={280} pad={24} loose>[Image: skincare claims on real packaging, e.g. "clinically proven", "pore minimizing"]</Placeholder>
+          <div class="cs-col cs-prose cs-prose--loose">
+            <p>The problem is also shaped by a constraint. Claims around acne, eczema and rosacea can cross into regulated medical territory, so Binu had to make evidence clearer without implying diagnosis or treatment.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- DISCOVERY -->
-    <section class="cs-stack cs-gap-48 cs-section">
+    <section class="cs-stack cs-section">
       <SectionLabel>Discovery</SectionLabel>
-      <div class="cs-split">
-        <div class="cs-col">
-          <h3 class="cs-finding">Safety is covered. Evidence is not. Just because a product is safe dosen't mean it will do its job.</h3>
-        </div>
-        <div class="cs-col cs-prose">
-          <p>Yuka, EWG Skin Deep, INCIDecoder, SkinSort and Paula's Choice already offer safety scores, ingredient explanations, routines and community features. None of them evaluate whether a specific claim is well supported.</p>
-        </div>
-      </div>
+      <div class="cs-stack cs-gap-item">
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split">
+            <div class="cs-col">
+              <h3 class="cs-finding">Safety is covered. Evidence is not. Just because a product is safe dosen't mean it will do its job.</h3>
+            </div>
+            <div class="cs-col cs-prose">
+              <p>Yuka, EWG Skin Deep, INCIDecoder, SkinSort and Paula's Choice already offer safety scores, ingredient explanations, routines and community features. None of them evaluate whether a specific claim is well supported.</p>
+            </div>
+          </div>
 
-      <DataTable id="tools" caption="What each tool scores, and whether it evaluates individual claims">
-        <thead>
-          <tr>
-            <th scope="col">Tool</th>
-            <th scope="col">What it scores</th>
-            <th scope="col">Per-claim evidence</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Yuka</td><td>Ingredient safety, single score</td><td>No</td></tr>
-          <tr><td>EWG Skin Deep</td><td>Hazard rating per ingredient</td><td>No</td></tr>
-          <tr><td>INCIDecoder</td><td>Ingredient function and flags</td><td>No</td></tr>
-          <tr><td>SkinSort</td><td>Match score, routines, dupes, community</td><td>No</td></tr>
-          <tr><td>Paula's Choice</td><td>Ingredient ratings by editorial review</td><td>No</td></tr>
-          <tr class="is-ours">
-            <td>Binu</td>
-            <td>Evidence certainty per claim</td>
-            <td>
-              <span class="cs-yes"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"></path></svg>Yes</span>
-            </td>
-          </tr>
-        </tbody>
-      </DataTable>
-
-      <div class="cs-split">
-        <div class="cs-col">
-          <h3 class="cs-finding">Other apps grade every product with 1 framework instead of judging it by its category.</h3>
+          <DataTable id="tools" label="What each tool scores, and whether it evaluates individual claims">
+            <thead>
+              <tr>
+                <th scope="col">Tool</th>
+                <th scope="col">What it scores</th>
+                <th scope="col">Per-claim evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="cs-tool"><img class="cs-tool-mark" src="/logos/yuka.png" alt="" width="24" height="24" />Yuka</span></td><td>Ingredient safety, single score</td><td>No</td></tr>
+              <tr><td><span class="cs-tool"><img class="cs-tool-mark" src="/logos/ewg.png" alt="" width="24" height="24" />EWG Skin Deep</span></td><td>Hazard rating per ingredient</td><td>No</td></tr>
+              <tr><td><span class="cs-tool"><img class="cs-tool-mark" src="/logos/incidecoder.png" alt="" width="24" height="24" />INCIDecoder</span></td><td>Ingredient function and flags</td><td>No</td></tr>
+              <tr><td><span class="cs-tool"><img class="cs-tool-mark" src="/logos/skinsort.png" alt="" width="24" height="24" />SkinSort</span></td><td>Match score, routines, dupes, community</td><td>No</td></tr>
+              <tr><td><span class="cs-tool"><img class="cs-tool-mark" src="/logos/paulaschoice.png" alt="" width="24" height="24" />Paula's Choice</span></td><td>Ingredient ratings by editorial review</td><td>No</td></tr>
+              <tr class="is-ours">
+                <td><span class="cs-tool"><img class="cs-tool-mark cs-tool-mark--binu" src="/previews/binu/scientist.png" alt="" width="24" height="24" />Binu</span></td>
+                <td>Evidence certainty per claim</td>
+                <td>
+                  <span class="cs-yes"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"></path></svg>Yes</span>
+                </td>
+              </tr>
+            </tbody>
+          </DataTable>
         </div>
-        <div class="cs-col cs-prose">
-          <p>A few years ago a poorly exicuted study claimed benzal peroxied could degrade into benzine. While the study and claims where refuted and seen as alarmist, it didint stop the research from seeping into Yuka, where now millions of people would interpett their acne products and carsinogetic. Another app evaluated shampoo the same way it evaluated face products.</p>
-          <p>Binu only covers skincare today, but this shaped a rule we plan to build before expanding: evaluate the product's category and intended use first, then grade its ingredients against that context.</p>
-          <div class="cs-row">
-            <Placeholder basis={220} minHeight={200}>[Image: annotated screenshot of the flea treatment misread]</Placeholder>
+
+        <div class="cs-split">
+          <div class="cs-col">
+            <h3 class="cs-finding">Other apps grade every product with 1 framework instead of judging it by its category.</h3>
+          </div>
+          <div class="cs-col cs-prose">
+            <p>A few years ago a poorly exicuted study claimed benzal peroxied could degrade into benzine. While the study and claims where refuted and seen as alarmist, it didint stop the research from seeping into Yuka, where now millions of people would interpett their acne products and carsinogetic. Another app evaluated shampoo the same way it evaluated face products.</p>
+            <p>Binu only covers skincare today, but this shaped a rule we plan to build before expanding: evaluate the product's category and intended use first, then grade its ingredients against that context.</p>
+            <div class="cs-row">
+              <Placeholder basis={220} minHeight={200}>[Image: annotated screenshot of the flea treatment misread]</Placeholder>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="cs-split">
-        <div class="cs-col">
-          <h3 class="cs-finding">Early user interviews showed people either over-research or buy on vibes.</h3>
-        </div>
-        <div class="cs-col cs-prose">
-          <p>We ran 2 semi-structured interviews, starting with a skincare enthusiast who researches every product before adding it to her routine. This was directional research, so I treat the findings as patterns to validate. Each one changed or reinforced something specific.</p>
-        </div>
-      </div>
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split">
+            <div class="cs-col">
+              <h3 class="cs-finding">Early user interviews showed people either over-research or buy on vibes.</h3>
+            </div>
+            <div class="cs-col cs-prose">
+              <p>We ran 2 semi-structured interviews, starting with a skincare enthusiast who researches every product before adding it to her routine. This was directional research, so I treat the findings as patterns to validate. Each one changed or reinforced something specific.</p>
+            </div>
+          </div>
 
-      <PullQuote>Interview insight: Even people who research skincare don't naturally think in ingredients.</PullQuote>
+          <PullQuote>Interview insight: Even people who research skincare don't naturally think in ingredients.</PullQuote>
 
-      <DataTable id="interviews" divided>
-        <thead>
-          <tr>
-            <th scope="col">What we heard</th>
-            <th scope="col">What it changed</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Even people who research skincare don't naturally think in ingredients.</td><td>Reinforced leading with claims and outcomes, with ingredients underneath as supporting detail.</td></tr>
-          <tr><td>Decisions come from desired outcomes, product purpose, texture, affordability and whether they can realistically repurchase.</td><td>A future dupe finder should match on purpose, product type and texture, not just ingredient overlap.</td></tr>
-          <tr><td>Trust is already fragile; shoppers recognize the influence of marketing, sponsored reviews and vague claims.</td><td>Sources had to be visible, and the grade had to stay separate from anything that reads like marketing copy.</td></tr>
-          <tr><td>A skincare diary was less compelling than we assumed.</td><td>Deprioritized the diary before it was built.</td></tr>
-        </tbody>
-      </DataTable>
-    </section>
-
-    <!-- PRODUCT BET -->
-    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy cs-bet">
-      <div class="cs-split">
-        <div class="cs-col">
-          <h2 class="cs-h2 cs-h2--lg">The product bet</h2>
-        </div>
-        <div class="cs-col cs-prose cs-prose--loose">
-          <p>This gave us a clear point of difference and a disciplined build order. We built the evidence-grading experience first and deferred familiar but less differentiated features. Building those first would have made Binu feel like another skincare utility instead of a product with its own reason to exist.</p>
+          <DataTable id="interviews" divided>
+            <thead>
+              <tr>
+                <th scope="col">What we heard</th>
+                <th scope="col">What it changed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Even people who research skincare don't naturally think in ingredients.</td><td>Reinforced leading with claims and outcomes, with ingredients underneath as supporting detail.</td></tr>
+              <tr><td>Decisions come from desired outcomes, product purpose, texture, affordability and whether they can realistically repurchase.</td><td>A future dupe finder should match on purpose, product type and texture, not just ingredient overlap.</td></tr>
+              <tr><td>Trust is already fragile; shoppers recognize the influence of marketing, sponsored reviews and vague claims.</td><td>Sources had to be visible, and the grade had to stay separate from anything that reads like marketing copy.</td></tr>
+              <tr><td>A skincare diary was less compelling than we assumed.</td><td>Deprioritized the diary before it was built.</td></tr>
+            </tbody>
+          </DataTable>
         </div>
       </div>
-      <PullQuote>Binu would grade the quality of evidence behind each specific product claim and ingredients.</PullQuote>
+
+      <!-- PRODUCT BET -->
+      <div class="cs-stack cs-gap-block">
+        <div class="cs-split">
+          <div class="cs-col">
+            <h2 class="cs-h2">The product bet</h2>
+          </div>
+          <div class="cs-col cs-prose cs-prose--loose">
+            <p>This gave us a clear point of difference and a disciplined build order. We built the evidence-grading experience first and deferred familiar but less differentiated features. Building those first would have made Binu feel like another skincare utility instead of a product with its own reason to exist.</p>
+          </div>
+        </div>
+        <PullQuote>Binu would grade the quality of evidence behind each specific product claim and ingredients.</PullQuote>
+      </div>
     </section>
 
     <!-- DESIGN DECISIONS -->
-    <section class="cs-stack cs-gap-72 cs-section">
-      <SectionLabel space={72}>Design</SectionLabel>
-      <div class="cs-split">
-        <div class="cs-col">
-          <h2 class="cs-h2">Design decisions</h2>
-        </div>
-        <p class="cs-body cs-grow">The central design challenge was turning evidence quality into something people understand and can use at the moment they're evaluating a product.</p>
-      </div>
-
-      <!-- D01 -->
-      <div class="cs-stack cs-gap-24">
-        <div class="cs-split cs-split--tight">
+    <section class="cs-stack cs-section">
+      <SectionLabel>Design</SectionLabel>
+      <div class="cs-stack cs-gap-item">
+        <div class="cs-split">
           <div class="cs-col">
-            <h3 class="cs-h3">Per-claim evidence instead of 1 ingredient score</h3>
+            <h2 class="cs-h2">Design decisions</h2>
           </div>
-          <div class="cs-col cs-prose">
-            <p>The first concept gave each ingredient a single evidence score. We rejected it because the same ingredient can have strong evidence for one outcome and weak evidence for another. Niacinamide is well studied for evening skin tone but less so for firmness.</p>
-            <p>The final approach grades each claim separately, so people can see what's supported and what's uncertain. I explored several layouts for the evidence display before landing on 1 row per claim.</p>
+          <p class="cs-body cs-grow">The central design challenge was turning evidence quality into something people understand and can use at the moment they're evaluating a product.</p>
+        </div>
+
+        <!-- D01 -->
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split cs-split--tight">
+            <div class="cs-col">
+              <h3 class="cs-h3">Per-claim evidence instead of 1 ingredient score</h3>
+            </div>
+            <div class="cs-col cs-prose">
+              <p>The first concept gave each ingredient a single evidence score. We rejected it because the same ingredient can have strong evidence for one outcome and weak evidence for another. Niacinamide is well studied for evening skin tone but less so for firmness.</p>
+              <p>The final approach grades each claim separately, so people can see what's supported and what's uncertain. I explored several layouts for the evidence display before landing on 1 row per claim.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <Placeholder caption="[1 line: what the sketch explored]">[Image: paper sketch]</Placeholder>
+            <figure class="cs-preview-figure">
+              <div class="cs-preview" role="img" aria-label="Binu's evidence table: one row per claim, Controls oil with strong evidence, Antioxidant with moderate evidence, Supports barrier with very limited evidence, each with its supporting ingredients"><ClaimRowsStill client:visible /></div>
+              <figcaption>[1 line: why it won]</figcaption>
+            </figure>
           </div>
         </div>
-        <div class="cs-row">
-          <Placeholder caption="[1 line: what the sketch explored]">[Image: paper sketch]</Placeholder>
+
+        <!-- D02 -->
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split cs-split--tight">
+            <div class="cs-col">
+              <h3 class="cs-h3">Making trust visible</h3>
+            </div>
+            <p class="cs-body cs-grow">A grade alone isn't enough. The experience explains what the grade means, shows the reasoning in plain language and gives people a path to the underlying research without overwhelming them.</p>
+          </div>
           <figure class="cs-preview-figure">
-            <div class="cs-preview" role="img" aria-label="Binu's evidence table: one row per claim, Controls oil with strong evidence, Antioxidant with moderate evidence, Supports barrier with very limited evidence, each with its supporting ingredients"><ClaimRowsStill client:visible /></div>
-            <figcaption>[1 line: why it won]</figcaption>
+            <div role="img" aria-label="Product page for The Ordinary Niacinamide 10% + Zinc 1%: tapping Niacinamide in the ingredient list opens its card with its role, irritant rating, clashes, benefits, a plain-language description, what the research found, and the systematic review behind it"><ProductPage client:visible /></div>
+            <figcaption>Every ingredient opens to what it does, what the research found, and the paper behind it</figcaption>
+          </figure>
+          <figure class="cs-preview-figure">
+            <div role="img" aria-label="Routine page: a retinal serum is added to the routine, and the clash check flags one thing worth changing, a BHA liquid with the retinal serum, explains why, says what to do and names the ingredients responsible"><RoutinePage client:visible /></div>
+            <figcaption>Toxicity isn’t the only safety question: some ingredients irritate skin when they’re used together. The clash check flags those pairs from a list of documented interactions rather than an AI model, so the same routine always gets the same answer.</figcaption>
+          </figure>
+        </div>
+
+        <!-- D03 -->
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split cs-split--tight">
+            <div class="cs-col">
+              <h3 class="cs-h3">Writing within medical claims rules</h3>
+            </div>
+            <div class="cs-col cs-prose">
+              <p>Acne, eczema and rosacea are disease classifications, so any language that implies treating them counts as a drug claim no matter how it's phrased. The grades and explanations had to describe evidence without telling someone a product would treat a condition.</p>
+              <p>We wrote a claims-language policy based on FDA and FTC guidance that sets what grade labels, explanations and quiz questions are allowed to say.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- D04 -->
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split cs-split--tight">
+            <div class="cs-col">
+              <h3 class="cs-h3">A profile built around needs, not a single skin type</h3>
+            </div>
+            <p class="cs-body cs-grow">Instead of forcing people into a category like oily, dry or combination, the quiz profiles independent needs, plus phototype and safety-related questions. That gives Binu enough context to personalize without people needing to know which ingredients they need. I also cut the quiz from 12 questions to 7 after finding several that asked for overlapping information.</p>
+          </div>
+          <figure class="cs-preview-figure">
+            <div role="img" aria-label="The skin quiz as a chat on desktop: the section stepper ticks Your skin and moves to Sun and safety, and the guide asks the first sun question"><QuizPage client:visible /></div>
+            <figcaption>The quiz is a conversation: one question per turn, progress by section</figcaption>
+          </figure>
+          <div class="cs-row cs-media">
+            <figure class="cs-preview-figure" style="--basis: 363px">
+              <div data-ss-fill role="img" aria-label="The quiz on a phone: skin is profiled one need at a time, skin type, breakouts, dark spots and fine lines each landing as their own answer"><QuizNeedsPhone client:visible /></div>
+              <figcaption>Profiled as independent needs</figcaption>
+            </figure>
+            <figure class="cs-preview-figure" style="--basis: 363px">
+              <div data-ss-fill role="img" aria-label="The quiz on a phone: Prefer not to say is answered to the pregnancy question, and the progress moves on to Your routine"><QuizSectionPhone client:visible /></div>
+              <figcaption>&ldquo;Prefer not to say&rdquo; is always an answer</figcaption>
+            </figure>
+          </div>
+          <figure class="cs-preview-figure">
+            <div role="img" aria-label="For You page with Serums selected: picks shown as bubbles sized by value, the Price view is on, and the top pick, The Ordinary Niacinamide 10% + Zinc 1%, is marked Great fit at $6.00 with a link to see why it suits you"><ForYouPage client:visible /></div>
+            <figcaption>The profile feeds For You: picks are described by fit, never a bare score, and each one explains why it suits you</figcaption>
           </figure>
         </div>
       </div>
 
-      <!-- D02 -->
-      <div class="cs-stack cs-gap-24">
-        <div class="cs-split cs-split--tight">
+      <!-- VISUAL DESIGN AND SYSTEM -->
+      <div class="cs-stack cs-gap-block">
+        <div class="cs-split">
           <div class="cs-col">
-            <h3 class="cs-h3">Making trust visible</h3>
-          </div>
-          <p class="cs-body cs-grow">A grade alone isn't enough. The experience explains what the grade means, shows the reasoning in plain language and gives people a path to the underlying research without overwhelming them.</p>
-        </div>
-        <figure class="cs-preview-figure">
-          <div role="img" aria-label="Product page for The Ordinary Niacinamide 10% + Zinc 1%: tapping Niacinamide in the ingredient list opens its card with its role, irritant rating, clashes, benefits, a plain-language description, what the research found, and the systematic review behind it"><ProductPage client:visible /></div>
-          <figcaption>Every ingredient opens to what it does, what the research found, and the paper behind it</figcaption>
-        </figure>
-        <figure class="cs-preview-figure">
-          <div role="img" aria-label="Routine page: a retinal serum is added to the routine, and the clash check flags one thing worth changing, a BHA liquid with the retinal serum, explains why, says what to do and names the ingredients responsible"><RoutinePage client:visible /></div>
-          <figcaption>Toxicity isn’t the only safety question: some ingredients irritate skin when they’re used together. The clash check flags those pairs from a list of documented interactions rather than an AI model, so the same routine always gets the same answer.</figcaption>
-        </figure>
-      </div>
-
-      <!-- D03 -->
-      <div class="cs-stack cs-gap-24">
-        <div class="cs-split cs-split--tight">
-          <div class="cs-col">
-            <h3 class="cs-h3">Writing within medical claims rules</h3>
+            <h2 class="cs-h2">Design System and UI</h2>
           </div>
           <div class="cs-col cs-prose">
-            <p>Acne, eczema and rosacea are disease classifications, so any language that implies treating them counts as a drug claim no matter how it's phrased. The grades and explanations had to describe evidence without telling someone a product would treat a condition.</p>
-            <p>We wrote a claims-language policy based on FDA and FTC guidance that sets what grade labels, explanations and quiz questions are allowed to say.</p>
+            <p>I built a design system in Figma across 2 files: 1 for foundations, components and patterns, and 1 for user flows and final pages that match the live site.</p>
           </div>
+        </div>
+        <div class="cs-stack cs-gap-caption">
+          <div class="cs-row">
+            <Card basis={360} gap={20} label="Brand colors">
+              <div class="cs-swatches">
+                <div style="--swatch: var(--cs-pastel-blue)">Pastel blue</div>
+                <div style="--swatch: var(--cs-pastel-green)">Pastel green</div>
+                <div style="--swatch: var(--cs-pastel-pink)">Pastel pink</div>
+              </div>
+            </Card>
+            <Card basis={360} gap={20} label="Evidence grade colors">
+              <div class="cs-swatches">
+                <div style="--swatch: var(--cs-strong)">Strong</div>
+                <div style="--swatch: var(--cs-moderate)">Moderate</div>
+                <div style="--swatch: var(--cs-limited)">Limited</div>
+              </div>
+            </Card>
+          </div>
+          <p class="cs-note">Soft pastels carry the brand. Saturated colors are reserved for evidence grades, so nothing decorative can be mistaken for a grade. [Swap in your real hex values.]</p>
         </div>
       </div>
 
-      <!-- D04 -->
-      <div class="cs-stack cs-gap-24">
-        <div class="cs-split cs-split--tight">
+      <!-- DESIGN WORKFLOW -->
+      <div class="cs-stack cs-gap-block">
+        <div class="cs-split">
           <div class="cs-col">
-            <h3 class="cs-h3">A profile built around needs, not a single skin type</h3>
+            <h2 class="cs-h2">Design workflow</h2>
           </div>
-          <p class="cs-body cs-grow">Instead of forcing people into a category like oily, dry or combination, the quiz profiles independent needs, plus phototype and safety-related questions. That gives Binu enough context to personalize without people needing to know which ingredients they need. I also cut the quiz from 12 questions to 7 after finding several that asked for overlapping information.</p>
+          <div class="cs-col cs-prose">
+            <p>Early on I designed pages directly through AI coding tools, sketching components and layouts on paper and feeding those images to Claude Code. As the app grew, that got too slow; small visual changes meant long back-and-forth in code.</p>
+            <p>So I used the Figma MCP to bring the live codebase into Figma and built the design system there. Now I work design-first: I redesign a page in Figma, then bring it back into code.</p>
+          </div>
         </div>
-        <figure class="cs-preview-figure">
-          <div role="img" aria-label="The skin quiz as a chat on desktop: the section stepper ticks Your skin and moves to Sun and safety, and the guide asks the first sun question"><QuizPage client:visible /></div>
-          <figcaption>The quiz is a conversation: one question per turn, progress by section</figcaption>
-        </figure>
         <div class="cs-row">
-          <figure class="cs-preview-figure" style="--basis: 363px">
-            <div data-ss-fill role="img" aria-label="The quiz on a phone: skin is profiled one need at a time, skin type, breakouts, dark spots and fine lines each landing as their own answer"><QuizNeedsPhone client:visible /></div>
-            <figcaption>Profiled as independent needs</figcaption>
-          </figure>
-          <figure class="cs-preview-figure" style="--basis: 363px">
-            <div data-ss-fill role="img" aria-label="The quiz on a phone: Prefer not to say is answered to the pregnancy question, and the progress moves on to Your routine"><QuizSectionPhone client:visible /></div>
-            <figcaption>&ldquo;Prefer not to say&rdquo; is always an answer</figcaption>
-          </figure>
+          <Placeholder minHeight={220} caption="1. Sketch">[Image: paper sketch of a component]</Placeholder>
+          <Placeholder minHeight={220} caption="2. Design system in Figma">[Image: same component in Figma]</Placeholder>
+          <Placeholder minHeight={220} caption="3. Back in code">[Image: live in the product]</Placeholder>
         </div>
-        <figure class="cs-preview-figure">
-          <div role="img" aria-label="For You page with Serums selected: picks shown as bubbles sized by value, the Price view is on, and the top pick, The Ordinary Niacinamide 10% + Zinc 1%, is marked Great fit at $6.00 with a link to see why it suits you"><ForYouPage client:visible /></div>
-          <figcaption>The profile feeds For You: picks are described by fit, never a bare score, and each one explains why it suits you</figcaption>
-        </figure>
       </div>
-    </section>
 
-    <!-- VISUAL DESIGN AND SYSTEM -->
-    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy">
-      <div class="cs-split">
-        <div class="cs-col">
-          <h2 class="cs-h2 cs-h2--lg">Design System and UI</h2>
-        </div>
-        <div class="cs-col cs-prose">
-          <p>I built a design system in Figma across 2 files: 1 for foundations, components and patterns, and 1 for user flows and final pages that match the live site.</p>
-        </div>
-      </div>
-      <div class="cs-row">
-        <Card basis={360} gap={20} label="Brand colors">
-          <div class="cs-swatches">
-            <div style="--swatch: var(--cs-pastel-blue)">Pastel blue</div>
-            <div style="--swatch: var(--cs-pastel-green)">Pastel green</div>
-            <div style="--swatch: var(--cs-pastel-pink)">Pastel pink</div>
+      <!-- LOW TO HIGH FIDELITY -->
+      <div class="cs-stack cs-gap-block">
+        <div class="cs-split">
+          <div class="cs-col">
+            <h2 class="cs-h2">Turning quick exploration prototypes into high fidelity, proud and presentable experiences</h2>
           </div>
-        </Card>
-        <Card basis={360} gap={20} label="Evidence grade colors">
-          <div class="cs-swatches">
-            <div style="--swatch: var(--cs-strong)">Strong</div>
-            <div style="--swatch: var(--cs-moderate)">Moderate</div>
-            <div style="--swatch: var(--cs-limited)">Limited</div>
+          <div class="cs-col cs-prose">
+            <p>An idea as unique as Binu deserves an interface that's just as unique. None of our competitors from the analysis really push for a design-first approach or are willing to be more out of the box. This leaves an opportunity for us to shine product-wise.</p>
           </div>
-        </Card>
-      </div>
-      <p class="cs-note">Soft pastels carry the brand. Saturated colors are reserved for evidence grades, so nothing decorative can be mistaken for a grade. [Swap in your real hex values.]</p>
-    </section>
-
-    <!-- DESIGN WORKFLOW -->
-    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy">
-      <div class="cs-split">
-        <div class="cs-col">
-          <h2 class="cs-h2 cs-h2--lg">Design workflow</h2>
         </div>
-        <div class="cs-col cs-prose">
-          <p>Early on I designed pages directly through AI coding tools, sketching components and layouts on paper and feeding those images to Claude Code. As the app grew, that got too slow; small visual changes meant long back-and-forth in code.</p>
-          <p>So I used the Figma MCP to bring the live codebase into Figma and built the design system there. Now I work design-first: I redesign a page in Figma, then bring it back into code.</p>
-        </div>
+        <BeforeAfter
+          beforeLabel="Binu version"
+          afterLabel="SkinSavior prototype"
+          before="/previews/binu/product-after.jpg"
+          after="/previews/binu/product-before.jpg"
+          beforeAlt="Current Binu product page for The Ordinary Niacinamide 10% + Zinc 1%: real product photo, type, benefits, irritancy and conflict fields, add-to buttons and a buy link"
+          afterAlt="Earlier SkinSavior product page for the same serum: cream background, placeholder product image, price and a save button"
+        />
       </div>
-      <div class="cs-row">
-        <Placeholder minHeight={220} caption="1. Sketch">[Image: paper sketch of a component]</Placeholder>
-        <Placeholder minHeight={220} caption="2. Design system in Figma">[Image: same component in Figma]</Placeholder>
-        <Placeholder minHeight={220} caption="3. Back in code">[Image: live in the product]</Placeholder>
-      </div>
-      <BeforeAfter
-        before="/previews/binu/product-before.jpg"
-        after="/previews/binu/product-after.jpg"
-        beforeAlt="Earlier SkinSavior product page for The Ordinary Niacinamide 10% + Zinc 1%: cream background, placeholder product image, price and a save button"
-        afterAlt="Current Binu product page for the same serum: real product photo, type, benefits, irritancy and conflict fields, add-to buttons and a buy link"
-        beforeLabel="Before the design system"
-        afterLabel="With the design system"
-        caption="Product page"
-      />
-      <BeforeAfter
-        before="/previews/binu/ingredients-before.jpg"
-        after="/previews/binu/ingredients-after.jpg"
-        beforeAlt="Earlier SkinSavior ingredients library: a grid of ingredient cards with function tags"
-        afterAlt="Current Binu ingredients page: a searchable list of every ingredient beside the selected ingredient's role, clashes, description and products that contain it"
-        beforeLabel="Before the design system"
-        afterLabel="With the design system"
-        caption="Ingredients"
-      />
-      <BeforeAfter
-        before="/previews/binu/quiz-before.jpg"
-        after="/previews/binu/quiz-after.jpg"
-        beforeAlt="Earlier SkinSavior quiz: a form with a progress bar asking what kind of skin you have, with four answer options"
-        afterAlt="Current Binu quiz: a chat with a section stepper; after you give your name, the guide asks what kind of skin you have, with the same four answers"
-        beforeLabel="Before the design system"
-        afterLabel="With the design system"
-        caption="Skin quiz"
-      />
-      <BeforeAfter
-        before="/previews/binu/search-before.jpg"
-        after="/previews/binu/search-after.jpg"
-        beforeAlt="Earlier SkinSavior product search for niacinamide: category chips above a grid of product cards"
-        afterAlt="Current Binu search results for niacinamide: a filter sidebar beside a grid of product cards"
-        beforeLabel="Before the design system"
-        afterLabel="With the design system"
-        caption="Search results"
-      />
     </section>
 
     <!-- BUILDING AND IMPLEMENTATION -->
-    <section class="cs-stack cs-gap-40 cs-section">
-      <SectionLabel space={72}>Building and implementation</SectionLabel>
-      <div class="cs-split">
-        <div class="cs-col">
-          <h2 class="cs-h2 cs-h2--lg">How it's built</h2>
+    <section class="cs-stack cs-section">
+      <SectionLabel>Building and implementation</SectionLabel>
+      <div class="cs-stack cs-gap-item">
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split">
+            <div class="cs-col">
+              <h2 class="cs-h2">How it's built</h2>
+            </div>
+            <p class="cs-body cs-grow">To make the trust promise real, the evidence grade couldn't depend on an AI model deciding what's true. So the grade comes from fixed rules, and AI only translates the finished result.</p>
+          </div>
+          <PullQuote>The evidence grade couldn't depend on an AI model deciding what's true. We need a rules based aproch.</PullQuote>
+          <div class="cs-pipeline">
+            <div>
+              <p class="cs-step-name">Extract</p>
+              <p class="cs-step-body">Study information is pulled into structured fields.</p>
+            </div>
+            <div>
+              <p class="cs-step-name">Grade</p>
+              <p class="cs-step-body">Fixed rules based on GRADE and Oxford CEBM, 2 established evidence frameworks, calculate the certainty level.</p>
+              <div class="cs-step-foot"><Pill variant="solid">No AI</Pill></div>
+            </div>
+            <div>
+              <p class="cs-step-name">Translate</p>
+              <p class="cs-step-body">AI turns the finished result into plain language without changing the grade.</p>
+            </div>
+          </div>
         </div>
-        <p class="cs-body cs-grow">To make the trust promise real, the evidence grade couldn't depend on an AI model deciding what's true. So the grade comes from fixed rules, and AI only translates the finished result.</p>
-      </div>
-      <PullQuote bare>The evidence grade couldn't depend on an AI model deciding what's true. We need a rules based aproch.</PullQuote>
-      <div class="cs-pipeline">
-        <div>
-          <p class="cs-step-name">Extract</p>
-          <p class="cs-step-body">Study information is pulled into structured fields.</p>
-        </div>
-        <div>
-          <p class="cs-step-name">Grade</p>
-          <p class="cs-step-body">Fixed rules based on GRADE and Oxford CEBM, 2 established evidence frameworks, calculate the certainty level.</p>
-          <div class="cs-step-foot"><Pill variant="solid">No AI</Pill></div>
-        </div>
-        <div>
-          <p class="cs-step-name">Translate</p>
-          <p class="cs-step-body">AI turns the finished result into plain language without changing the grade.</p>
-        </div>
-      </div>
 
-      <div class="cs-split">
-        <div class="cs-col">
-          <h3 class="cs-finding">Each feature uses a model match to how offten it runed and how much reasoning it needs.</h3>
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split">
+            <div class="cs-col">
+              <h3 class="cs-finding">Each feature uses a model match to how offten it runed and how much reasoning it needs.</h3>
+            </div>
+          </div>
+          <div class="cs-grid">
+            <Card size="lg" gap={20}>
+              <Pill>Runs constantly</Pill>
+              <p class="cs-card-title">Plain-language explainer</p>
+              <p class="cs-card-body">A fast, low-cost model (<b>Gemini 3.1 Flash-Lite</b>).</p>
+            </Card>
+            <Card size="lg" gap={20}>
+              <Pill>Runs less often, needs more reasoning</Pill>
+              <p class="cs-card-title">Add-a-product-by-URL</p>
+              <p class="cs-card-body">A stronger model with a web lookup (Claude Opus 4.8).</p>
+            </Card>
+          </div>
         </div>
-      </div>
-      <div class="cs-grid">
-        <Card size="lg" gap={20}>
-          <Pill>Runs constantly</Pill>
-          <p class="cs-card-title">Plain-language explainer</p>
-          <p class="cs-card-body">A fast, low-cost model (<b>Gemini 3.1 Flash-Lite</b>).</p>
-        </Card>
-        <Card size="lg" gap={20}>
-          <Pill>Runs less often, needs more reasoning</Pill>
-          <p class="cs-card-title">Add-a-product-by-URL</p>
-          <p class="cs-card-body">A stronger model with a web lookup (Claude Opus 4.8).</p>
-        </Card>
-      </div>
 
-      <div class="cs-split">
-        <div class="cs-col">
-          <h3 class="cs-finding">How I used AI to build it</h3>
-        </div>
-        <div class="cs-col cs-prose">
-          <p>I used Claude Code and Codex to implement the shared web and mobile codebase. I was responsible for the product requirements, architecture choices, claims policy, quality checks and final decisions, and I reviewed and merged every change.</p>
-          <p class="cs-todo">[Add 1 specific moment where the AI got something wrong and how you caught or overrode it]</p>
+        <div class="cs-stack cs-gap-block">
+          <div class="cs-split">
+            <div class="cs-col">
+              <h3 class="cs-finding">How I used AI to build it</h3>
+            </div>
+            <div class="cs-col cs-prose">
+              <p>I used Claude Code and Codex to implement the shared web and mobile codebase. I was responsible for the product requirements, architecture choices, claims policy, quality checks and final decisions, and I reviewed and merged every change.</p>
+              <p class="cs-todo">[Add 1 specific moment where the AI got something wrong and how you caught or overrode it]</p>
+            </div>
+          </div>
+
+          <WorkflowCarousel label="My building workflow" ariaLabel="Building workflow steps" steps={workflow}>
+            <p class="cs-small">Scroll for all 6 steps →</p>
+            <p class="cs-small">↺ If the result doesn't match the design or breaks a claims rule, it goes back to step 1 or 2 instead of being patched in code.</p>
+          </WorkflowCarousel>
         </div>
       </div>
-
-      <WorkflowCarousel label="My building workflow" ariaLabel="Building workflow steps" steps={workflow}>
-        <p class="cs-small">Scroll for all 6 steps →</p>
-        <p class="cs-small">↺ If the result doesn't match the design or breaks a claims rule, it goes back to step 1 or 2 instead of being patched in code.</p>
-      </WorkflowCarousel>
     </section>
 
     <!-- LIVE + VALIDATION -->
-    <section class="cs-stack cs-gap-40 cs-section cs-section--roomy">
-      <div class="cs-split">
-        <div class="cs-col">
-          <h2 class="cs-h2 cs-h2--lg">What's live today</h2>
+    <section class="cs-stack cs-section">
+      <SectionLabel>What's live today</SectionLabel>
+      <div class="cs-stack cs-gap-block">
+        <ul class="cs-feature-list">
+          <Pill variant="feature" as="li">Skin quiz and saved profile</Pill>
+          <Pill variant="feature" as="li">Per-claim evidence explanations</Pill>
+          <Pill variant="feature" as="li">Ingredient breakdowns and safety flags</Pill>
+          <Pill variant="feature" as="li">Product, ingredient, routine and community browsing</Pill>
+          <Pill variant="feature" as="li">Global search</Pill>
+          <Pill variant="feature" as="li">Add a product by URL</Pill>
+          <Pill variant="feature" as="li">Web and mobile from a shared foundation</Pill>
+        </ul>
+        <figure class="cs-preview-figure">
+          <div role="img" aria-label="Signed-in home: Welcome back Maya, with the daily routine summarised under the search bar; typing niacinamide brings up matching serums from The Ordinary, Anua and Beauty of Joseon"><HomeSearchPage client:visible /></div>
+          <figcaption>Signed in, search sits on top of your routine</figcaption>
+        </figure>
+        <div class="cs-row cs-media">
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="A product link is pasted into Binu's add-a-product field"><AddLinkTile client:visible /></div>
+            <figcaption>Add a product by pasting its link</figcaption>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Results of adding products by link: each one is created or already known"><AddResultsTile client:visible /></div>
+            <figcaption>Each link is added or matched to a product Binu already knows</figcaption>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Global search for serum: results load in under the search bar"><SearchLoadingTile client:visible /></div>
+            <figcaption>Search results load in as you type</figcaption>
+          </figure>
+          <figure class="cs-preview-figure" style="--basis: 363px">
+            <div class="cs-preview" role="img" aria-label="Global search with no matching results"><SearchEmptyTile client:visible /></div>
+            <figcaption>Search, no results</figcaption>
+          </figure>
         </div>
-        <div class="cs-col">
-          <ul class="cs-feature-list">
-            <Pill variant="feature" as="li">Skin quiz and saved profile</Pill>
-            <Pill variant="feature" as="li">Per-claim evidence explanations</Pill>
-            <Pill variant="feature" as="li">Ingredient breakdowns and safety flags</Pill>
-            <Pill variant="feature" as="li">Product, ingredient, routine and community browsing</Pill>
-            <Pill variant="feature" as="li">Global search</Pill>
-            <Pill variant="feature" as="li">Add a product by URL</Pill>
-            <Pill variant="feature" as="li">Web and mobile from a shared foundation</Pill>
-          </ul>
-        </div>
-      </div>
-      <figure class="cs-preview-figure">
-        <div role="img" aria-label="Signed-in home: Welcome back Maya, with the daily routine summarised under the search bar; typing niacinamide brings up matching serums from The Ordinary, Anua and Beauty of Joseon"><HomeSearchPage client:visible /></div>
-        <figcaption>Signed in, search sits on top of your routine</figcaption>
-      </figure>
-      <div class="cs-row">
-        <figure class="cs-preview-figure" style="--basis: 363px">
-          <div class="cs-preview" role="img" aria-label="A product link is pasted into Binu's add-a-product field"><AddLinkTile client:visible /></div>
-          <figcaption>Add a product by pasting its link</figcaption>
-        </figure>
-        <figure class="cs-preview-figure" style="--basis: 363px">
-          <div class="cs-preview" role="img" aria-label="Results of adding products by link: each one is created or already known"><AddResultsTile client:visible /></div>
-          <figcaption>Each link is added or matched to a product Binu already knows</figcaption>
-        </figure>
-        <figure class="cs-preview-figure" style="--basis: 363px">
-          <div class="cs-preview" role="img" aria-label="Global search for serum: results load in under the search bar"><SearchLoadingTile client:visible /></div>
-          <figcaption>Search results load in as you type</figcaption>
-        </figure>
-        <figure class="cs-preview-figure" style="--basis: 363px">
-          <div class="cs-preview" role="img" aria-label="Global search with no matching results"><SearchEmptyTile client:visible /></div>
-          <figcaption>Search, no results</figcaption>
-        </figure>
       </div>
 
-      <div class="cs-split">
-        <div class="cs-col">
-          <h3 class="cs-finding">Validation plan</h3>
+      <!-- VALIDATION -->
+      <div class="cs-stack cs-gap-block">
+        <div class="cs-split">
+          <div class="cs-col">
+            <h2 class="cs-h2">Validation plan</h2>
+          </div>
+          <div class="cs-col cs-prose cs-prose--loose">
+            <p>Binu is pre-launch, so there are no usage metrics yet. The next step is a comprehension test with 5 people on the live demo.<br /><br />If people confuse evidence grades with safety ratings, that's the signal to rework how grades are labeled before adding any new features. After launch, analytics will track whether people open the explanations and research, not just the grade.</p>
+          </div>
         </div>
-        <div class="cs-col cs-prose cs-prose--loose">
-          <p>Binu is pre-launch, so there are no usage metrics yet. The next step is a comprehension test with 5 people on the live demo.<br /><br />If people confuse evidence grades with safety ratings, that's the signal to rework how grades are labeled before adding any new features. After launch, analytics will track whether people open the explanations and research, not just the grade.</p>
-        </div>
-      </div>
-      <div class="cs-stack">
-        <span class="cs-lead-label">The test checks whether people can:</span>
-        <div class="cs-grid cs-grid--tight">
-          <Card size="sm" gap={28}>
-            <span class="cs-check-num">1</span>
-            <p class="cs-check-text">Explain what an evidence grade means in their own words</p>
-          </Card>
-          <Card size="sm" gap={28}>
-            <span class="cs-check-num">2</span>
-            <p class="cs-check-text">Tell evidence quality apart from ingredient safety</p>
-          </Card>
-          <Card size="sm" gap={28}>
-            <span class="cs-check-num">3</span>
-            <p class="cs-check-text">Compare 2 products and say which claims are better supported</p>
-          </Card>
-          <Card size="sm" gap={28}>
-            <span class="cs-check-num">4</span>
-            <p class="cs-check-text">Get value from the explanation without feeling overwhelmed</p>
-          </Card>
+        <div class="cs-stack">
+          <span class="cs-lead-label">The test checks whether people can:</span>
+          <div class="cs-grid cs-grid--tight">
+            <Card size="sm" gap={28}>
+              <span class="cs-check-num">1</span>
+              <p class="cs-check-text">Explain what an evidence grade means in their own words</p>
+            </Card>
+            <Card size="sm" gap={28}>
+              <span class="cs-check-num">2</span>
+              <p class="cs-check-text">Tell evidence quality apart from ingredient safety</p>
+            </Card>
+            <Card size="sm" gap={28}>
+              <span class="cs-check-num">3</span>
+              <p class="cs-check-text">Compare 2 products and say which claims are better supported</p>
+            </Card>
+            <Card size="sm" gap={28}>
+              <span class="cs-check-num">4</span>
+              <p class="cs-check-text">Get value from the explanation without feeling overwhelmed</p>
+            </Card>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- LEARNINGS -->
-    <section class="cs-stack cs-gap-40 cs-section">
+    <section class="cs-stack cs-section">
       <SectionLabel>Learnings</SectionLabel>
       <div class="cs-row">
         <Card basis={300}>

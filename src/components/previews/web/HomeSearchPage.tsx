@@ -437,7 +437,7 @@ export function HomeSearchPage() {
             <HomePage s={s} size="phone" />
           </Phone>
         ) : (
-          <Window url="binu.app/home" urlShape="pill" className="hs-win">
+          <Window url="www.heybinu.com/home" urlShape="pill" className="hs-win">
             <HomePage s={s} size="xl" />
           </Window>
         )

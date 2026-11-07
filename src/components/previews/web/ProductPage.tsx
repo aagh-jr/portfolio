@@ -468,7 +468,7 @@ function useNarrow(ref: RefObject<HTMLDivElement | null>, below: number) {
   return narrow
 }
 
-const URL = 'binu.app/product/the-ordinary-niacinamide-10-zinc-1'
+const URL = 'www.heybinu.com/product/the-ordinary-niacinamide-10-zinc-1'
 
 /**
  * a.scroll measures with the stage's scale only; inside a Phone the screen is

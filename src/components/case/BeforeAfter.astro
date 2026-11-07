@@ -1,7 +1,7 @@
 ---
 // Two same-sized screenshots stacked; drag the round "< >" handle (or use
 // the arrow keys) to wipe between them. "After" sits underneath, "before" is
-// clipped on top from the left.
+// clipped on top from the left. Each label is clipped with its own side.
 export interface Props {
   before: string;
   after: string;
@@ -30,11 +30,13 @@ const {
 <figure class:list={["ba-figure", className]}>
   <div class="ba" style={`--ratio: ${ratio}; --pos: 50%`} data-ba>
     <img class="ba-img" src={after} alt={afterAlt} loading="lazy" decoding="async" draggable="false" />
+    <div class="ba-after-tag">
+      <span class="ba-tag ba-tag--after">{afterLabel}</span>
+    </div>
     <div class="ba-before">
       <img class="ba-img" src={before} alt={beforeAlt} loading="lazy" decoding="async" draggable="false" />
+      <span class="ba-tag ba-tag--before">{beforeLabel}</span>
     </div>
-    <span class="ba-tag ba-tag--before">{beforeLabel}</span>
-    <span class="ba-tag ba-tag--after">{afterLabel}</span>
     <div class="ba-line" aria-hidden="true">
       <span class="ba-knob">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -97,6 +99,14 @@ const {
     position: absolute;
     inset: 0;
     clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+  }
+  /* Each tag lives on its own side of the wipe, so the line covers it along
+     with its screen: drag fully left and the before tag is gone, and vice versa */
+  .ba-after-tag {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 0 0 var(--pos));
+    pointer-events: none;
   }
   .ba-tag {
     position: absolute;
