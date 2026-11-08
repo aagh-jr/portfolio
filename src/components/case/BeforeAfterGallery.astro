@@ -1,0 +1,144 @@
+---
+// One before/after wipe at a time, with small thumbnails underneath to
+// switch which comparison is showing. Each comparison is a full BeforeAfter
+// (its own slider position); only the selected one is visible.
+import BeforeAfter from "./BeforeAfter.astro";
+
+export interface Item {
+  before: string;
+  after: string;
+  beforeAlt: string;
+  afterAlt: string;
+  /** Short name, shown under the thumbnail and as the caption. */
+  label: string;
+}
+export interface Props {
+  items: Item[];
+  beforeLabel?: string;
+  afterLabel?: string;
+  ratio?: string;
+  class?: string;
+}
+const { items, beforeLabel, afterLabel, ratio, class: className } = Astro.props;
+const id = `bag-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class:list={["bag", className]} data-bag>
+  {items.map((it, i) => (
+    <div
+      class="bag-panel"
+      id={`${id}-p${i}`}
+      role="tabpanel"
+      aria-labelledby={`${id}-t${i}`}
+      hidden={i !== 0}
+    >
+      <BeforeAfter
+        before={it.before}
+        after={it.after}
+        beforeAlt={it.beforeAlt}
+        afterAlt={it.afterAlt}
+        beforeLabel={beforeLabel}
+        afterLabel={afterLabel}
+        ratio={ratio}
+      />
+    </div>
+  ))}
+  <div class="bag-thumbs" role="tablist" aria-label="Choose a page to compare">
+    {items.map((it, i) => (
+      <button
+        type="button"
+        class="bag-thumb"
+        id={`${id}-t${i}`}
+        role="tab"
+        aria-selected={i === 0 ? "true" : "false"}
+        aria-controls={`${id}-p${i}`}
+        tabindex={i === 0 ? 0 : -1}
+      >
+        <span class="bag-thumb-img">
+          <img src={it.after} alt="" loading="lazy" decoding="async" draggable="false" />
+        </span>
+        <span class="bag-thumb-label">{it.label}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-bag]").forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>(".bag-thumb")];
+    const panels = [...root.querySelectorAll<HTMLElement>(".bag-panel")];
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, j) => {
+        const on = i === j;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        panels[j].hidden = !on;
+      });
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        select((i + step + tabs.length) % tabs.length, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .bag {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .bag-panel[hidden] { display: none; }
+  .bag-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    max-width: 640px;
+  }
+  .bag-thumb {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .bag-thumb-img {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid var(--cs-frame);
+    background: var(--cs-ph-bg);
+    opacity: 0.6;
+    transition: opacity 0.15s ease, border-color 0.15s ease;
+  }
+  .bag-thumb-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+    display: block;
+  }
+  .bag-thumb-label {
+    font-size: 13px;
+    color: var(--cs-muted);
+  }
+  .bag-thumb:hover .bag-thumb-img { opacity: 0.85; }
+  .bag-thumb[aria-selected="true"] .bag-thumb-img {
+    opacity: 1;
+    border-color: var(--cs-ink);
+  }
+  .bag-thumb[aria-selected="true"] .bag-thumb-label { color: var(--cs-ink); }
+  .bag-thumb:focus-visible .bag-thumb-img { outline: 2px solid var(--cs-link); outline-offset: 3px; }
+  @media (max-width: 600px) {
+    .bag-thumbs { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .bag-thumb-img { border-radius: 8px; }
+    .bag-thumb-label { font-size: 11px; }
+  }
+</style>
