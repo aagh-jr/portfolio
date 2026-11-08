@@ -1,7 +1,12 @@
 ---
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import BeforeAfterGallery from "../../components/case/BeforeAfterGallery.astro";
 import styles from "../../cases/energy-ave-styles.css?raw";
-import body from "../../cases/energy-ave-body.html?raw";
+
+// Energy Ave case study, rebuilt from the approved reference build
+// (energy-ave-handoff, Nov 2026). Copy is word for word from that build.
+// noindex and out of the sitemap while its [bracketed] placeholders and
+// dashed image boxes wait for real copy and images.
 ---
 
 <CaseStudyLayout
@@ -11,5 +16,515 @@ import body from "../../cases/energy-ave-body.html?raw";
   image="/uploads/ea-cover.png"
   styles={styles}
 >
-  <Fragment set:html={body} />
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+
+  <main class="ea-page" id="top">
+    <!-- ===== 00 Hero ===== -->
+    <section class="ea-wrap ea-stack ea-hero" aria-label="Energy Ave case study">
+      <a href="/" class="ea-label ea-back">← All work</a>
+      <div class="ea-stack ea-hero-head">
+        <span class="ea-pill">Energy Ave. · UX research and product design</span>
+        <h1 class="ea-h1">Designing a gamified energy conservation game for PlanetFlip</h1>
+        <p class="ea-p ea-p--narrow">A browser game for PlanetFlip, a K-12 sustainability platform, that teaches household energy conservation room by room. We tested it twice, once as wireframes and once as a finished build, and shipped it in 10 weeks.</p>
+      </div>
+      <div class="ea-row">
+        <a href="#" class="ea-btn ea-btn--solid">Play the game ↗</a>
+        <a href="#" class="ea-btn ea-btn--line">Figma files ↗</a>
+        <a href="#" class="ea-btn ea-btn--line">Final report ↗</a>
+      </div>
+      <dl class="ea-meta">
+        <div class="ea-stack ea-gap-caption"><dt class="ea-label">Role</dt><dd class="ea-small">Lead UX researcher and designer. I scoped the research, wrote both study protocols and ran the analysis.</dd></div>
+        <div class="ea-stack ea-gap-caption"><dt class="ea-label">Topics</dt><dd class="ea-small">Stakeholder interviews, research protocols, usability testing, synthesis, wireframes and item cards</dd></div>
+        <div class="ea-stack ea-gap-caption"><dt class="ea-label">Team</dt><dd class="ea-small">6 designers, researchers and engineers</dd></div>
+        <div class="ea-stack ea-gap-caption"><dt class="ea-label">Status</dt><dd class="ea-small">Shipped March 18, 2025</dd></div>
+        <div class="ea-stack ea-gap-caption"><dt class="ea-label">Timeline</dt><dd class="ea-small">10 weeks (UCSD ENG 100D, Winter 2025)</dd></div>
+      </dl>
+      <figure class="ea-stack ea-gap-caption">
+        <div class="ea-hero-stage">
+          <div class="ea-stack ea-item-card">
+            <div class="ea-item-head">
+              <div class="ea-stack ea-gap-4"><span class="ea-cap">Bedroom</span><span class="ea-item-name">Personal computer</span></div>
+              <span class="ea-pill ea-pill--points">+200 points</span>
+            </div>
+            <p class="ea-p ea-item-fact">If left on, a computer can use about 60–300 watts per hour. This is one that can be often times over looked. Good eye!</p>
+            <div class="ea-stack ea-gap-caption">
+              <span class="ea-label">Energy meter</span>
+              <div class="ea-meter" role="img" aria-label="3 of 5 filled"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="ea-cap">Every fix opens a card with a real energy fact and fills the room's energy meter.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== 01 TLDR ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="tldr">
+      <h2 id="tldr" class="ea-slabel">TLDR</h2>
+      <div class="ea-stack ea-gap-part">
+        <div class="ea-tiles">
+          <div class="ea-card"><h3 class="ea-t">Problem</h3><p class="ea-p">Sustainability education mostly hands people information. Young players already know energy matters, so PlanetFlip needed something that turns that awareness into habits.</p></div>
+          <div class="ea-card ea-blue"><h3 class="ea-t">Solution</h3><p class="ea-p">A cozy life-sim where players find and fix energy waste room by room would teach more than a quick arcade game, even though it was harder to build.</p></div>
+          <div class="ea-card"><h3 class="ea-t">My role</h3><p class="ea-p">Lead UX researcher and designer on a team of 6. I owned the usability research from scoping to analysis and worked on the item cards and hi-fi screens.</p></div>
+          <div class="ea-card ea-green"><h3 class="ea-t">Where it landed</h3><p class="ea-p">Shipped in March 2025. 6 of 7 testers enjoyed it and said the goal was clear; the main gap we found was that it felt too easy.</p></div>
+        </div>
+        <div class="ea-two">
+          <h3 class="ea-t">My role</h3>
+          <div class="ea-stack ea-gap-tile">
+            <p class="ea-p">I was the lead UX researcher and a designer on a team of 6. I owned the usability research from start to finish: I scoped it, set the study goals and success criteria, wrote both protocols and ran the analysis. I ran the Study 2 sessions, with a teammate helping on some.</p>
+            <p class="ea-p">Discovery was a team effort. My part was the interviews with NPS staff at Cabrillo and the concept evaluation that picked Energy Ave. On the design side I helped build the lo-fi wireframes and sketches, worked on the item designs and their variants, the item card visuals and some hi-fi screens, and researched the energy facts for the cards. Teammates built the game in Construct 3, made most of the pixel-art sprites in Piskel and led the review of existing games and the Climate Collaborative interview.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 02 The opportunity ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="opp">
+      <h2 id="opp" class="ea-slabel">The opportunity</h2>
+      <div class="ea-stack ea-gap-quote">
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">Young players already know saving energy matters. What they don't have is a reason to practice it.</h3>
+            <div class="ea-stack ea-gap-tile">
+              <p class="ea-p">Most sustainability education is information delivery: facts, slides and posters. PlanetFlip had tried game concepts before, but none of them had been built or tested with players.</p>
+              <p class="ea-p">So the job wasn't just to make a game. It had to teach something real, be easy to pick up with very little instruction and be fun enough that people would keep playing on their own.</p>
+            </div>
+          </div>
+          <figure class="ea-stack ea-gap-caption">
+            <div class="ea-ph">[Image: evidence of the problem, such as a typical fact sheet, slide or poster lesson]</div>
+            <figcaption class="ea-cap">[1 line on what to notice: e.g. how much of the lesson is reading versus doing]</figcaption>
+          </figure>
+        </div>
+        <figure class="ea-stack ea-gap-tile">
+          <figcaption class="ea-label">The question we set out to answer</figcaption>
+          <blockquote class="ea-quote">How might we design an energy conservation game that's engaging, intuitive without instruction and meaningful enough to carry into real life?</blockquote>
+        </figure>
+        <div class="ea-two">
+          <h3 class="ea-t">The constraint: it had to actually get built</h3>
+          <p class="ea-p">Past student teams had designed games for PlanetFlip but never finished building them in Construct 3, the founder's preferred tool. We had 10 weeks, so we built in Construct 3 from the start and weighted feasibility as a top criterion when choosing a concept.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 03 Discovery ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="disc">
+      <h2 id="disc" class="ea-slabel">Discovery</h2>
+      <div class="ea-stack ea-gap-part">
+        <div class="ea-stack ea-gap-item">
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">What existing games taught us</h3>
+              <div class="ea-stack ea-gap-tile">
+                <p class="ea-p">Before picking a concept, we reviewed 4 existing sustainability games to see what kept people playing and what made them lose interest.</p>
+                <p class="ea-p">Most of these games were either mostly information or mostly play, rarely both. So we aimed for short interactions with a quick fact after each one. Most also targeted kids in grades K to 6 and were hard to find through a normal search.</p>
+              </div>
+            </div>
+            <div class="ea-stack ea-gap-stack">
+              <div class="ea-tbl" role="region" aria-label="Existing games reviewed" tabindex="0"><table><thead><tr><th scope="col">Game</th><th scope="col">What worked</th><th scope="col">What didn't</th></tr></thead><tbody>
+                <tr><td>Space Waste Odyssey (PBS Kids)</td><td>Levels and mini-games keep it varied; strong visuals; closed captions</td><td>Long levels with no time limits or penalties, so it drags</td></tr>
+                <tr><td>Become an Energy Champion (National Energy Foundation)</td><td>Room-by-room energy tasks in a home; useful facts; a certificate at the end</td><td>Repetitive mini-games, mostly videos and drag-and-drop; hard to navigate</td></tr>
+                <tr><td>Fidgit Power (PBS Kids Design Squad)</td><td>Tasks change with each location; closed captions</td><td>Repetitive; little real energy information; nothing left to do after 4 locations</td></tr>
+                <tr><td>Financial Freedom (Legends of Learning)</td><td>Custom avatars; penalties for unsustainable choices; context before each task</td><td>Needs an account; slow and too complex for younger players</td></tr>
+              </tbody></table></div>
+              <figure class="ea-stack ea-gap-caption">
+                <div class="ea-tiles">
+                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-space-waste.png" width="1797" height="1016" loading="lazy" decoding="async" alt="Space Waste Odyssey title screen with a cartoon spaceship" />
+                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-energy-champion.png" width="1640" height="1231" loading="lazy" decoding="async" alt="Become an Energy Champion title screen with a woman opening a front door" />
+                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-fidgit-power.png" width="1999" height="1363" loading="lazy" decoding="async" alt="Fidgit Power title screen with wind turbines and four block characters" />
+                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-financial-freedom.png" width="1999" height="1104" loading="lazy" decoding="async" alt="Financial Freedom title screen over a low-poly island" />
+                </div>
+                <figcaption class="ea-cap">Each game leans toward either facts or play, and rarely does both.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">3 organizations, 3 ways the game could be used</h3>
+              <p class="ea-p">We met with PlanetFlip's founder and interviewed 2 local organizations. I interviewed NPS staff at Cabrillo National Monument, and a teammate interviewed the San Diego Climate Collaborative. Each conversation pointed to a different audience, which told us the game had to work for more than just kids at home.</p>
+            </div>
+            <div class="ea-tbl" role="region" aria-label="Stakeholder interviews" tabindex="0"><table><thead><tr><th scope="col">Who</th><th scope="col">What we heard</th><th scope="col">What it changed</th></tr></thead><tbody>
+              <tr><td>PlanetFlip founder</td><td>Past student teams designed games for PlanetFlip but never finished building them in Construct 3, his preferred tool.</td><td>We built in Construct 3 from the start and weighted feasibility as a top criterion when choosing a concept.</td></tr>
+              <tr><td>San Diego Climate Collaborative</td><td>More workplaces are creating sustainability manager roles, often given to people with no training. They were also building a sustainability curriculum.</td><td>Workplace training became a second use case, and pitching the game for their curriculum went into our rollout plan.</td></tr>
+              <tr><td>NPS, Cabrillo National Monument Foundation</td><td>Common misconceptions about energy use and which habits actually make a difference.</td><td>Shaped the energy facts on the item cards.</td></tr>
+            </tbody></table></div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">What stakeholders wanted from our early concepts</h3>
+              <p class="ea-p">When we showed stakeholders early concepts, they were clear about what to keep and what was missing.</p>
+            </div>
+            <div class="ea-tiles">
+              <div class="ea-card ea-mint"><h4 class="ea-t ea-ink-mint">Liked</h4><p class="ea-p">A life-sim look with real-world tie-ins and a "cozy" feel like Animal Crossing and Stardew Valley.</p></div>
+              <div class="ea-card ea-rose"><h4 class="ea-t ea-ink-rose">Wished</h4><p class="ea-p">More critical thinking, community-building and customization.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ea-stack ea-gap-quote">
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">The decision: choosing a concept</h3>
+              <p class="ea-p">We had 4 concepts and scored them with a weighted decision matrix across 5 criteria. [1 line on how the weights were set]</p>
+            </div>
+            <div class="ea-stack ea-gap-stack">
+              <ul aria-label="The 4 concepts" class="ea-tiles2">
+                <li class="ea-card ea-concept ea-blue"><div class="ea-concept-head"><h4 class="ea-t">Energy Ave</h4><span class="ea-label">Selected</span></div><p class="ea-p">Find and fix energy-wasting habits in a virtual home, room by room.</p><figure class="ea-concept-peek"><img class="ea-img" src="/uploads/ea-sketch-energy-ave.jpg" width="1999" height="1337" loading="lazy" decoding="async" alt="Pencil sketch of a room with a PC, lamp and thermostat, and an energy gauge on the wall" /></figure></li>
+                <li class="ea-card ea-concept"><h4 class="ea-t">Ocean Cleanup Quest</h4><p class="ea-p">A submarine game where players clear trash from reefs.</p><figure class="ea-concept-peek"><img class="ea-img" src="/uploads/ea-sketch-ocean-cleanup.jpg" width="1999" height="1337" loading="lazy" decoding="async" alt="Pencil sketch of a claw arm grabbing garbage from the sea floor, with fish around it" /></figure></li>
+                <li class="ea-card ea-concept"><h4 class="ea-t">Waste Management Sim</h4><p class="ea-p">A town life-sim about cutting waste.</p><figure class="ea-concept-peek"><img class="ea-img" src="/uploads/ea-sketch-waste-sim.png" width="1528" height="1092" loading="lazy" decoding="async" alt="Sketch of a town map with home, work and store, and a waste meter across the top" /></figure></li>
+                <li class="ea-card ea-concept"><h4 class="ea-t">Trash Dash</h4><p class="ea-p">A 60-second waste-sorting mini-game.</p><figure class="ea-concept-peek"><img class="ea-img" src="/uploads/ea-sketch-trash-dash.jpg" width="1500" height="1999" loading="lazy" decoding="async" alt="Sketch of a soda cup asking 'where does it go?' above compost, trash and recycling bins" /></figure></li>
+              </ul>
+              <figure class="ea-stack ea-gap-caption">
+                <div class="ea-tbl" role="region" aria-label="Weighted decision matrix" tabindex="0"><table><thead><tr><th scope="col">Criteria</th><th scope="col">Weight</th><th scope="col" class="ea-ours">Energy Ave</th><th scope="col">Ocean Cleanup</th><th scope="col">Waste Mgmt</th><th scope="col">Trash Dash</th></tr></thead><tbody>
+                  <tr><td>Functionality</td><td>3</td><td class="ea-ours">0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr><td>Usability</td><td>4</td><td class="ea-ours">0</td><td>0</td><td>−1</td><td>0</td></tr>
+                  <tr><td>Desirability</td><td>2</td><td class="ea-ours">0</td><td>−1</td><td>0</td><td>−1</td></tr>
+                  <tr><td>Feasibility</td><td>4</td><td class="ea-ours">0</td><td>−1</td><td>0</td><td>+1</td></tr>
+                  <tr><td>Ecological sustainability</td><td>1</td><td class="ea-ours">0</td><td>0</td><td>+1</td><td>−1</td></tr>
+                  <tr class="ea-total"><td>Weighted total</td><td></td><td class="ea-ours">0</td><td>−6</td><td>−3</td><td>+1</td></tr>
+                </tbody></table></div>
+                <figcaption class="ea-cap">Scores are relative to Energy Ave, which is the baseline at 0. Trash Dash's only lead comes from feasibility.</figcaption>
+              </figure>
+            </div>
+          </div>
+          <figure class="ea-stack ea-gap-tile">
+            <figcaption class="ea-label">The bet</figcaption>
+            <blockquote class="ea-quote">We'd build the concept stakeholders responded to most, even though a simpler game scored higher on ease of building.</blockquote>
+          </figure>
+          <div class="ea-two">
+            <h3 class="ea-t">Why we didn't pick the top score</h3>
+            <p class="ea-p">Trash Dash came out 1 point ahead, and all of that came from feasibility: a 60-second mini-game is easier to build. Energy Ave tied or beat it on every other criterion, including usability and desirability, which stakeholder feedback had flagged as the priorities.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 04 Design ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="design">
+      <h2 id="design" class="ea-slabel">Design</h2>
+      <div class="ea-stack ea-gap-part">
+        <div class="ea-stack ea-gap-item">
+          <p class="ea-p ea-p--narrow">The designs below came out of discovery, before any testing. The changes testing led to are in Usability testing.</p>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">Rooms you could picture standing in</h3>
+              <div class="ea-stack ea-gap-tile">
+                <p class="ea-p">We sketched lo-fi wireframes for each room in Figma, then built hi-fi versions. Each room is drawn in 1-point perspective so it feels like you're standing in it, and holds the things you'd really find there: the bedroom has a bed, desk, computer and lamps; the bathroom a shower, toilet, sink, hair dryer and mirror; the kitchen a fridge, stove, microwave, kettle, toaster and sink.</p>
+                <p class="ea-p">I helped with the wireframes; teammates made most of the pixel-art sprites.</p>
+              </div>
+            </div>
+            <figure class="ea-stack ea-gap-caption">
+              <BeforeAfterGallery
+                ratio="1440 / 1024"
+                beforeLabel="Lo-fi"
+                afterLabel="Hi-fi"
+                items={[
+                  { label: "Bedroom", before: "/uploads/ea-bedroom-wireframe.png", after: "/uploads/ea-figma-hifi-bedroom.png", beforeAlt: "Lo-fi bedroom wireframe with a window, thermostat, PC, lamp, light switch and bed", afterAlt: "Hi-fi pixel-art bedroom with the energy bar and pause button" },
+                  { label: "Bathroom", before: "/uploads/ea-bathroom-wireframe.png", after: "/uploads/ea-figma-hifi-bathroom.png", beforeAlt: "Lo-fi bathroom wireframe with a sink, hair dryer, toilet and shower", afterAlt: "Hi-fi pixel-art bathroom with the shower running" },
+                  { label: "Kitchen", before: "/uploads/ea-figma-lofi-kitchen.png", after: "/uploads/ea-figma-hifi-kitchen-closed.png", beforeAlt: "Lo-fi kitchen wireframe with counters, microwave, stove and fridge", afterAlt: "Hi-fi pixel-art kitchen with the energy bar and pause button" },
+                ]}
+              />
+              <figcaption class="ea-cap">Every appliance stays where it was in the wireframe; the 1-point perspective puts you inside the room instead of looking at a map of it.</figcaption>
+            </figure>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">Click, learn, earn</h3>
+              <div class="ea-stack ea-gap-tile">
+                <p class="ea-p">Players walk through a virtual home, find the appliances and habits that waste energy and fix them. Clicking an item opens a card with a real-world energy fact, and every room has an energy meter that fills as you fix things.</p>
+                <p class="ea-p">I worked on the item designs and their variants and the item card visuals, and I researched the facts on the cards.</p>
+              </div>
+            </div>
+            <div class="ea-stack ea-gap-stack">
+              <ul aria-label="How Energy Ave works" class="ea-tiles">
+                <li class="ea-card ea-green"><span class="ea-label">01</span><h4 class="ea-t">Room by room</h4><p class="ea-p">Players explore a bedroom, bathroom and kitchen, clicking on items in each space.</p></li>
+                <li class="ea-card ea-green"><span class="ea-label">02</span><h4 class="ea-t">Spot and fix</h4><p class="ea-p">Clicking an appliance or device flags the wasteful habit and shows how to correct it.</p></li>
+                <li class="ea-card ea-green"><span class="ea-label">03</span><h4 class="ea-t">Learn and earn</h4><p class="ea-p">Each fix shows a real-world energy fact and adds points. A full energy bar unlocks the next room.</p></li>
+              </ul>
+              <figure class="ea-stack ea-gap-caption"><img class="ea-img ea-img--narrow" src="/uploads/ea-figma-hifi-all-cards-web.png" width="1600" height="1452" loading="lazy" decoding="async" alt="Grid of 12 item cards: computer, lamps, switches, window, hair dryer, sink, shower, fridge, kettle and toaster" /><figcaption class="ea-cap">Every card has the same layout: the item, one fact and the points it earns, so players learn it once.</figcaption></figure>
+            </div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h3 class="ea-t">A cozy, pixel-art world</h3>
+              <div class="ea-stack ea-gap-tile">
+                <p class="ea-p">Stakeholders liked the life-sim feel of our concept, and we wanted the game to be relaxing so players wouldn't feel stressed while learning something new. We took gameplay cues from Unpacking, a slow and chill game, and the look from Stardew Valley: an earthy color palette, a pixel typeface on the cards and screens and pixel-art sprites made in Piskel.</p>
+                <p class="ea-p">That paid off in testing. All 7 players in Study 2 enjoyed the look and feel, and they compared it to relaxing games and to early-2000s browser games like Barbie.com. When players compare your game to ones they actually played for fun, the style is doing real work, so it's worth protecting in any future version.</p>
+              </div>
+            </div>
+            <div class="ea-stack ea-gap-stack">
+              <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-title-hifi.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Energy Ave title screen in pixel art" /><figcaption class="ea-cap">The pixel-art style on the title screen carries through every scene.</figcaption></figure>
+              <figure class="ea-stack ea-gap-caption">
+                <div class="ea-tiles">
+                  <img class="ea-img" src="/uploads/ea-figma-hifi-bedroom.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Final pixel-art bedroom" />
+                  <img class="ea-img" src="/uploads/ea-figma-hifi-bathroom.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Final pixel-art bathroom with the shower running" />
+                  <img class="ea-img" src="/uploads/ea-figma-hifi-kitchen-open-1.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Final pixel-art kitchen with the fridge door open" />
+                </div>
+                <figcaption class="ea-cap">Same eye-level view, warm wood and soft walls in every room, so only the appliances stand out.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">Design system</h3>
+            <p class="ea-p">An earthy color palette, a pixel typeface on the cards and screens and pixel-art sprites made in Piskel.</p>
+          </div>
+          <figure class="ea-stack ea-gap-caption">
+            <ul aria-label="Palette" class="ea-tiles">
+              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#A67C52"></div><span class="ea-cap">Earth brown · #A67C52</span></li>
+              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#A8C686"></div><span class="ea-cap">Leaf green · #A8C686</span></li>
+              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#E3D5C2"></div><span class="ea-cap">Sand · #E3D5C2</span></li>
+              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#BFD7EA"></div><span class="ea-cap">Sky blue · #BFD7EA</span></li>
+            </ul>
+            <figcaption class="ea-cap">4 colors from our earthy palette. Cards and screens use VT323, a pixel typeface.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 05 Usability testing ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="ut">
+      <h2 id="ut" class="ea-slabel">Usability testing</h2>
+      <div class="ea-stack ea-gap-part">
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">2 studies, with the bar set before the build</h3>
+            <p class="ea-p">We tested the game twice: once as wireframes before any code, and once as a finished build. We set 4 research questions and the success metrics before anything was built, so the final study had a fixed bar instead of one we picked after seeing the results.</p>
+          </div>
+          <div class="ea-stack ea-gap-stack">
+            <div class="ea-tiles2">
+              <div class="ea-card"><span class="ea-label">Study 1 · Formative · Wireframes</span><h4 class="ea-t">Can people tell what's clickable and follow the logic before any code?</h4></div>
+              <div class="ea-card ea-blue"><span class="ea-label">Study 2 · Summative · Finished build</span><h4 class="ea-t">Does it work as a game, and does it hit the success metrics?</h4></div>
+            </div>
+            <figure class="ea-stack ea-gap-caption">
+              <div class="ea-tbl ea-tbl--560" role="region" aria-label="Research questions" tabindex="0"><table><thead><tr><th scope="col">Research question</th><th scope="col">What we wanted to learn</th></tr></thead><tbody>
+                <tr><td>RQ1. What makes existing sustainability games engaging, or not?</td><td>Which patterns to borrow and which to avoid.</td></tr>
+                <tr><td>RQ2. Which concept best fits our players and our client?</td><td>The best balance of learning, usability, feasibility and fun.</td></tr>
+                <tr><td>RQ3. Can people figure out how to play with very little instruction?</td><td>Whether the interaction model is intuitive on its own.</td></tr>
+                <tr><td>RQ4. Does the game motivate real-life energy-saving habits?</td><td>Whether it teaches and motivates. Real behavior change wasn't measurable in 10 weeks, so this stays open.</td></tr>
+              </tbody></table></div>
+              <figcaption class="ea-cap">RQ1 and RQ2 were answered in Discovery; these 2 studies cover RQ3, and RQ4 stays open.</figcaption>
+            </figure>
+            <figure class="ea-stack ea-gap-caption">
+              <div class="ea-tbl ea-tbl--560" role="region" aria-label="Success metrics" tabindex="0"><table><thead><tr><th scope="col">Metric</th><th scope="col">How we measured it</th><th scope="col">Target</th></tr></thead><tbody>
+                <tr><td>Engagement</td><td>Session timing</td><td>10+ min per session</td></tr>
+                <tr><td>Satisfaction</td><td>Post-play survey</td><td>80% or more enjoy the game</td></tr>
+                <tr><td>Build feasibility</td><td>Timeline tracking</td><td>3 months or less</td></tr>
+                <tr><td>Device support</td><td>Technical testing</td><td>Mobile and desktop</td></tr>
+              </tbody></table></div>
+              <figcaption class="ea-cap">Success metrics, set before the build. Results against each target are in Outcome.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="ea-stack ea-gap-item">
+          <div class="ea-two">
+            <div class="ea-stack ea-gap-caption"><span class="ea-label">Study 1 · Formative</span><h3 class="ea-t">Testing wireframes before any code</h3></div>
+            <div class="ea-stack ea-gap-tile">
+              <p class="ea-p">I wanted to know if people could tell what was clickable and follow the game's logic before we spent any engineering time. Fixing a confusing room in a wireframe takes minutes; fixing it after it's built takes days. I wrote the protocol and study goals for this round.</p>
+              <p class="ea-p"><strong>Method:</strong> An affordance test (participants circled what looked interactive) and a cognitive walkthrough of the static wireframes (could they piece together how the game works on their own?).</p>
+              <p class="ea-p"><strong>Participants:</strong> 2 UCSD seniors and a 13-year-old 8th grader. I moderated 2 of the 3 sessions. With this few people, these are patterns to act on, not statistics.</p>
+            </div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h4 class="ea-t">What looked clickable</h4>
+              <p class="ea-p">Participants circled everything they thought they could interact with.</p>
+            </div>
+            <div class="ea-stack ea-gap-stack">
+              <div class="ea-tiles2">
+                <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-bedroom-wireframe-circled.png" width="1512" height="982" loading="lazy" decoding="async" alt="Bedroom lo-fi wireframe with a participant's red circles around the PC, lamp, light switch and bed" /><figcaption class="ea-cap">The bed got circled even though it isn't clickable.</figcaption></figure>
+                <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-bathroom-wireframe-circled.png" width="1512" height="982" loading="lazy" decoding="async" alt="Bathroom lo-fi wireframe with a participant's red circles around the light switch, hair dryer, toilet, shower and faucet" /><figcaption class="ea-cap">The toilet looked clickable, while the sink and shower faucet were missed by at least 1 person.</figcaption></figure>
+              </div>
+              <div class="ea-tbl ea-tbl--560" role="region" aria-label="Affordance test results" tabindex="0"><table><thead><tr><th scope="col">Result</th><th scope="col">Items</th></tr></thead><tbody>
+                <tr><td>Found by everyone</td><td>PC / laptop, lamp, light switches</td></tr>
+                <tr><td>Missed by at least 1</td><td>Window, thermostat, sink, shower faucet</td></tr>
+                <tr><td>Looked clickable but wasn't</td><td>Bed, toilet</td></tr>
+              </tbody></table></div>
+            </div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h4 class="ea-t">Could they follow the logic?</h4>
+              <p class="ea-p">Everyone figured out how the game works without instructions. One participant corrected himself partway through and landed on the game's actual rule: only things that use electricity are clickable. The participant closest to our target age described it as a "storyline through a household" and correctly guessed that clicking would open a pop-up.</p>
+            </div>
+            <div class="ea-tiles2">
+              <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-game.png" width="7122" height="3382" loading="lazy" decoding="async" alt="Lo-fi game flow: title screen to bedroom, click a lamp, then the item card, with a pause menu loop" /><figcaption class="ea-cap">Everyone followed title → room → click → item card without being told.</figcaption></figure>
+              <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-next.png" width="6943" height="3382" loading="lazy" decoding="async" alt="Lo-fi flow of the next button, branching to the congrats screen or back to the room" /><figcaption class="ea-cap">The next button branches to the congrats screen or back to the room.</figcaption></figure>
+            </div>
+          </div>
+
+          <div class="ea-two">
+            <h4 class="ea-t">What we changed after Study 1</h4>
+            <div class="ea-stack ea-gap-tile">
+              <ul class="ea-bullets ea-p">
+                <li>Simplified the item cards so they were quicker to read and looked better</li>
+                <li>Added item variants that change when you fix them, like the blow dryer losing its cord when it's switched off</li>
+                <li>Added sound to make the rooms feel more alive</li>
+              </ul>
+              <p class="ea-p">We also flagged a fuller how-to page, an energy bar that wasn't updating and a pause button that did nothing without a timer.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ea-stack ea-gap-item">
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <div class="ea-stack ea-gap-caption"><span class="ea-label">Study 2 · Summative</span><h3 class="ea-t">Playtesting the finished game</h3></div>
+              <div class="ea-stack ea-gap-tile">
+                <p class="ea-p">With a playable build, the question changed from "can people figure it out?" to "does it work as a game?" I defined the success criteria and protocol for this round, and I ran the sessions with a teammate's help.</p>
+                <p class="ea-p"><strong>Method:</strong> 7 playtests where we watched each person play to the end and noted their reactions, each followed by a 7-question survey. Watching shows what people actually do; the survey shows how they felt about it. For a game nobody is required to play, we needed both.</p>
+                <p class="ea-p"><strong>Participants:</strong> PlanetFlip's founder and 6 UCSD students, with gaming experience ranging from almost none to above average. Sessions took about 12 minutes on average. With 7 people, every number below is a count, not a statistic.</p>
+              </div>
+            </div>
+            <div class="ea-tiles">
+              <div class="ea-card"><span class="ea-label">Players</span><span class="ea-t">7</span><span class="ea-cap">PlanetFlip's founder and 6 UCSD students</span></div>
+              <div class="ea-card"><span class="ea-label">Avg. session</span><span class="ea-t">12 min</span><span class="ea-cap">Target was 10 min</span></div>
+              <div class="ea-card"><span class="ea-label">Enjoyed it</span><span class="ea-t">6 of 7</span><span class="ea-cap">Target was 80%</span></div>
+              <div class="ea-card ea-blue"><span class="ea-label">Wanted more challenge</span><span class="ea-t">4 of 7</span><span class="ea-cap ea-stat-note">The clearest pattern</span></div>
+            </div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h4 class="ea-t">What the survey showed</h4>
+              <p class="ea-p">Each playtest ended with a 7-question survey. Most answers were positive; the exceptions point at the back button, the item card and instructions.</p>
+            </div>
+            <div class="ea-tbl ea-tbl--560" role="region" aria-label="Survey results" tabindex="0"><table><thead><tr><th scope="col">What we asked</th><th scope="col">Result</th></tr></thead><tbody>
+              <tr><td>Was the goal of the game clear?</td><td>6 of 7 said yes</td></tr>
+              <tr><td>Did you understand how to earn points and progress?</td><td>7 of 7 said yes (1 wasn't sure the back button added points)</td></tr>
+              <tr><td>Did you enjoy the game?</td><td>6 of 7 said yes</td></tr>
+              <tr><td>Was it easy to navigate?</td><td>5 of 7 had no trouble (1 felt the item card interrupted play; 1 wanted clearer instructions)</td></tr>
+              <tr><td>Did you feel a sense of accomplishment?</td><td>6 of 7 said yes</td></tr>
+            </tbody></table></div>
+          </div>
+
+          <figure class="ea-stack ea-gap-tile">
+            <figcaption class="ea-label">The clearest criticism · P1, PlanetFlip's founder</figcaption>
+            <blockquote class="ea-quote">“This feels like it's aimed at elementary schoolers.”</blockquote>
+          </figure>
+
+          <div class="ea-two">
+            <h4 class="ea-t">The strongest signal: it was too easy</h4>
+            <div class="ea-stack ea-gap-tile">
+              <p class="ea-p">4 of the 7 players asked for more challenge when we asked what they'd change, and none of them had been asked about difficulty. 1 suggested hiding the switches so you'd have to move things to find them, and another suggested puzzles or a mini-game.</p>
+              <p class="ea-p">It was the clearest pattern in the study: players understood the game, but the clickable items were too easy to spot.</p>
+            </div>
+          </div>
+
+          <div class="ea-stack ea-gap-intro">
+            <div class="ea-two">
+              <h4 class="ea-t">Other themes</h4>
+              <p class="ea-p">The rest of the feedback split into what players loved and the smaller gaps worth fixing.</p>
+            </div>
+            <div class="ea-stack ea-gap-stack">
+              <div class="ea-tiles2">
+                <div class="ea-card ea-green"><span class="ea-label">Unanimous positive</span><h5 class="ea-t">The look and sound</h5><p class="ea-p">All 7 enjoyed the look and feel, and several compared it to relaxing games or early-2000s browser games. "Cute aesthetics... kinda like girl2games and barbie.com." (P4) 1 player said the music hinted at what to click next, and another said the animations after earning points felt rewarding.</p></div>
+                <div class="ea-card"><span class="ea-label">Actionable UX gap</span><h5 class="ea-t">Seeing your progress</h5><p class="ea-p">2 players wanted clearer feedback. PlanetFlip's founder asked for points shown as numbers and for items to flash when clicked. "I wished the energy bar reflected the new value rather than how much it added." (P7)</p></div>
+                <div class="ea-card"><span class="ea-label">Flow</span><h5 class="ea-t">The item card and back button</h5><p class="ea-p">PlanetFlip's founder felt the pop-up card interrupted the flow of the game, and it wasn't obvious that going back to the room was what added points to your score.</p></div>
+                <div class="ea-card"><span class="ea-label">First-time players</span><h5 class="ea-t">Instructions</h5><p class="ea-p">1 player with almost no gaming experience said the goal wasn't clear and wanted very clear instructions.</p></div>
+              </div>
+              <figure class="ea-stack ea-gap-caption"><div class="ea-tiles2"><img class="ea-img ea-img--tile" src="/uploads/ea-playtest-couch.jpg" width="1500" height="1999" loading="lazy" decoding="async" alt="A participant playing Energy Ave on a laptop on the couch" /><img class="ea-img ea-img--tile" src="/uploads/ea-playtest-zoom.png" width="500" height="221" loading="lazy" decoding="async" alt="A remote playtest over video call, with the bedroom scene shared on screen" /></div><figcaption class="ea-cap">We ran sessions in person and over video call, and watched every player through to the end.</figcaption></figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">What we heard and what it changed</h3>
+            <p class="ea-p">Not every finding made it into the build before the deadline. Here's where each one landed.</p>
+          </div>
+          <div class="ea-tbl ea-tbl--560" role="region" aria-label="What we heard and what it changed" tabindex="0"><table><thead><tr><th scope="col">What we heard</th><th scope="col">What it changed</th></tr></thead><tbody>
+            <tr><td>In Study 1, players worked out how the game works from the wireframes alone.</td><td>Kept the click-and-learn loop and focused our changes on the item cards, item variants and sound.</td></tr>
+            <tr><td>Players wanted to see their points.</td><td>Point values are now shown on screen (see the before and after below).</td></tr>
+            <tr><td>Players praised the look and sound without being asked.</td><td>Kept the cozy pixel-art direction as a core part of the game (see Design).</td></tr>
+            <tr><td>4 of 7 said it was too easy.</td><td>Not addressed before the deadline. Our final recommendations called for more challenges and rewards, and our failure analysis suggested penalties for clicking the wrong items and more kinds of interaction, like drag and drop.</td></tr>
+            <tr><td>Only 1 participant across both studies was near the target age.</td><td>Recommended playtesting with elementary-aged students and piloting the game in classrooms.</td></tr>
+          </tbody></table></div>
+        </div>
+
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">New designs from testing</h3>
+            <p class="ea-p">Each card shows a change before and after, with what led to it.</p>
+          </div>
+          <figure class="ea-stack ea-gap-caption">
+            <ul aria-label="Before and after changes" class="ea-carousel" tabindex="0">
+              <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Simpler item cards</h4><p class="ea-p">We simplified the cards so each fact lands quickly and the card looks better.</p><div class="ea-pair"><img class="ea-img ea-img--card" src="/uploads/ea-card-hairdryer-yellow.png" width="909" height="1074" loading="lazy" decoding="async" alt="Earlier yellow hair dryer card" /><span aria-hidden="true">→</span><img class="ea-img ea-img--card" src="/uploads/ea-figma-hifi-card-computer-07.png" width="900" height="1074" loading="lazy" decoding="async" alt="Simplified hair dryer card in the final style" /></div></li>
+              <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Items that show the fix</h4><p class="ea-p">Items now have variants that change when you fix them, like the blow dryer losing its cord when it's switched off.</p><div class="ea-pair"><img class="ea-img" src="/uploads/ea-figma-hifi-bathroom.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Bathroom with the hair dryer plugged in and the shower running" /><span aria-hidden="true">→</span><img class="ea-img" src="/uploads/ea-figma-hifi-bathroom-off.png" width="1440" height="1024" loading="lazy" decoding="async" alt="The same bathroom after fixing: hair dryer unplugged, shower off" /></div></li>
+              <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Sound</h4><p class="ea-p">We added music and sound effects. In Study 2, 1 player said the music hinted at what to click next.</p><div class="ea-ph ea-ph--200">[Short clip with sound]</div></li>
+              <li class="ea-card ea-blue"><span class="ea-label">After Study 2</span><h4 class="ea-t">Visible points</h4><p class="ea-p">PlanetFlip's founder asked for points shown as numbers, so we made point values visible.</p><img class="ea-img ea-img--card" src="/uploads/ea-pc-card.png" width="900" height="1074" loading="lazy" decoding="async" alt="Final Personal Computer info card with its point value shown" /></li>
+            </ul>
+            <figcaption class="ea-cap">Scroll sideways for more · 4 cards</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 06 Outcome ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="out">
+      <h2 id="out" class="ea-slabel">Outcome</h2>
+      <div class="ea-stack ea-gap-part">
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">Shipped in March 2025, inside the timeline</h3>
+            <p class="ea-p">Energy Ave shipped as a fully playable game built in Construct 3 on March 18, 2025, about 2.5 months into development. Teammates built the game; it hit all 4 success metrics we set before the build.</p>
+          </div>
+          <figure class="ea-stack ea-gap-caption">
+            <div class="ea-tbl" role="region" aria-label="Success metrics: target and result" tabindex="0"><table><thead><tr><th scope="col">Metric</th><th scope="col">How we measured it</th><th scope="col">Target</th><th scope="col">Result</th></tr></thead><tbody>
+              <tr><td>Engagement</td><td>Session timing</td><td>10+ min per session</td><td>About 12 min average</td></tr>
+              <tr><td>Satisfaction</td><td>Post-play survey</td><td>80% or more enjoy the game</td><td>6 of 7 said they enjoyed it</td></tr>
+              <tr><td>Build feasibility</td><td>Timeline tracking</td><td>3 months or less</td><td>About 2.5 months</td></tr>
+              <tr><td>Device support</td><td>Technical testing</td><td>Mobile and desktop</td><td>Mobile and desktop</td></tr>
+            </tbody></table></div>
+            <figcaption class="ea-cap">With 7 testers, these are counts from a small study, not statistics.</figcaption>
+          </figure>
+        </div>
+
+        <div class="ea-stack ea-gap-intro">
+          <div class="ea-two">
+            <h3 class="ea-t">Beyond the game</h3>
+            <p class="ea-p">The work didn't stop at the build: it set up next steps with partners and ended in a documented handoff.</p>
+          </div>
+          <div class="ea-tiles2">
+            <div class="ea-card"><h4 class="ea-t">Next steps with partners</h4><p class="ea-p">The San Diego Climate Collaborative told us they were building a sustainability curriculum, and our rollout plan included pitching Energy Ave for it and following up with Cabrillo.</p></div>
+            <div class="ea-card"><h4 class="ea-t">Handoff</h4><p class="ea-p">We gave a work-in-progress presentation at the midpoint and a final presentation at the end, delivered a 56-page design report and set up an Instagram account for the launch.</p></div>
+          </div>
+          <figure class="ea-stack ea-gap-caption">
+            <div class="ea-tiles ea-tiles--phones">
+              <img class="ea-img ea-img--phone" src="/uploads/ea-insta-myth-or-fact.png" width="924" height="1999" loading="lazy" decoding="async" alt="Instagram post: Myth or fact? Turning off appliances completely stops them from using energy" />
+              <img class="ea-img ea-img--phone" src="/uploads/ea-insta-myth.png" width="924" height="1999" loading="lazy" decoding="async" alt="Instagram post: Myth! Many devices still consume power when plugged in" />
+              <img class="ea-img ea-img--phone" src="/uploads/ea-insta-appliances.png" width="924" height="1999" loading="lazy" decoding="async" alt="Instagram post listing common appliances that draw standby power" />
+            </div>
+            <figcaption class="ea-cap">The launch posts reuse the game's pixel type and its facts as a myth-or-fact quiz.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 07 Learnings ===== -->
+    <section class="ea-wrap ea-stack ea-section" aria-labelledby="learn">
+      <h2 id="learn" class="ea-slabel">Learnings</h2>
+      <div class="ea-stack ea-gap-stack">
+        <figure class="ea-stack ea-gap-caption"><img class="ea-img ea-img--photo" src="/uploads/ea-gameplay-irl.jpg" width="1500" height="1999" loading="lazy" decoding="async" alt="A participant playing the final build of Energy Ave on a laptop, in the bedroom scene" /><figcaption class="ea-cap">The final build running in a browser on a laptop, no install needed.</figcaption></figure>
+        <ul aria-label="3 learnings" class="ea-tiles ea-tiles--300">
+          <li class="ea-card"><span class="ea-label">Learning 01</span><h3 class="ea-t">Test early and test late</h3><p class="ea-p">Splitting the research into a wireframe study and a build study was the most useful choice I made. Study 1 caught clickability problems while they were still cheap to fix, and Study 2 could then focus on whether the game was actually fun. Pairing observation with a survey also showed a gap I wouldn't have seen otherwise: people finished the game and said they enjoyed it, but some still wanted more challenge.</p></li>
+          <li class="ea-card"><span class="ea-label">Learning 02</span><h3 class="ea-t">Test with the people you're designing for</h3><p class="ea-p">Both studies leaned on UCSD undergrads, and only 1 participant was near the target age. Kids aged 8 to 12 would likely have run into things we never saw, like reading level and attention span. Next time I'd recruit that group directly and add a follow-up 1 to 2 weeks after playing to see whether any energy-saving habits stuck at home.</p></li>
+          <li class="ea-card"><span class="ea-label">Learning 03</span><h3 class="ea-t">Small numbers still need careful reporting</h3><p class="ea-p">With 7 players, a percentage makes 1 person look like a trend. Reporting counts and noting what was said without a prompt made the findings easier to trust, and it's how I spotted that difficulty was the one theme worth acting on.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <nav aria-label="Case study navigation" class="ea-wrap ea-row ea-row--between">
+      <a href="/projects/binu" class="ea-btn ea-btn--solid">Next case study: Binu →</a>
+      <a href="#top" class="ea-btn ea-btn--line">Back to top ↑</a>
+    </nav>
+  </main>
 </CaseStudyLayout>

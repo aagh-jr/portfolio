@@ -26,6 +26,7 @@ export default defineConfig({
         !page.includes('/board-test') &&
         !page.includes('/cabrillo-design') &&
         !page.includes('/projects/binu') &&
+        !page.includes('/projects/energy-ave') &&
         !page.includes('/previews-test'),
     }),
   ],
