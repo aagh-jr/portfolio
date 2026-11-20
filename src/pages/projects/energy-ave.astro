@@ -28,7 +28,7 @@ import styles from "../../cases/energy-ave-styles.css?raw";
         <p class="ea-p ea-p--narrow">A browser game for PlanetFlip, a K-12 sustainability platform, that teaches household energy conservation room by room. We tested it twice, once as wireframes and once as a finished build, and shipped it in 10 weeks.</p>
       </div>
       <div class="ea-row">
-        <a href="#" class="ea-btn ea-btn--solid">Play the game ↗</a>
+        <a href="https://aquamarine-faloodeh-96404d.netlify.app/" target="_blank" rel="noopener" class="ea-btn ea-btn--solid">Play the game ↗</a>
         <a href="#" class="ea-btn ea-btn--line">Figma files ↗</a>
         <a href="#" class="ea-btn ea-btn--line">Final report ↗</a>
       </div>
@@ -62,7 +62,7 @@ import styles from "../../cases/energy-ave-styles.css?raw";
       <h2 id="tldr" class="ea-slabel">TLDR</h2>
       <div class="ea-stack ea-gap-part">
         <div class="ea-tiles">
-          <div class="ea-card"><h3 class="ea-t">Problem</h3><p class="ea-p">Sustainability education mostly hands people information. Young players already know energy matters, so PlanetFlip needed something that turns that awareness into habits.</p></div>
+          <div class="ea-card"><h3 class="ea-t">Problem</h3><p class="ea-p">PlanetFlip's founder, our client, wanted a game that promotes climate literacy. Sustainability education mostly hands people information, and young players already know energy matters, so the game had to turn that awareness into habits.</p></div>
           <div class="ea-card ea-blue"><h3 class="ea-t">Solution</h3><p class="ea-p">A cozy life-sim where players find and fix energy waste room by room would teach more than a quick arcade game, even though it was harder to build.</p></div>
           <div class="ea-card"><h3 class="ea-t">My role</h3><p class="ea-p">Lead UX researcher and designer on a team of 6. I owned the usability research from scoping to analysis and worked on the item cards and hi-fi screens.</p></div>
           <div class="ea-card ea-green"><h3 class="ea-t">Where it landed</h3><p class="ea-p">Shipped in March 2025. 6 of 7 testers enjoyed it and said the goal was clear; the main gap we found was that it felt too easy.</p></div>
@@ -83,15 +83,20 @@ import styles from "../../cases/energy-ave-styles.css?raw";
       <div class="ea-stack ea-gap-quote">
         <div class="ea-stack ea-gap-intro">
           <div class="ea-two">
-            <h3 class="ea-t">Young players already know saving energy matters. What they don't have is a reason to practice it.</h3>
+            <h3 class="ea-t">PlanetFlip asked for a game that builds climate literacy. Players already knew saving energy matters; they needed a reason to practice it.</h3>
             <div class="ea-stack ea-gap-tile">
+              <p class="ea-p">Our client was PlanetFlip's founder. PlanetFlip is his K-12 sustainability platform, and he wanted a game on it that promotes climate literacy.</p>
               <p class="ea-p">Most sustainability education is information delivery: facts, slides and posters. PlanetFlip had tried game concepts before, but none of them had been built or tested with players.</p>
               <p class="ea-p">So the job wasn't just to make a game. It had to teach something real, be easy to pick up with very little instruction and be fun enough that people would keep playing on their own.</p>
             </div>
           </div>
           <figure class="ea-stack ea-gap-caption">
-            <div class="ea-ph">[Image: evidence of the problem, such as a typical fact sheet, slide or poster lesson]</div>
-            <figcaption class="ea-cap">[1 line on what to notice: e.g. how much of the lesson is reading versus doing]</figcaption>
+            <div class="ea-collage">
+              <img class="ea-img ea-collage__item ea-collage__item--left" src="/uploads/ea-energy-worksheet.png" width="350" height="271" loading="lazy" decoding="async" alt="An Every Day Energy worksheet: trace words like lights, television and windows to finish sentences, then color the matching items in a house drawing" />
+              <img class="ea-img ea-collage__item ea-collage__item--right" src="/uploads/ea-comp-seal-it-up.jpg" width="1400" height="1046" loading="lazy" decoding="async" alt="Seal It Up, a mini-game from Become an Energy Champion: drag tips like sealing cracks around windows into Saves Energy or Wastes Energy" />
+              <img class="ea-img ea-collage__item ea-collage__item--center" src="/uploads/ea-climate-poster.jpg" width="1000" height="707" loading="lazy" decoding="async" alt="A classroom poster titled Climate Change, packed with charts, photos and blocks of text on evidence, mitigation and adaptation" />
+            </div>
+            <figcaption class="ea-cap">How energy is usually taught: a poster of facts, a worksheet to fill in, or a drag-and-drop quiz dressed up as a game.</figcaption>
           </figure>
         </div>
         <figure class="ea-stack ea-gap-tile">
@@ -119,21 +124,13 @@ import styles from "../../cases/energy-ave-styles.css?raw";
               </div>
             </div>
             <div class="ea-stack ea-gap-stack">
-              <div class="ea-tbl" role="region" aria-label="Existing games reviewed" tabindex="0"><table><thead><tr><th scope="col">Game</th><th scope="col">What worked</th><th scope="col">What didn't</th></tr></thead><tbody>
-                <tr><td>Space Waste Odyssey (PBS Kids)</td><td>Levels and mini-games keep it varied; strong visuals; closed captions</td><td>Long levels with no time limits or penalties, so it drags</td></tr>
-                <tr><td>Become an Energy Champion (National Energy Foundation)</td><td>Room-by-room energy tasks in a home; useful facts; a certificate at the end</td><td>Repetitive mini-games, mostly videos and drag-and-drop; hard to navigate</td></tr>
-                <tr><td>Fidgit Power (PBS Kids Design Squad)</td><td>Tasks change with each location; closed captions</td><td>Repetitive; little real energy information; nothing left to do after 4 locations</td></tr>
-                <tr><td>Financial Freedom (Legends of Learning)</td><td>Custom avatars; penalties for unsustainable choices; context before each task</td><td>Needs an account; slow and too complex for younger players</td></tr>
-              </tbody></table></div>
-              <figure class="ea-stack ea-gap-caption">
-                <div class="ea-tiles">
-                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-space-waste.png" width="1797" height="1016" loading="lazy" decoding="async" alt="Space Waste Odyssey title screen with a cartoon spaceship" />
-                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-energy-champion.png" width="1640" height="1231" loading="lazy" decoding="async" alt="Become an Energy Champion title screen with a woman opening a front door" />
-                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-fidgit-power.png" width="1999" height="1363" loading="lazy" decoding="async" alt="Fidgit Power title screen with wind turbines and four block characters" />
-                  <img class="ea-img ea-img--tile" src="/uploads/ea-comp-financial-freedom.png" width="1999" height="1104" loading="lazy" decoding="async" alt="Financial Freedom title screen over a low-poly island" />
-                </div>
-                <figcaption class="ea-cap">Each game leans toward either facts or play, and rarely does both.</figcaption>
-              </figure>
+              <figure class="ea-stack ea-gap-caption"><ul class="ea-games" aria-label="Existing games reviewed">
+                <li class="ea-games__card"><div class="ea-game"><img class="ea-img ea-game-shot" src="/uploads/ea-comp-space-waste.png" width="1797" height="1016" loading="lazy" decoding="async" alt="Space Waste Odyssey title screen with a cartoon spaceship" /><span class="ea-game-name"><strong>Space Waste Odyssey</strong><span>by PBS Kids</span></span></div><dl class="ea-review"><div><dt>What worked</dt><dd>Levels and mini-games keep it varied; strong visuals; closed captions</dd></div><div><dt>What didn't</dt><dd>Long levels with no time limits or penalties, so it drags</dd></div></dl></li>
+                <li class="ea-games__card"><div class="ea-game"><img class="ea-img ea-game-shot" src="/uploads/ea-comp-energy-champion.png" width="1640" height="1231" loading="lazy" decoding="async" alt="Become an Energy Champion title screen with a woman opening a front door" /><span class="ea-game-name"><strong>Become an Energy Champion</strong><span>by National Energy Foundation</span></span></div><dl class="ea-review"><div><dt>What worked</dt><dd>Room-by-room energy tasks in a home; useful facts; a certificate at the end</dd></div><div><dt>What didn't</dt><dd>Repetitive mini-games, mostly videos and drag-and-drop; hard to navigate</dd></div></dl></li>
+                <li class="ea-games__card"><div class="ea-game"><img class="ea-img ea-game-shot" src="/uploads/ea-comp-fidgit-power.png" width="1999" height="1363" loading="lazy" decoding="async" alt="Fidgit Power title screen with wind turbines and four block characters" /><span class="ea-game-name"><strong>Fidgit Power</strong><span>by PBS Kids Design Squad</span></span></div><dl class="ea-review"><div><dt>What worked</dt><dd>Tasks change with each location; closed captions</dd></div><div><dt>What didn't</dt><dd>Repetitive; little real energy information; nothing left to do after 4 locations</dd></div></dl></li>
+                <li class="ea-games__card"><div class="ea-game"><img class="ea-img ea-game-shot" src="/uploads/ea-comp-financial-freedom.png" width="1999" height="1104" loading="lazy" decoding="async" alt="Financial Freedom title screen over a low-poly island" /><span class="ea-game-name"><strong>Financial Freedom</strong><span>by Legends of Learning</span></span></div><dl class="ea-review"><div><dt>What worked</dt><dd>Custom avatars; penalties for unsustainable choices; context before each task</dd></div><div><dt>What didn't</dt><dd>Needs an account; slow and too complex for younger players</dd></div></dl></li>
+              </ul>
+              <figcaption class="ea-cap">Each game leans toward either facts or play, and rarely does both.</figcaption></figure>
             </div>
           </div>
 
@@ -187,12 +184,8 @@ import styles from "../../cases/energy-ave-styles.css?raw";
               </figure>
             </div>
           </div>
-          <figure class="ea-stack ea-gap-tile">
-            <figcaption class="ea-label">The bet</figcaption>
-            <blockquote class="ea-quote">We'd build the concept stakeholders responded to most, even though a simpler game scored higher on ease of building.</blockquote>
-          </figure>
           <div class="ea-two">
-            <h3 class="ea-t">Why we didn't pick the top score</h3>
+            <h3 class="ea-t">We'd build the concept stakeholders responded to most, even though a simpler game scored higher on ease of building.</h3>
             <p class="ea-p">Trash Dash came out 1 point ahead, and all of that came from feasibility: a 60-second mini-game is easier to build. Energy Ave tied or beat it on every other criterion, including usability and desirability, which stakeholder feedback had flagged as the priorities.</p>
           </div>
         </div>
@@ -243,6 +236,20 @@ import styles from "../../cases/energy-ave-styles.css?raw";
                 <li class="ea-card ea-green"><span class="ea-label">02</span><h4 class="ea-t">Spot and fix</h4><p class="ea-p">Clicking an appliance or device flags the wasteful habit and shows how to correct it.</p></li>
                 <li class="ea-card ea-green"><span class="ea-label">03</span><h4 class="ea-t">Learn and earn</h4><p class="ea-p">Each fix shows a real-world energy fact and adds points. A full energy bar unlocks the next room.</p></li>
               </ul>
+              <figure class="ea-stack ea-gap-caption">
+                <video class="ea-img ea-video" src="/uploads/ea-video/ea-core-loop.mp4" poster="/uploads/ea-video/ea-core-loop.png" width="1440" height="810" muted loop playsinline preload="metadata" data-autoplay aria-label="Clicking the hair dryer opens its card worth +250 Energy Points; after Back the dryer is unplugged and the points float up"></video>
+                <figcaption class="ea-cap">One click, one fact, one fix: after Back, the hair dryer is unplugged and the +250 floats up.</figcaption>
+              </figure>
+              <div class="ea-tiles2">
+                <figure class="ea-stack ea-gap-caption">
+                  <video class="ea-img ea-video" src="/uploads/ea-video/ea-points-feedback.mp4" poster="/uploads/ea-video/ea-points-feedback.png" width="1440" height="810" muted loop playsinline preload="metadata" data-autoplay aria-label="Closing the kitchen fridge makes +200 points float up"></video>
+                  <figcaption class="ea-cap">Some fixes skip the card: closing the fridge pays out +200 on the spot.</figcaption>
+                </figure>
+                <figure class="ea-stack ea-gap-caption">
+                  <video class="ea-img ea-video" src="/uploads/ea-video/ea-room-complete.mp4" poster="/uploads/ea-video/ea-room-complete.png" width="1440" height="810" muted playsinline preload="metadata" data-autoplay aria-label="The last bedroom fix fills the energy meter, a message says the next level is the bathroom, and Start opens the bathroom"></video>
+                  <figcaption class="ea-cap">The last fix fills the meter, and Start opens the next room.</figcaption>
+                </figure>
+              </div>
               <figure class="ea-stack ea-gap-caption"><img class="ea-img ea-img--narrow" src="/uploads/ea-figma-hifi-all-cards-web.png" width="1600" height="1452" loading="lazy" decoding="async" alt="Grid of 12 item cards: computer, lamps, switches, window, hair dryer, sink, shower, fridge, kettle and toaster" /><figcaption class="ea-cap">Every card has the same layout: the item, one fact and the points it earns, so players learn it once.</figcaption></figure>
             </div>
           </div>
@@ -355,9 +362,15 @@ import styles from "../../cases/energy-ave-styles.css?raw";
               <h4 class="ea-t">Could they follow the logic?</h4>
               <p class="ea-p">Everyone figured out how the game works without instructions. One participant corrected himself partway through and landed on the game's actual rule: only things that use electricity are clickable. The participant closest to our target age described it as a "storyline through a household" and correctly guessed that clicking would open a pop-up.</p>
             </div>
-            <div class="ea-tiles2">
-              <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-game.png" width="7122" height="3382" loading="lazy" decoding="async" alt="Lo-fi game flow: title screen to bedroom, click a lamp, then the item card, with a pause menu loop" /><figcaption class="ea-cap">Everyone followed title → room → click → item card without being told.</figcaption></figure>
-              <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-next.png" width="6943" height="3382" loading="lazy" decoding="async" alt="Lo-fi flow of the next button, branching to the congrats screen or back to the room" /><figcaption class="ea-cap">The next button branches to the congrats screen or back to the room.</figcaption></figure>
+            <div class="ea-stack ea-gap-stack">
+              <div class="ea-tiles2">
+                <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-game.png" width="7122" height="3382" loading="lazy" decoding="async" alt="Lo-fi game flow: title screen to bedroom, click a lamp, then the item card, with a pause menu loop" /><figcaption class="ea-cap">Everyone followed title → room → click → item card without being told.</figcaption></figure>
+                <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-next.png" width="6943" height="3382" loading="lazy" decoding="async" alt="Lo-fi flow of the next button, branching to the congrats screen or back to the room" /><figcaption class="ea-cap">The next button branches to the congrats screen or back to the room.</figcaption></figure>
+              </div>
+              <figure class="ea-stack ea-gap-caption">
+                <video class="ea-img ea-video" src="/uploads/ea-video/ea-first-10s.mp4" poster="/uploads/ea-video/ea-first-10s.png" width="1440" height="810" muted playsinline preload="metadata" data-autoplay aria-label="The first 10 seconds of the shipped game: title screen, Play, how-to-play, Start, the bedroom, then clicking the computer opens its card"></video>
+                <figcaption class="ea-cap">The shipped game keeps that path: from the title screen to the first item card in under 10 seconds.</figcaption>
+              </figure>
             </div>
           </div>
 
@@ -477,6 +490,11 @@ import styles from "../../cases/energy-ave-styles.css?raw";
             <h3 class="ea-t">Shipped in March 2025, inside the timeline</h3>
             <p class="ea-p">Energy Ave shipped as a fully playable game built in Construct 3 on March 18, 2025, about 2.5 months into development. Teammates built the game; it hit all 4 success metrics we set before the build.</p>
           </div>
+          <div class="ea-stack ea-gap-stack">
+          <figure class="ea-stack ea-gap-caption">
+            <video class="ea-img ea-video" src="/uploads/ea-video/ea-full-playthrough.mp4" poster="/uploads/ea-video/ea-full-playthrough.png" width="1440" height="810" muted playsinline preload="metadata" data-autoplay aria-label="A full playthrough of the bedroom, bathroom and kitchen, ending on You have completed the game"></video>
+            <figcaption class="ea-cap">The whole game in 20 seconds, sped up between fixes: 3 rooms, 14 items, then "You have completed the game!"</figcaption>
+          </figure>
           <figure class="ea-stack ea-gap-caption">
             <div class="ea-tbl" role="region" aria-label="Success metrics: target and result" tabindex="0"><table><thead><tr><th scope="col">Metric</th><th scope="col">How we measured it</th><th scope="col">Target</th><th scope="col">Result</th></tr></thead><tbody>
               <tr><td>Engagement</td><td>Session timing</td><td>10+ min per session</td><td>About 12 min average</td></tr>
@@ -486,6 +504,7 @@ import styles from "../../cases/energy-ave-styles.css?raw";
             </tbody></table></div>
             <figcaption class="ea-cap">With 7 testers, these are counts from a small study, not statistics.</figcaption>
           </figure>
+          </div>
         </div>
 
         <div class="ea-stack ea-gap-intro">
@@ -527,4 +546,34 @@ import styles from "../../cases/energy-ave-styles.css?raw";
       <a href="#top" class="ea-btn ea-btn--line">Back to top ↑</a>
     </nav>
   </main>
+
+  <script>
+    // Gameplay clips: play while on screen, pause off screen. Looping clips
+    // loop; play-once clips run once per visit and replay on click. With
+    // reduced motion nothing autoplays and the clips get normal controls.
+    const clips = document.querySelectorAll<HTMLVideoElement>("video[data-autoplay]");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      clips.forEach((v) => { v.controls = true; });
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) {
+            if (v.loop || !v.dataset.played) v.play().catch(() => {});
+          } else {
+            v.pause();
+          }
+        }
+      }, { threshold: 0.5 });
+      clips.forEach((v) => {
+        v.addEventListener("ended", () => { v.dataset.played = "1"; });
+        if (!v.loop) {
+          v.style.cursor = "pointer";
+          v.addEventListener("click", () => { v.currentTime = 0; v.play().catch(() => {}); });
+        }
+        io.observe(v);
+      });
+    }
+  </script>
 </CaseStudyLayout>
