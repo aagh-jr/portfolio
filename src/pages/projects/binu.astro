@@ -4,7 +4,6 @@ import BeforeAfter from "../../components/case/BeforeAfter.astro";
 import Card from "../../components/case/Card.astro";
 import DataTable from "../../components/case/DataTable.astro";
 import Pill from "../../components/case/Pill.astro";
-import Placeholder from "../../components/case/Placeholder.astro";
 import PullQuote from "../../components/case/PullQuote.astro";
 import SectionLabel from "../../components/case/SectionLabel.astro";
 import WorkflowCarousel, { type Step } from "../../components/case/WorkflowCarousel.astro";
@@ -161,7 +160,7 @@ const workflow: Step[] = [
         </div>
         <PullQuote>The buying question: I know this product is safe, but will it do what it claims too?</PullQuote>
         <div class="cs-split">
-          <Placeholder class="cs-packaging" minHeight={280} pad={24} loose>[Image: skincare claims on real packaging, e.g. "clinically proven", "pore minimizing"]</Placeholder>
+          <div class="cs-col"></div>
           <div class="cs-col cs-prose cs-prose--loose">
             <p>The problem is also shaped by a constraint. Claims around acne, eczema and rosacea can cross into regulated medical territory, so Binu had to make evidence clearer without implying diagnosis or treatment.</p>
           </div>
@@ -215,9 +214,6 @@ const workflow: Step[] = [
           <div class="cs-col cs-prose">
             <p>A few years ago a poorly exicuted study claimed benzal peroxied could degrade into benzine. While the study and claims where refuted and seen as alarmist, it didint stop the research from seeping into Yuka, where now millions of people would interpett their acne products and carsinogetic. Another app evaluated shampoo the same way it evaluated face products.</p>
             <p>Binu only covers skincare today, but this shaped a rule we plan to build before expanding: evaluate the product's category and intended use first, then grade its ingredients against that context.</p>
-            <div class="cs-row">
-              <Placeholder basis={220} minHeight={200}>[Image: annotated screenshot of the flea treatment misread]</Placeholder>
-            </div>
           </div>
         </div>
 
@@ -254,13 +250,12 @@ const workflow: Step[] = [
       <div class="cs-stack cs-gap-block">
         <div class="cs-split">
           <div class="cs-col">
-            <h2 class="cs-h2">The product bet</h2>
+            <h2 class="cs-h2">Binu would grade the quality of evidence behind each specific product claim and ingredients.</h2>
           </div>
           <div class="cs-col cs-prose cs-prose--loose">
             <p>This gave us a clear point of difference and a disciplined build order. We built the evidence-grading experience first and deferred familiar but less differentiated features. Building those first would have made Binu feel like another skincare utility instead of a product with its own reason to exist.</p>
           </div>
         </div>
-        <PullQuote>Binu would grade the quality of evidence behind each specific product claim and ingredients.</PullQuote>
       </div>
     </section>
 
@@ -287,7 +282,6 @@ const workflow: Step[] = [
             </div>
           </div>
           <div class="cs-row">
-            <Placeholder caption="[1 line: what the sketch explored]">[Image: paper sketch]</Placeholder>
             <figure class="cs-preview-figure">
               <div class="cs-preview" role="img" aria-label="Binu's evidence table: one row per claim, Controls oil with strong evidence, Antioxidant with moderate evidence, Supports barrier with very limited evidence, each with its supporting ingredients"><ClaimRowsStill client:visible /></div>
               <figcaption>[1 line: why it won]</figcaption>
@@ -396,11 +390,6 @@ const workflow: Step[] = [
             <p>Early on I designed pages directly through AI coding tools, sketching components and layouts on paper and feeding those images to Claude Code. As the app grew, that got too slow; small visual changes meant long back-and-forth in code.</p>
             <p>So I used the Figma MCP to bring the live codebase into Figma and built the design system there. Now I work design-first: I redesign a page in Figma, then bring it back into code.</p>
           </div>
-        </div>
-        <div class="cs-row">
-          <Placeholder minHeight={220} caption="1. Sketch">[Image: paper sketch of a component]</Placeholder>
-          <Placeholder minHeight={220} caption="2. Design system in Figma">[Image: same component in Figma]</Placeholder>
-          <Placeholder minHeight={220} caption="3. Back in code">[Image: live in the product]</Placeholder>
         </div>
       </div>
 
