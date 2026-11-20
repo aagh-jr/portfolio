@@ -272,7 +272,47 @@ body {
 .ea-img--tile { aspect-ratio: 4 / 3; object-fit: cover; }
 .ea-img--sketch { aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; }
 .ea-img--phone { aspect-ratio: 924 / 1999; object-fit: cover; }
+/* Slanted, overlapping collage: poster in front, worksheet + game behind.
+   Positions are % of the box, so it scales down to phone width as one piece. */
+.ea-collage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 980px;
+  width: 100%;
+  margin-inline: auto;
+}
+.ea-collage__item {
+  position: absolute;
+  background: #fff;
+  object-fit: cover;
+  border-radius: clamp(8px, 1.6vw, 16px);
+  box-shadow: 0 2px 4px rgba(22, 24, 26, .06), 0 18px 40px -12px rgba(22, 24, 26, .28);
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1);
+}
+.ea-collage__item--left {
+  width: 40%; aspect-ratio: 350 / 271; object-position: 50% 0;
+  left: 1%; top: 8%;
+  transform: rotate(-7deg);
+}
+.ea-collage__item--right {
+  width: 40%; aspect-ratio: 1400 / 1046;
+  right: 1%; top: 6%;
+  transform: rotate(6deg);
+}
+.ea-collage__item--center {
+  width: 54%; aspect-ratio: 1000 / 707;
+  left: 23%; top: 22%;
+  transform: rotate(-1.5deg);
+  z-index: 1;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ea-collage__item--left:hover { transform: rotate(-4deg) translateY(-6px); z-index: 2; }
+  .ea-collage__item--right:hover { transform: rotate(3deg) translateY(-6px); z-index: 2; }
+  .ea-collage__item--center:hover { transform: rotate(0deg) translateY(-6px); }
+}
 .ea-img--narrow { max-width: 640px; margin-inline: auto; }
+/* Gameplay clips (1440×810 captures) */
+.ea-video { aspect-ratio: 16 / 9; object-fit: cover; }
 /* Before → after pair inside a card */
 .ea-pair { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
 .ea-pair > span { color: var(--muted); font-size: 15px; }
@@ -308,6 +348,8 @@ body {
 }
 .ea-tbl td:first-child,
 .ea-tbl td:last-child { color: var(--ink); }
+/* Vertical rules between columns (not on the outer edges; the frame covers those) */
+.ea-tbl :is(th, td) + :is(th, td) { border-left: 1px solid var(--line); }
 .ea-tbl th.ea-ours { background: #E6EFF9; color: var(--blue); font-weight: 600; }
 .ea-tbl td.ea-ours { background: #F3F8FD; color: var(--ink); }
 .ea-tbl tr.ea-total { background: var(--soft); font-weight: 600; }
@@ -346,3 +388,35 @@ body {
   transform: rotate(-2deg);
 }
 .ea-concept:nth-child(even) .ea-concept-peek .ea-img { transform: rotate(2deg); }
+
+/* Competitor cards: screenshot above each game's name */
+.ea-game { display: flex; flex-direction: column; gap: var(--s-caption); }
+.ea-game-shot { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 10px; }
+/* Competitor games: 2x2 cards, screenshot + name left, review stacked right.
+   Cards drop to one column, and each card stacks, as the width shrinks. */
+.ea-games {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+  gap: var(--s-tile);
+}
+.ea-games__card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--s-tile);
+  padding: var(--s-tile);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+/* What worked / what didn't, stacked in one cell */
+.ea-review { display: flex; flex-direction: column; gap: var(--s-tile); margin: 0; }
+.ea-review dt { font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; margin-bottom: 4px; }
+.ea-review div:first-child dt { color: var(--green); }
+.ea-review div:last-child dt { color: #A2452F; }
+.ea-review dd { margin: 0; }
+.ea-game-name { display: flex; flex-direction: column; }
+.ea-game-name strong { font-weight: 600; color: var(--ink); }
+.ea-game-name span { color: var(--muted); }
