@@ -29,7 +29,7 @@ import styles from "../../cases/energy-ave-styles.css?raw";
       </div>
       <div class="ea-row">
         <a href="https://aquamarine-faloodeh-96404d.netlify.app/" target="_blank" rel="noopener" class="ea-btn ea-btn--solid">Play the game ↗</a>
-        <a href="#" class="ea-btn ea-btn--line">Figma files ↗</a>
+        <a href="https://www.figma.com/design/0OOUELDQPwaaCuZBMDTbog/Energy-Ave.-System-Design?node-id=1-4943" target="_blank" rel="noopener" class="ea-btn ea-btn--line">Figma files ↗</a>
         <a href="#" class="ea-btn ea-btn--line">Final report ↗</a>
       </div>
       <dl class="ea-meta">
@@ -203,7 +203,7 @@ import styles from "../../cases/energy-ave-styles.css?raw";
             <div class="ea-two">
               <h3 class="ea-t">Rooms you could picture standing in</h3>
               <div class="ea-stack ea-gap-tile">
-                <p class="ea-p">We sketched lo-fi wireframes for each room in Figma, then built hi-fi versions. Each room is drawn in 1-point perspective so it feels like you're standing in it, and holds the things you'd really find there: the bedroom has a bed, desk, computer and lamps; the bathroom a shower, toilet, sink, hair dryer and mirror; the kitchen a fridge, stove, microwave, kettle, toaster and sink.</p>
+                <p class="ea-p">We sketched lo-fi wireframes for each room in Figma, then built hi-fi versions. Each room is drawn in 1-point perspective so it feels like you're standing in it.</p>
                 <p class="ea-p">I helped with the wireframes; teammates made most of the pixel-art sprites.</p>
               </div>
             </div>
@@ -231,10 +231,10 @@ import styles from "../../cases/energy-ave-styles.css?raw";
               </div>
             </div>
             <div class="ea-stack ea-gap-stack">
-              <ul aria-label="How Energy Ave works" class="ea-tiles">
-                <li class="ea-card ea-green"><span class="ea-label">01</span><h4 class="ea-t">Room by room</h4><p class="ea-p">Players explore a bedroom, bathroom and kitchen, clicking on items in each space.</p></li>
-                <li class="ea-card ea-green"><span class="ea-label">02</span><h4 class="ea-t">Spot and fix</h4><p class="ea-p">Clicking an appliance or device flags the wasteful habit and shows how to correct it.</p></li>
-                <li class="ea-card ea-green"><span class="ea-label">03</span><h4 class="ea-t">Learn and earn</h4><p class="ea-p">Each fix shows a real-world energy fact and adds points. A full energy bar unlocks the next room.</p></li>
+              <ul aria-label="How Energy Ave works" class="ea-steps">
+                <li><div class="ea-stack ea-gap-caption"><span class="ea-step-num">01</span><h4 class="ea-t">Room by room</h4></div><p class="ea-p">Players explore a bedroom, bathroom and kitchen, clicking on items in each space.</p></li>
+                <li><div class="ea-stack ea-gap-caption"><span class="ea-step-num">02</span><h4 class="ea-t">Spot and fix</h4></div><p class="ea-p">Clicking an appliance or device flags the wasteful habit and shows how to correct it.</p></li>
+                <li><div class="ea-stack ea-gap-caption"><span class="ea-step-num">03</span><h4 class="ea-t">Learn and earn</h4></div><p class="ea-p">Each fix shows a real-world energy fact and adds points. A full energy bar unlocks the next room.</p></li>
               </ul>
               <figure class="ea-stack ea-gap-caption">
                 <video class="ea-img ea-video" src="/uploads/ea-video/ea-core-loop.mp4" poster="/uploads/ea-video/ea-core-loop.png" width="1440" height="810" muted loop playsinline preload="metadata" data-autoplay aria-label="Clicking the hair dryer opens its card worth +250 Energy Points; after Back the dryer is unplugged and the points float up"></video>
@@ -251,6 +251,17 @@ import styles from "../../cases/energy-ave-styles.css?raw";
                 </figure>
               </div>
               <figure class="ea-stack ea-gap-caption"><img class="ea-img ea-img--narrow" src="/uploads/ea-figma-hifi-all-cards-web.png" width="1600" height="1452" loading="lazy" decoding="async" alt="Grid of 12 item cards: computer, lamps, switches, window, hair dryer, sink, shower, fridge, kettle and toaster" /><figcaption class="ea-cap">Every card has the same layout: the item, one fact and the points it earns, so players learn it once.</figcaption></figure>
+              <figure class="ea-stack ea-gap-caption">
+                <ul class="ea-variants" aria-label="Item variants, wasteful state then fixed state">
+                  <li class="ea-variant"><div class="ea-pair"><img src="/uploads/ea-figma/ea-var-pc-on.png" width="249" height="210" loading="lazy" decoding="async" alt="Computer with the screen on" /><span aria-hidden="true">→</span><img src="/uploads/ea-figma/ea-var-pc-off.png" width="217" height="177" loading="lazy" decoding="async" alt="Computer with the screen off" /></div><span class="ea-cap">Computer · on → off</span></li>
+                  <li class="ea-variant"><div class="ea-pair"><img src="/uploads/ea-figma/ea-var-lamp-on.png" width="129" height="355" loading="lazy" decoding="async" alt="Floor lamp glowing" /><span aria-hidden="true">→</span><img src="/uploads/ea-figma/ea-var-lamp-off.png" width="155" height="426" loading="lazy" decoding="async" alt="Floor lamp switched off" /></div><span class="ea-cap">Floor lamp · on → off</span></li>
+                  <li class="ea-variant"><div class="ea-pair"><img src="/uploads/ea-figma/ea-var-window-on.png" width="164" height="222" loading="lazy" decoding="async" alt="Window with the curtains open" /><span aria-hidden="true">→</span><img src="/uploads/ea-figma/ea-var-window-off.png" width="185" height="204" loading="lazy" decoding="async" alt="Window with the curtains drawn" /></div><span class="ea-cap">Window · open → curtains drawn</span></li>
+                  <li class="ea-variant"><div class="ea-pair"><img src="/uploads/ea-figma/ea-var-tub-on.png" width="256" height="140" loading="lazy" decoding="async" alt="Bathtub full of water" /><span aria-hidden="true">→</span><img src="/uploads/ea-figma/ea-var-tub-off.png" width="252" height="138" loading="lazy" decoding="async" alt="Empty bathtub" /></div><span class="ea-cap">Bathtub · running → off</span></li>
+                  <li class="ea-variant"><div class="ea-pair"><img src="/uploads/ea-figma/ea-var-sink-on.png" width="350" height="344" loading="lazy" decoding="async" alt="Bathroom vanity with water in both sinks" /><span aria-hidden="true">→</span><img src="/uploads/ea-figma/ea-var-sink-off.png" width="397" height="391" loading="lazy" decoding="async" alt="Bathroom vanity with both sinks off" /></div><span class="ea-cap">Sink · running → off</span></li>
+                  <li class="ea-variant"><div class="ea-pair"><img src="/uploads/ea-figma/ea-var-fridge-on.png" width="387" height="451" loading="lazy" decoding="async" alt="Fridge with both doors open" /><span aria-hidden="true">→</span><img src="/uploads/ea-figma/ea-var-fridge-off.png" width="191" height="451" loading="lazy" decoding="async" alt="Fridge with the doors closed" /></div><span class="ea-cap">Fridge · open → closed</span></li>
+                </ul>
+                <figcaption class="ea-cap">Each clickable item was drawn twice, wasteful and fixed, so a fix changes the room and not just the score.</figcaption>
+              </figure>
             </div>
           </div>
 
@@ -258,11 +269,13 @@ import styles from "../../cases/energy-ave-styles.css?raw";
             <div class="ea-two">
               <h3 class="ea-t">A cozy, pixel-art world</h3>
               <div class="ea-stack ea-gap-tile">
+                <p class="ea-p">The rooms hold the things you'd really find there: the bedroom has a bed, desk, computer and lamps; the bathroom a shower, toilet, sink, hair dryer and mirror; the kitchen a fridge, stove, microwave, kettle, toaster and sink.</p>
                 <p class="ea-p">Stakeholders liked the life-sim feel of our concept, and we wanted the game to be relaxing so players wouldn't feel stressed while learning something new. We took gameplay cues from Unpacking, a slow and chill game, and the look from Stardew Valley: an earthy color palette, a pixel typeface on the cards and screens and pixel-art sprites made in Piskel.</p>
                 <p class="ea-p">That paid off in testing. All 7 players in Study 2 enjoyed the look and feel, and they compared it to relaxing games and to early-2000s browser games like Barbie.com. When players compare your game to ones they actually played for fun, the style is doing real work, so it's worth protecting in any future version.</p>
               </div>
             </div>
             <div class="ea-stack ea-gap-stack">
+              <figure class="ea-stack ea-gap-caption"><img class="ea-img ea-img--board" src="/uploads/ea-figma/ea-moodboard.jpg" width="1756" height="1620" loading="lazy" decoding="async" alt="Mood board collage: Stardew Valley's farm and furniture catalogue, cozy pixel-art bedrooms, bathrooms and kitchens, and a sheet of retro game buttons and meters" /><figcaption class="ea-cap">Our mood board, made before any sprites: cozy pixel rooms, Stardew Valley and retro game UI.</figcaption></figure>
               <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-title-hifi.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Energy Ave title screen in pixel art" /><figcaption class="ea-cap">The pixel-art style on the title screen carries through every scene.</figcaption></figure>
               <figure class="ea-stack ea-gap-caption">
                 <div class="ea-tiles">
@@ -279,17 +292,39 @@ import styles from "../../cases/energy-ave-styles.css?raw";
         <div class="ea-stack ea-gap-intro">
           <div class="ea-two">
             <h3 class="ea-t">Design system</h3>
-            <p class="ea-p">An earthy color palette, a pixel typeface on the cards and screens and pixel-art sprites made in Piskel.</p>
+            <div class="ea-stack ea-gap-tile">
+              <p class="ea-p">An earthy color palette, a pixel typeface on the cards and screens and pixel-art sprites made in Piskel.</p>
+              <p class="ea-p">The interface is a small kit. Every message uses the same bordered panel, and every button is the same pixel pill: green moves you forward, yellow is for the pause menu.</p>
+            </div>
           </div>
-          <figure class="ea-stack ea-gap-caption">
-            <ul aria-label="Palette" class="ea-tiles">
-              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#A67C52"></div><span class="ea-cap">Earth brown · #A67C52</span></li>
-              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#A8C686"></div><span class="ea-cap">Leaf green · #A8C686</span></li>
-              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#E3D5C2"></div><span class="ea-cap">Sand · #E3D5C2</span></li>
-              <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#BFD7EA"></div><span class="ea-cap">Sky blue · #BFD7EA</span></li>
-            </ul>
-            <figcaption class="ea-cap">4 colors from our earthy palette. Cards and screens use VT323, a pixel typeface.</figcaption>
-          </figure>
+          <div class="ea-stack ea-gap-stack">
+            <figure class="ea-stack ea-gap-caption">
+              <ul aria-label="Earthy color palette" class="ea-tiles ea-tiles--swatches">
+                <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#A8C686"></div><span class="ea-cap">Leaf green · #A8C686</span></li>
+                <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#E3D5C2"></div><span class="ea-cap">Sand · #E3D5C2</span></li>
+                <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#A67C52"></div><span class="ea-cap">Earth brown · #A67C52</span></li>
+                <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#F4F1DE"></div><span class="ea-cap">Cream · #F4F1DE</span></li>
+                <li class="ea-stack ea-gap-caption"><div class="ea-swatch" style="background:#355E3B"></div><span class="ea-cap">Forest · #355E3B</span></li>
+              </ul>
+              <figcaption class="ea-cap">The 5 colors of our earthy palette, straight from the Figma file. Cards and screens use VT323, a pixel typeface.</figcaption>
+            </figure>
+            <figure class="ea-stack ea-gap-caption">
+              <div class="ea-kit">
+                <div class="ea-kit-panels">
+                  <img src="/uploads/ea-figma/ea-ui-panel-howto.png" width="741" height="642" loading="lazy" decoding="async" alt="How to play panel: click on objects to save as much energy as possible and fill the energy meter up, with a Start button" />
+                  <img src="/uploads/ea-figma/ea-ui-panel-next.png" width="684" height="593" loading="lazy" decoding="async" alt="Great job panel: you have passed this level, the next level is the kitchen, with a Start button" />
+                  <img src="/uploads/ea-figma/ea-ui-panel-paused.png" width="741" height="642" loading="lazy" decoding="async" alt="Paused panel with Resume, Quit and Start buttons" />
+                </div>
+                <div class="ea-kit-buttons">
+                  <img src="/uploads/ea-figma/ea-ui-btn-start.png" width="198" height="91" loading="lazy" decoding="async" alt="Green Start button" />
+                  <img src="/uploads/ea-figma/ea-ui-btn-paused.png" width="230" height="106" loading="lazy" decoding="async" alt="Yellow Paused label" />
+                  <img src="/uploads/ea-figma/ea-ui-btn-resume.png" width="230" height="106" loading="lazy" decoding="async" alt="Yellow Resume button" />
+                  <img src="/uploads/ea-figma/ea-ui-btn-quit.png" width="230" height="106" loading="lazy" decoding="async" alt="Yellow Quit button" />
+                </div>
+              </div>
+              <figcaption class="ea-cap">How to play, next room and paused share one panel, so players always know where to look.</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
@@ -367,10 +402,6 @@ import styles from "../../cases/energy-ave-styles.css?raw";
                 <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-game.png" width="7122" height="3382" loading="lazy" decoding="async" alt="Lo-fi game flow: title screen to bedroom, click a lamp, then the item card, with a pause menu loop" /><figcaption class="ea-cap">Everyone followed title → room → click → item card without being told.</figcaption></figure>
                 <figure class="ea-stack ea-gap-caption"><img class="ea-img" src="/uploads/ea-flow-next.png" width="6943" height="3382" loading="lazy" decoding="async" alt="Lo-fi flow of the next button, branching to the congrats screen or back to the room" /><figcaption class="ea-cap">The next button branches to the congrats screen or back to the room.</figcaption></figure>
               </div>
-              <figure class="ea-stack ea-gap-caption">
-                <video class="ea-img ea-video" src="/uploads/ea-video/ea-first-10s.mp4" poster="/uploads/ea-video/ea-first-10s.png" width="1440" height="810" muted playsinline preload="metadata" data-autoplay aria-label="The first 10 seconds of the shipped game: title screen, Play, how-to-play, Start, the bedroom, then clicking the computer opens its card"></video>
-                <figcaption class="ea-cap">The shipped game keeps that path: from the title screen to the first item card in under 10 seconds.</figcaption>
-              </figure>
             </div>
           </div>
 
@@ -419,10 +450,7 @@ import styles from "../../cases/energy-ave-styles.css?raw";
             </tbody></table></div>
           </div>
 
-          <figure class="ea-stack ea-gap-tile">
-            <figcaption class="ea-label">The clearest criticism · P1, PlanetFlip's founder</figcaption>
-            <blockquote class="ea-quote">“This feels like it's aimed at elementary schoolers.”</blockquote>
-          </figure>
+          <blockquote class="ea-quote">“This feels like it's aimed at elementary schoolers.”</blockquote>
 
           <div class="ea-two">
             <h4 class="ea-t">The strongest signal: it was too easy</h4>
@@ -469,13 +497,13 @@ import styles from "../../cases/energy-ave-styles.css?raw";
             <p class="ea-p">Each card shows a change before and after, with what led to it.</p>
           </div>
           <figure class="ea-stack ea-gap-caption">
-            <ul aria-label="Before and after changes" class="ea-carousel" tabindex="0">
-              <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Simpler item cards</h4><p class="ea-p">We simplified the cards so each fact lands quickly and the card looks better.</p><div class="ea-pair"><img class="ea-img ea-img--card" src="/uploads/ea-card-hairdryer-yellow.png" width="909" height="1074" loading="lazy" decoding="async" alt="Earlier yellow hair dryer card" /><span aria-hidden="true">→</span><img class="ea-img ea-img--card" src="/uploads/ea-figma-hifi-card-computer-07.png" width="900" height="1074" loading="lazy" decoding="async" alt="Simplified hair dryer card in the final style" /></div></li>
-              <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Items that show the fix</h4><p class="ea-p">Items now have variants that change when you fix them, like the blow dryer losing its cord when it's switched off.</p><div class="ea-pair"><img class="ea-img" src="/uploads/ea-figma-hifi-bathroom.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Bathroom with the hair dryer plugged in and the shower running" /><span aria-hidden="true">→</span><img class="ea-img" src="/uploads/ea-figma-hifi-bathroom-off.png" width="1440" height="1024" loading="lazy" decoding="async" alt="The same bathroom after fixing: hair dryer unplugged, shower off" /></div></li>
+            <ul aria-label="Before and after changes" class="ea-carousel">
+              <li class="ea-card ea-card--plain"><span class="ea-label">After Study 1</span><h4 class="ea-t">Simpler item cards</h4><p class="ea-p">We simplified the cards so each fact lands quickly and the card looks better.</p><div class="ea-card-versions" aria-label="Three iterations of the Personal Computer energy card"><img class="ea-img ea-img--card" src="/uploads/ea-card-computer-v1.png" width="618" height="892" loading="lazy" decoding="async" alt="First version of the Personal Computer energy card, with a yellow rounded interface" /><span class="ea-card-versions__arrow" aria-hidden="true">→</span><img class="ea-img ea-img--card" src="/uploads/ea-card-computer-v2.png" width="909" height="1074" loading="lazy" decoding="async" alt="Second version of the Personal Computer energy card, with a yellow pixel-art interface" /><span class="ea-card-versions__arrow" aria-hidden="true">→</span><img class="ea-img ea-img--card" src="/uploads/ea-card-computer-v3.png" width="900" height="1074" loading="lazy" decoding="async" alt="Final version of the Personal Computer energy card, with a white pixel-art interface" /></div></li>
+              <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Items that show the fix</h4><p class="ea-p">Items now have variants that change when you fix them, like the shower turning off once the player corrects it.</p><div class="ea-pair"><div class="ea-bath-state"><img src="/uploads/ea-figma-hifi-bathroom.png" width="1440" height="1024" loading="lazy" decoding="async" alt="Shower and bathtub with the water running" /></div><span aria-hidden="true">→</span><div class="ea-bath-state"><img src="/uploads/ea-figma-hifi-bathroom-off.png" width="1440" height="1024" loading="lazy" decoding="async" alt="The same shower and bathtub with the water turned off" /></div></div></li>
               <li class="ea-card"><span class="ea-label">After Study 1</span><h4 class="ea-t">Sound</h4><p class="ea-p">We added music and sound effects. In Study 2, 1 player said the music hinted at what to click next.</p><div class="ea-ph ea-ph--200">[Short clip with sound]</div></li>
-              <li class="ea-card ea-blue"><span class="ea-label">After Study 2</span><h4 class="ea-t">Visible points</h4><p class="ea-p">PlanetFlip's founder asked for points shown as numbers, so we made point values visible.</p><img class="ea-img ea-img--card" src="/uploads/ea-pc-card.png" width="900" height="1074" loading="lazy" decoding="async" alt="Final Personal Computer info card with its point value shown" /></li>
+              <li class="ea-card ea-blue"><span class="ea-label">After Study 2</span><h4 class="ea-t">Feedback for every fix</h4><p class="ea-p">PlanetFlip's founder wanted players to see the reward for a correct action right away. Closing the fridge now makes +200 points appear as immediate feedback.</p><video class="ea-img ea-video" src="/uploads/ea-video/ea-points-feedback.mp4" poster="/uploads/ea-video/ea-points-feedback.png" width="1440" height="810" muted loop playsinline preload="metadata" data-autoplay aria-label="Closing the kitchen fridge makes +200 points appear"></video></li>
             </ul>
-            <figcaption class="ea-cap">Scroll sideways for more · 4 cards</figcaption>
+            <figcaption class="ea-cap">Four changes made from the study findings.</figcaption>
           </figure>
         </div>
       </div>
